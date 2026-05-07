@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Search, HelpCircle, MessageCircle } from 'lucide-react';
+import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { faqData, faqCategoryIcons } from '@/lib/data/faq';

@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { residentialData } from '@/lib/data/solutions';
 import { resolveIcon } from '@/lib/iconMap';

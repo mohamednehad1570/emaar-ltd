@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { CheckCircle2, ArrowRight, Quote, Star } from 'lucide-react';
+import { CheckCircle as CheckCircle2, ArrowRight, Quotes as Quote, Star } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { whyChooseUsData } from '@/lib/data/whyChooseUs';

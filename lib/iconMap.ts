@@ -1,74 +1,77 @@
 /**
  * lib/iconMap.ts
- * Maps icon string names → Lucide React components.
+ * Maps icon string names → Phosphor React components (Regular weight default).
+ * Keys intentionally mirror old Lucide names so data-layer strings need no changes.
  * Use resolveIcon(name) in components to get the actual component.
  */
 
+import type { Icon } from '@phosphor-icons/react';
 import {
-  Award, Briefcase, Users, Factory, Target, Eye, Heart,
-  TrendingUp, Shield, Sparkles, ArrowRight,
-  CheckCircle2, Calendar, MapPin, Globe, Trophy,
-  Phone, ClipboardCheck, Ruler, PenTool,
-  FileText, Wrench, Clock, AlertCircle,
-  Settings, Package, Zap, MessageCircle,
-  Thermometer, VolumeX, Sun, ShieldCheck,
-  Star, Quote, BadgeCheck, Microscope,
-  FileCheck, ThumbsUp, ChevronRight,
-  Building2, HardHat, Layers, Cpu,
-  BarChart3, Leaf, Wind, Droplets,
-  LucideIcon,
-} from 'lucide-react';
+  Medal, Briefcase, Users, Factory, Target, Eye, Heart,
+  TrendUp, Shield, Sparkle, ArrowRight,
+  CheckCircle, Calendar, MapPin, Globe, Trophy,
+  Phone, ClipboardText, Ruler, PenNib,
+  FileText, Wrench, Clock, WarningCircle,
+  Gear, Package, Lightning, ChatCircle,
+  Thermometer, SpeakerSlash, Sun, ShieldCheck,
+  Star, Quotes, SealCheck, Microscope,
+  ThumbsUp, CaretRight,
+  Buildings, HardHat, Stack, Cpu,
+  ChartBar, Leaf, Wind, Drop,
+} from '@phosphor-icons/react';
 
-export const iconMap: Record<string, LucideIcon> = {
-  Award,
+// String keys match legacy Lucide names used in data files
+export const iconMap: Record<string, Icon> = {
+  Award:          Medal,
   Briefcase,
   Users,
   Factory,
   Target,
   Eye,
   Heart,
-  TrendingUp,
+  TrendingUp:     TrendUp,
   Shield,
-  Sparkles,
+  Sparkles:       Sparkle,
   ArrowRight,
-  CheckCircle2,
+  CheckCircle2:   CheckCircle,
+  CheckCircle,
   Calendar,
   MapPin,
   Globe,
   Trophy,
   Phone,
-  ClipboardCheck,
+  ClipboardCheck: ClipboardText,
   Ruler,
-  PenTool,
+  PenTool:        PenNib,
   FileText,
   Wrench,
   Clock,
-  AlertCircle,
-  Settings,
+  AlertCircle:    WarningCircle,
+  Settings:       Gear,
   Package,
-  Zap,
-  MessageCircle,
+  Zap:            Lightning,
+  MessageCircle:  ChatCircle,
   Thermometer,
-  VolumeX,
+  VolumeX:        SpeakerSlash,
   Sun,
   ShieldCheck,
   Star,
-  Quote,
-  BadgeCheck,
+  Quote:          Quotes,
+  BadgeCheck:     SealCheck,
   Microscope,
-  FileCheck,
+  FileCheck:     FileText, // Phosphor has no FileCheck; FileText is the closest document icon
   ThumbsUp,
-  ChevronRight,
-  Building2,
+  ChevronRight:   CaretRight,
+  Building2:      Buildings,
   HardHat,
-  Layers,
+  Layers:         Stack,
   Cpu,
-  BarChart3,
+  BarChart3:      ChartBar,
   Leaf,
   Wind,
-  Droplets,
+  Droplets:       Drop,
 };
 
-export function resolveIcon(name: string): LucideIcon {
-  return iconMap[name] ?? Award;
+export function resolveIcon(name: string): Icon {
+  return iconMap[name] ?? Medal;
 }

@@ -1,335 +1,716 @@
 'use client';
 
+/**
+ * components/Header.tsx
+ *
+ * Fixed site header.
+ * Desktop  — white bg → frosted-glass on scroll (Framer Motion); red active
+ *             underline; phone number; WhatsApp icon; language toggle; CTA.
+ * Mobile   — logo + burger; full-screen slide-in overlay (from right, or left
+ *             in RTL); accordion sub-menus; Request Quote pinned at bottom.
+ *
+ * Design rules (CLAUDE.md):
+ *   • No blue — all text uses brand-dark / text-text-heading / text-text-body
+ *   • Warm shadows only — rgba(45,41,38,x)
+ *   • Cairo font inherited from body
+ *   • 44 px+ touch targets everywhere
+ *   • RTL-aware throughout
+ */
+
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Menu, X, Phone, MessageCircle, ChevronDown, ArrowRight } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  List     as MenuIcon,
+  X,
+  Phone,
+  WhatsappLogo,
+  ArrowRight,
+  CaretDown,
+  CaretRight,
+} from '@phosphor-icons/react';
+import Image    from 'next/image';
+import Link     from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '../contexts/LanguageContext';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Discriminated union keeps TypeScript happy without @ts-ignore hacks. */
+type DropItem =
+  | { type: 'header'; en: string; ar: string }
+  | { type?: never; en: string; ar: string; href: string };
+
+interface NavItem {
+  en: string;
+  ar: string;
+  href: string;
+  dropdown?: DropItem[];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Data
+// ─────────────────────────────────────────────────────────────────────────────
+
+const PHONE_DISPLAY = '+971 50 123 4567';
+const PHONE_HREF    = 'tel:+971501234567';
+const WA_HREF       = 'https://wa.me/971501234567';
+
+const NAV: NavItem[] = [
+  { en: 'Home',           ar: 'الرئيسية',     href: '/'        },
+  {
+    en: 'Solutions', ar: 'الحلول', href: '/solutions',
+    dropdown: [
+      { type: 'header', en: 'By Sector',            ar: 'حسب القطاع'      },
+      { en: 'Residential',      ar: 'القطاع السكني',  href: '/solutions/residential' },
+      { en: 'Commercial',       ar: 'القطاع التجاري', href: '/solutions/commercial'  },
+      { type: 'header', en: 'By Material',           ar: 'حسب المادة'      },
+      { en: 'uPVC Systems',     ar: 'أنظمة uPVC',         href: '/products/upvc'     },
+      { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم',href: '/products/aluminum' },
+    ],
+  },
+  { en: 'Projects',      ar: 'المشاريع',     href: '/projects' },
+  { en: 'Technical Hub', ar: 'المركز التقني', href: '/tech'     },
+  { en: 'About Us',      ar: 'من نحن',        href: '/about'    },
+  { en: 'Contact',       ar: 'اتصل بنا',      href: '/contact'  },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Returns true when the current pathname lives inside a nav item's subtree.
+ * Home is exact-match only so every other page doesn't inherit it.
+ */
+function isActive(
+  pathname: string,
+  href: string,
+  dropdown?: DropItem[],
+): boolean {
+  if (href === '/') return pathname === '/';
+  if (pathname.startsWith(href)) return true;
+  if (!dropdown) return false;
+  return dropdown.some(d => {
+    if (d.type === 'header') return false;
+    return pathname.startsWith(d.href);
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Component
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const { language, toggleLanguage, isRTL } = useLanguage();
   const pathname = usePathname();
 
-  const { language, toggleLanguage, isRTL } = useLanguage();
-  const { scrollY } = useScroll();
-
-  // Scrolled state for conditional styling
+  /* Drives the Framer Motion scroll-glass transition */
   const [isScrolled, setIsScrolled] = useState(false);
 
+  /* Which desktop dropdown is open (keyed by English label) */
+  const [openDrop, setOpenDrop] = useState<string | null>(null);
+
+  /* Mobile overlay visibility */
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  /* Which mobile accordion section is expanded */
+  const [expandedMobile, setExpandedMobile] = useState<string | null>(null);
+
+  /* Close overlay whenever the route changes */
   useEffect(() => {
-    const updateScroll = () => {
-      // If home page, use scroll logic. Otherwise force scrolled state.
-      if (pathname === '/') {
-        setIsScrolled(window.scrollY > 20);
-      } else {
-        setIsScrolled(true);
-      }
-    };
-
-    // Initial check
-    updateScroll();
-
-    window.addEventListener('scroll', updateScroll);
-    return () => window.removeEventListener('scroll', updateScroll);
+    setMenuOpen(false);
+    setExpandedMobile(null);
   }, [pathname]);
 
-  const isHome = pathname === '/';
-
-  const headerBackground = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(229, 229, 229, 0)', 'rgba(229, 229, 229, 0.95)']
-  );
-
-  const headerBackdropBlur = useTransform(
-    scrollY,
-    [0, 100],
-    ['blur(0px)', 'blur(12px)']
-  );
-
-  const headerShadow = useTransform(
-    scrollY,
-    [0, 100],
-    ['none', '0 4px 20px rgba(0, 0, 0, 0.1)']
-  );
-
-  const navTextColor = useTransform(
-    scrollY,
-    [0, 100],
-    ['rgba(255, 255, 255, 1)', 'rgba(44, 62, 80, 1)']
-  );
-
-  // Forced styles for non-home pages
-  const staticBg = 'rgba(229, 229, 229, 0.95)';
-  const staticBlur = 'blur(12px)';
-  const staticShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-  const staticText = 'rgba(44, 62, 80, 1)';
-
+  /* Passive scroll listener — only toggles a boolean for performance */
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (target.closest('[data-dropdown]')) {
-        return;
-      }
-      setActiveDropdown(null);
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    const onScroll = () => setIsScrolled(window.scrollY > 20);
+    onScroll(); // run immediately so non-top pages start in scrolled state
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navItems = [
-    { en: 'Home', ar: 'الرئيسية', href: '/' },
-    {
-      en: 'Solutions',
-      ar: 'الحلول',
-      href: '/solutions',
-      dropdown: [
-        { type: 'header', en: 'By Sector', ar: 'حسب القطاع' },
-        { en: 'Residential', ar: 'القطاع السكني', href: '/solutions/residential' },
-        { en: 'Commercial', ar: 'القطاع التجاري', href: '/solutions/commercial' },
-        { type: 'header', en: 'By Material', ar: 'حسب المادة' },
-        { en: 'uPVC Systems', ar: 'أنظمة uPVC', href: '/products/upvc' },
-        { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum' },
-      ]
-    },
-    { en: 'Projects', ar: 'المشاريع', href: '/projects' },
-    { en: 'Technical Hub', ar: 'المركز التقني', href: '/tech' }, // Added Technical Hub
-    { en: 'About Us', ar: 'من نحن', href: '/about' },
-    { en: 'Contact', ar: 'اتصل بنا', href: '/contact' },
-  ];
+  /* Close desktop dropdown when clicking outside its subtree */
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!(e.target as HTMLElement).closest('[data-nav-drop]')) {
+        setOpenDrop(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  /* Prevent body scroll while mobile overlay is open */
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  /** Returns the localised string for en/ar items. */
+  const t = (item: { en: string; ar: string }): string => item[language];
+
+  /** Closes mobile menu and resets accordion state. */
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setExpandedMobile(null);
+  };
 
   return (
     <>
+      {/* ═══════════════════════════════════════════════════════════════════
+          HEADER BAR
+          Framer Motion animates background + shadow on scroll.
+          backdrop-blur is toggled via CSS class (FM can't animate that prop).
+      ═══════════════════════════════════════════════════════════════════ */}
       <motion.header
-        key={`header-${language}`}
-        style={{
-          backgroundColor: isHome ? headerBackground : staticBg,
-          backdropFilter: isHome ? headerBackdropBlur : staticBlur,
-          boxShadow: isHome ? headerShadow : staticShadow,
+        initial={{
+          backgroundColor: 'rgba(255,255,255,1)',
+          boxShadow: '0 0px 0px rgba(45,41,38,0)',
         }}
-        className="fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
+        animate={{
+          backgroundColor: isScrolled
+            ? 'rgba(255,255,255,0.95)'
+            : 'rgba(255,255,255,1)',
+          /* warm shadow — never rgba(0,0,0,x) */
+          boxShadow: isScrolled
+            ? '0 4px 20px rgba(45,41,38,0.10)'
+            : '0 0px 0px rgba(45,41,38,0)',
+        }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+        className={`fixed top-0 left-0 right-0 z-50 ${isScrolled ? 'backdrop-blur-md' : ''}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
 
-            {/* Logo Section */}
-            <Link href="/" className="flex items-center gap-3 group relative z-10">
-              <div className="relative w-10 h-10 sm:w-12 sm:h-12 overflow-hidden rounded-xl bg-gradient-to-br from-brand-dark to-[#1a1a1a] shadow-lg group-hover:shadow-red-500/20 transition-all duration-300">
-                <div className="absolute inset-0 bg-brand-red opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
-                <div className="w-full h-full flex items-center justify-center p-2">
-                  <Image
-                    src="/logo.svg"
-                    alt="Emaar"
-                    width={40}
-                    height={40}
-                    className="w-full h-full object-contain brightness-0 invert"
-                  />
-                </div>
+            {/* ─── Logo ──────────────────────────────────────────────────── */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 group shrink-0"
+              aria-label="Emaar International — home"
+            >
+              {/* Icon box */}
+              <div className="
+                w-10 h-10 rounded-xl overflow-hidden bg-brand-dark flex items-center justify-center
+                shadow-[0_2px_8px_rgba(45,41,38,0.15)]
+                group-hover:shadow-[0_4px_16px_rgba(231,76,60,0.25)]
+                transition-shadow duration-300
+              ">
+                <Image
+                  src="/logo.svg"
+                  alt=""
+                  aria-hidden="true"
+                  width={40}
+                  height={40}
+                  className="w-7 h-7 object-contain brightness-0 invert"
+                  priority
+                />
               </div>
+
+              {/* Wordmark */}
               <div className={`flex flex-col ${isRTL ? 'items-end' : 'items-start'}`}>
-                <motion.span
-                  style={{ color: isScrolled ? 'var(--brand-dark)' : '#FFFFFF' }}
-                  className="font-bold text-lg sm:text-xl tracking-tight leading-none"
-                >
+                <span className="font-extrabold text-xl tracking-tight leading-none text-brand-dark">
                   {language === 'en' ? 'EMAAR' : 'إعمار'}
-                </motion.span>
-                <motion.span
-                  style={{ color: isScrolled ? 'var(--brand-gray)' : 'rgba(255,255,255,0.8)' }}
-                  className="text-[10px] sm:text-xs font-medium tracking-wider uppercase"
-                >
-                  {language === 'en' ? 'International Industry LLC' : 'الدولية للصناعة ش.ذ.م.م'}
-                </motion.span>
+                </span>
+                <span className="text-[10px] font-medium tracking-widest uppercase text-text-muted">
+                  {language === 'en' ? 'International Industry' : 'الدولية للصناعة'}
+                </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="relative group/nav"
-                  onMouseEnter={() => item.dropdown && setActiveDropdown(item.en)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <Link
-                    href={item.href}
-                    className="relative px-3 py-2 text-sm font-medium transition-colors duration-300 flex items-center gap-1"
-                  >
-                    <motion.span style={{ color: isHome ? navTextColor : staticText }}>
-                      {item[language]}
-                    </motion.span>
-                    {item.dropdown && (
-                      <ChevronDown
-                        className={`w-3.5 h-3.5 transition-transform duration-300 ${activeDropdown === item.en ? 'rotate-180' : ''}`}
-                        style={{ color: isScrolled ? 'var(--brand-dark)' : '#FFFFFF' }}
-                      />
-                    )}
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-brand-red group-hover/nav:w-full transition-all duration-300 ease-out" />
-                  </Link>
+            {/* ─── Desktop navigation ────────────────────────────────────── */}
+            <nav
+              className="hidden lg:flex items-center gap-0.5"
+              aria-label="Primary navigation"
+            >
+              {NAV.map((item) => {
+                const active = isActive(pathname, item.href, item.dropdown);
+                const isOpen = openDrop === item.en;
 
-                  {/* Dropdown Menu */}
-                  <AnimatePresence>
-                    {item.dropdown && activeDropdown === item.en && (
-                      <motion.div
-                        data-dropdown
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
-                        className="absolute top-full left-0 mt-2 w-56 p-2 bg-white rounded-xl shadow-xl border border-gray-100 ring-1 ring-black/5 overflow-hidden backdrop-blur-3xl"
-                        style={{ transformOrigin: 'top left' }}
-                      >
-                        {item.dropdown.map((dropItem, idx) => (
-                          <div key={idx}>
-                            {/* @ts-ignore - simplistic type check for now */}
-                            {dropItem.type === 'header' ? (
-                              <div className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                {dropItem[language]}
-                              </div>
-                            ) : (
-                              <Link
-                                href={dropItem.href || '#'}
-                                className="flex items-center justify-between px-4 py-3 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-red transition-all duration-200 group/item"
+                return (
+                  <div
+                    key={item.en}
+                    className="relative"
+                    data-nav-drop=""
+                    onMouseEnter={() => item.dropdown && setOpenDrop(item.en)}
+                    onMouseLeave={() => setOpenDrop(null)}
+                  >
+                    {/* Nav link / trigger */}
+                    <Link
+                      href={item.href}
+                      className={`
+                        relative flex items-center gap-1 px-3.5 py-2 text-sm font-semibold
+                        rounded-lg transition-colors duration-200 group/link
+                        ${active
+                          ? 'text-brand-red'
+                          : 'text-text-heading hover:text-brand-red'}
+                      `}
+                    >
+                      {t(item)}
+
+                      {item.dropdown && (
+                        <CaretDown
+                          size={13}
+                          weight="bold"
+                          className={`
+                            shrink-0 transition-transform duration-200
+                            ${isOpen ? 'rotate-180' : ''}
+                          `}
+                        />
+                      )}
+
+                      {/* Red underline — always visible when active, slides in on hover */}
+                      <span
+                        className={`
+                          absolute bottom-0 h-0.5 rounded-full bg-brand-red
+                          transition-transform duration-200
+                          ${isRTL
+                            ? 'right-3.5 left-3.5 origin-right'
+                            : 'left-3.5 right-3.5 origin-left'}
+                          ${active
+                            ? 'scale-x-100'
+                            : 'scale-x-0 group-hover/link:scale-x-100'}
+                        `}
+                      />
+                    </Link>
+
+                    {/* Dropdown panel */}
+                    <AnimatePresence>
+                      {item.dropdown && isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                          transition={{ duration: 0.18, ease: 'easeOut' }}
+                          className={`
+                            absolute top-[calc(100%+8px)]
+                            ${isRTL ? 'right-0' : 'left-0'}
+                            w-60 bg-white rounded-xl border border-border-light
+                            shadow-[0_10px_40px_rgba(45,41,38,0.12)] p-2
+                          `}
+                        >
+                          {item.dropdown.map((d, i) =>
+                            d.type === 'header' ? (
+                              /* Section heading */
+                              <p
+                                key={i}
+                                className="px-3 pt-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-text-muted"
                               >
-                                <span>{dropItem[language]}</span>
-                                <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-200" />
+                                {t(d)}
+                              </p>
+                            ) : (
+                              /* Dropdown link */
+                              <Link
+                                key={i}
+                                href={d.href}
+                                className="
+                                  group/dd flex items-center justify-between
+                                  px-3 py-2.5 rounded-lg text-sm text-text-body
+                                  hover:bg-cream hover:text-brand-red
+                                  transition-all duration-150
+                                "
+                              >
+                                <span>{t(d)}</span>
+                                <CaretRight
+                                  size={14}
+                                  className={`
+                                    opacity-0 group-hover/dd:opacity-100
+                                    transition-opacity
+                                    ${isRTL ? 'rotate-180' : ''}
+                                  `}
+                                />
                               </Link>
-                            )}
-                          </div>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
+                            )
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
             </nav>
 
-            {/* Actions Section */}
-            <div className="flex items-center gap-3">
+            {/* ─── Desktop actions ───────────────────────────────────────── */}
+            <div className="hidden lg:flex items-center gap-2 shrink-0">
 
-              {/* Language Switcher */}
+              {/* Phone number — xl+ only, avoids cramping on 1024–1280 px */}
+              <a
+                href={PHONE_HREF}
+                className="
+                  hidden xl:flex items-center gap-1.5 px-2 py-2 rounded-lg
+                  text-sm font-medium text-text-body
+                  hover:text-brand-red hover:bg-cream
+                  transition-colors duration-200
+                "
+              >
+                <Phone size={15} weight="fill" className="text-brand-red shrink-0" />
+                {/* dir=ltr so the number stays left-to-right in Arabic mode */}
+                <span dir="ltr" className="tabular-nums">{PHONE_DISPLAY}</span>
+              </a>
+
+              {/* WhatsApp icon */}
+              <a
+                href={WA_HREF}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+                  flex items-center justify-center w-9 h-9 rounded-full
+                  text-[#25D366] hover:bg-[#25D366]/10
+                  transition-colors duration-200
+                "
+                aria-label="Chat on WhatsApp"
+              >
+                <WhatsappLogo size={20} weight="fill" />
+              </a>
+
+              {/* Visual divider */}
+              <span className="w-px h-5 bg-border-light" aria-hidden="true" />
+
+              {/* Language toggle */}
               <button
                 onClick={toggleLanguage}
-                className={`relative px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-300 ${isScrolled ? 'bg-gray-100 text-gray-800 hover:bg-gray-200' : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-md'}`}
+                className="
+                  px-3.5 py-1.5 rounded-full text-xs font-bold
+                  bg-cream text-text-heading hover:bg-border-light
+                  transition-colors duration-200
+                "
+                aria-label={
+                  language === 'en' ? 'Switch to Arabic' : 'Switch to English'
+                }
               >
                 {language === 'en' ? 'AR' : 'EN'}
               </button>
 
-              {/* Call to Action - Desktop */}
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="hidden md:block"
-              >
+              {/* Request Quote CTA */}
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/contact"
-                  className="px-5 py-2 rounded-full font-semibold text-sm bg-gradient-to-r from-brand-red to-brand-red-dark text-white shadow-lg shadow-red-500/20 hover:shadow-red-500/40 transition-all duration-300 flex items-center gap-2"
+                  className="
+                    flex items-center gap-1.5 px-5 py-2.5 rounded-full
+                    text-sm font-bold text-white
+                    bg-brand-red hover:bg-brand-red-dark
+                    shadow-[0_4px_15px_rgba(231,76,60,0.25)]
+                    hover:shadow-[0_6px_24px_rgba(231,76,60,0.35)]
+                    transition-all duration-200
+                  "
                 >
-                  <span>{language === 'en' ? 'Get Quote' : 'اطلب عرض'}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
+                  <ArrowRight
+                    size={15}
+                    weight="bold"
+                    className={isRTL ? 'rotate-180' : ''}
+                  />
                 </Link>
               </motion.div>
+            </div>
 
-              {/* Mobile Menu Toggle */}
+            {/* ─── Mobile / tablet header actions ───────────────────────── */}
+            <div className="flex lg:hidden items-center gap-1.5 shrink-0">
+
+              {/* Language toggle */}
               <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className={`lg:hidden p-2 rounded-full transition-colors ${isScrolled ? 'text-gray-800 hover:bg-gray-100' : 'text-white hover:bg-white/10'}`}
+                onClick={toggleLanguage}
+                className="
+                  flex items-center justify-center px-3 h-11 rounded-full
+                  text-xs font-bold bg-cream text-text-heading
+                  hover:bg-border-light transition-colors duration-200
+                "
+                aria-label={
+                  language === 'en' ? 'Switch to Arabic' : 'Switch to English'
+                }
               >
-                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {language === 'en' ? 'AR' : 'EN'}
+              </button>
+
+              {/* Burger */}
+              <button
+                onClick={() => setMenuOpen(true)}
+                className="
+                  flex items-center justify-center w-11 h-11 rounded-xl
+                  text-text-heading hover:bg-cream
+                  transition-colors duration-200
+                "
+                aria-label="Open menu"
+                aria-expanded={menuOpen}
+                aria-controls="mobile-nav"
+              >
+                <MenuIcon size={24} />
               </button>
             </div>
+
           </div>
         </div>
       </motion.header>
 
-      {/* Mobile Menu Overlay */}
+      {/* ═══════════════════════════════════════════════════════════════════
+          MOBILE FULL-SCREEN OVERLAY
+          Slides in from the right (left in RTL) using Framer Motion.
+          "Request Quote" is always visible at the bottom — not scrolled away.
+      ═══════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
-        {mobileMenuOpen && (
+        {menuOpen && (
           <>
+            {/* Dim scrim */}
             <motion.div
+              key="scrim"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden"
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-brand-dark/50 backdrop-blur-sm z-[60] lg:hidden"
+              aria-hidden="true"
+              onClick={closeMenu}
             />
 
-            <motion.div
+            {/* Slide-in panel — full viewport width & height */}
+            <motion.nav
+              key="panel"
+              id="mobile-nav"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Site navigation"
+              dir={isRTL ? 'rtl' : 'ltr'}
               initial={{ x: isRTL ? '-100%' : '100%' }}
               animate={{ x: 0 }}
               exit={{ x: isRTL ? '-100%' : '100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className={`fixed top-0 ${isRTL ? 'left-0' : 'right-0'} h-full w-[280px] bg-white z-50 shadow-2xl lg:hidden flex flex-col`}
+              transition={{ type: 'tween', duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+              className={`
+                fixed top-0 ${isRTL ? 'left-0' : 'right-0'}
+                w-full h-full bg-white z-[70] lg:hidden
+                flex flex-col
+              `}
             >
-              <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-                <span className="font-bold text-lg text-brand-dark">
-                  {language === 'en' ? 'Menu' : 'القائمة'}
-                </span>
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 -mr-2 text-gray-400 hover:text-red-500 transition-colors"
+
+              {/* Panel top bar — mirrors header height */}
+              <div className="
+                flex items-center justify-between
+                px-5 h-20 border-b border-border-light shrink-0
+              ">
+                <Link
+                  href="/"
+                  onClick={closeMenu}
+                  className="flex items-center gap-2.5"
+                  aria-label="Emaar International — home"
                 >
-                  <X size={20} />
+                  <div className="
+                    w-9 h-9 rounded-xl overflow-hidden bg-brand-dark
+                    flex items-center justify-center
+                  ">
+                    <Image
+                      src="/logo.svg"
+                      alt=""
+                      aria-hidden="true"
+                      width={36}
+                      height={36}
+                      className="w-6 h-6 object-contain brightness-0 invert"
+                    />
+                  </div>
+                  <span className="font-extrabold text-lg text-brand-dark">
+                    {language === 'en' ? 'EMAAR' : 'إعمار'}
+                  </span>
+                </Link>
+
+                <button
+                  onClick={closeMenu}
+                  className="
+                    flex items-center justify-center w-11 h-11 rounded-xl
+                    text-text-muted hover:bg-cream hover:text-text-heading
+                    transition-colors duration-200
+                  "
+                  aria-label="Close menu"
+                >
+                  <X size={22} />
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto py-4 px-4 space-y-2">
-                {navItems.map((item, index) => (
-                  <div key={index}>
-                    <Link
-                      href={item.href}
-                      className={`flex items-center justify-between p-3 rounded-lg text-gray-700 font-medium hover:bg-gray-50 hover:text-brand-red transition-all`}
-                      onClick={() => !item.dropdown && setMobileMenuOpen(false)}
-                    >
-                      {item[language]}
-                      {item.dropdown && <ChevronDown size={16} />}
-                    </Link>
-                    {item.dropdown && (
-                      <div className="pl-6 mt-1 space-y-1 border-l-2 border-gray-100 ml-3">
-                        {item.dropdown.map((dropItem, idx) => (
-                          <div key={idx}>
-                            {/* @ts-ignore - simplistic type check */}
-                            {dropItem.type === 'header' ? (
-                              <div className="py-2 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                {dropItem[language]}
-                              </div>
-                            ) : (
-                              <Link
-                                href={dropItem.href || '#'}
-                                className="block py-2 px-3 text-sm text-gray-500 hover:text-brand-red transition-colors"
-                                onClick={() => setMobileMenuOpen(false)}
+              {/* Scrollable nav list */}
+              <div className="flex-1 overflow-y-auto px-4 py-3">
+                {NAV.map((item) => {
+                  const active   = isActive(pathname, item.href, item.dropdown);
+                  const expanded = expandedMobile === item.en;
+
+                  return (
+                    <div key={item.en} className="mb-1">
+                      {item.dropdown ? (
+                        /* Expandable item — tap header to open accordion */
+                        <>
+                          <button
+                            onClick={() =>
+                              setExpandedMobile(expanded ? null : item.en)
+                            }
+                            className={`
+                              w-full flex items-center justify-between
+                              px-4 py-3 min-h-[52px] rounded-xl
+                              text-base font-semibold transition-colors duration-200
+                              ${active
+                                ? 'text-brand-red bg-cream'
+                                : 'text-text-heading hover:bg-cream'}
+                            `}
+                          >
+                            <span>{t(item)}</span>
+                            <CaretDown
+                              size={16}
+                              weight="bold"
+                              className={`
+                                shrink-0 transition-transform duration-300
+                                ${expanded
+                                  ? 'rotate-180 text-brand-red'
+                                  : 'text-text-muted'}
+                              `}
+                            />
+                          </button>
+
+                          {/* Accordion body */}
+                          <AnimatePresence>
+                            {expanded && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.25, ease: 'easeOut' }}
+                                className="overflow-hidden"
                               >
-                                {dropItem[language]}
-                              </Link>
+                                <div
+                                  className={`
+                                    py-1
+                                    ${isRTL
+                                      ? 'pr-4 mr-4 border-r-2'
+                                      : 'pl-4 ml-4 border-l-2'}
+                                  `}
+                                  /* Subtle red accent line — warm, not harsh */
+                                  style={{ borderColor: 'rgba(231,76,60,0.2)' }}
+                                >
+                                  {item.dropdown.map((d, i) =>
+                                    d.type === 'header' ? (
+                                      <p
+                                        key={i}
+                                        className="
+                                          px-3 pt-3 pb-1
+                                          text-[11px] font-bold uppercase
+                                          tracking-wider text-text-muted
+                                        "
+                                      >
+                                        {t(d)}
+                                      </p>
+                                    ) : (
+                                      <Link
+                                        key={i}
+                                        href={d.href}
+                                        onClick={closeMenu}
+                                        className={`
+                                          flex items-center gap-2.5
+                                          px-3 py-3 min-h-[48px] rounded-lg
+                                          text-sm font-medium
+                                          transition-colors duration-150
+                                          ${pathname === d.href
+                                            ? 'text-brand-red'
+                                            : 'text-text-body hover:text-brand-red hover:bg-cream'}
+                                        `}
+                                      >
+                                        <CaretRight
+                                          size={13}
+                                          className={`
+                                            text-text-muted shrink-0
+                                            ${isRTL ? 'rotate-180' : ''}
+                                          `}
+                                        />
+                                        {t(d)}
+                                      </Link>
+                                    )
+                                  )}
+                                </div>
+                              </motion.div>
                             )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                          </AnimatePresence>
+                        </>
+                      ) : (
+                        /* Plain nav link */
+                        <Link
+                          href={item.href}
+                          onClick={closeMenu}
+                          className={`
+                            flex items-center
+                            px-4 py-3 min-h-[52px] rounded-xl
+                            text-base font-semibold
+                            transition-colors duration-200
+                            ${active
+                              ? 'text-brand-red bg-cream'
+                              : 'text-text-heading hover:bg-cream'}
+                          `}
+                        >
+                          {t(item)}
+                        </Link>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
-              <div className="p-6 border-t border-gray-100 bg-gray-50">
-                <div className="grid gap-3">
-                  <a href="https://wa.me/971501234567"
-                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-lg bg-[#25D366] text-white font-medium shadow-sm hover:shadow-md transition-all"
+              {/* ── Pinned bottom bar ──────────────────────────────────────
+                  Always visible — never scrolls off screen.
+                  Request Quote is the primary action; phone and WA secondary.
+              ────────────────────────────────────────────────────────── */}
+              <div className="
+                shrink-0 border-t border-border-light
+                bg-off-white px-5 py-5 space-y-3
+              ">
+                {/* Primary CTA */}
+                <Link
+                  href="/contact"
+                  onClick={closeMenu}
+                  className="
+                    flex items-center justify-center gap-2
+                    w-full min-h-[52px] rounded-full
+                    text-base font-bold text-white
+                    bg-brand-red hover:bg-brand-red-dark
+                    shadow-[0_4px_15px_rgba(231,76,60,0.25)]
+                    transition-all duration-200
+                  "
+                >
+                  {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
+                  <ArrowRight
+                    size={18}
+                    weight="bold"
+                    className={isRTL ? 'rotate-180' : ''}
+                  />
+                </Link>
+
+                {/* Secondary: phone + WhatsApp */}
+                <div className="grid grid-cols-2 gap-3">
+                  <a
+                    href={PHONE_HREF}
+                    className="
+                      flex items-center justify-center gap-2
+                      min-h-[48px] rounded-full
+                      border border-border-medium bg-white
+                      text-sm font-semibold text-text-heading
+                      hover:bg-cream transition-colors duration-200
+                    "
                   >
-                    <MessageCircle size={18} />
-                    WhatsApp
-                  </a>
-                  <a href="tel:+971501234567"
-                    className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-lg bg-brand-dark text-white font-medium shadow-sm hover:shadow-md transition-all"
-                  >
-                    <Phone size={18} />
+                    <Phone size={16} weight="fill" className="text-brand-red shrink-0" />
                     {language === 'en' ? 'Call Us' : 'اتصل بنا'}
+                  </a>
+                  <a
+                    href={WA_HREF}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      flex items-center justify-center gap-2
+                      min-h-[48px] rounded-full
+                      border border-[#25D366]/40 bg-white
+                      text-sm font-semibold text-[#25D366]
+                      hover:bg-[#25D366]/5 transition-colors duration-200
+                    "
+                  >
+                    <WhatsappLogo size={16} weight="fill" className="shrink-0" />
+                    WhatsApp
                   </a>
                 </div>
               </div>
-            </motion.div>
+
+            </motion.nav>
           </>
         )}
       </AnimatePresence>

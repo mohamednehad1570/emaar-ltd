@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Phone, Mail, MapPin, Clock, Send, Upload, X, MessageCircle,
-} from 'lucide-react';
+  Phone, Envelope as Mail, MapPin, Clock, PaperPlaneTilt as Send, UploadSimple as Upload, X, ChatCircle as MessageCircle,
+} from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { contactData } from '@/lib/data/contact';
 import { resolveIcon } from '@/lib/iconMap';

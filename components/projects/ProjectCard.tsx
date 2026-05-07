@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Expand, ArrowRight } from 'lucide-react';
+import { MapPin, ArrowsOut as Expand, ArrowRight } from '@phosphor-icons/react';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 

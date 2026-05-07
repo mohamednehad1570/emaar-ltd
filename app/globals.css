@@ -2,36 +2,49 @@
 
 :root {
   /* ── Base Backgrounds ── */
-  --background: #F5F5F5;
-  --foreground: #222222;
+  --background: #F5F4F0; /* off-white — primary page bg */
+  --foreground: #1A1A1A; /* heading text */
 
-  /* ── Brand Colors: Silver · White · Red ── */
-  --brand-red:          #E74C3C;
-  --brand-red-dark:     #C0392B;
-  --brand-silver:       #C0C0C0;
-  --brand-silver-light: #E5E5E5;
-  --brand-silver-dark:  #999999;
-  --brand-dark:         #222222;
-  --brand-void:         #111111;
-  --brand-gray:         #808080;
+  /* ── Brand Palette ── */
+  --brand-red:          #E74C3C; /* CTA red */
+  --brand-red-dark:     #C0392B; /* CTA hover */
+  --brand-silver:       #C0C6CA; /* flat silver; shimmer on hover only */
+  --brand-silver-light: #E4E2DC; /* light border / bg tint */
+  --brand-silver-dark:  #9AA0A6; /* darker silver accent */
+  --brand-dark:         #1A1A1A;
+  --brand-void:         #0D0D0D;
+  --brand-gray:         #7F8C8D; /* muted text */
   --brand-surface:      #FFFFFF;
-  --brand-bg:           #F5F5F5;
+  --brand-bg:           #F5F4F0;
 
-  /* ── Semantic Tokens ── */
-  --text-primary:   #222222;
-  --text-secondary: #666666;
-  --text-muted:     #999999;
-  --border:         #D1D1D1;
-  --card-bg:        #FFFFFF;
-  --bg-surface:     #FFFFFF;
+  /* ── Extended Palette ── */
+  --off-white: #F5F4F0;
+  --cream:     #ECEAE4;
+  --gold:      #C9A84C; /* awards / certs only */
+
+  /* ── Semantic Text ── */
+  --text-primary:   #1A1A1A; /* headings */
+  --text-secondary: #3D3A37; /* body */
+  --text-muted:     #7F8C8D; /* captions / meta */
+
+  /* ── Semantic Borders ── */
+  --border:        #E4E2DC; /* light border */
+  --border-medium: #CCCAC4; /* medium border */
+
+  /* ── Surfaces ── */
+  --card-bg:    #FFFFFF;
+  --bg-surface: #FFFFFF;
 }
 
 @theme inline {
-  --color-background:         var(--background);
-  --color-foreground:         var(--foreground);
-  --font-cairo:               var(--font-cairo);
+  /* ── Fonts ── */
+  --font-cairo: var(--font-cairo); /* loaded via next/font in layout.tsx */
 
-  /* Brand palette as Tailwind utilities */
+  /* ── Base ── */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* ── Brand Palette → Tailwind utilities ── */
   --color-brand-red:          var(--brand-red);
   --color-brand-red-dark:     var(--brand-red-dark);
   --color-brand-silver:       var(--brand-silver);
@@ -42,6 +55,41 @@
   --color-brand-gray:         var(--brand-gray);
   --color-brand-surface:      var(--brand-surface);
   --color-brand-bg:           var(--brand-bg);
+
+  /* ── Extended Palette ── */
+  --color-off-white: var(--off-white); /* bg-off-white */
+  --color-cream:     var(--cream);     /* bg-cream */
+  --color-gold:      var(--gold);      /* text-gold / bg-gold (awards only) */
+
+  /* ── Semantic Text Colors ── */
+  --color-text-heading: var(--text-primary);   /* text-text-heading */
+  --color-text-body:    var(--text-secondary); /* text-text-body */
+  --color-text-muted:   var(--text-muted);     /* text-text-muted */
+
+  /* ── Semantic Border Colors ── */
+  --color-border-light:  var(--border);        /* border-border-light */
+  --color-border-medium: var(--border-medium); /* border-border-medium */
+
+  /* ── Warm Shadow Scale (rgba(45,41,38,x) — never rgba(0,0,0,x)) ── */
+  --shadow-warm-sm:  0 2px 8px  rgba(45, 41, 38, 0.08);
+  --shadow-warm-md:  0 4px 20px rgba(45, 41, 38, 0.10);
+  --shadow-warm-lg:  0 10px 40px rgba(45, 41, 38, 0.12);
+  --shadow-warm-xl:  0 15px 60px rgba(45, 41, 38, 0.16);
+  --shadow-warm-red: 0 4px 15px rgba(231, 76, 60, 0.20); /* CTA glow */
+
+  /* ── Border Radius Scale ── */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* ── Animation Utilities ── */
+  --animate-shimmer:    shimmer 2s infinite;
+  --animate-float:      float 3s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-skeleton:   skeleton-loading 1.5s ease-in-out infinite;
 }
 
 body {
@@ -108,27 +156,27 @@ a:hover { color: #E74C3C; }
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 30px rgba(45, 41, 38, 0.05);
 }
 
 /* ── Shadow System ── */
-.shadow-luxury       { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); }
-.shadow-card         { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); }
-.shadow-card-hover   { box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08); }
+.shadow-luxury       { box-shadow: 0 10px 40px rgba(45, 41, 38, 0.08); }
+.shadow-card         { box-shadow: 0 4px 20px rgba(45, 41, 38, 0.05); }
+.shadow-card-hover   { box-shadow: 0 12px 40px rgba(45, 41, 38, 0.08); }
 .shadow-hover-luxury { transition: box-shadow 0.3s ease; }
-.shadow-hover-luxury:hover { box-shadow: 0 15px 60px rgba(0, 0, 0, 0.12); }
+.shadow-hover-luxury:hover { box-shadow: 0 15px 60px rgba(45, 41, 38, 0.12); }
 
 /* ── Premium Card ── */
 .card-premium {
   background: white;
   border-radius: 9999px; /* overridden per card — default pill for badge elements */
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 20px rgba(45, 41, 38, 0.05);
   transition: all 0.3s ease;
 }
 .card-premium:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 40px rgba(45, 41, 38, 0.1);
 }
 
 /* ── Text Gradients ── */

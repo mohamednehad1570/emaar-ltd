@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Phone, CheckCircle2, Clock, AlertCircle, ArrowRight } from 'lucide-react';
+import { Phone, CheckCircle as CheckCircle2, Clock, WarningCircle as AlertCircle, ArrowRight } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { servicesData } from '@/lib/data/services';

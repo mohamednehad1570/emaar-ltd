@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { ArrowRight, CheckCircle2, ChevronRight, Download } from 'lucide-react';
+import { ArrowRight, CheckCircle as CheckCircle2, CaretRight as ChevronRight, DownloadSimple as Download } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { resolveIcon } from '@/lib/iconMap';

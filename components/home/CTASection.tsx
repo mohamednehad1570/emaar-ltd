@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Award, ArrowRight } from 'lucide-react';
+import { Medal as Award, ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function CTASection() {

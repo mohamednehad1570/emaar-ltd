@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Award, Users, Building2, TrendingUp } from 'lucide-react';
+import { Medal as Award, Users, Buildings as Building2, TrendUp as TrendingUp } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function WhyChooseUsSection() {

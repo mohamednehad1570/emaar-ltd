@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSearchParams } from 'next/navigation';
 import ProjectCard from './ProjectCard';
-import { Filter } from 'lucide-react';
+import { Funnel as Filter } from '@phosphor-icons/react';
 
 // Mock data - In a real app, this would come from a CMS or API
 const projectsData = [

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Briefcase, MapPin, Clock, DollarSign, Users, CheckCircle, ChevronDown, Building2 } from 'lucide-react';
+import { Briefcase, MapPin, Clock, CurrencyDollar as DollarSign, Users, CheckCircle, CaretDown as ChevronDown, Buildings as Building2 } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { careersData, CareersJob } from '@/lib/data/careers';
 import { resolveIcon } from '@/lib/iconMap';

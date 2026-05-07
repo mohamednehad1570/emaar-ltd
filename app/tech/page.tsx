@@ -3,11 +3,11 @@
 import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
-  FileText, Download, Search, Filter, Eye,
+  FileText, DownloadSimple as Download, MagnifyingGlass as Search, Funnel as Filter, Eye,
   FolderOpen, Package, Wrench, BookOpen,
-  Award, Layers, CheckCircle, Archive,
-  Grid, List, ExternalLink, Calendar
-} from 'lucide-react';
+  Medal as Award, Stack as Layers, CheckCircle, Archive,
+  GridFour as Grid, List, ArrowSquareOut as ExternalLink, Calendar
+} from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { techData, DownloadFile } from '@/lib/data/tech';

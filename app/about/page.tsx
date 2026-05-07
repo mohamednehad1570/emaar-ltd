@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ArrowRight, Award } from 'lucide-react';
+import { ArrowRight, Medal as Award } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { aboutData } from '@/lib/data/about';

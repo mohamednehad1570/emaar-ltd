@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { MapPin, ArrowRight } from 'lucide-react';
+import { MapPin, ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ProjectCard {
