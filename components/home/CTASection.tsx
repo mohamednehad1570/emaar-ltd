@@ -25,9 +25,9 @@ export default function CTASection() {
     const t = content[language];
 
     return (
-        <section className="py-24 px-6 bg-[#111111] relative overflow-hidden text-white">
-            {/* Background patterns */}
-            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+        <section className="py-24 px-6 bg-brand-void relative overflow-hidden text-white">
+            {/* dot-pattern uses currentColor — inherits white from section text-white */}
+            <div className="absolute inset-0 dot-pattern opacity-5" />
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-red via-transparent to-brand-red opacity-50" />
 
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-red rounded-full blur-[120px] opacity-10 animate-pulse" />
