@@ -194,12 +194,12 @@ function ContactBlock({
           href="https://wa.me/971501234567"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-start gap-2.5 text-sm text-text-body hover:text-[#25D366] transition-colors duration-200 group"
+          className="flex items-start gap-2.5 text-sm text-text-body hover:text-whatsapp transition-colors duration-200 group"
         >
           <WhatsappLogo
             size={15}
             weight="fill"
-            className="text-[#25D366] shrink-0 mt-0.5"
+            className="text-whatsapp shrink-0 mt-0.5"
           />
           <span>{l('Chat on WhatsApp', 'تواصل عبر واتساب')}</span>
         </a>

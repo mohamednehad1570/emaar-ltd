@@ -106,7 +106,7 @@ export default function ProjectsGrid() {
     });
 
     return (
-        <section className="py-20 px-6 bg-gray-50 min-h-screen">
+        <section className="py-20 px-6 bg-off-white min-h-screen">
             <div className="max-w-7xl mx-auto">
 
                 {/* Header */}
@@ -119,7 +119,7 @@ export default function ProjectsGrid() {
                         <h1 className="text-5xl md:text-7xl font-bold mb-6 text-brand-dark">
                             {language === 'en' ? 'Our Portfolio' : 'أعمالنا'}
                         </h1>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
+                        <p className="text-xl text-text-body max-w-2xl mx-auto mb-10">
                             {language === 'en'
                                 ? 'Discover how we bring architectural visions to life with precision and elegance.'
                                 : 'اكتشف كيف نحول الرؤى المعمارية إلى واقع بدقة وأناقة.'}
@@ -130,7 +130,7 @@ export default function ProjectsGrid() {
                     <div className="space-y-6">
                         {/* Sector Filters */}
                         <div className="flex flex-wrap justify-center gap-3">
-                            <span className="w-full text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                            <span className="w-full text-xs font-bold text-text-muted uppercase tracking-widest mb-2">
                                 {language === 'en' ? 'Filter by Sector' : 'تصفية حسب القطاع'}
                             </span>
                             {sectors.map((cat) => (
@@ -139,7 +139,7 @@ export default function ProjectsGrid() {
                                     onClick={() => setSectorFilter(cat.id)}
                                     className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${sectorFilter === cat.id
                                         ? 'bg-brand-dark text-white shadow-md'
-                                        : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                                        : 'bg-white text-text-body hover:bg-off-white border border-border-light'
                                         }`}
                                 >
                                     {cat.label[language]}
@@ -149,7 +149,7 @@ export default function ProjectsGrid() {
 
                         {/* Material Filters */}
                         <div className="flex flex-wrap justify-center gap-3">
-                            <span className="w-full text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
+                            <span className="w-full text-xs font-bold text-text-muted uppercase tracking-widest mb-2">
                                 {language === 'en' ? 'Filter by Material' : 'تصفية حسب المادة'}
                             </span>
                             {materials.map((mat) => (
@@ -158,7 +158,7 @@ export default function ProjectsGrid() {
                                     onClick={() => setMaterialFilter(mat.id)}
                                     className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${materialFilter === mat.id
                                         ? 'bg-brand-red text-white shadow-md'
-                                        : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                                        : 'bg-white text-text-body hover:bg-off-white border border-border-light'
                                         }`}
                                 >
                                     {mat.label[language]}

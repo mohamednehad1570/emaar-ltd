@@ -89,7 +89,7 @@ export default function TechnicalDownloadsPage() {
             <p className="text-3xl font-semibold text-brand-red mb-4">
               {t.hero.subtitle}
             </p>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-text-body max-w-3xl mx-auto">
               {t.hero.description}
             </p>
           </motion.div>
@@ -106,7 +106,7 @@ export default function TechnicalDownloadsPage() {
                 <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-brand-red to-brand-silver bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
-                <div className="text-gray-600 font-medium">{stat.label}</div>
+                <div className="text-text-body font-medium">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -114,19 +114,19 @@ export default function TechnicalDownloadsPage() {
       </section>
 
       {/* Filters & Search */}
-      <section className="py-8 px-6 bg-white/50 backdrop-blur-sm sticky top-20 z-40 border-y border-gray-200">
+      <section className="py-8 px-6 bg-white/50 backdrop-blur-sm sticky top-20 z-40 border-y border-border-light">
         <div className="max-w-7xl mx-auto space-y-6">
 
           {/* Search & View Toggle */}
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
-              <Search className={`absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400`} />
+              <Search className={`absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted`} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t.search.placeholder}
-                className={`w-full ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 rounded-xl border-2 border-gray-200 focus:border-brand-red focus:outline-none transition-colors`}
+                className={`w-full ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 rounded-xl border-2 border-border-light focus:border-brand-red focus:outline-none transition-colors`}
               />
             </div>
 
@@ -135,7 +135,7 @@ export default function TechnicalDownloadsPage() {
                 onClick={() => setViewMode('grid')}
                 className={`p-3 rounded-xl transition-colors ${viewMode === 'grid'
                   ? 'bg-brand-red text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  : 'bg-white text-text-body hover:bg-off-white'
                   }`}
               >
                 <Grid className="w-5 h-5" />
@@ -144,7 +144,7 @@ export default function TechnicalDownloadsPage() {
                 onClick={() => setViewMode('list')}
                 className={`p-3 rounded-xl transition-colors ${viewMode === 'list'
                   ? 'bg-brand-red text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  : 'bg-white text-text-body hover:bg-off-white'
                   }`}
               >
                 <List className="w-5 h-5" />
@@ -164,7 +164,7 @@ export default function TechnicalDownloadsPage() {
                   onClick={() => setActiveCategory(key)}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all ${activeCategory === key
                     ? 'bg-gradient-to-r from-brand-silver to-brand-dark text-white shadow-lg'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    : 'bg-white text-gray-700 hover:bg-off-white border border-border-light'
                     }`}
                 >
                   {Icon && <Icon className="w-4 h-4" />}
@@ -186,7 +186,7 @@ export default function TechnicalDownloadsPage() {
                 onClick={() => setFilterProduct(key)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${filterProduct === key
                   ? 'bg-brand-red text-white'
-                  : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
+                  : 'bg-white text-text-body hover:bg-off-white border border-border-light'
                   }`}
               >
                 {label}
@@ -202,7 +202,7 @@ export default function TechnicalDownloadsPage() {
 
           {/* Results Count */}
           <div className="mb-6 flex items-center justify-between">
-            <p className="text-gray-600">
+            <p className="text-text-body">
               {language === 'en'
                 ? `${filteredFiles.length} documents found`
                 : `تم العثور على ${filteredFiles.length} وثيقة`
@@ -216,7 +216,7 @@ export default function TechnicalDownloadsPage() {
 
           {filteredFiles.length === 0 ? (
             <div className="text-center py-20">
-              <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <FileText className="w-16 h-16 mx-auto mb-4 text-dim" />
               <p className="text-xl text-gray-500">{t.search.noResults}</p>
             </div>
           ) : viewMode === 'grid' ? (
@@ -230,11 +230,11 @@ export default function TechnicalDownloadsPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                    className="bg-white rounded-2xl shadow-warm-lg overflow-hidden hover:shadow-xl transition-shadow"
                   >
                     {/* Preview Image */}
                     {file.preview && (
-                      <div className="relative h-48 overflow-hidden bg-gray-100">
+                      <div className="relative h-48 overflow-hidden bg-off-white">
                         <img
                           src={file.preview}
                           alt={file.name}
@@ -279,8 +279,8 @@ export default function TechnicalDownloadsPage() {
                           <Download className="w-4 h-4" />
                           {t.actions.download}
                         </button>
-                        <button className="px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-brand-red transition-colors">
-                          <Eye className="w-4 h-4 text-gray-600" />
+                        <button className="px-4 py-2 rounded-xl border-2 border-border-light hover:border-brand-red transition-colors">
+                          <Eye className="w-4 h-4 text-text-body" />
                         </button>
                       </div>
                     </div>
@@ -299,7 +299,7 @@ export default function TechnicalDownloadsPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow"
+                    className="bg-white rounded-2xl shadow-warm-lg p-6 hover:shadow-xl transition-shadow"
                   >
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-red/10 to-brand-silver/10 flex items-center justify-center flex-shrink-0">
@@ -332,8 +332,8 @@ export default function TechnicalDownloadsPage() {
                           <Download className="w-4 h-4" />
                           {t.actions.download}
                         </button>
-                        <button className="px-4 py-2 rounded-xl border-2 border-gray-200 hover:border-brand-red transition-colors">
-                          <Eye className="w-4 h-4 text-gray-600" />
+                        <button className="px-4 py-2 rounded-xl border-2 border-border-light hover:border-brand-red transition-colors">
+                          <Eye className="w-4 h-4 text-text-body" />
                         </button>
                       </div>
                     </div>
@@ -346,7 +346,7 @@ export default function TechnicalDownloadsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-[#333333] text-white">
+      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -355,7 +355,7 @@ export default function TechnicalDownloadsPage() {
           >
             <FileText className="w-16 h-16 mx-auto mb-6 text-brand-silver" />
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>
-            <p className="text-xl text-gray-300 mb-8">{t.cta.description}</p>
+            <p className="text-xl text-dim mb-8">{t.cta.description}</p>
             <Link href="/contact">
               <motion.button
                 whileHover={{ scale: 1.05 }}

@@ -73,7 +73,7 @@ export default function ServicesPage() {
               const Icon = resolveIcon(step.icon);
               return (
                 <motion.div key={idx} variants={fadeUp} className="relative">
-                  <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-shadow border border-brand-silver/10">
+                  <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/10">
                     <div className="flex flex-col md:flex-row gap-6 items-start">
                       <div className="flex-shrink-0">
                         <div className="relative">
@@ -141,7 +141,7 @@ export default function ServicesPage() {
                       {language === 'en' ? 'Most Popular' : 'الأكثر شعبية'}
                     </div>
                   )}
-                  <div className={`bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-all h-full border ${plan.popular ? 'border-brand-red ring-2 ring-brand-red/20' : 'border-brand-silver/10'}`}>
+                  <div className={`bg-white rounded-3xl p-8 shadow-xl hover:shadow-warm-lg transition-all h-full border ${plan.popular ? 'border-brand-red ring-2 ring-brand-red/20' : 'border-brand-silver/10'}`}>
                     <Icon className="w-12 h-12 text-brand-red mb-4" />
                     <h3 className="text-2xl font-bold text-brand-dark mb-2">{plan.name}</h3>
                     <div className="text-3xl font-bold text-brand-red mb-6">{plan.price}</div>
@@ -306,7 +306,7 @@ export default function ServicesPage() {
       </section>
 
       {/* ── Timeline ──────────────────────────────────────── */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-[#333333] text-white">
+      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-6xl mx-auto">
           <motion.div
             variants={fadeUp}

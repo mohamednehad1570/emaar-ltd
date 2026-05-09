@@ -357,7 +357,7 @@ export default function Header() {
                 rel="noopener noreferrer"
                 className="
                   flex items-center justify-center w-9 h-9 rounded-full
-                  text-[#25D366] hover:bg-[#25D366]/10
+                  text-whatsapp hover:bg-whatsapp/10
                   transition-colors duration-200
                 "
                 aria-label="Chat on WhatsApp"
@@ -699,9 +699,9 @@ export default function Header() {
                     className="
                       flex items-center justify-center gap-2
                       min-h-[48px] rounded-full
-                      border border-[#25D366]/40 bg-white
-                      text-sm font-semibold text-[#25D366]
-                      hover:bg-[#25D366]/5 transition-colors duration-200
+                      border border-whatsapp/40 bg-white
+                      text-sm font-semibold text-whatsapp
+                      hover:bg-whatsapp/5 transition-colors duration-200
                     "
                   >
                     <WhatsappLogo size={16} weight="fill" className="shrink-0" />

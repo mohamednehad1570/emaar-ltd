@@ -170,7 +170,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full px-6 py-4 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group"
+                    className="w-full px-6 py-4 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg hover:shadow-warm-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group"
                   >
                     {isSubmitting ? (
                       <>
@@ -214,15 +214,15 @@ export default function ContactPage() {
                   </a>
 
                   {/* WhatsApp */}
-                  <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-xl p-5 border border-brand-silver/10 shadow-sm hover:border-[#25D366]/30 transition-all group">
+                  <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-xl p-5 border border-brand-silver/10 shadow-sm hover:border-whatsapp/30 transition-all group">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#25D366] to-[#128C7E] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-whatsapp to-whatsapp-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <MessageCircle size={20} className="text-white" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-bold text-brand-dark mb-1">{t.contact.whatsapp.title}</h4>
                         <p className="text-sm text-brand-gray mb-2">{t.contact.whatsapp.text}</p>
-                        <span className="text-xs text-[#25D366] font-semibold">{t.contact.whatsapp.cta} →</span>
+                        <span className="text-xs text-whatsapp font-semibold">{t.contact.whatsapp.cta} →</span>
                       </div>
                     </div>
                   </a>
@@ -287,7 +287,7 @@ export default function ContactPage() {
                 href="https://maps.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-silver to-brand-gray text-white font-semibold hover:shadow-lg transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-silver to-brand-gray text-white font-semibold hover:shadow-warm-lg transition-all"
               >
                 <MapPin size={18} />
                 {t.map.viewMap}
@@ -307,14 +307,14 @@ export default function ContactPage() {
             viewport={viewportOnce}
             className="bg-white rounded-2xl p-10 border border-brand-silver/10 shadow-xl"
           >
-            <MessageCircle size={48} className="mx-auto mb-4 text-[#25D366]" />
+            <MessageCircle size={48} className="mx-auto mb-4 text-whatsapp" />
             <h2 className="text-3xl font-bold mb-3 text-brand-dark">{t.cta.title}</h2>
             <p className="text-lg text-brand-gray mb-6">{t.cta.subtitle}</p>
             <a
               href="https://wa.me/971501234567"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-[#25D366] hover:bg-[#128C7E] text-white font-semibold text-lg transition-colors shadow-lg"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-whatsapp hover:bg-whatsapp-dark text-white font-semibold text-lg transition-colors shadow-warm-lg"
             >
               <MessageCircle size={20} />
               {t.cta.button}

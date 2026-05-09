@@ -63,7 +63,7 @@ export default function CareersPage() {
             {t.culture.values.map((value, idx) => {
               const Icon = resolveIcon(value.icon);
               return (
-                <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -5 }} className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all">
+                <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -5 }} className="bg-white rounded-2xl shadow-warm-lg p-8 hover:shadow-xl transition-all">
                   <div className="w-14 h-14 rounded-2xl bg-brand-red/10 flex items-center justify-center mb-4">
                     <Icon className="w-7 h-7 text-brand-red" />
                   </div>
@@ -104,7 +104,7 @@ export default function CareersPage() {
 
           <div className="space-y-6">
             {filteredJobs.map((job, idx) => (
-              <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-3xl shadow-lg overflow-hidden">
+              <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-3xl shadow-warm-lg overflow-hidden">
                 <button onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)} className="w-full p-6 lg:p-8 text-left hover:bg-brand-bg transition-colors">
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                     <div className="flex-1">
@@ -150,7 +150,7 @@ export default function CareersPage() {
                           </div>
                         </div>
                         <div className="mt-8">
-                          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => handleApply(job)} className="w-full px-8 py-4 rounded-xl bg-brand-red text-white font-bold text-lg shadow-lg hover:bg-brand-red-dark transition-all">
+                          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => handleApply(job)} className="w-full px-8 py-4 rounded-xl bg-brand-red text-white font-bold text-lg shadow-warm-lg hover:bg-brand-red-dark transition-all">
                             {language === 'en' ? 'Apply Now' : 'تقدم الآن'}
                           </motion.button>
                         </div>
@@ -172,7 +172,7 @@ export default function CareersPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-[#333333] text-white">
+      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce}>
             <Users className="w-16 h-16 mx-auto mb-6 text-brand-silver" />

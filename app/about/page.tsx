@@ -68,7 +68,7 @@ export default function AboutPage() {
               const Icon = resolveIcon(stat.icon);
               return (
                 <motion.div key={idx} variants={fadeUp} className="relative group">
-                  <div className="absolute inset-0 bg-white rounded-2xl shadow-lg group-hover:shadow-2xl transition-shadow" />
+                  <div className="absolute inset-0 bg-white rounded-2xl shadow-warm-lg group-hover:shadow-warm-lg transition-shadow" />
                   <div className="relative p-6 text-center">
                     <Icon className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                     <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-brand-red to-brand-silver bg-clip-text text-transparent mb-2">
@@ -121,7 +121,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── Timeline ─────────────────────────────────────── */}
-      <section ref={timelineRef} className="py-20 px-6 bg-gradient-to-br from-brand-dark to-[#333333] text-white">
+      <section ref={timelineRef} className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
@@ -195,7 +195,7 @@ export default function AboutPage() {
                   whileInView="visible"
                   viewport={viewportOnce}
                   transition={{ delay: idx * 0.15 }}
-                  className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-shadow border border-brand-silver/20"
+                  className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/20"
                 >
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-white" />
@@ -231,7 +231,7 @@ export default function AboutPage() {
           >
             {t.team.members.map((member, idx) => (
               <motion.div key={idx} variants={fadeUp} className="group">
-                <div className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-brand-silver/10">
+                <div className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-warm-lg transition-all duration-300 border border-brand-silver/10">
                   <div className="relative h-64 overflow-hidden">
                     <img
                       src={member.image}
@@ -278,7 +278,7 @@ export default function AboutPage() {
                   whileInView="visible"
                   viewport={viewportOnce}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow text-center border border-brand-silver/10"
+                  className="bg-white rounded-2xl p-6 shadow-warm-lg hover:shadow-xl transition-shadow text-center border border-brand-silver/10"
                 >
                   <Icon className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                   <h3 className="font-bold text-lg text-brand-dark mb-2">{feature.title}</h3>
@@ -293,7 +293,7 @@ export default function AboutPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="relative h-96 rounded-3xl overflow-hidden shadow-2xl"
+            className="relative h-96 rounded-3xl overflow-hidden shadow-warm-lg"
           >
             <img
               src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1600&h=600&fit=crop"
@@ -335,7 +335,7 @@ export default function AboutPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group border border-brand-silver/10"
+                  className="bg-white rounded-2xl p-6 shadow-warm-lg hover:shadow-xl transition-all duration-300 group border border-brand-silver/10"
                 >
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-7 h-7 text-white" />
@@ -372,7 +372,7 @@ export default function AboutPage() {
                 viewport={viewportOnce}
                 transition={{ delay: idx * 0.05 }}
                 whileHover={{ scale: 1.05 }}
-                className="bg-white rounded-2xl p-6 shadow-lg text-center border border-brand-silver/10"
+                className="bg-white rounded-2xl p-6 shadow-warm-lg text-center border border-brand-silver/10"
               >
                 <Award className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                 <h3 className="font-bold text-brand-dark mb-1">{award.name}</h3>

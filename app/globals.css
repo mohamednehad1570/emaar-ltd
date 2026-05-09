@@ -13,6 +13,7 @@
   --brand-silver-dark:  #9AA0A6; /* darker silver accent */
   --brand-dark:         #1A1A1A;
   --brand-void:         #0D0D0D;
+  --brand-dark-mid:     #333333; /* mid-dark gradient endpoint */
   --brand-gray:         #7F8C8D; /* muted text */
   --brand-surface:      #FFFFFF;
   --brand-bg:           #F5F4F0;
@@ -20,7 +21,9 @@
   /* ── Extended Palette ── */
   --off-white: #F5F4F0;
   --cream:     #ECEAE4;
-  --gold:      #C9A84C; /* awards / certs only */
+  --gold:          #C9A84C; /* awards / certs only */
+  --whatsapp:      #25D366; /* WhatsApp brand green */
+  --whatsapp-dark: #128C7E; /* WhatsApp dark green (hover) */
 
   /* ── Semantic Text ── */
   --text-primary:   #1A1A1A; /* headings */
@@ -34,11 +37,29 @@
   /* ── Surfaces ── */
   --card-bg:    #FFFFFF;
   --bg-surface: #FFFFFF;
+
+  /* ── Design-token aliases ────────────────────────────────────────────
+     Short semantic names used in @theme below. Every value mirrors an
+     existing brand variable — no new colours are introduced here.     */
+  --silver-flat:    #C0C6CA; /* flat silver, non-shimmer base              */
+  --silver-dark:    #9AA0A6; /* darker silver accent                        */
+  --text-dim:       #A8A49E; /* lighter than muted; warm grey for disabled  */
+  --red-cta:        #E74C3C; /* CTA red — explicit short alias              */
+  --red-dark:       #C0392B; /* CTA hover red — explicit short alias        */
+  --border-warm:    #E4E2DC; /* warm light border (alias for --border)      */
+  --border-warm-md: #CCCAC4; /* warm medium border (alias for --border-medium) */
 }
 
 @theme inline {
-  /* ── Fonts ── */
-  --font-cairo: var(--font-cairo); /* loaded via next/font in layout.tsx */
+  /* ── Fonts ──────────────────────────────────────────────────────────
+     next/font/google in layout.tsx loads Cairo and injects --font-cairo
+     on <body> via the cairo.variable class.
+     --font-sans overrides Tailwind's default so every font-sans utility
+     resolves to Cairo — the project's sole typeface (see CLAUDE.md).
+     The 'Cairo' literal is a fallback for contexts where the Next.js
+     variable hasn't propagated (e.g. server-rendered first paint).   */
+  --font-sans:  var(--font-cairo), 'Cairo', sans-serif;
+  --font-cairo: 'Cairo', sans-serif;
 
   /* ── Base ── */
   --color-background: var(--background);
@@ -52,6 +73,7 @@
   --color-brand-silver-dark:  var(--brand-silver-dark);
   --color-brand-dark:         var(--brand-dark);
   --color-brand-void:         var(--brand-void);
+  --color-brand-dark-mid:     var(--brand-dark-mid); /* bg/text-brand-dark-mid */
   --color-brand-gray:         var(--brand-gray);
   --color-brand-surface:      var(--brand-surface);
   --color-brand-bg:           var(--brand-bg);
@@ -59,7 +81,9 @@
   /* ── Extended Palette ── */
   --color-off-white: var(--off-white); /* bg-off-white */
   --color-cream:     var(--cream);     /* bg-cream */
-  --color-gold:      var(--gold);      /* text-gold / bg-gold (awards only) */
+  --color-gold:          var(--gold);          /* text-gold / bg-gold (awards only) */
+  --color-whatsapp:      var(--whatsapp);      /* text/bg-whatsapp */
+  --color-whatsapp-dark: var(--whatsapp-dark); /* text/bg-whatsapp-dark (hover) */
 
   /* ── Semantic Text Colors ── */
   --color-text-heading: var(--text-primary);   /* text-text-heading */
@@ -67,8 +91,32 @@
   --color-text-muted:   var(--text-muted);     /* text-text-muted */
 
   /* ── Semantic Border Colors ── */
-  --color-border-light:  var(--border);        /* border-border-light */
+  --color-border-light:  var(--border);        /* border-border-light  */
   --color-border-medium: var(--border-medium); /* border-border-medium */
+
+  /* ── Short-name aliases (emaar-ui-design-expert spec) ───────────────
+     Each entry registers a concise Tailwind utility generated from the
+     CSS custom property in :root.  Naming follows the pattern that
+     produces the cleanest call-site: bg-silver-flat, text-dim, etc.
+
+     Why aliases instead of replacing the brand-* names?
+     Existing components reference brand-red, brand-dark, etc. Aliases
+     add the new names without breaking any existing usage.           */
+
+  /* Silvers */
+  --color-silver-flat:    var(--silver-flat);    /* bg/text/border-silver-flat    */
+  --color-silver-dark:    var(--silver-dark);    /* bg/text/border-silver-dark    */
+
+  /* Text scale extension */
+  --color-dim:            var(--text-dim);       /* text-dim (below muted)        */
+
+  /* CTA reds — short aliases for brand-red / brand-red-dark */
+  --color-red-cta:        var(--red-cta);        /* bg/text-red-cta               */
+  --color-red-dark:       var(--red-dark);       /* bg/text-red-dark              */
+
+  /* Warm borders — semantic aliases emphasising the warm undertone */
+  --color-border-warm:    var(--border-warm);    /* border/bg-border-warm         */
+  --color-border-warm-md: var(--border-warm-md); /* border/bg-border-warm-md      */
 
   /* ── Warm Shadow Scale (rgba(45,41,38,x) — never rgba(0,0,0,x)) ── */
   --shadow-warm-sm:  0 2px 8px  rgba(45, 41, 38, 0.08);

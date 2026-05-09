@@ -60,7 +60,7 @@ export default function WhyChooseUsPage() {
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-white rounded-2xl shadow-lg group-hover:shadow-2xl transition-shadow" />
+                  <div className="absolute inset-0 bg-white rounded-2xl shadow-warm-lg group-hover:shadow-warm-lg transition-shadow" />
                   <div className="relative p-6 text-center">
                     <Icon className="w-12 h-12 mx-auto mb-4 text-brand-red" />
                     <h3 className="font-bold text-lg text-brand-dark mb-2">{prop.title}</h3>
@@ -100,7 +100,7 @@ export default function WhyChooseUsPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition-shadow border border-brand-silver/10"
+                  className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/10"
                 >
                   <div className="flex items-start gap-6">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0">
@@ -127,7 +127,7 @@ export default function WhyChooseUsPage() {
       </section>
 
       {/* ── Quality Process ───────────────────────────────── */}
-      <section ref={qualityRef} className="py-20 px-6 bg-gradient-to-br from-brand-dark to-[#333333] text-white">
+      <section ref={qualityRef} className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
@@ -240,7 +240,7 @@ export default function WhyChooseUsPage() {
           </motion.h2>
           <div className="w-24 h-1.5 bg-brand-red rounded-full mx-auto mb-16" />
 
-          <div className="bg-white rounded-3xl overflow-hidden shadow-2xl border border-brand-silver/10">
+          <div className="bg-white rounded-3xl overflow-hidden shadow-warm-lg border border-brand-silver/10">
             <div className={`grid grid-cols-3 gap-4 p-6 bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold ${isRTL ? 'text-right' : 'text-left'}`}>
               <div>{language === 'en' ? 'Metric' : 'المقياس'}</div>
               <div className="text-center">EMAAR</div>

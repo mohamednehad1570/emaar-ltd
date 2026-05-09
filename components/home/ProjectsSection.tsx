@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { MapPin, ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import useHorizontalAutoscroll from '@/lib/hooks/useHorizontalAutoscroll';
 
 interface ProjectCard {
     id: number;
@@ -47,31 +48,6 @@ const projects: ProjectCard[] = [
     },
 ];
 
-function useHorizontalAutoscroll(
-    ref: React.RefObject<HTMLDivElement | null>,
-    paused: boolean,
-    speed: number = 0.6
-) {
-    useEffect(() => {
-        const el = ref.current;
-        if (!el || paused) return;
-
-        let frame: number;
-        let direction = 1;
-
-        const step = () => {
-            if (!el) return;
-            const max = el.scrollWidth - el.clientWidth;
-            if (el.scrollLeft >= max - 1) direction = -1;
-            if (el.scrollLeft <= 0) direction = 1;
-            el.scrollLeft += direction * speed;
-            frame = requestAnimationFrame(step);
-        };
-
-        frame = requestAnimationFrame(step);
-        return () => cancelAnimationFrame(frame);
-    }, [ref, paused, speed]);
-}
 
 export default function ProjectsSection() {
     const { language, isRTL } = useLanguage();
@@ -96,7 +72,7 @@ export default function ProjectsSection() {
     const t = content[language];
 
     return (
-        <section className="py-20 px-6 bg-gray-50 relative">
+        <section className="py-20 px-6 bg-off-white relative" dir={isRTL ? 'rtl' : 'ltr'}>
             <div className="container-custom">
                 <div className="text-center mb-12">
                     <motion.div
@@ -109,7 +85,7 @@ export default function ProjectsSection() {
                             {t.title}
                         </h2>
                         <div className="h-1 w-24 bg-red-600 mx-auto mb-6" />
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                        <p className="text-xl text-text-body max-w-2xl mx-auto">
                             {t.subtitle}
                         </p>
                     </motion.div>
@@ -123,7 +99,7 @@ export default function ProjectsSection() {
                     onTouchEnd={() => setTimeout(() => setProjectsPaused(false), 700)}
                     className="mb-12 overflow-x-auto scrollbar-hide py-4"
                 >
-                    <div className="flex gap-6 pr-6">
+                    <div className={`flex gap-6 ${isRTL ? 'pl-6' : 'pr-6'}`}>
                         {projects.map((project, idx) => (
                             <motion.div
                                 key={project.id}
@@ -133,7 +109,7 @@ export default function ProjectsSection() {
                                 transition={{ delay: idx * 0.05 }}
                                 className="group min-w-[300px] sm:min-w-[350px] lg:min-w-[400px]"
                             >
-                                <div className="relative h-[400px] bg-white rounded-xl overflow-hidden shadow-lg border border-gray-200 transition-all duration-500 hover:shadow-2xl hover:border-red-100">
+                                <div className="relative h-[400px] bg-white rounded-xl overflow-hidden shadow-warm-lg border border-border-light transition-all duration-500 hover:shadow-warm-lg hover:border-red-100">
                                     <Image
                                         src={project.image}
                                         alt={project.title[language]}
@@ -147,7 +123,7 @@ export default function ProjectsSection() {
                                         <h3 className="text-2xl font-bold mb-2 group-hover:text-red-400 transition-colors">
                                             {project.title[language]}
                                         </h3>
-                                        <div className={`flex items-center gap-2 text-gray-300 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                        <div className={`flex items-center gap-2 text-dim ${isRTL ? 'flex-row-reverse' : ''}`}>
                                             <MapPin className="w-4 h-4 text-red-500" />
                                             <span className="text-sm font-medium tracking-wide">
                                                 {project.location[language]}
@@ -163,7 +139,7 @@ export default function ProjectsSection() {
                 <div className="text-center">
                     <Link
                         href="/projects"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-all font-semibold shadow-lg hover:shadow-xl"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-all font-semibold shadow-warm-lg hover:shadow-xl"
                     >
                         {t.viewAll}
                         <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />

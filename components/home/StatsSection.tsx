@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function StatsSection() {
-    const { language } = useLanguage();
+    const { language, isRTL } = useLanguage();
 
     const content = {
         en: [
@@ -25,10 +25,10 @@ export default function StatsSection() {
     const stats = content[language];
 
     return (
-        <section className="py-20 bg-gradient-to-b from-gray-100 to-white relative overflow-hidden">
+        <section className="py-20 bg-gradient-to-b from-off-white to-white relative overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Decorative Industrial Elements */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-50" />
-            <div className="absolute -left-20 top-20 w-64 h-64 bg-gray-200 rounded-full blur-3xl opacity-30" />
+            <div className="absolute -left-20 top-20 w-64 h-64 bg-cream rounded-full blur-3xl opacity-30" />
             <div className="absolute -right-20 bottom-20 w-64 h-64 bg-red-100 rounded-full blur-3xl opacity-30" />
 
             <div className="container-custom relative z-10">
@@ -42,12 +42,12 @@ export default function StatsSection() {
                             transition={{ delay: idx * 0.1, duration: 0.6, type: 'spring' }}
                             className="group relative"
                         >
-                            <div className="absolute inset-0 bg-white rounded-2xl shadow-lg transform transition-transform group-hover:-translate-y-2 group-hover:shadow-2xl duration-300" />
-                            <div className="relative p-8 text-center border border-gray-100 rounded-2xl group-hover:border-red-100 transition-colors">
-                                <h3 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-red-600 to-red-800 mb-2 font-mono tracking-tighter">
+                            <div className="absolute inset-0 bg-white rounded-2xl shadow-warm-lg transform transition-transform group-hover:-translate-y-2 group-hover:shadow-warm-lg duration-300" />
+                            <div className="relative p-8 text-center border border-border-light rounded-2xl group-hover:border-red-100 transition-colors">
+                                <h3 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-red-600 to-red-800 mb-2 font-cairo tabular-nums tracking-tighter">
                                     {stat.number}
                                 </h3>
-                                <p className="text-gray-600 font-medium text-lg uppercase tracking-wide">
+                                <p className="text-text-body font-medium text-lg uppercase tracking-wide">
                                     {stat.label}
                                 </p>
                             </div>

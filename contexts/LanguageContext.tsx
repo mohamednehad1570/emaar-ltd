@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
@@ -17,36 +16,37 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [language, setLanguage] = useState<Language>('en');
 
-  // Load saved language on mount
+  // Load persisted language on mount only.
   useEffect(() => {
-    const savedLang = localStorage.getItem('language') as Language;
-    if (savedLang && (savedLang === 'en' || savedLang === 'ar')) {
-      setLanguage(savedLang);
+    const saved = localStorage.getItem('language') as Language;
+    if (saved === 'en' || saved === 'ar') {
+      setLanguage(saved);
     }
-  }, []); // Run only once on mount
-  
+  }, []);
+
+  // Sync document direction and lang attribute whenever language changes.
+  // This is the single source of truth for DOM-level RTL/LTR state.
+  useEffect(() => {
+    document.documentElement.dir  = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+  }, [language]);
+
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang);
     localStorage.setItem('language', lang);
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = lang;
+    // DOM updates (dir, lang) are handled exclusively by the effect above.
   };
 
   const toggleLanguage = () => {
-    const newLang = language === 'en' ? 'ar' : 'en';
-    handleSetLanguage(newLang);
+    handleSetLanguage(language === 'en' ? 'ar' : 'en');
   };
 
   const isRTL = language === 'ar';
 
-  // Update document direction when language changes
-  useEffect(() => {
-    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-    document.documentElement.lang = language;
-  }, [language, isRTL]);
-
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, toggleLanguage, isRTL }}>
+    <LanguageContext.Provider
+      value={{ language, setLanguage: handleSetLanguage, toggleLanguage, isRTL }}
+    >
       {children}
     </LanguageContext.Provider>
   );

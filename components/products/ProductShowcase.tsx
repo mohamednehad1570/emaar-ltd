@@ -107,7 +107,7 @@ export default function ProductShowcase({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border-t-4 border-brand-red"
+                  className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-warm-lg transition-all duration-300 border-t-4 border-brand-red"
                 >
                   <div className="w-16 h-16 rounded-full bg-brand-red/10 flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-brand-red" />
@@ -159,7 +159,7 @@ export default function ProductShowcase({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   key={product.id}
-                  className="group bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-brand-silver/10"
+                  className="group bg-white rounded-3xl overflow-hidden shadow-warm-lg hover:shadow-warm-lg transition-all duration-300 border border-brand-silver/10"
                 >
                   <div className="relative h-64 overflow-hidden">
                     <Image
@@ -203,7 +203,7 @@ export default function ProductShowcase({
       </section>
 
       {/* ── Materials Info ───────────────────────────────── */}
-      <section className="py-20 bg-gradient-to-br from-brand-dark to-[#333333] text-white">
+      <section className="py-20 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="container-custom px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
@@ -226,7 +226,7 @@ export default function ProductShowcase({
                 </div>
               </div>
             </div>
-            <div className="relative h-96 rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+            <div className="relative h-96 rounded-3xl overflow-hidden shadow-warm-lg border border-white/10">
               <Image
                 src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=80"
                 alt="Material Quality"
@@ -241,7 +241,7 @@ export default function ProductShowcase({
       {/* ── Cross-Link CTA ───────────────────────────────── */}
       <section className="py-24 bg-white px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-gradient-to-br from-brand-dark to-[#333333] rounded-3xl p-12 md:p-16 text-center text-white relative overflow-hidden">
+          <div className="bg-gradient-to-br from-brand-dark to-brand-dark-mid rounded-3xl p-12 md:p-16 text-center text-white relative overflow-hidden">
             <div
               className="absolute inset-0 opacity-5"
               style={{

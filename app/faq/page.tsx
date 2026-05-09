@@ -185,7 +185,7 @@ export default function FAQPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.04 }}
-                    className="bg-white rounded-2xl shadow-md overflow-hidden border border-brand-silver/10"
+                    className="bg-white rounded-2xl shadow-warm-md overflow-hidden border border-brand-silver/10"
                   >
                     <button
                       onClick={() => setExpandedId(isExpanded ? null : idx)}
@@ -232,7 +232,7 @@ export default function FAQPage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────── */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-[#333333] text-white">
+      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             variants={fadeUp}

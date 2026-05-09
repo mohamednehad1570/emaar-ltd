@@ -47,7 +47,7 @@ export default function CTASection() {
                         {t.title}
                     </h2>
 
-                    <p className="text-xl md:text-2xl text-gray-400 mb-10 max-w-2xl mx-auto font-light">
+                    <p className="text-xl md:text-2xl text-text-muted mb-10 max-w-2xl mx-auto font-light">
                         {t.subtitle}
                     </p>
 

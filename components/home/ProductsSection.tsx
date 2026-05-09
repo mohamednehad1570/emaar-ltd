@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import useHorizontalAutoscroll from '@/lib/hooks/useHorizontalAutoscroll';
 
 interface ProductCard {
     id: number;
@@ -47,31 +48,6 @@ const products: ProductCard[] = [
     },
 ];
 
-function useHorizontalAutoscroll(
-    ref: React.RefObject<HTMLDivElement | null>,
-    paused: boolean,
-    speed: number = 0.6
-) {
-    useEffect(() => {
-        const el = ref.current;
-        if (!el || paused) return;
-
-        let frame: number;
-        let direction = 1;
-
-        const step = () => {
-            if (!el) return;
-            const max = el.scrollWidth - el.clientWidth;
-            if (el.scrollLeft >= max - 1) direction = -1;
-            if (el.scrollLeft <= 0) direction = 1;
-            el.scrollLeft += direction * speed;
-            frame = requestAnimationFrame(step);
-        };
-
-        frame = requestAnimationFrame(step);
-        return () => cancelAnimationFrame(frame);
-    }, [ref, paused, speed]);
-}
 
 export default function ProductsSection() {
     const { language, isRTL } = useLanguage();
@@ -96,7 +72,7 @@ export default function ProductsSection() {
     const t = content[language];
 
     return (
-        <section className="py-20 px-6 bg-white relative">
+        <section className="py-20 px-6 bg-white relative" dir={isRTL ? 'rtl' : 'ltr'}>
             <div className="container-custom">
                 <div className="text-center mb-12">
                     <motion.div
@@ -109,7 +85,7 @@ export default function ProductsSection() {
                             {t.title}
                         </h2>
                         <div className="h-1 w-24 bg-red-600 mx-auto mb-6" />
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                        <p className="text-xl text-text-body max-w-2xl mx-auto">
                             {t.subtitle}
                         </p>
                     </motion.div>
@@ -123,7 +99,7 @@ export default function ProductsSection() {
                     onTouchEnd={() => setTimeout(() => setProductsPaused(false), 700)}
                     className="mb-12 overflow-x-auto scrollbar-hide py-4"
                 >
-                    <div className="flex gap-6 pr-6">
+                    <div className={`flex gap-6 ${isRTL ? 'pl-6' : 'pr-6'}`}>
                         {products.map((product, idx) => (
                             <motion.div
                                 key={product.id}
@@ -133,7 +109,7 @@ export default function ProductsSection() {
                                 transition={{ delay: idx * 0.05 }}
                                 className="group min-w-[280px] sm:min-w-[320px] lg:min-w-[360px]"
                             >
-                                <div className="relative h-full bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 hover:border-red-100 transition-all duration-500 hover:shadow-2xl">
+                                <div className="relative h-full bg-white rounded-xl overflow-hidden shadow-warm-lg border border-border-light hover:border-red-100 transition-all duration-500 hover:shadow-warm-lg">
                                     <div className="relative h-80 overflow-hidden">
                                         <Image
                                             src={product.image}
@@ -161,7 +137,7 @@ export default function ProductsSection() {
                 <div className="text-center">
                     <Link
                         href="/products/upvc"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 text-white font-semibold hover:bg-red-600 transition-colors shadow-lg hover:shadow-red-600/30"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 text-white font-semibold hover:bg-red-600 transition-colors shadow-warm-lg hover:shadow-red-600/30"
                     >
                         {t.viewAll}
                         <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
