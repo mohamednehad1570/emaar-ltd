@@ -20,17 +20,6 @@ export default function HomePage() {
       <ProjectsSection />
       <WhyChooseUsSection />
       <CTASection />
-
-      {/* Global utility for hiding scrollbars if needed by sub-components */}
-      <style jsx global>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none; /* IE and Edge */
-          scrollbar-width: none;  /* Firefox */
-        }
-      `}</style>
     </div>
   );
 }

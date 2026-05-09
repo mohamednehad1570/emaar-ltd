@@ -81,7 +81,7 @@ export default function ProductsSection() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-brand-dark font-mono tracking-tight">
+                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-brand-dark font-cairo tracking-tight">
                             {t.title}
                         </h2>
                         <div className="h-1 w-24 bg-red-600 mx-auto mb-6" />

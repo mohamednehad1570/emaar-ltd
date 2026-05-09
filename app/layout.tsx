@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${cairo.variable} antialiased bg-gradient-to-b from-[#F5F5F5] via-white to-[#F5F5F5]`}>
+      <body className={`${cairo.variable} antialiased`}>
         <LanguageProvider>
           <Header />
           <main className="min-h-screen">
