@@ -99,7 +99,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="bg-white rounded-2xl p-8 shadow-xl border border-brand-silver/10">
+              <div className="bg-white rounded-2xl p-8 shadow-warm-xl border border-brand-silver/10">
                 <h2 className="text-3xl font-bold mb-2 text-brand-dark">{t.form.title}</h2>
                 <p className="text-sm text-brand-gray mb-6">{t.form.subtitle}</p>
 
@@ -305,7 +305,7 @@ export default function ContactPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="bg-white rounded-2xl p-10 border border-brand-silver/10 shadow-xl"
+            className="bg-white rounded-2xl p-10 border border-brand-silver/10 shadow-warm-xl"
           >
             <MessageCircle size={48} className="mx-auto mb-4 text-whatsapp" />
             <h2 className="text-3xl font-bold mb-3 text-brand-dark">{t.cta.title}</h2>

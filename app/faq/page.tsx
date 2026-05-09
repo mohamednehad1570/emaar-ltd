@@ -248,7 +248,7 @@ export default function FAQPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-xl"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
                 >
                   {t.cta.button}
                   <MessageCircle className="w-5 h-5" />

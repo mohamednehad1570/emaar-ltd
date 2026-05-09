@@ -100,7 +100,7 @@ export default function WhyChooseUsPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/10"
+                  className="bg-white rounded-3xl p-8 shadow-warm-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/10"
                 >
                   <div className="flex items-start gap-6">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0">
@@ -187,7 +187,7 @@ export default function WhyChooseUsPage() {
             {t.certifications.items.map((cert, idx) => {
               const Icon = resolveIcon(cert.icon);
               return (
-                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-xl border border-brand-silver/10">
+                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-warm-xl border border-brand-silver/10">
                   <div className="flex items-start gap-6">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-silver to-brand-red flex items-center justify-center flex-shrink-0">
                       <Icon className="w-8 h-8 text-white" />
@@ -292,7 +292,7 @@ export default function WhyChooseUsPage() {
             className="grid md:grid-cols-2 gap-8"
           >
             {t.testimonials.items.map((testimonial, idx) => (
-              <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-xl relative border border-brand-silver/10">
+              <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-warm-xl relative border border-brand-silver/10">
                 <Quote className="w-12 h-12 text-brand-silver/20 absolute top-6 right-6" />
                 <div className="flex gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -334,7 +334,7 @@ export default function WhyChooseUsPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-xl"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
                 >
                   {t.cta.button}
                   <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />

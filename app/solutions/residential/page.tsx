@@ -41,7 +41,7 @@ export default function ResidentialPage() {
             {t.benefits.map((b, i) => {
               const Icon = resolveIcon(b.icon);
               return (
-                <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce} transition={{ delay: i * 0.1 }} className="bg-brand-bg p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow">
+                <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce} transition={{ delay: i * 0.1 }} className="bg-brand-bg p-8 rounded-2xl shadow-warm-lg hover:shadow-warm-xl transition-shadow">
                   <div className="mb-6 p-4 bg-brand-red/10 rounded-xl inline-block"><Icon className="w-8 h-8 text-brand-red" /></div>
                   <h3 className="text-2xl font-bold text-brand-dark mb-4">{b.title}</h3>
                   <p className="text-brand-gray leading-relaxed">{b.description}</p>
@@ -88,7 +88,7 @@ export default function ResidentialPage() {
       <section className="py-20 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-8">{t.cta.title}</h2>
-          <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red rounded-full font-bold text-lg hover:shadow-xl transition-all">
+          <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red rounded-full font-bold text-lg hover:shadow-warm-xl transition-all">
             {t.cta.button} <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
           </Link>
         </div>

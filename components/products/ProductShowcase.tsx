@@ -107,7 +107,7 @@ export default function ProductShowcase({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white p-8 rounded-2xl shadow-xl hover:shadow-warm-lg transition-all duration-300 border-t-4 border-brand-red"
+                  className="bg-white p-8 rounded-2xl shadow-warm-xl hover:shadow-warm-lg transition-all duration-300 border-t-4 border-brand-red"
                 >
                   <div className="w-16 h-16 rounded-full bg-brand-red/10 flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-brand-red" />

@@ -84,7 +84,7 @@ export default function ProductsSection() {
                         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-brand-dark font-cairo tracking-tight">
                             {t.title}
                         </h2>
-                        <div className="h-1 w-24 bg-red-600 mx-auto mb-6" />
+                        <div className="h-1 w-24 bg-brand-red mx-auto mb-6" />
                         <p className="text-xl text-text-body max-w-2xl mx-auto">
                             {t.subtitle}
                         </p>
@@ -109,7 +109,7 @@ export default function ProductsSection() {
                                 transition={{ delay: idx * 0.05 }}
                                 className="group min-w-[280px] sm:min-w-[320px] lg:min-w-[360px]"
                             >
-                                <div className="relative h-full bg-white rounded-xl overflow-hidden shadow-warm-lg border border-border-light hover:border-red-100 transition-all duration-500 hover:shadow-warm-lg">
+                                <div className="relative h-full bg-white rounded-xl overflow-hidden shadow-warm-lg border border-border-light hover:border-brand-red/10 transition-all duration-500 hover:shadow-warm-lg">
                                     <div className="relative h-80 overflow-hidden">
                                         <Image
                                             src={product.image}
@@ -121,10 +121,10 @@ export default function ProductsSection() {
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                     </div>
                                     <div className={`p-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-                                        <p className="text-sm mb-2 text-red-600 font-semibold uppercase tracking-wider">
+                                        <p className="text-sm mb-2 text-brand-red font-semibold uppercase tracking-wider">
                                             {product.category[language]}
                                         </p>
-                                        <h3 className="text-xl font-bold text-brand-dark group-hover:text-red-700 transition-colors">
+                                        <h3 className="text-xl font-bold text-brand-dark group-hover:text-brand-red-dark transition-colors">
                                             {product.title[language]}
                                         </h3>
                                     </div>
@@ -137,7 +137,7 @@ export default function ProductsSection() {
                 <div className="text-center">
                     <Link
                         href="/products/upvc"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 text-white font-semibold hover:bg-red-600 transition-colors shadow-warm-lg hover:shadow-red-600/30"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 text-white font-semibold hover:bg-brand-red transition-colors shadow-warm-lg hover:shadow-brand-red/30"
                     >
                         {t.viewAll}
                         <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />

@@ -84,7 +84,7 @@ export default function ProjectsSection() {
                         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-brand-dark font-cairo tracking-tight">
                             {t.title}
                         </h2>
-                        <div className="h-1 w-24 bg-red-600 mx-auto mb-6" />
+                        <div className="h-1 w-24 bg-brand-red mx-auto mb-6" />
                         <p className="text-xl text-text-body max-w-2xl mx-auto">
                             {t.subtitle}
                         </p>
@@ -109,7 +109,7 @@ export default function ProjectsSection() {
                                 transition={{ delay: idx * 0.05 }}
                                 className="group min-w-[300px] sm:min-w-[350px] lg:min-w-[400px]"
                             >
-                                <div className="relative h-[400px] bg-white rounded-xl overflow-hidden shadow-warm-lg border border-border-light transition-all duration-500 hover:shadow-warm-lg hover:border-red-100">
+                                <div className="relative h-[400px] bg-white rounded-xl overflow-hidden shadow-warm-lg border border-border-light transition-all duration-500 hover:shadow-warm-lg hover:border-brand-red/10">
                                     <Image
                                         src={project.image}
                                         alt={project.title[language]}
@@ -120,11 +120,11 @@ export default function ProjectsSection() {
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
                                     <div className={`absolute bottom-0 w-full p-6 text-white ${isRTL ? 'text-right' : 'text-left'}`}>
-                                        <h3 className="text-2xl font-bold mb-2 group-hover:text-red-400 transition-colors">
+                                        <h3 className="text-2xl font-bold mb-2 group-hover:text-brand-red/70 transition-colors">
                                             {project.title[language]}
                                         </h3>
                                         <div className={`flex items-center gap-2 text-dim ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                            <MapPin className="w-4 h-4 text-red-500" />
+                                            <MapPin className="w-4 h-4 text-brand-red" />
                                             <span className="text-sm font-medium tracking-wide">
                                                 {project.location[language]}
                                             </span>
@@ -139,7 +139,7 @@ export default function ProjectsSection() {
                 <div className="text-center">
                     <Link
                         href="/projects"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-all font-semibold shadow-warm-lg hover:shadow-xl"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-all font-semibold shadow-warm-lg hover:shadow-warm-xl"
                     >
                         {t.viewAll}
                         <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />

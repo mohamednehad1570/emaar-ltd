@@ -63,7 +63,7 @@ export default function CareersPage() {
             {t.culture.values.map((value, idx) => {
               const Icon = resolveIcon(value.icon);
               return (
-                <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -5 }} className="bg-white rounded-2xl shadow-warm-lg p-8 hover:shadow-xl transition-all">
+                <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -5 }} className="bg-white rounded-2xl shadow-warm-lg p-8 hover:shadow-warm-xl transition-all">
                   <div className="w-14 h-14 rounded-2xl bg-brand-red/10 flex items-center justify-center mb-4">
                     <Icon className="w-7 h-7 text-brand-red" />
                   </div>
@@ -179,7 +179,7 @@ export default function CareersPage() {
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>
             <p className="text-xl text-white/70 mb-8">{t.cta.description}</p>
             <a href={`mailto:${t.application.email}`}>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-xl">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl">
                 {t.cta.button}
               </motion.button>
             </a>

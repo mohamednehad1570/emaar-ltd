@@ -28,9 +28,9 @@ export default function CTASection() {
         <section className="py-24 px-6 bg-[#111111] relative overflow-hidden text-white">
             {/* Background patterns */}
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 via-transparent to-red-600 opacity-50" />
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-red via-transparent to-brand-red opacity-50" />
 
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600 rounded-full blur-[120px] opacity-10 animate-pulse" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-red rounded-full blur-[120px] opacity-10 animate-pulse" />
 
             <div className="relative max-w-4xl mx-auto text-center z-10">
                 <motion.div
@@ -53,11 +53,11 @@ export default function CTASection() {
 
                     <Link
                         href="/contact"
-                        className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-red-600 to-red-700 text-white font-bold text-lg overflow-hidden shadow-lg shadow-red-900/30 hover:shadow-red-600/50 transition-all duration-300 hover:scale-105"
+                        className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold text-lg overflow-hidden shadow-warm-lg shadow-brand-red-dark/30 hover:shadow-brand-red/50 transition-all duration-300 hover:scale-105"
                     >
                         <span className="relative z-10">{t.button}</span>
                         <ArrowRight className={`relative z-10 w-6 h-6 transition-transform duration-300 group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
-                        <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-brand-red/90 to-brand-red opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </Link>
                 </motion.div>
             </div>

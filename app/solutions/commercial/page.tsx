@@ -78,7 +78,7 @@ export default function CommercialPage() {
       <section className="py-20 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-8">{t.cta.title}</h2>
-          <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red rounded-full font-bold text-lg hover:shadow-xl transition-all">
+          <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red rounded-full font-bold text-lg hover:shadow-warm-xl transition-all">
             {t.cta.button} <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
           </Link>
         </div>

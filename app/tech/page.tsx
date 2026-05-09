@@ -230,7 +230,7 @@ export default function TechnicalDownloadsPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white rounded-2xl shadow-warm-lg overflow-hidden hover:shadow-xl transition-shadow"
+                    className="bg-white rounded-2xl shadow-warm-lg overflow-hidden hover:shadow-warm-xl transition-shadow"
                   >
                     {/* Preview Image */}
                     {file.preview && (
@@ -299,7 +299,7 @@ export default function TechnicalDownloadsPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white rounded-2xl shadow-warm-lg p-6 hover:shadow-xl transition-shadow"
+                    className="bg-white rounded-2xl shadow-warm-lg p-6 hover:shadow-warm-xl transition-shadow"
                   >
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-red/10 to-brand-silver/10 flex items-center justify-center flex-shrink-0">
@@ -360,7 +360,7 @@ export default function TechnicalDownloadsPage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-xl"
+                className="px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
               >
                 {t.cta.button}
               </motion.button>

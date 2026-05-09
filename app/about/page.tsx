@@ -91,7 +91,7 @@ export default function AboutPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="bg-white rounded-3xl p-8 md:p-12 shadow-xl"
+            className="bg-white rounded-3xl p-8 md:p-12 shadow-warm-xl"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-6 text-center">
               {t.story.title}
@@ -109,7 +109,7 @@ export default function AboutPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-shadow"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg shadow-warm-lg hover:shadow-warm-xl transition-shadow"
                 >
                   {t.story.cta}
                   <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
@@ -195,7 +195,7 @@ export default function AboutPage() {
                   whileInView="visible"
                   viewport={viewportOnce}
                   transition={{ delay: idx * 0.15 }}
-                  className="bg-white rounded-3xl p-8 shadow-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/20"
+                  className="bg-white rounded-3xl p-8 shadow-warm-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/20"
                 >
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-white" />
@@ -231,7 +231,7 @@ export default function AboutPage() {
           >
             {t.team.members.map((member, idx) => (
               <motion.div key={idx} variants={fadeUp} className="group">
-                <div className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-warm-lg transition-all duration-300 border border-brand-silver/10">
+                <div className="bg-white rounded-3xl overflow-hidden shadow-warm-xl hover:shadow-warm-lg transition-all duration-300 border border-brand-silver/10">
                   <div className="relative h-64 overflow-hidden">
                     <img
                       src={member.image}
@@ -278,7 +278,7 @@ export default function AboutPage() {
                   whileInView="visible"
                   viewport={viewportOnce}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white rounded-2xl p-6 shadow-warm-lg hover:shadow-xl transition-shadow text-center border border-brand-silver/10"
+                  className="bg-white rounded-2xl p-6 shadow-warm-lg hover:shadow-warm-xl transition-shadow text-center border border-brand-silver/10"
                 >
                   <Icon className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                   <h3 className="font-bold text-lg text-brand-dark mb-2">{feature.title}</h3>
@@ -335,7 +335,7 @@ export default function AboutPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 shadow-warm-lg hover:shadow-xl transition-all duration-300 group border border-brand-silver/10"
+                  className="bg-white rounded-2xl p-6 shadow-warm-lg hover:shadow-warm-xl transition-all duration-300 group border border-brand-silver/10"
                 >
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-7 h-7 text-white" />
@@ -407,7 +407,7 @@ export default function AboutPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-xl hover:shadow-2xl transition-shadow"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl hover:shadow-warm-xl transition-shadow"
                 >
                   {t.cta.button}
                   <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />

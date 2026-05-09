@@ -69,7 +69,7 @@ export default function WhyChooseUsSection() {
         <section className="py-20 px-6 bg-white relative overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
             {/* Background Decorative */}
             <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-off-white to-transparent opacity-50" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-red-50 rounded-full blur-3xl opacity-30" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-red/5 rounded-full blur-3xl opacity-30" />
 
             <div className="container-custom relative z-10">
                 <div className="text-center mb-16">
@@ -82,7 +82,7 @@ export default function WhyChooseUsSection() {
                         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-brand-dark font-cairo tracking-tight">
                             {t.title}
                         </h2>
-                        <div className="h-1 w-24 bg-red-600 mx-auto mb-6" />
+                        <div className="h-1 w-24 bg-brand-red mx-auto mb-6" />
                         <p className="text-xl text-text-body max-w-2xl mx-auto">
                             {t.subtitle}
                         </p>
@@ -98,12 +98,12 @@ export default function WhyChooseUsSection() {
                             viewport={{ once: true, amount: 0.3 }}
                             transition={{ delay: index * 0.1, duration: 0.5 }}
                             whileHover={{ y: -5 }}
-                            className={`p-8 rounded-2xl bg-white border border-border-light shadow-xl hover:shadow-warm-lg transition-all duration-300 group ${isRTL ? 'text-right' : 'text-left'}`}
+                            className={`p-8 rounded-2xl bg-white border border-border-light shadow-warm-xl hover:shadow-warm-lg transition-all duration-300 group ${isRTL ? 'text-right' : 'text-left'}`}
                         >
-                            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 bg-gradient-to-br from-off-white to-cream group-hover:from-red-600 group-hover:to-red-700 transition-colors duration-300">
+                            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 bg-gradient-to-br from-off-white to-cream group-hover:from-brand-red group-hover:to-brand-red-dark transition-colors duration-300">
                                 <feature.icon size={32} className="text-text-body group-hover:text-white transition-colors duration-300" />
                             </div>
-                            <h3 className="text-xl font-bold mb-3 text-brand-dark group-hover:text-red-700 transition-colors">
+                            <h3 className="text-xl font-bold mb-3 text-brand-dark group-hover:text-brand-red-dark transition-colors">
                                 {feature.title}
                             </h3>
                             <p className="text-text-body leading-relaxed group-hover:text-gray-700">

@@ -73,7 +73,7 @@ export default function ServicesPage() {
               const Icon = resolveIcon(step.icon);
               return (
                 <motion.div key={idx} variants={fadeUp} className="relative">
-                  <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/10">
+                  <div className="bg-white rounded-3xl p-6 md:p-8 shadow-warm-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/10">
                     <div className="flex flex-col md:flex-row gap-6 items-start">
                       <div className="flex-shrink-0">
                         <div className="relative">
@@ -141,7 +141,7 @@ export default function ServicesPage() {
                       {language === 'en' ? 'Most Popular' : 'الأكثر شعبية'}
                     </div>
                   )}
-                  <div className={`bg-white rounded-3xl p-8 shadow-xl hover:shadow-warm-lg transition-all h-full border ${plan.popular ? 'border-brand-red ring-2 ring-brand-red/20' : 'border-brand-silver/10'}`}>
+                  <div className={`bg-white rounded-3xl p-8 shadow-warm-xl hover:shadow-warm-lg transition-all h-full border ${plan.popular ? 'border-brand-red ring-2 ring-brand-red/20' : 'border-brand-silver/10'}`}>
                     <Icon className="w-12 h-12 text-brand-red mb-4" />
                     <h3 className="text-2xl font-bold text-brand-dark mb-2">{plan.name}</h3>
                     <div className="text-3xl font-bold text-brand-red mb-6">{plan.price}</div>
@@ -203,7 +203,7 @@ export default function ServicesPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-xl"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
                 >
                   <Phone className="w-5 h-5" />
                   {language === 'en' ? 'Call Now' : 'اتصل الآن'}
@@ -239,7 +239,7 @@ export default function ServicesPage() {
             {t.warranty.coverage.map((item, idx) => {
               const Icon = resolveIcon(item.icon);
               return (
-                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-xl border border-brand-silver/10">
+                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-warm-xl border border-brand-silver/10">
                   <div className="flex items-start gap-4 mb-6">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-silver to-brand-red flex items-center justify-center flex-shrink-0">
                       <Icon className="w-7 h-7 text-white" />
@@ -385,7 +385,7 @@ export default function ServicesPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-lg shadow-xl ${cta.primary ? 'bg-white text-brand-red' : 'bg-white text-brand-dark'}`}
+                    className={`inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-lg shadow-warm-xl ${cta.primary ? 'bg-white text-brand-red' : 'bg-white text-brand-dark'}`}
                   >
                     {cta.button}
                     {cta.primary ? (
