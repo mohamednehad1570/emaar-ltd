@@ -3,10 +3,16 @@
 /**
  * components/home/TestimonialsSection.tsx
  *
- * Client testimonials on a bg-brand-dark ground.
- * Glass cards (bg-white/5 + border-white/10) create depth without colour.
- * Stars use text-gold — the only sanctioned gold usage per CLAUDE.md.
- * Quote icon is decorative and flips side based on reading direction.
+ * 2-column testimonial grid on bg-off-white.
+ * Cards are white with a 2px border-border-light — clean, editorial.
+ * No shadow per updated shadow spec; 2px radius (--radius-card).
+ *
+ * Design rules:
+ *   • text-gold for stars — the only sanctioned gold usage (CLAUDE.md)
+ *   • Decorative quote mark: text-brand-silver/30, top-right corner
+ *   • Quote text: italic, text-text-body — testimony, not marketing
+ *   • Attribution: name bold, role muted — hierarchy matches the eye's reading order
+ *   • bg-off-white section — alternates after the dark WhyChooseUs above
  */
 
 import React from 'react';
@@ -14,7 +20,9 @@ import { motion } from 'framer-motion';
 import { Quotes, Star } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { whyChooseUsData } from '@/lib/data/whyChooseUs';
-import { fadeUp, viewportOnce } from '@/lib/motion';
+import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+
+/* ── Component ─────────────────────────────────────────────────────────── */
 
 export default function TestimonialsSection() {
   const { language, isRTL } = useLanguage();
@@ -22,71 +30,88 @@ export default function TestimonialsSection() {
 
   return (
     <section
-      className="py-20 px-6 bg-brand-dark"
+      className="py-24 bg-off-white"
       dir={isRTL ? 'rtl' : 'ltr'}
-      aria-label={t.title}
+      aria-labelledby="testimonials-heading"
     >
       <div className="container-custom">
 
-        {/* ── Section heading ──────────────────────────────────────── */}
+        {/* ── Section heading ──────────────────────────────────────────── */}
         <motion.div
-          className="text-center mb-14"
+          className="mb-14 text-center"
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
         >
-          <h2 className="text-4xl md:text-5xl font-bold font-cairo text-white mb-4">
+          <h2
+            id="testimonials-heading"
+            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-4"
+          >
             {t.title}
           </h2>
-          {/* Red accent line — same pattern as all section headings */}
-          <div className="h-1 w-24 bg-brand-red rounded-full mx-auto mb-4" />
-          <p className="text-xl text-white/70 max-w-2xl mx-auto">{t.subtitle}</p>
+          <div className="h-0.5 w-12 bg-brand-red mx-auto mb-5" />
+          <p className="text-lg text-text-body max-w-xl mx-auto">{t.subtitle}</p>
         </motion.div>
 
-        {/* ── Testimonial cards ─────────────────────────────────────── */}
-        <div className="grid md:grid-cols-2 gap-6">
+        {/* ── 2-column card grid ───────────────────────────────────────── */}
+        <motion.div
+          className="grid md:grid-cols-2 gap-6"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
           {t.items.map((testimonial, idx) => (
             <motion.div
               key={idx}
               variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
-              /* 0.1 s stagger — each card enters 100 ms after the previous */
+              /* 0.1s stagger — 4 cards, 0.3s total cascade */
               transition={{ delay: idx * 0.1 }}
-              className="relative bg-white/5 border border-white/10 rounded-sm p-8"
+              className="relative bg-white rounded-sm border-2 border-border-light p-8"
             >
-              {/* Decorative quote — right in LTR, left in RTL so it stays
-                  at the reading-end corner rather than the reading-start */}
+              {/* Decorative quote mark — top-right (top-left in RTL) */}
               <Quotes
-                size={48}
+                size={52}
                 weight="fill"
-                className={`absolute top-6 ${isRTL ? 'left-6' : 'right-6'} text-brand-silver/20`}
+                className={`
+                  absolute top-5
+                  ${isRTL ? 'left-5' : 'right-5'}
+                  text-brand-silver/30 pointer-events-none
+                `}
                 aria-hidden="true"
               />
 
-              {/* Star rating — text-gold (certs + stars are the only gold uses) */}
-              <div className={`flex gap-1 mb-5 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
+              {/* ── Stars ──────────────────────────────────────────────── */}
+              <div
+                className={`flex gap-1 mb-5 ${isRTL ? 'flex-row-reverse' : ''}`}
+                aria-label={`${testimonial.rating} out of 5 stars`}
+              >
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star key={i} size={18} weight="fill" className="text-gold" />
+                  /* text-gold — the only sanctioned use of the gold token (CLAUDE.md) */
+                  <Star key={i} size={16} weight="fill" className="text-gold" aria-hidden="true" />
                 ))}
               </div>
 
-              {/* Quote body */}
-              <p className={`text-white/80 leading-relaxed mb-6 italic ${isRTL ? 'text-right' : 'text-left'}`}>
+              {/* ── Quote body ─────────────────────────────────────────── */}
+              <p
+                className={`text-base text-text-body italic leading-relaxed mb-6 ${
+                  isRTL ? 'text-right' : 'text-left'
+                }`}
+              >
                 &ldquo;{testimonial.text}&rdquo;
               </p>
 
-              {/* Attribution */}
+              {/* ── Attribution ────────────────────────────────────────── */}
               <div className={isRTL ? 'text-right' : 'text-left'}>
-                <div className="font-bold text-white mb-0.5">{testimonial.name}</div>
-                <div className="text-sm text-white/60 mb-1">{testimonial.role}</div>
-                <div className="text-sm text-brand-red font-semibold">{testimonial.project}</div>
+                <p className="text-sm font-bold text-brand-dark">{testimonial.name}</p>
+                <p className="text-sm text-text-muted mt-0.5">{testimonial.role}</p>
+                <p className="text-sm text-brand-red font-semibold mt-1">{testimonial.project}</p>
               </div>
+
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
       </div>
     </section>

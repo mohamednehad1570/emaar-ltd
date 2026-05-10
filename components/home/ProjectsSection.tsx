@@ -1,152 +1,171 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+/**
+ * components/home/ProjectsSection.tsx
+ *
+ * 3-column project grid on bg-white.
+ * Each card is image-led: 16/9 image above, title + meta below.
+ * No overlay gradient — the photograph speaks on its own.
+ *
+ * Design rules:
+ *   • 2px solid border at rest → brand-silver on hover (no shadow)
+ *   • aspect-[16/9] on images: standard editorial ratio for architecture
+ *   • Location and year are meta, rendered muted — they support the title
+ *   • stagger 0.1s — 3 items, so total cascade is 0.2s max
+ */
+
+import React from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { MapPin, ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import useHorizontalAutoscroll from '@/lib/hooks/useHorizontalAutoscroll';
+import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+
+/* ── Types & data ──────────────────────────────────────────────────────── */
 
 interface ProjectCard {
-    id: number;
-    title: { en: string; ar: string };
-    location: { en: string; ar: string };
-    image: string;
+  id:       number;
+  title:    { en: string; ar: string };
+  location: { en: string; ar: string };
+  year:     string;
+  image:    string;
 }
 
-const projects: ProjectCard[] = [
-    {
-        id: 1,
-        title: { en: 'Downtown Residences', ar: 'مساكن وسط المدينة' },
-        location: { en: 'Dubai, UAE', ar: 'دبي، الإمارات' },
-        image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=1000&fit=crop',
-    },
-    {
-        id: 2,
-        title: { en: 'Marina Tower', ar: 'برج المارينا' },
-        location: { en: 'Abu Dhabi, UAE', ar: 'أبو ظبي، الإمارات' },
-        image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&h=600&fit=crop',
-    },
-    {
-        id: 3,
-        title: { en: 'Palm Villas', ar: 'فلل النخلة' },
-        location: { en: 'Sharjah, UAE', ar: 'الشارقة، الإمارات' },
-        image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&h=1200&fit=crop',
-    },
-    {
-        id: 4,
-        title: { en: 'Business Bay Complex', ar: 'مجمع الخليج التجاري' },
-        location: { en: 'Dubai, UAE', ar: 'دبي، الإمارات' },
-        image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop',
-    },
-    {
-        id: 5,
-        title: { en: 'Waterfront Estate', ar: 'عقار الواجهة البحرية' },
-        location: { en: 'Dubai, UAE', ar: 'دبي، الإمارات' },
-        image: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?w=800&h=600&fit=crop',
-    },
+const PROJECTS: ProjectCard[] = [
+  {
+    id:       1,
+    title:    { en: 'Downtown Residences',   ar: 'مساكن وسط المدينة'      },
+    location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'           },
+    year:     '2023',
+    image:    'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=900&h=506&fit=crop',
+  },
+  {
+    id:       2,
+    title:    { en: 'Marina Tower',          ar: 'برج المارينا'             },
+    location: { en: 'Abu Dhabi, UAE',        ar: 'أبو ظبي، الإمارات'       },
+    year:     '2023',
+    image:    'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=900&h=506&fit=crop',
+  },
+  {
+    id:       3,
+    title:    { en: 'Business Bay Complex',  ar: 'مجمع الخليج التجاري'     },
+    location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'           },
+    year:     '2022',
+    image:    'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=900&h=506&fit=crop',
+  },
 ];
 
+const copy = {
+  en: { title: 'Featured Projects', subtitle: 'Portfolio of precision', cta: 'View All Projects' },
+  ar: { title: 'المشاريع المميزة',   subtitle: 'محفظة الدقة',           cta: 'عرض كل المشاريع'  },
+} as const;
+
+/* ── Component ─────────────────────────────────────────────────────────── */
 
 export default function ProjectsSection() {
-    const { language, isRTL } = useLanguage();
-    const projectsRef = useRef<HTMLDivElement>(null);
-    const [projectsPaused, setProjectsPaused] = useState(false);
+  const { language, isRTL } = useLanguage();
+  const t = copy[language];
 
-    useHorizontalAutoscroll(projectsRef, projectsPaused, 0.8);
+  return (
+    <section
+      className="py-24 bg-white"
+      dir={isRTL ? 'rtl' : 'ltr'}
+      aria-labelledby="projects-heading"
+    >
+      <div className="container-custom">
 
-    const content = {
-        en: {
-            title: 'Featured Projects',
-            subtitle: 'Discover our portfolio of excellence',
-            viewAll: 'View All Projects',
-        },
-        ar: {
-            title: 'المشاريع المميزة',
-            subtitle: 'اكتشف محفظتنا من التميز',
-            viewAll: 'عرض كل المشاريع',
-        },
-    };
+        {/* ── Section heading ──────────────────────────────────────────── */}
+        <motion.div
+          className="mb-14 text-center"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
+          <h2
+            id="projects-heading"
+            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-4"
+          >
+            {t.title}
+          </h2>
+          <div className="h-0.5 w-12 bg-brand-red mx-auto mb-5" />
+          <p className="text-lg text-text-body max-w-xl mx-auto">{t.subtitle}</p>
+        </motion.div>
 
-    const t = content[language];
-
-    return (
-        <section className="py-20 px-6 bg-off-white relative" dir={isRTL ? 'rtl' : 'ltr'}>
-            <div className="container-custom">
-                <div className="text-center mb-12">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-brand-dark font-cairo tracking-tight">
-                            {t.title}
-                        </h2>
-                        <div className="h-1 w-24 bg-brand-red mx-auto mb-6" />
-                        <p className="text-xl text-text-body max-w-2xl mx-auto">
-                            {t.subtitle}
-                        </p>
-                    </motion.div>
+        {/* ── 3-column project grid ────────────────────────────────────── */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
+          {PROJECTS.map((project, idx) => (
+            <motion.article
+              key={project.id}
+              variants={fadeUp}
+              transition={{ delay: idx * 0.1 }}
+            >
+              <Link
+                href="/projects"
+                className="group block border-2 border-border-light hover:border-brand-silver transition-colors duration-300"
+                aria-label={project.title[language]}
+              >
+                {/* Image — aspect-[16/9], no overlay, rounded-none */}
+                <div className="relative aspect-[16/9] overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.title[language]}
+                    fill
+                    /* 33vw at md+; full-width on mobile */
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  />
                 </div>
 
-                <div
-                    ref={projectsRef}
-                    onMouseEnter={() => setProjectsPaused(true)}
-                    onMouseLeave={() => setProjectsPaused(false)}
-                    onTouchStart={() => setProjectsPaused(true)}
-                    onTouchEnd={() => setTimeout(() => setProjectsPaused(false), 700)}
-                    className="mb-12 overflow-x-auto scrollbar-hide py-4"
-                >
-                    <div className={`flex gap-6 ${isRTL ? 'pl-6' : 'pr-6'}`}>
-                        {projects.map((project, idx) => (
-                            <motion.div
-                                key={project.id}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true, amount: 0.2 }}
-                                transition={{ delay: idx * 0.05 }}
-                                className="group min-w-[300px] sm:min-w-[350px] lg:min-w-[400px]"
-                            >
-                                {/* image card: rounded-sm (--radius-image: 0px for the inner img; outer tile gets 2px) */}
-                                <div className="relative h-[400px] bg-white rounded-sm overflow-hidden border border-border-light transition-all duration-500 hover:border-2 hover:border-brand-silver">
-                                    <Image
-                                        src={project.image}
-                                        alt={project.title[language]}
-                                        fill
-                                        sizes="(min-width: 1280px) 400px, (min-width: 1024px) 350px, 300px"
-                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+                {/* Text block below image */}
+                <div className="pt-4 pb-5 px-1">
+                  <h3 className="text-base font-bold font-cairo text-brand-dark mb-1.5 leading-snug">
+                    {project.title[language]}
+                  </h3>
 
-                                    <div className={`absolute bottom-0 w-full p-6 text-white ${isRTL ? 'text-right' : 'text-left'}`}>
-                                        <h3 className="text-2xl font-bold mb-2 group-hover:text-brand-red/70 transition-colors">
-                                            {project.title[language]}
-                                        </h3>
-                                        <div className={`flex items-center gap-2 text-dim ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                            <MapPin className="w-4 h-4 text-brand-red" />
-                                            <span className="text-sm font-medium tracking-wide">
-                                                {project.location[language]}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
+                  {/* Meta row — icon + location + year */}
+                  <div
+                    className={`flex items-center gap-1.5 text-sm text-text-muted ${
+                      isRTL ? 'flex-row-reverse' : ''
+                    }`}
+                  >
+                    <MapPin size={13} className="text-brand-red shrink-0" aria-hidden="true" />
+                    <span>{project.location[language]}</span>
+                    <span aria-hidden="true">·</span>
+                    {/* dir=ltr keeps the year digit order correct in RTL mode */}
+                    <span dir="ltr">{project.year}</span>
+                  </div>
                 </div>
+              </Link>
+            </motion.article>
+          ))}
+        </motion.div>
 
-                <div className="text-center">
-                    <Link
-                        href="/projects"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-dark border-2 border-brand-dark hover:bg-brand-dark hover:text-white transition-all font-semibold"
-                    >
-                        {t.viewAll}
-                        <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
-                    </Link>
-                </div>
-            </div>
-        </section>
-    );
+        {/* ── CTA ──────────────────────────────────────────────────────── */}
+        <motion.div
+          className="mt-12 text-center"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-sm font-bold text-brand-dark border-b-2 border-brand-red pb-0.5 hover:text-brand-red transition-colors duration-200"
+          >
+            {t.cta}
+            <ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />
+          </Link>
+        </motion.div>
+
+      </div>
+    </section>
+  );
 }

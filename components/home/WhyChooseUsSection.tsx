@@ -1,118 +1,145 @@
 'use client';
 
+/**
+ * components/home/WhyChooseUsSection.tsx
+ *
+ * Four brand pillars on a full bg-brand-dark section.
+ * No cards, no borders, no shadows — pillars float directly on the dark field.
+ * 1px white/10 vertical dividers separate the pillars without boxing them.
+ *
+ * Design rules:
+ *   • bg-brand-dark section uses text-white / text-white/70 (never text-brand-dark)
+ *   • Icon rests at text-brand-silver; hover shifts it to text-brand-red
+ *   • Heading stays white on hover — only the icon changes to signal interactivity
+ *   • Dividers are hidden on mobile (stacked layout), shown md+ (row layout)
+ *   • Pillar hover keeps heading white, per spec — body text brightens slightly
+ */
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Medal as Award, Users, Buildings as Building2, TrendUp as TrendingUp } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+import type { Icon as PhosphorIcon } from '@phosphor-icons/react';
+
+/* ── Types & data ──────────────────────────────────────────────────────── */
+
+interface Pillar {
+  Icon:        React.ComponentType<{ size?: number; className?: string }>;
+  title:       string;
+  description: string;
+}
+
+const content: Record<'en' | 'ar', { title: string; subtitle: string; pillars: Pillar[] }> = {
+  en: {
+    title:    'Why Choose EMAAR',
+    subtitle: 'Excellence in every detail',
+    pillars: [
+      { Icon: Award,      title: 'Premium Quality',     description: 'ISO certified manufacturing with German technology and zero-compromise standards.' },
+      { Icon: Users,      title: 'Expert Team',         description: '20+ years of combined industry experience across residential and commercial sectors.' },
+      { Icon: Building2,  title: 'Proven Track Record', description: '500+ successful projects delivered across the UAE — on time, every time.'         },
+      { Icon: TrendingUp, title: 'Innovation',          description: 'Continuously investing in the latest technology to keep your project ahead of the curve.' },
+    ],
+  },
+  ar: {
+    title:    'لماذا تختار إعمار',
+    subtitle: 'التميز في كل التفاصيل',
+    pillars: [
+      { Icon: Award,      title: 'جودة ممتازة',   description: 'تصنيع معتمد ISO بتقنية ألمانية ومعايير لا تقبل التنازل.'              },
+      { Icon: Users,      title: 'فريق خبراء',    description: 'أكثر من 20 عامًا من الخبرة الصناعية في القطاعين السكني والتجاري.'     },
+      { Icon: Building2,  title: 'سجل حافل',      description: 'أكثر من 500 مشروع ناجح تم تسليمه في الإمارات — في الوقت المحدد دائمًا.' },
+      { Icon: TrendingUp, title: 'الابتكار',       description: 'نستثمر باستمرار في أحدث التقنيات لإبقاء مشروعك في المقدمة.'           },
+    ],
+  },
+};
+
+/* ── Component ─────────────────────────────────────────────────────────── */
 
 export default function WhyChooseUsSection() {
-    const { language, isRTL } = useLanguage();
+  const { language, isRTL } = useLanguage();
+  const t = content[language];
 
-    const content = {
-        en: {
-            title: 'Why Choose EMAAR',
-            subtitle: 'Excellence in every detail',
-            features: [
-                {
-                    icon: Award,
-                    title: 'Premium Quality',
-                    description: 'ISO certified manufacturing with German technology',
-                },
-                {
-                    icon: Users,
-                    title: 'Expert Team',
-                    description: '20+ years of combined industry experience',
-                },
-                {
-                    icon: Building2,
-                    title: 'Proven Track Record',
-                    description: '500+ successful projects across the UAE',
-                },
-                {
-                    icon: TrendingUp,
-                    title: 'Innovation',
-                    description: 'Latest technology and design solutions',
-                },
-            ],
-        },
-        ar: {
-            title: 'لماذا تختار إعمار',
-            subtitle: 'التميز في كل التفاصيل',
-            features: [
-                {
-                    icon: Award,
-                    title: 'جودة ممتازة',
-                    description: 'تصنيع معتمد ISO بتقنية ألمانية',
-                },
-                {
-                    icon: Users,
-                    title: 'فريق خبراء',
-                    description: 'أكثر من 20 عاماً من الخبرة الصناعية',
-                },
-                {
-                    icon: Building2,
-                    title: 'سجل حافل',
-                    description: 'أكثر من 500 مشروع ناجح في الإمارات',
-                },
-                {
-                    icon: TrendingUp,
-                    title: 'الابتكار',
-                    description: 'أحدث التقنيات وحلول التصميم',
-                },
-            ],
-        },
-    };
+  return (
+    <section
+      className="py-24 bg-brand-dark"
+      dir={isRTL ? 'rtl' : 'ltr'}
+      aria-labelledby="why-heading"
+    >
+      <div className="container-custom">
 
-    const t = content[language];
+        {/* ── Section heading ──────────────────────────────────────────── */}
+        <motion.div
+          className="mb-16 text-center"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
+          <h2
+            id="why-heading"
+            className="text-4xl md:text-5xl font-bold font-cairo text-white mb-4"
+          >
+            {t.title}
+          </h2>
+          <div className="h-0.5 w-12 bg-brand-red mx-auto mb-5" />
+          <p className="text-lg text-white/70 max-w-xl mx-auto">{t.subtitle}</p>
+        </motion.div>
 
-    return (
-        <section className="py-20 px-6 bg-white relative overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
-            {/* Background Decorative */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-off-white to-transparent opacity-50" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-red/5 rounded-full blur-3xl opacity-30" />
+        {/* ── Pillar row ───────────────────────────────────────────────── */}
+        <motion.div
+          /* On dark bg, border-white/10 dividers separate columns. The flex
+             layout uses relative-positioned children for the dividers.        */
+          className="flex flex-col md:flex-row"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
+          {t.pillars.map((pillar, idx) => (
+            <React.Fragment key={idx}>
 
-            <div className="container-custom relative z-10">
-                <div className="text-center mb-16">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-brand-dark font-cairo tracking-tight">
-                            {t.title}
-                        </h2>
-                        <div className="h-1 w-24 bg-brand-red mx-auto mb-6" />
-                        <p className="text-xl text-text-body max-w-2xl mx-auto">
-                            {t.subtitle}
-                        </p>
-                    </motion.div>
-                </div>
+              {/* ── Pillar ─────────────────────────────────────────────── */}
+              <motion.div
+                variants={fadeUp}
+                transition={{ delay: idx * 0.1 }}
+                className={`
+                  flex-1 group
+                  px-8 py-10 md:py-0
+                  flex flex-col gap-4
+                  ${isRTL ? 'items-end text-right' : 'items-start text-left'}
+                `}
+              >
+                {/* Icon — text-brand-silver at rest, text-brand-red on hover */}
+                <pillar.Icon
+                  size={32}
+                  className="text-brand-silver group-hover:text-brand-red transition-colors duration-300"
+                  aria-hidden="true"
+                />
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {t.features.map((feature, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 40 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.3 }}
-                            transition={{ delay: index * 0.1, duration: 0.5 }}
-                            whileHover={{ y: -5 }}
-                            className={`p-8 rounded-sm bg-white border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-300 group ${isRTL ? 'text-right' : 'text-left'}`}
-                        >
-                            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 bg-gradient-to-br from-off-white to-cream group-hover:from-brand-red group-hover:to-brand-red-dark transition-colors duration-300">
-                                <feature.icon size={32} className="text-text-body group-hover:text-white transition-colors duration-300" />
-                            </div>
-                            <h3 className="text-xl font-bold mb-3 text-brand-dark group-hover:text-brand-red-dark transition-colors">
-                                {feature.title}
-                            </h3>
-                            <p className="text-text-body leading-relaxed group-hover:text-gray-700">
-                                {feature.description}
-                            </p>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
+                {/* Heading stays white — only the icon signals the hover */}
+                <h3 className="text-lg font-bold text-white">
+                  {pillar.title}
+                </h3>
+
+                {/* Body at white/70 at rest; white/90 on hover for subtle brightness */}
+                <p className="text-sm text-white/70 group-hover:text-white/90 leading-relaxed transition-colors duration-300">
+                  {pillar.description}
+                </p>
+              </motion.div>
+
+              {/* ── Vertical divider between pillars (hidden on mobile) ── */}
+              {idx < t.pillars.length - 1 && (
+                <div
+                  className="hidden md:block w-px bg-white/10 self-stretch mx-0"
+                  aria-hidden="true"
+                />
+              )}
+
+            </React.Fragment>
+          ))}
+        </motion.div>
+
+      </div>
+    </section>
+  );
 }

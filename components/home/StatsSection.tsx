@@ -1,61 +1,87 @@
 'use client';
 
+/**
+ * components/home/StatsSection.tsx
+ *
+ * Four-column stat display on a clean white field.
+ * No cards, borders, or shadows — raw numerals carry the authority.
+ * A 2px brand-red top stroke above each stat grounds it to the grid.
+ *
+ * Design rules:
+ *   • tabular-nums keeps digit columns aligned as numbers animate in
+ *   • stagger delay 0.12s — enough separation without feeling slow
+ *   • uppercase + tracking-wide on labels: editorial, not technical
+ */
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+
+/* ── Data ──────────────────────────────────────────────────────────────── */
+
+const content = {
+  en: [
+    { number: '20+',  label: 'Years Experience'    },
+    { number: '500+', label: 'Projects Completed'  },
+    { number: '50+',  label: 'Expert Team'         },
+    { number: '100%', label: 'Client Satisfaction' },
+  ],
+  ar: [
+    { number: '20+',  label: 'سنة خبرة'     },
+    { number: '500+', label: 'مشروع مكتمل'   },
+    { number: '50+',  label: 'فريق خبراء'    },
+    { number: '100%', label: 'رضا العملاء'   },
+  ],
+} as const;
+
+/* ── Component ─────────────────────────────────────────────────────────── */
 
 export default function StatsSection() {
-    const { language, isRTL } = useLanguage();
+  const { language, isRTL } = useLanguage();
+  const stats = content[language];
 
-    const content = {
-        en: [
-            { number: '20+', label: 'Years Experience' },
-            { number: '500+', label: 'Projects Completed' },
-            { number: '50+', label: 'Expert Team' },
-            { number: '100%', label: 'Client Satisfaction' },
-        ],
-        ar: [
-            { number: '20+', label: 'سنة خبرة' },
-            { number: '500+', label: 'مشروع مكتمل' },
-            { number: '50+', label: 'فريق خبراء' },
-            { number: '100%', label: 'رضا العملاء' },
-        ],
-    };
+  return (
+    <section
+      className="py-24 bg-white"
+      dir={isRTL ? 'rtl' : 'ltr'}
+      aria-label={language === 'en' ? 'Key statistics' : 'الإحصاءات الرئيسية'}
+    >
+      <div className="container-custom">
+        <motion.div
+          className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+        >
+          {stats.map((stat, idx) => (
+            <motion.div
+              key={idx}
+              variants={fadeUp}
+              /* 0.12s stagger — readable without feeling mechanical */
+              transition={{ delay: idx * 0.12 }}
+              className="flex flex-col"
+            >
+              {/* 2px red stroke — grounds the stat, links back to brand accent */}
+              <div className="w-8 h-0.5 bg-brand-red mb-5" aria-hidden="true" />
 
-    const stats = content[language];
+              {/* Numeral — tabular-nums keeps '100%' same width as '500+' */}
+              <span
+                className="text-5xl font-bold font-cairo tabular-nums text-brand-dark leading-none mb-3"
+                /* dir=ltr so digit order is always left-to-right, even in Arabic mode */
+                dir="ltr"
+              >
+                {stat.number}
+              </span>
 
-    return (
-        <section className="py-20 bg-gradient-to-b from-off-white to-white relative overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
-            {/* Decorative Industrial Elements */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-brand-red to-transparent opacity-50" />
-            <div className="absolute -left-20 top-20 w-64 h-64 bg-cream rounded-full blur-3xl opacity-30" />
-            <div className="absolute -right-20 bottom-20 w-64 h-64 bg-brand-red/10 rounded-full blur-3xl opacity-30" />
-
-            <div className="container-custom relative z-10">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    {stats.map((stat, idx) => (
-                        <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.3 }}
-                            transition={{ delay: idx * 0.1, duration: 0.6, type: 'spring' }}
-                            className="group relative"
-                        >
-                            {/* no shadow at rest or hover; border-brand-silver at 2px on hover */}
-                            <div className="absolute inset-0 bg-white rounded-sm transform transition-transform group-hover:-translate-y-2 duration-300" />
-                            <div className="relative p-8 text-center border border-border-light rounded-sm group-hover:border-2 group-hover:border-brand-silver transition-all">
-                                <h3 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-brand-red to-brand-red-dark mb-2 font-cairo tabular-nums tracking-tighter">
-                                    {stat.number}
-                                </h3>
-                                <p className="text-text-body font-medium text-lg uppercase tracking-wide">
-                                    {stat.label}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
+              <span className="text-sm font-semibold uppercase tracking-wide text-text-muted">
+                {stat.label}
+              </span>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
 }
