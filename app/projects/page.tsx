@@ -9,7 +9,7 @@ export default function ProjectsPage() {
   const { isRTL } = useLanguage();
 
   return (
-    <div className={`min-h-screen bg-gray-50 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen bg-off-white ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
         <ProjectsGrid />
       </Suspense>

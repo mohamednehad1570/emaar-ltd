@@ -66,10 +66,10 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
                             {project.title}
                         </h3>
 
-                        <div className={`flex items-center gap-2 text-gray-300 text-sm mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div className={`flex items-center gap-2 text-dim text-sm mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             <MapPin className="w-4 h-4 text-brand-red" />
                             <span>{project.location}</span>
-                            <span className="mx-2 text-gray-500">•</span>
+                            <span className="mx-2 text-text-muted">•</span>
                             <span>{project.year}</span>
                         </div>
 

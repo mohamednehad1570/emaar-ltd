@@ -291,7 +291,7 @@ export default function TechnicalDownloadsPage() {
           {filteredFiles.length === 0 ? (
             <div className="text-center py-20">
               <FileText className="w-16 h-16 mx-auto mb-4 text-dim" />
-              <p className="text-xl text-gray-500">{t.search.noResults}</p>
+              <p className="text-xl text-text-muted">{t.search.noResults}</p>
             </div>
           ) : viewMode === 'grid' ? (
             // Grid View
@@ -330,14 +330,14 @@ export default function TechnicalDownloadsPage() {
                           <Icon className="w-5 h-5 text-brand-red" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-gray-800 mb-1 line-clamp-2">
+                          <h3 className="font-bold text-brand-dark mb-1 line-clamp-2">
                             {file.name}
                           </h3>
-                          <p className="text-sm text-gray-500">{file.type}</p>
+                          <p className="text-sm text-text-muted">{file.type}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                      <div className="flex items-center gap-4 text-sm text-text-muted mb-4">
                         <span>{file.size}</span>
                         <span>•</span>
                         <span className="flex items-center gap-1">
@@ -382,10 +382,10 @@ export default function TechnicalDownloadsPage() {
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-gray-800 mb-1">
+                        <h3 className="font-bold text-brand-dark mb-1">
                           {file.name}
                         </h3>
-                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                        <div className="flex items-center gap-4 text-sm text-text-muted">
                           <span>{file.type}</span>
                           <span>•</span>
                           <span>{file.size}</span>

@@ -18,7 +18,7 @@ export default function ResidentialPage() {
       {/* Hero */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-brand-dark">
         <div className="absolute inset-0 z-0 opacity-40">
-          <div className="w-full h-full bg-gradient-to-r from-brand-dark to-[#333]" />
+          <div className="w-full h-full bg-gradient-to-r from-brand-dark to-brand-dark-mid" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center text-white">
           <motion.span initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="inline-block py-1 px-4 rounded-none bg-brand-red/20 border border-brand-red/50 text-brand-red text-sm font-semibold mb-6">
@@ -27,7 +27,7 @@ export default function ResidentialPage() {
           <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-6xl font-bold mb-6">{t.hero.title}</motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-xl text-white/70 max-w-2xl mx-auto mb-10">{t.hero.description}</motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-            <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-brand-red text-white rounded-none font-bold text-lg hover:bg-brand-red-dark transition-all shadow-lg">
+            <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-brand-red text-white rounded-none font-bold text-lg hover:bg-brand-red-dark transition-all shadow-warm-red">
               {t.hero.cta}
             </Link>
           </motion.div>
