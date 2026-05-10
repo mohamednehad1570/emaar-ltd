@@ -122,53 +122,119 @@ export default function AboutPage() {
       </section>
 
       {/* ── Timeline ─────────────────────────────────────── */}
-      <section ref={timelineRef} className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
-        <div className="max-w-7xl mx-auto">
+      {/* bg-off-white — editorial, not dramatic; alternates with white sections above */}
+      <section ref={timelineRef} className="py-24 bg-off-white overflow-hidden">
+
+        {/* Heading — constrained, centred */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={fadeUp}
             initial="hidden"
             animate={timelineInView ? 'visible' : 'hidden'}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">{t.timeline.title}</h2>
-            <div className="w-24 h-1.5 bg-brand-red rounded-full mx-auto mb-4" />
-            <p className="text-xl text-white/70">{t.timeline.subtitle}</p>
+            <h2 className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-4">
+              {t.timeline.title}
+            </h2>
+            {/* Accent line — same weight as other section headings */}
+            <div className="h-0.5 w-12 bg-brand-red mx-auto mb-5" />
+            <p className="text-lg text-text-body max-w-xl mx-auto">{t.timeline.subtitle}</p>
           </motion.div>
-
-          <div className="relative">
-            {/* Centre line */}
-            <div className="absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-brand-silver via-brand-red to-brand-silver transform -translate-x-1/2 hidden md:block" />
-
-            <div className="space-y-12">
-              {t.timeline.events.map((event, idx) => {
-                const Icon = resolveIcon(event.icon);
-                return (
-                  <motion.div
-                    key={event.year}
-                    initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-                    animate={timelineInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.6, delay: idx * 0.1 }}
-                    className={`flex items-center gap-8 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} ${isRTL ? 'flex-row-reverse' : ''}`}
-                  >
-                    <div className={`flex-1 ${idx % 2 === 0 ? 'md:text-right' : 'md:text-left'} ${isRTL ? 'text-right' : 'text-left'}`}>
-                      <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm p-6 hover:bg-white/20 transition-colors">
-                        <div className="text-3xl font-bold text-brand-silver mb-2">{event.year}</div>
-                        <h3 className="text-xl font-bold mb-2">{event.title}</h3>
-                        <p className="text-white/70">{event.description}</p>
-                      </div>
-                    </div>
-
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-silver to-brand-red flex items-center justify-center flex-shrink-0 shadow-lg relative z-10">
-                      <Icon className="w-8 h-8 text-white" />
-                    </div>
-
-                    <div className="flex-1 hidden md:block" />
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
         </div>
+
+        {/* ── DESKTOP: horizontal scroll track ─────────────── */}
+        {/* Full viewport width — no max-w so the connecting line bleeds edge-to-edge */}
+        <div className="hidden md:block relative">
+          {/* Connecting line — top-12 (48px) aligns with pt-12 on each card so
+              the diamond's top edge sits exactly on this silver hairline          */}
+          <div
+            className="absolute top-12 left-0 right-0 h-px bg-brand-silver/30 z-0"
+            aria-hidden="true"
+          />
+
+          <motion.div
+            className={`flex overflow-x-auto scrollbar-hide px-24 ${
+              /* RTL: reverse card order so reading direction matches scroll */
+              isRTL ? 'flex-row-reverse' : ''
+            }`}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+          >
+            {t.timeline.events.map((event) => (
+              <motion.div
+                key={event.year}
+                variants={fadeUp}
+                /* w-64 flex-shrink-0 — fixed width so cards never collapse mid-scroll */
+                /* pt-12 — 48px padding pushes diamond to the connecting-line level    */
+                className="w-64 flex-shrink-0 relative z-10 pt-12 pb-10 flex flex-col items-center"
+              >
+                {/* 4×4px red diamond sitting on the horizontal connecting line */}
+                <div
+                  className="w-1 h-1 rotate-45 bg-brand-red shrink-0"
+                  aria-hidden="true"
+                />
+
+                {/* Year — text-gold; dir=ltr keeps digit order in Arabic mode */}
+                <span
+                  className="text-4xl font-bold font-cairo tabular-nums text-gold mt-4"
+                  dir="ltr"
+                >
+                  {event.year}
+                </span>
+
+                <h3 className="text-base font-bold text-brand-dark mt-2 text-center px-4 leading-snug">
+                  {event.title}
+                </h3>
+
+                {/* line-clamp-2 — caps long descriptions; prevents layout-breaking overflow */}
+                <p className="text-sm text-text-muted mt-1 text-center px-6 line-clamp-2 leading-relaxed">
+                  {event.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ── MOBILE: vertical list with red left border ───── */}
+        <div className="md:hidden max-w-7xl mx-auto px-4 sm:px-6">
+          <motion.div
+            className="flex flex-col gap-8"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+          >
+            {t.timeline.events.map((event) => (
+              <motion.div
+                key={event.year}
+                variants={fadeUp}
+                /* 2px red left border — per spec; RTL flips to right (reading-start) edge */
+                className={
+                  isRTL
+                    ? 'border-r-2 border-brand-red pr-4 text-right'
+                    : 'border-l-2 border-brand-red pl-4'
+                }
+              >
+                {/* dir=ltr keeps the 4-digit year digit order in Arabic mode */}
+                <span
+                  className="text-2xl font-bold font-cairo tabular-nums text-gold"
+                  dir="ltr"
+                >
+                  {event.year}
+                </span>
+                <h3 className="text-base font-bold text-brand-dark mt-1">
+                  {event.title}
+                </h3>
+                <p className="text-sm text-text-muted mt-1 leading-relaxed">
+                  {event.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
       </section>
 
       {/* ── Mission & Vision ─────────────────────────────── */}
