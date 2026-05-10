@@ -113,85 +113,159 @@ export default function TechnicalDownloadsPage() {
         </div>
       </section>
 
-      {/* Filters & Search */}
-      <section className="py-8 px-6 bg-white/50 backdrop-blur-sm sticky top-20 z-40 border-y border-border-light">
-        <div className="max-w-7xl mx-auto space-y-6">
+      {/* ── Filters & Search — sticky below 52px header ───────────────── */}
+      {/* top-[52px] offsets the fixed 52px header exactly */}
+      <section className="bg-white sticky top-[52px] z-40 border-b border-border-light">
+        <div className="max-w-7xl mx-auto">
 
-          {/* Search & View Toggle */}
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className={`absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted`} />
+          {/* ── Category tabs ─────────────────────────────────────────────
+              border-b on this row is the separator; active tab's motion.div
+              sits flush at bottom-0, overlapping that border with brand-red. */}
+          <div
+            className={`border-b border-border-light flex overflow-x-auto ${
+              isRTL ? 'flex-row-reverse' : ''
+            }`}
+          >
+            {Object.entries(t.categories).map(([key, label]) => {
+              const Icon = key === 'all'
+                ? FolderOpen
+                : categoryIcons[key as keyof typeof categoryIcons];
+              const isActive = activeCategory === key;
+
+              return (
+                <button
+                  key={key}
+                  onClick={() => setActiveCategory(key)}
+                  className={`
+                    group relative flex items-center gap-2
+                    px-5 py-3 text-sm font-cairo whitespace-nowrap
+                    transition-colors duration-150
+                    ${isActive
+                      ? 'text-brand-dark font-bold'
+                      : 'text-text-muted font-semibold hover:text-brand-dark'}
+                  `}
+                >
+                  {Icon && <Icon className="w-4 h-4 shrink-0" aria-hidden="true" />}
+                  <span>{label}</span>
+
+                  {/* Hover underline — silver, only rendered when tab is inactive */}
+                  {!isActive && (
+                    <span
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-silver opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                      aria-hidden="true"
+                    />
+                  )}
+
+                  {/* Active underline — layoutId slides it between tabs smoothly */}
+                  {isActive && (
+                    <motion.div
+                      layoutId="tab-underline"
+                      /* stiffness 400 / damping 30 — snappy but not jarring */
+                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-red"
+                      aria-hidden="true"
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* ── Secondary row: search + product chips + view toggle ────── */}
+          <div
+            className={`flex flex-col md:flex-row md:items-center gap-3 px-4 py-3 ${
+              isRTL ? 'md:flex-row-reverse' : ''
+            }`}
+          >
+            {/* Search — 48px (h-12), 0px radius, focus → border-brand-silver */}
+            <div className="relative flex-1 min-w-0">
+              <Search
+                className={`absolute top-1/2 -translate-y-1/2 ${
+                  isRTL ? 'right-4' : 'left-4'
+                } w-4 h-4 text-text-muted pointer-events-none`}
+                aria-hidden="true"
+              />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t.search.placeholder}
-                className={`w-full ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 rounded-none border-2 border-border-light focus:border-brand-red focus:outline-none transition-colors`}
+                className={`
+                  w-full h-12 bg-white text-sm text-text-body
+                  border border-border-light
+                  focus:border-brand-silver focus:outline-none
+                  placeholder:text-dim
+                  transition-colors duration-150
+                  ${isRTL ? 'pr-11 pl-4 text-right' : 'pl-11 pr-4'}
+                `}
               />
             </div>
 
-            <div className="flex gap-2">
+            {/* Product filter chips */}
+            <div
+              className={`flex items-center gap-2 overflow-x-auto ${
+                isRTL ? 'flex-row-reverse' : ''
+              }`}
+            >
+              {/* Label — text-text-muted; no Tailwind default grays */}
+              <span
+                className={`text-xs font-semibold text-text-muted uppercase tracking-wide shrink-0 flex items-center gap-1 ${
+                  isRTL ? 'flex-row-reverse' : ''
+                }`}
+              >
+                <Filter className="w-3.5 h-3.5" aria-hidden="true" />
+                {t.productFilter.title}
+              </span>
+
+              {Object.entries(t.productFilter).slice(1).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setFilterProduct(key)}
+                  className={`
+                    px-4 py-2 text-sm font-cairo whitespace-nowrap
+                    border transition-colors duration-150
+                    ${filterProduct === key
+                      ? 'bg-cream border-brand-silver text-brand-dark font-semibold'
+                      : 'bg-white border-border-light text-text-muted hover:border-brand-silver hover:text-brand-dark'}
+                  `}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Grid / List toggle — 36×36px square, border, sharp */}
+            <div className="flex gap-2 shrink-0">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-3 rounded-none transition-colors ${viewMode === 'grid'
-                  ? 'bg-brand-red text-white'
-                  : 'bg-white text-text-body hover:bg-off-white'
-                  }`}
+                aria-label={language === 'en' ? 'Grid view' : 'عرض الشبكة'}
+                aria-pressed={viewMode === 'grid'}
+                className={`
+                  w-9 h-9 flex items-center justify-center
+                  border transition-colors duration-150
+                  ${viewMode === 'grid'
+                    ? 'bg-cream border-brand-silver text-text-heading'
+                    : 'bg-white border-border-light text-text-muted hover:border-brand-silver hover:text-text-heading'}
+                `}
               >
-                <Grid className="w-5 h-5" />
+                <Grid className="w-4 h-4" aria-hidden="true" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-3 rounded-none transition-colors ${viewMode === 'list'
-                  ? 'bg-brand-red text-white'
-                  : 'bg-white text-text-body hover:bg-off-white'
-                  }`}
+                aria-label={language === 'en' ? 'List view' : 'عرض القائمة'}
+                aria-pressed={viewMode === 'list'}
+                className={`
+                  w-9 h-9 flex items-center justify-center
+                  border transition-colors duration-150
+                  ${viewMode === 'list'
+                    ? 'bg-cream border-brand-silver text-text-heading'
+                    : 'bg-white border-border-light text-text-muted hover:border-brand-silver hover:text-text-heading'}
+                `}
               >
-                <List className="w-5 h-5" />
+                <List className="w-4 h-4" aria-hidden="true" />
               </button>
             </div>
-          </div>
 
-          {/* Category Filters */}
-          <div className={`flex flex-wrap gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
-            {Object.entries(t.categories).map(([key, label]) => {
-              const Icon = key === 'all' ? FolderOpen : categoryIcons[key as keyof typeof categoryIcons];
-              return (
-                <motion.button
-                  key={key}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setActiveCategory(key)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-none font-medium transition-all ${activeCategory === key
-                    ? 'bg-gradient-to-r from-brand-silver to-brand-dark text-white'
-                    : 'bg-white text-text-body hover:bg-off-white border border-border-light'
-                    }`}
-                >
-                  {Icon && <Icon className="w-4 h-4" />}
-                  <span>{label}</span>
-                </motion.button>
-              );
-            })}
-          </div>
-
-          {/* Product Type Filter */}
-          <div className={`flex flex-wrap gap-3 ${isRTL ? 'justify-end' : 'justify-start'}`}>
-            <span className="flex items-center gap-2 text-gray-700 font-semibold">
-              <Filter className="w-4 h-4" />
-              {t.productFilter.title}:
-            </span>
-            {Object.entries(t.productFilter).slice(1).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setFilterProduct(key)}
-                className={`px-4 py-2 rounded-none text-sm font-medium transition-all ${filterProduct === key
-                  ? 'bg-brand-red text-white'
-                  : 'bg-white text-text-body hover:bg-off-white border border-border-light'
-                  }`}
-              >
-                {label}
-              </button>
-            ))}
           </div>
         </div>
       </section>
