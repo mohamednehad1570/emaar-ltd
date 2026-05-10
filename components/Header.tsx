@@ -3,128 +3,162 @@
 /**
  * components/Header.tsx
  *
- * Fixed site header.
- * Desktop  — white bg → frosted-glass on scroll (Framer Motion); red active
- *             underline; phone number; WhatsApp icon; language toggle; CTA.
- * Mobile   — logo + burger; full-screen slide-in overlay (from right, or left
- *             in RTL); accordion sub-menus; Request Quote pinned at bottom.
+ * Rebuilt 52px header — mega-panel dropdowns on desktop, full-screen
+ * accordion overlay on mobile.
  *
- * Design rules (CLAUDE.md):
- *   • No blue — all text uses brand-dark / text-text-heading / text-text-body
- *   • Warm shadows only — rgba(45,41,38,x)
- *   • Cairo font inherited from body
- *   • 44 px+ touch targets everywhere
- *   • RTL-aware throughout
+ * Desktop anatomy:
+ *   Left   — logo mark + EMAAR wordmark (no subtitle line)
+ *   Centre — nav, absolutely centred; gap-8 (32px) between items
+ *            Hover: 2px brand-red underline scaleX 0→1 from origin-left
+ *            Active: underline always visible, text-brand-dark
+ *   Right  — language toggle (sharp), WhatsApp icon, Request Quote CTA
+ *   Mega   — full-width panel below header, 4-col grid with Phosphor icons
+ *            Hover-triggered; 150ms gap prevents flicker on cursor travel
+ *
+ * Mobile anatomy:
+ *   Logo + burger → slide-in overlay → accordion sub-menus → pinned CTA
+ *
+ * Scroll — Framer Motion animates bg/shadow after 20px; backdrop-blur via class
+ * RTL    — underline origin-right, arrows rotate, mega panel dir="rtl" reverses columns
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  List     as MenuIcon,
+  List        as MenuIcon,
   X,
-  Phone,
   WhatsappLogo,
   ArrowRight,
   CaretDown,
-  CaretRight,
+  House,
+  Buildings,
+  FrameCorners,
+  Stack,
 } from '@phosphor-icons/react';
 import Image    from 'next/image';
 import Link     from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '../contexts/LanguageContext';
+import { cn } from '@/lib/cn';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Discriminated union keeps TypeScript happy without @ts-ignore hacks. */
-type DropItem =
-  | { type: 'header'; en: string; ar: string }
-  | { type?: never; en: string; ar: string; href: string };
+type MegaItem = {
+  en:   string;
+  ar:   string;
+  href: string;
+  Icon: React.ComponentType<{ size?: number; className?: string }>;
+};
 
 interface NavItem {
-  en: string;
-  ar: string;
-  href: string;
-  dropdown?: DropItem[];
+  en:    string;
+  ar:    string;
+  href:  string;
+  mega?: MegaItem[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Data
+// Static data
 // ─────────────────────────────────────────────────────────────────────────────
 
-const PHONE_DISPLAY = '+971 50 123 4567';
-const PHONE_HREF    = 'tel:+971501234567';
-const WA_HREF       = 'https://wa.me/971501234567';
+const WA_HREF = 'https://wa.me/971501234567';
 
 const NAV: NavItem[] = [
-  { en: 'Home',           ar: 'الرئيسية',     href: '/'        },
+  { en: 'Home',           ar: 'الرئيسية',      href: '/'         },
   {
     en: 'Solutions', ar: 'الحلول', href: '/solutions',
-    dropdown: [
-      { type: 'header', en: 'By Sector',            ar: 'حسب القطاع'      },
-      { en: 'Residential',      ar: 'القطاع السكني',  href: '/solutions/residential' },
-      { en: 'Commercial',       ar: 'القطاع التجاري', href: '/solutions/commercial'  },
-      { type: 'header', en: 'By Material',           ar: 'حسب المادة'      },
-      { en: 'uPVC Systems',     ar: 'أنظمة uPVC',         href: '/products/upvc'     },
-      { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم',href: '/products/aluminum' },
+    mega: [
+      { en: 'Residential',      ar: 'القطاع السكني',    href: '/solutions/residential', Icon: House        },
+      { en: 'Commercial',       ar: 'القطاع التجاري',   href: '/solutions/commercial',  Icon: Buildings    },
+      { en: 'uPVC Systems',     ar: 'أنظمة uPVC',       href: '/products/upvc',         Icon: FrameCorners },
+      { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum',     Icon: Stack        },
     ],
   },
-  { en: 'Projects',      ar: 'المشاريع',     href: '/projects' },
-  { en: 'Technical Hub', ar: 'المركز التقني', href: '/tech'     },
-  { en: 'About Us',      ar: 'من نحن',        href: '/about'    },
-  { en: 'Contact',       ar: 'اتصل بنا',      href: '/contact'  },
+  { en: 'Projects',      ar: 'المشاريع',      href: '/projects'  },
+  { en: 'Technical Hub', ar: 'المركز التقني',  href: '/tech'      },
+  { en: 'About Us',      ar: 'من نحن',         href: '/about'     },
+  { en: 'Contact',       ar: 'اتصل بنا',       href: '/contact'   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-/**
- * Returns true when the current pathname lives inside a nav item's subtree.
- * Home is exact-match only so every other page doesn't inherit it.
- */
-function isActive(
-  pathname: string,
-  href: string,
-  dropdown?: DropItem[],
-): boolean {
+function isActive(pathname: string, href: string, mega?: MegaItem[]): boolean {
   if (href === '/') return pathname === '/';
   if (pathname.startsWith(href)) return true;
-  if (!dropdown) return false;
-  return dropdown.some(d => {
-    if (d.type === 'header') return false;
-    return pathname.startsWith(d.href);
-  });
+  return mega?.some(m => pathname.startsWith(m.href)) ?? false;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Component
+// Sub-component: MegaPanel
+// Renders the full-width dropdown panel for nav items with mega data.
+// ─────────────────────────────────────────────────────────────────────────────
+
+interface MegaPanelProps {
+  items:    MegaItem[];
+  language: 'en' | 'ar';
+  isRTL:   boolean;
+  onEnter: () => void;
+  onLeave: () => void;
+}
+
+function MegaPanel({ items, language, isRTL, onEnter, onLeave }: MegaPanelProps) {
+  const t = (item: { en: string; ar: string }) => item[language];
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -4 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -4 }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
+      className="absolute top-full left-0 right-0 bg-white border-b border-border-light"
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+    >
+      {/* py-8 px-24 per design spec — generous inset for visual breathing room */}
+      <div className="max-w-7xl mx-auto py-8 px-24" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="grid grid-cols-4 gap-6">
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="flex items-center gap-3 text-sm text-text-body hover:text-brand-dark transition-colors duration-150 group/mega"
+            >
+              {/* Icon box — square, no radius (--radius-button: 0px) */}
+              <span className="shrink-0 w-8 h-8 flex items-center justify-center bg-off-white group-hover/mega:bg-cream transition-colors duration-150">
+                <item.Icon size={16} className="text-brand-red" />
+              </span>
+              <span className="font-semibold leading-tight">{t(item)}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Main component
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function Header() {
   const { language, toggleLanguage, isRTL } = useLanguage();
   const pathname = usePathname();
 
-  /* Drives the Framer Motion scroll-glass transition */
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  /* Which desktop dropdown is open (keyed by English label) */
-  const [openDrop, setOpenDrop] = useState<string | null>(null);
-
-  /* Mobile overlay visibility */
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  /* Which mobile accordion section is expanded */
+  const [isScrolled,     setIsScrolled]     = useState(false);
+  const [openDrop,       setOpenDrop]       = useState<string | null>(null);
+  const [menuOpen,       setMenuOpen]       = useState(false);
   const [expandedMobile, setExpandedMobile] = useState<string | null>(null);
 
-  /* Close overlay whenever the route changes */
-  useEffect(() => {
-    setMenuOpen(false);
-    setExpandedMobile(null);
-  }, [pathname]);
+  /* 150ms delay lets the cursor travel from nav link to mega panel without
+     triggering a close — fires on both nav-item-leave and panel-leave.     */
+  const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /* Passive scroll listener — only toggles a boolean for performance */
+  const t = (item: { en: string; ar: string }) => item[language];
+
+  /* ── Passive scroll listener ──────────────────────────────────────────── */
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
     onScroll(); // run immediately so non-top pages start in scrolled state
@@ -132,27 +166,36 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  /* Close desktop dropdown when clicking outside its subtree */
+  /* ── Reset state on route change ─────────────────────────────────────── */
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (!(e.target as HTMLElement).closest('[data-nav-drop]')) {
-        setOpenDrop(null);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
+    setMenuOpen(false);
+    setExpandedMobile(null);
+    setOpenDrop(null);
+  }, [pathname]);
 
-  /* Prevent body scroll while mobile overlay is open */
+  /* ── Lock body scroll while mobile overlay is open ───────────────────── */
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  /** Returns the localised string for en/ar items. */
-  const t = (item: { en: string; ar: string }): string => item[language];
+  /* ── Mega panel hover handlers ──────────────────────────────────────── */
 
-  /** Closes mobile menu and resets accordion state. */
+  const openPanel = useCallback((key: string) => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current);
+    setOpenDrop(key);
+  }, []);
+
+  const scheduleClose = useCallback(() => {
+    closeTimeout.current = setTimeout(() => setOpenDrop(null), 150);
+  }, []);
+
+  const cancelClose = useCallback(() => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current);
+  }, []);
+
+  const activeMega = NAV.find(n => n.en === openDrop)?.mega ?? null;
+
   const closeMenu = () => {
     setMenuOpen(false);
     setExpandedMobile(null);
@@ -161,14 +204,12 @@ export default function Header() {
   return (
     <>
       {/* ═══════════════════════════════════════════════════════════════════
-          HEADER BAR
-          Framer Motion animates background + shadow on scroll.
-          backdrop-blur is toggled via CSS class (FM can't animate that prop).
+          HEADER BAR — 52px desktop height
       ═══════════════════════════════════════════════════════════════════ */}
       <motion.header
         initial={{
           backgroundColor: 'rgba(255,255,255,1)',
-          boxShadow: '0 0px 0px rgba(45,41,38,0)',
+          boxShadow:       '0 0 0 rgba(45,41,38,0)',
         }}
         animate={{
           backgroundColor: isScrolled
@@ -176,264 +217,153 @@ export default function Header() {
             : 'rgba(255,255,255,1)',
           /* warm shadow — never rgba(0,0,0,x) */
           boxShadow: isScrolled
-            ? '0 4px 20px rgba(45,41,38,0.10)'
-            : '0 0px 0px rgba(45,41,38,0)',
+            ? '0 4px 20px rgba(45,41,38,0.08)'
+            : '0 0 0 rgba(45,41,38,0)',
         }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 ${isScrolled ? 'backdrop-blur-md' : ''}`}
+        className={cn(
+          'fixed top-0 left-0 right-0 z-50',
+          isScrolled && 'backdrop-blur-md',
+        )}
       >
+        {/* ── Inner constrained container ────────────────────────────── */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
+          <div className="relative flex items-center h-[52px]">
 
-            {/* ─── Logo ──────────────────────────────────────────────────── */}
+            {/* ── Logo ─────────────────────────────────────────────── */}
             <Link
               href="/"
-              className="flex items-center gap-3 group shrink-0"
-              aria-label="Emaar International — home"
+              className="inline-flex items-center gap-2 shrink-0 group"
+              aria-label="EMAAR International — home"
             >
-              {/* Icon box */}
-              {/* logo icon box: rounded-sm (card/icon container, not a button) */}
-              <div className="
-                w-10 h-10 rounded-sm overflow-hidden bg-brand-dark flex items-center justify-center
-                shadow-[0_2px_8px_rgba(45,41,38,0.15)]
-                group-hover:shadow-[0_4px_16px_rgba(231,76,60,0.25)]
-                transition-shadow duration-300
-              ">
+              {/* Icon box — rounded-sm (brand icon container) */}
+              <div className="w-8 h-8 rounded-sm overflow-hidden bg-brand-dark flex items-center justify-center group-hover:shadow-[0_2px_8px_rgba(231,76,60,0.25)] transition-shadow duration-300">
                 <Image
                   src="/logo.svg"
                   alt=""
                   aria-hidden="true"
-                  width={40}
-                  height={40}
-                  className="w-7 h-7 object-contain brightness-0 invert"
+                  width={32}
+                  height={32}
+                  className="w-5 h-5 object-contain brightness-0 invert"
                   priority
                 />
               </div>
-
-              {/* Wordmark */}
-              <div className={`flex flex-col ${isRTL ? 'items-end' : 'items-start'}`}>
-                <span className="font-extrabold text-xl tracking-tight leading-none text-brand-dark">
-                  {language === 'en' ? 'EMAAR' : 'إعمار'}
-                </span>
-                <span className="text-[10px] font-medium tracking-widest uppercase text-text-muted">
-                  {language === 'en' ? 'International Industry' : 'الدولية للصناعة'}
-                </span>
-              </div>
+              {/* Wordmark only — no subtitle per spec */}
+              <span className="font-extrabold text-base tracking-tight leading-none text-brand-dark">
+                {language === 'en' ? 'EMAAR' : 'إعمار'}
+              </span>
             </Link>
 
-            {/* ─── Desktop navigation ────────────────────────────────────── */}
+            {/* ── Desktop navigation — absolutely centred ───────────── */}
             <nav
-              className="hidden lg:flex items-center gap-0.5"
+              className="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center h-full"
               aria-label="Primary navigation"
             >
-              {NAV.map((item) => {
-                const active = isActive(pathname, item.href, item.dropdown);
-                const isOpen = openDrop === item.en;
+              <div className="flex items-center gap-8 h-full">
+                {NAV.map((item) => {
+                  const active = isActive(pathname, item.href, item.mega);
+                  const isOpen = openDrop === item.en;
 
-                return (
-                  <div
-                    key={item.en}
-                    className="relative"
-                    data-nav-drop=""
-                    onMouseEnter={() => item.dropdown && setOpenDrop(item.en)}
-                    onMouseLeave={() => setOpenDrop(null)}
-                  >
-                    {/* Nav link / trigger */}
-                    <Link
-                      href={item.href}
-                      className={`
-                        relative flex items-center gap-1 px-3.5 py-2 text-sm font-semibold
-                        rounded-none transition-colors duration-200 group/link
-                        ${active
-                          ? 'text-brand-red'
-                          : 'text-text-heading hover:text-brand-red'}
-                      `}
+                  return (
+                    <div
+                      key={item.en}
+                      className="relative h-full flex items-center group/navitem"
+                      onMouseEnter={() => {
+                        if (item.mega) {
+                          openPanel(item.en);
+                        } else {
+                          /* Hovering a non-mega item closes any open panel */
+                          cancelClose();
+                          setOpenDrop(null);
+                        }
+                      }}
+                      onMouseLeave={scheduleClose}
                     >
-                      {t(item)}
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          'flex items-center gap-1 text-sm font-semibold transition-colors duration-150',
+                          active || isOpen
+                            ? 'text-brand-dark'
+                            : 'text-text-body hover:text-brand-dark',
+                        )}
+                      >
+                        {t(item)}
+                        {item.mega && (
+                          <CaretDown
+                            size={12}
+                            weight="bold"
+                            className={cn(
+                              'shrink-0 transition-transform duration-200',
+                              isOpen && 'rotate-180',
+                            )}
+                          />
+                        )}
+                      </Link>
 
-                      {item.dropdown && (
-                        <CaretDown
-                          size={13}
-                          weight="bold"
-                          className={`
-                            shrink-0 transition-transform duration-200
-                            ${isOpen ? 'rotate-180' : ''}
-                          `}
-                        />
-                      )}
-
-                      {/* Red underline — always visible when active, slides in on hover */}
+                      {/* 2px underline — slides in from reading-start edge.
+                          origin-right in RTL so it grows from the correct side. */}
                       <span
-                        className={`
-                          absolute bottom-0 h-0.5 rounded-full bg-brand-red
-                          transition-transform duration-200
-                          ${isRTL
-                            ? 'right-3.5 left-3.5 origin-right'
-                            : 'left-3.5 right-3.5 origin-left'}
-                          ${active
+                        className={cn(
+                          'absolute bottom-0 left-0 right-0 h-[2px] bg-brand-red',
+                          'transform transition-transform duration-200',
+                          'ease-[cubic-bezier(0.22,1,0.36,1)]',
+                          active || isOpen
                             ? 'scale-x-100'
-                            : 'scale-x-0 group-hover/link:scale-x-100'}
-                        `}
+                            : 'scale-x-0 group-hover/navitem:scale-x-100',
+                          isRTL ? 'origin-right' : 'origin-left',
+                        )}
+                        aria-hidden="true"
                       />
-                    </Link>
-
-                    {/* Dropdown panel */}
-                    <AnimatePresence>
-                      {item.dropdown && isOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                          transition={{ duration: 0.18, ease: 'easeOut' }}
-                          className={`
-                            absolute top-[calc(100%+8px)]
-                            ${isRTL ? 'right-0' : 'left-0'}
-                            {/* dropdown: rounded (4px = --radius-modal); shadow-warm-sm kept on dropdowns */}
-                          w-60 bg-white rounded border border-border-light
-                            shadow-[0_10px_40px_rgba(45,41,38,0.12)] p-2
-                          `}
-                        >
-                          {item.dropdown.map((d, i) =>
-                            d.type === 'header' ? (
-                              /* Section heading */
-                              <p
-                                key={i}
-                                className="px-3 pt-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-text-muted"
-                              >
-                                {t(d)}
-                              </p>
-                            ) : (
-                              /* Dropdown link */
-                              <Link
-                                key={i}
-                                href={d.href}
-                                className="
-                                  group/dd flex items-center justify-between
-                                  px-3 py-2.5 rounded-none text-sm text-text-body
-                                  hover:bg-cream hover:text-brand-red
-                                  transition-all duration-150
-                                "
-                              >
-                                <span>{t(d)}</span>
-                                <CaretRight
-                                  size={14}
-                                  className={`
-                                    opacity-0 group-hover/dd:opacity-100
-                                    transition-opacity
-                                    ${isRTL ? 'rotate-180' : ''}
-                                  `}
-                                />
-                              </Link>
-                            )
-                          )}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              })}
+                    </div>
+                  );
+                })}
+              </div>
             </nav>
 
-            {/* ─── Desktop actions ───────────────────────────────────────── */}
-            <div className="hidden lg:flex items-center gap-2 shrink-0">
+            {/* ── Desktop right actions ─────────────────────────────── */}
+            <div className="ml-auto hidden lg:flex items-center gap-3 shrink-0">
 
-              {/* Phone number — xl+ only, avoids cramping on 1024–1280 px */}
-              <a
-                href={PHONE_HREF}
-                className="
-                  hidden xl:flex items-center gap-1.5 px-2 py-2 rounded-none
-                  text-sm font-medium text-text-body
-                  hover:text-brand-red hover:bg-cream
-                  transition-colors duration-200
-                "
+              {/* Language toggle — sharp corners, no radius */}
+              <button
+                onClick={toggleLanguage}
+                className="px-3 py-1.5 text-xs font-bold text-text-heading bg-cream hover:bg-border-light transition-colors duration-200"
+                aria-label={language === 'en' ? 'Switch to Arabic' : 'Switch to English'}
               >
-                <Phone size={15} weight="fill" className="text-brand-red shrink-0" />
-                {/* dir=ltr so the number stays left-to-right in Arabic mode */}
-                <span dir="ltr" className="tabular-nums">{PHONE_DISPLAY}</span>
-              </a>
+                {language === 'en' ? 'ع' : 'EN'}
+              </button>
 
-              {/* WhatsApp icon */}
+              {/* WhatsApp icon — no phone number visible per spec */}
               <a
                 href={WA_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="
-                  flex items-center justify-center w-9 h-9 rounded-none
-                  text-whatsapp hover:bg-whatsapp/10
-                  transition-colors duration-200
-                "
+                className="flex items-center justify-center w-8 h-8 text-whatsapp hover:bg-whatsapp/10 transition-colors duration-200"
                 aria-label="Chat on WhatsApp"
               >
                 <WhatsappLogo size={20} weight="fill" />
               </a>
 
               {/* Visual divider */}
-              <span className="w-px h-5 bg-border-light" aria-hidden="true" />
+              <span className="w-px h-4 bg-border-light" aria-hidden="true" />
 
-              {/* Language toggle */}
-              <button
-                onClick={toggleLanguage}
-                className="
-                  px-3.5 py-1.5 rounded-none text-xs font-bold
-                  bg-cream text-text-heading hover:bg-border-light
-                  transition-colors duration-200
-                "
-                aria-label={
-                  language === 'en' ? 'Switch to Arabic' : 'Switch to English'
-                }
-              >
-                {language === 'en' ? 'AR' : 'EN'}
-              </button>
-
-              {/* Request Quote CTA */}
+              {/* Request Quote CTA — 0px radius, 36px height, px-4 */}
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/contact"
-                  className="
-                    flex items-center gap-1.5 px-5 py-2.5 rounded-none
-                    text-sm font-bold text-white
-                    bg-brand-red hover:bg-brand-red-dark
-                    shadow-[0_4px_15px_rgba(231,76,60,0.25)]
-                    hover:shadow-[0_6px_24px_rgba(231,76,60,0.35)]
-                    transition-all duration-200
-                  "
+                  className="inline-flex items-center gap-1.5 px-4 h-9 bg-brand-red hover:bg-brand-red-dark text-white text-sm font-bold transition-colors duration-200"
                 >
                   {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
-                  <ArrowRight
-                    size={15}
-                    weight="bold"
-                    className={isRTL ? 'rotate-180' : ''}
-                  />
+                  <ArrowRight size={14} weight="bold" className={isRTL ? 'rotate-180' : ''} />
                 </Link>
               </motion.div>
             </div>
 
-            {/* ─── Mobile / tablet header actions ───────────────────────── */}
-            <div className="flex lg:hidden items-center gap-1.5 shrink-0">
-
-              {/* Language toggle */}
-              <button
-                onClick={toggleLanguage}
-                className="
-                  flex items-center justify-center px-3 h-11 rounded-none
-                  text-xs font-bold bg-cream text-text-heading
-                  hover:bg-border-light transition-colors duration-200
-                "
-                aria-label={
-                  language === 'en' ? 'Switch to Arabic' : 'Switch to English'
-                }
-              >
-                {language === 'en' ? 'AR' : 'EN'}
-              </button>
-
-              {/* Burger */}
+            {/* ── Mobile burger ─────────────────────────────────────── */}
+            <div className="ml-auto flex lg:hidden items-center shrink-0">
               <button
                 onClick={() => setMenuOpen(true)}
-                className="
-                  flex items-center justify-center w-11 h-11 rounded-none
-                  text-text-heading hover:bg-cream
-                  transition-colors duration-200
-                "
+                className="flex items-center justify-center w-11 h-11 text-text-heading hover:bg-cream transition-colors duration-200"
                 aria-label="Open menu"
                 aria-expanded={menuOpen}
                 aria-controls="mobile-nav"
@@ -444,17 +374,31 @@ export default function Header() {
 
           </div>
         </div>
+
+        {/* ── Mega panel — full-width, outside constrained container ── */}
+        <AnimatePresence>
+          {openDrop && activeMega && (
+            <MegaPanel
+              key="mega"
+              items={activeMega}
+              language={language}
+              isRTL={isRTL}
+              onEnter={cancelClose}
+              onLeave={scheduleClose}
+            />
+          )}
+        </AnimatePresence>
+
       </motion.header>
 
       {/* ═══════════════════════════════════════════════════════════════════
           MOBILE FULL-SCREEN OVERLAY
-          Slides in from the right (left in RTL) using Framer Motion.
-          "Request Quote" is always visible at the bottom — not scrolled away.
+          Slides in from right (left in RTL). Request Quote pinned at bottom.
       ═══════════════════════════════════════════════════════════════════ */}
       <AnimatePresence>
         {menuOpen && (
           <>
-            {/* Dim scrim */}
+            {/* Dim scrim — tap to close */}
             <motion.div
               key="scrim"
               initial={{ opacity: 0 }}
@@ -466,7 +410,7 @@ export default function Header() {
               onClick={closeMenu}
             />
 
-            {/* Slide-in panel — full viewport width & height */}
+            {/* Slide-in panel */}
             <motion.nav
               key="panel"
               id="mobile-nav"
@@ -478,90 +422,76 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: isRTL ? '-100%' : '100%' }}
               transition={{ type: 'tween', duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
-              className={`
-                fixed top-0 ${isRTL ? 'left-0' : 'right-0'}
-                w-full h-full bg-white z-[70] lg:hidden
-                flex flex-col
-              `}
+              className={cn(
+                'fixed top-0 h-full w-full bg-white z-[70] lg:hidden flex flex-col',
+                isRTL ? 'left-0' : 'right-0',
+              )}
             >
-
-              {/* Panel top bar — mirrors header height */}
-              <div className="
-                flex items-center justify-between
-                px-5 h-20 border-b border-border-light shrink-0
-              ">
+              {/* ── Panel top bar — mirrors header height ──────────── */}
+              <div className="flex items-center justify-between px-5 h-[52px] border-b border-border-light shrink-0">
                 <Link
                   href="/"
                   onClick={closeMenu}
-                  className="flex items-center gap-2.5"
-                  aria-label="Emaar International — home"
+                  className="inline-flex items-center gap-2"
+                  aria-label="EMAAR International — home"
                 >
-                  <div className="
-                    w-9 h-9 rounded-sm overflow-hidden bg-brand-dark
-                    flex items-center justify-center
-                  ">
+                  <div className="w-7 h-7 rounded-sm overflow-hidden bg-brand-dark flex items-center justify-center">
                     <Image
                       src="/logo.svg"
                       alt=""
                       aria-hidden="true"
-                      width={36}
-                      height={36}
-                      className="w-6 h-6 object-contain brightness-0 invert"
+                      width={28}
+                      height={28}
+                      className="w-4 h-4 object-contain brightness-0 invert"
                     />
                   </div>
-                  <span className="font-extrabold text-lg text-brand-dark">
+                  <span className="font-extrabold text-sm text-brand-dark">
                     {language === 'en' ? 'EMAAR' : 'إعمار'}
                   </span>
                 </Link>
 
                 <button
                   onClick={closeMenu}
-                  className="
-                    flex items-center justify-center w-11 h-11 rounded-none
-                    text-text-muted hover:bg-cream hover:text-text-heading
-                    transition-colors duration-200
-                  "
+                  className="flex items-center justify-center w-11 h-11 text-text-muted hover:bg-cream hover:text-text-heading transition-colors duration-200"
                   aria-label="Close menu"
                 >
                   <X size={22} />
                 </button>
               </div>
 
-              {/* Scrollable nav list */}
+              {/* ── Scrollable nav list ──────────────────────────────── */}
               <div className="flex-1 overflow-y-auto px-4 py-3">
                 {NAV.map((item) => {
-                  const active   = isActive(pathname, item.href, item.dropdown);
+                  const active   = isActive(pathname, item.href, item.mega);
                   const expanded = expandedMobile === item.en;
 
                   return (
                     <div key={item.en} className="mb-1">
-                      {item.dropdown ? (
-                        /* Expandable item — tap header to open accordion */
+                      {item.mega ? (
                         <>
+                          {/* Accordion trigger */}
                           <button
-                            onClick={() =>
-                              setExpandedMobile(expanded ? null : item.en)
-                            }
-                            className={`
-                              w-full flex items-center justify-between
-                              px-4 py-3 min-h-[52px] rounded-none
-                              text-base font-semibold transition-colors duration-200
-                              ${active
+                            onClick={() => setExpandedMobile(expanded ? null : item.en)}
+                            className={cn(
+                              'w-full flex items-center justify-between',
+                              'px-4 py-3 min-h-[52px]',
+                              'text-base font-semibold transition-colors duration-200',
+                              active
                                 ? 'text-brand-red bg-cream'
-                                : 'text-text-heading hover:bg-cream'}
-                            `}
+                                : 'text-text-heading hover:bg-cream',
+                            )}
                           >
                             <span>{t(item)}</span>
-                            <CaretDown
-                              size={16}
-                              weight="bold"
-                              className={`
-                                shrink-0 transition-transform duration-300
-                                ${expanded
-                                  ? 'rotate-180 text-brand-red'
-                                  : 'text-text-muted'}
-                              `}
-                            />
+                            <motion.span
+                              animate={{ rotate: expanded ? 180 : 0 }}
+                              transition={{ duration: 0.25 }}
+                            >
+                              <CaretDown
+                                size={16}
+                                weight="bold"
+                                className={active ? 'text-brand-red' : 'text-text-muted'}
+                              />
+                            </motion.span>
                           </button>
 
                           {/* Accordion body */}
@@ -574,54 +504,34 @@ export default function Header() {
                                 transition={{ duration: 0.25, ease: 'easeOut' }}
                                 className="overflow-hidden"
                               >
+                                {/* Red accent line — warm, signals sub-nav depth */}
                                 <div
-                                  className={`
-                                    py-1
-                                    ${isRTL
+                                  className={cn(
+                                    'py-1',
+                                    isRTL
                                       ? 'pr-4 mr-4 border-r-2'
-                                      : 'pl-4 ml-4 border-l-2'}
-                                  `}
-                                  /* Subtle red accent line — warm, not harsh */
+                                      : 'pl-4 ml-4 border-l-2',
+                                  )}
                                   style={{ borderColor: 'rgba(231,76,60,0.2)' }}
                                 >
-                                  {item.dropdown.map((d, i) =>
-                                    d.type === 'header' ? (
-                                      <p
-                                        key={i}
-                                        className="
-                                          px-3 pt-3 pb-1
-                                          text-[11px] font-bold uppercase
-                                          tracking-wider text-text-muted
-                                        "
-                                      >
-                                        {t(d)}
-                                      </p>
-                                    ) : (
-                                      <Link
-                                        key={i}
-                                        href={d.href}
-                                        onClick={closeMenu}
-                                        className={`
-                                          flex items-center gap-2.5
-                                          px-3 py-3 min-h-[48px] rounded-none
-                                          text-sm font-medium
-                                          transition-colors duration-150
-                                          ${pathname === d.href
-                                            ? 'text-brand-red'
-                                            : 'text-text-body hover:text-brand-red hover:bg-cream'}
-                                        `}
-                                      >
-                                        <CaretRight
-                                          size={13}
-                                          className={`
-                                            text-text-muted shrink-0
-                                            ${isRTL ? 'rotate-180' : ''}
-                                          `}
-                                        />
-                                        {t(d)}
-                                      </Link>
-                                    )
-                                  )}
+                                  {item.mega.map((sub) => (
+                                    <Link
+                                      key={sub.href}
+                                      href={sub.href}
+                                      onClick={closeMenu}
+                                      className={cn(
+                                        'flex items-center gap-3',
+                                        'px-3 py-3 min-h-[48px]',
+                                        'text-sm font-medium transition-colors duration-150',
+                                        pathname.startsWith(sub.href)
+                                          ? 'text-brand-red'
+                                          : 'text-text-body hover:text-brand-red hover:bg-cream',
+                                      )}
+                                    >
+                                      <sub.Icon size={15} className="text-brand-silver shrink-0" />
+                                      {t(sub)}
+                                    </Link>
+                                  ))}
                                 </div>
                               </motion.div>
                             )}
@@ -632,15 +542,13 @@ export default function Header() {
                         <Link
                           href={item.href}
                           onClick={closeMenu}
-                          className={`
-                            flex items-center
-                            px-4 py-3 min-h-[52px] rounded-none
-                            text-base font-semibold
-                            transition-colors duration-200
-                            ${active
+                          className={cn(
+                            'flex items-center px-4 py-3 min-h-[52px]',
+                            'text-base font-semibold transition-colors duration-200',
+                            active
                               ? 'text-brand-red bg-cream'
-                              : 'text-text-heading hover:bg-cream'}
-                          `}
+                              : 'text-text-heading hover:bg-cream',
+                          )}
                         >
                           {t(item)}
                         </Link>
@@ -650,26 +558,13 @@ export default function Header() {
                 })}
               </div>
 
-              {/* ── Pinned bottom bar ──────────────────────────────────────
-                  Always visible — never scrolls off screen.
-                  Request Quote is the primary action; phone and WA secondary.
-              ────────────────────────────────────────────────────────── */}
-              <div className="
-                shrink-0 border-t border-border-light
-                bg-off-white px-5 py-5 space-y-3
-              ">
-                {/* Primary CTA */}
+              {/* ── Pinned bottom bar ─────────────────────────────────
+                  Always visible; Request Quote is the primary action.    */}
+              <div className="shrink-0 border-t border-border-light bg-off-white px-5 py-4">
                 <Link
                   href="/contact"
                   onClick={closeMenu}
-                  className="
-                    flex items-center justify-center gap-2
-                    w-full min-h-[52px] rounded-none
-                    text-base font-bold text-white
-                    bg-brand-red hover:bg-brand-red-dark
-                    shadow-[0_4px_15px_rgba(231,76,60,0.25)]
-                    transition-all duration-200
-                  "
+                  className="flex items-center justify-center gap-2 w-full min-h-[52px] bg-brand-red hover:bg-brand-red-dark text-white text-base font-bold transition-colors duration-200"
                 >
                   {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
                   <ArrowRight
@@ -678,38 +573,6 @@ export default function Header() {
                     className={isRTL ? 'rotate-180' : ''}
                   />
                 </Link>
-
-                {/* Secondary: phone + WhatsApp */}
-                <div className="grid grid-cols-2 gap-3">
-                  <a
-                    href={PHONE_HREF}
-                    className="
-                      flex items-center justify-center gap-2
-                      min-h-[48px] rounded-none
-                      border border-border-medium bg-white
-                      text-sm font-semibold text-text-heading
-                      hover:bg-cream transition-colors duration-200
-                    "
-                  >
-                    <Phone size={16} weight="fill" className="text-brand-red shrink-0" />
-                    {language === 'en' ? 'Call Us' : 'اتصل بنا'}
-                  </a>
-                  <a
-                    href={WA_HREF}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                      flex items-center justify-center gap-2
-                      min-h-[48px] rounded-none
-                      border border-whatsapp/40 bg-white
-                      text-sm font-semibold text-whatsapp
-                      hover:bg-whatsapp/5 transition-colors duration-200
-                    "
-                  >
-                    <WhatsappLogo size={16} weight="fill" className="shrink-0" />
-                    WhatsApp
-                  </a>
-                </div>
               </div>
 
             </motion.nav>
