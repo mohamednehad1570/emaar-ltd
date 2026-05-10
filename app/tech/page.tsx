@@ -126,14 +126,14 @@ export default function TechnicalDownloadsPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t.search.placeholder}
-                className={`w-full ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 rounded-xl border-2 border-border-light focus:border-brand-red focus:outline-none transition-colors`}
+                className={`w-full ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3 rounded-none border-2 border-border-light focus:border-brand-red focus:outline-none transition-colors`}
               />
             </div>
 
             <div className="flex gap-2">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-3 rounded-xl transition-colors ${viewMode === 'grid'
+                className={`p-3 rounded-none transition-colors ${viewMode === 'grid'
                   ? 'bg-brand-red text-white'
                   : 'bg-white text-text-body hover:bg-off-white'
                   }`}
@@ -142,7 +142,7 @@ export default function TechnicalDownloadsPage() {
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-3 rounded-xl transition-colors ${viewMode === 'list'
+                className={`p-3 rounded-none transition-colors ${viewMode === 'list'
                   ? 'bg-brand-red text-white'
                   : 'bg-white text-text-body hover:bg-off-white'
                   }`}
@@ -162,9 +162,9 @@ export default function TechnicalDownloadsPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveCategory(key)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all ${activeCategory === key
-                    ? 'bg-gradient-to-r from-brand-silver to-brand-dark text-white shadow-lg'
-                    : 'bg-white text-gray-700 hover:bg-off-white border border-border-light'
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-none font-medium transition-all ${activeCategory === key
+                    ? 'bg-gradient-to-r from-brand-silver to-brand-dark text-white'
+                    : 'bg-white text-text-body hover:bg-off-white border border-border-light'
                     }`}
                 >
                   {Icon && <Icon className="w-4 h-4" />}
@@ -184,7 +184,7 @@ export default function TechnicalDownloadsPage() {
               <button
                 key={key}
                 onClick={() => setFilterProduct(key)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${filterProduct === key
+                className={`px-4 py-2 rounded-none text-sm font-medium transition-all ${filterProduct === key
                   ? 'bg-brand-red text-white'
                   : 'bg-white text-text-body hover:bg-off-white border border-border-light'
                   }`}
@@ -208,7 +208,7 @@ export default function TechnicalDownloadsPage() {
                 : `تم العثور على ${filteredFiles.length} وثيقة`
               }
             </p>
-            <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-brand-silver to-brand-silver text-white font-semibold hover:shadow-lg transition-shadow">
+            <button className="flex items-center gap-2 px-6 py-3 rounded-none bg-gradient-to-r from-brand-silver to-brand-silver text-white font-semibold transition-all">
               <Archive className="w-5 h-5" />
               {t.actions.downloadAll}
             </button>
@@ -230,7 +230,7 @@ export default function TechnicalDownloadsPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white rounded-2xl shadow-warm-lg overflow-hidden hover:shadow-warm-xl transition-shadow"
+                    className="bg-white rounded-sm overflow-hidden border border-border-light hover:border-2 hover:border-brand-silver transition-all"
                   >
                     {/* Preview Image */}
                     {file.preview && (
@@ -242,7 +242,8 @@ export default function TechnicalDownloadsPage() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         <div className="absolute top-4 right-4 flex gap-2">
-                          <span className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-xs font-bold text-brand-red">
+                          {/* format badge: rounded-none */}
+                          <span className="px-3 py-1 rounded-none bg-white/90 backdrop-blur-sm text-xs font-bold text-brand-red">
                             {file.format}
                           </span>
                         </div>
@@ -251,7 +252,7 @@ export default function TechnicalDownloadsPage() {
 
                     <div className="p-6">
                       <div className="flex items-start gap-3 mb-4">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-red/10 to-brand-silver/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 rounded-sm bg-gradient-to-br from-brand-red/10 to-brand-silver/10 flex items-center justify-center flex-shrink-0">
                           <Icon className="w-5 h-5 text-brand-red" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -274,12 +275,12 @@ export default function TechnicalDownloadsPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleDownload(file)}
-                          className="flex-1 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold hover:shadow-lg transition-shadow flex items-center justify-center gap-2"
+                          className="flex-1 px-4 py-2 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold transition-all flex items-center justify-center gap-2"
                         >
                           <Download className="w-4 h-4" />
                           {t.actions.download}
                         </button>
-                        <button className="px-4 py-2 rounded-xl border-2 border-border-light hover:border-brand-red transition-colors">
+                        <button className="px-4 py-2 rounded-none border-2 border-border-light hover:border-brand-red transition-colors">
                           <Eye className="w-4 h-4 text-text-body" />
                         </button>
                       </div>
@@ -299,10 +300,10 @@ export default function TechnicalDownloadsPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white rounded-2xl shadow-warm-lg p-6 hover:shadow-warm-xl transition-shadow"
+                    className="bg-white rounded-sm p-6 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-red/10 to-brand-silver/10 flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-brand-red/10 to-brand-silver/10 flex items-center justify-center flex-shrink-0">
                         <Icon className="w-6 h-6 text-brand-red" />
                       </div>
 
@@ -327,12 +328,12 @@ export default function TechnicalDownloadsPage() {
                       <div className="flex gap-2 flex-shrink-0">
                         <button
                           onClick={() => handleDownload(file)}
-                          className="px-6 py-2 rounded-xl bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold hover:shadow-lg transition-shadow flex items-center gap-2"
+                          className="px-6 py-2 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold transition-all flex items-center gap-2"
                         >
                           <Download className="w-4 h-4" />
                           {t.actions.download}
                         </button>
-                        <button className="px-4 py-2 rounded-xl border-2 border-border-light hover:border-brand-red transition-colors">
+                        <button className="px-4 py-2 rounded-none border-2 border-border-light hover:border-brand-red transition-colors">
                           <Eye className="w-4 h-4 text-text-body" />
                         </button>
                       </div>
@@ -360,7 +361,7 @@ export default function TechnicalDownloadsPage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
+                className="px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
               >
                 {t.cta.button}
               </motion.button>

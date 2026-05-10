@@ -310,7 +310,7 @@ export default function Footer() {
               aria-label="Emaar International — home"
             >
               <div className="
-                w-11 h-11 rounded-xl overflow-hidden bg-brand-dark flex items-center justify-center
+                w-11 h-11 rounded-sm overflow-hidden bg-brand-dark flex items-center justify-center
                 shadow-[0_2px_8px_rgba(45,41,38,0.15)]
                 group-hover:shadow-[0_4px_16px_rgba(231,76,60,0.22)]
                 transition-shadow duration-300
@@ -354,7 +354,7 @@ export default function Footer() {
                   whileHover={{ y: -3 }}
                   whileTap={{ scale: 0.92 }}
                   className="
-                    w-9 h-9 rounded-lg flex items-center justify-center
+                    w-9 h-9 rounded-none flex items-center justify-center
                     border border-border-light text-text-muted
                     hover:text-brand-red hover:border-brand-red/30
                     transition-colors duration-200
@@ -397,7 +397,7 @@ export default function Footer() {
               className="inline-flex items-center gap-3"
               aria-label="Emaar International — home"
             >
-              <div className="w-10 h-10 rounded-xl overflow-hidden bg-brand-dark flex items-center justify-center shadow-[0_2px_8px_rgba(45,41,38,0.12)]">
+              <div className="w-10 h-10 rounded-sm overflow-hidden bg-brand-dark flex items-center justify-center shadow-[0_2px_8px_rgba(45,41,38,0.12)]">
                 <Image
                   src="/logo.svg"
                   alt=""
@@ -433,7 +433,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   aria-label={label}
                   className="
-                    w-10 h-10 rounded-lg flex items-center justify-center
+                    w-10 h-10 rounded-none flex items-center justify-center
                     border border-border-light text-text-muted
                     hover:text-brand-red hover:border-brand-red/30
                     transition-colors duration-200

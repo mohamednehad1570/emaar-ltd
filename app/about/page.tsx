@@ -68,7 +68,8 @@ export default function AboutPage() {
               const Icon = resolveIcon(stat.icon);
               return (
                 <motion.div key={idx} variants={fadeUp} className="relative group">
-                  <div className="absolute inset-0 bg-white rounded-2xl shadow-warm-lg group-hover:shadow-warm-lg transition-shadow" />
+                  {/* stat card bg: rounded-sm, no shadow */}
+                  <div className="absolute inset-0 bg-white rounded-sm" />
                   <div className="relative p-6 text-center">
                     <Icon className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                     <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-brand-red to-brand-silver bg-clip-text text-transparent mb-2">
@@ -91,7 +92,7 @@ export default function AboutPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="bg-white rounded-3xl p-8 md:p-12 shadow-warm-xl"
+            className="bg-white rounded-sm p-8 md:p-12 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-6 text-center">
               {t.story.title}
@@ -109,7 +110,7 @@ export default function AboutPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg shadow-warm-lg hover:shadow-warm-xl transition-shadow"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg shadow-warm-red hover:shadow-[0_8px_32px_rgba(231,76,60,0.4)] transition-shadow"
                 >
                   {t.story.cta}
                   <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
@@ -150,7 +151,7 @@ export default function AboutPage() {
                     className={`flex items-center gap-8 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} ${isRTL ? 'flex-row-reverse' : ''}`}
                   >
                     <div className={`flex-1 ${idx % 2 === 0 ? 'md:text-right' : 'md:text-left'} ${isRTL ? 'text-right' : 'text-left'}`}>
-                      <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/20 transition-colors">
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm p-6 hover:bg-white/20 transition-colors">
                         <div className="text-3xl font-bold text-brand-silver mb-2">{event.year}</div>
                         <h3 className="text-xl font-bold mb-2">{event.title}</h3>
                         <p className="text-white/70">{event.description}</p>
@@ -195,7 +196,7 @@ export default function AboutPage() {
                   whileInView="visible"
                   viewport={viewportOnce}
                   transition={{ delay: idx * 0.15 }}
-                  className="bg-white rounded-3xl p-8 shadow-warm-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/20"
+                  className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
                 >
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-white" />
@@ -231,7 +232,8 @@ export default function AboutPage() {
           >
             {t.team.members.map((member, idx) => (
               <motion.div key={idx} variants={fadeUp} className="group">
-                <div className="bg-white rounded-3xl overflow-hidden shadow-warm-xl hover:shadow-warm-lg transition-all duration-300 border border-brand-silver/10">
+                {/* team card: rounded-sm, no shadow */}
+                <div className="bg-white rounded-sm overflow-hidden border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-300">
                   <div className="relative h-64 overflow-hidden">
                     <img
                       src={member.image}
@@ -278,7 +280,7 @@ export default function AboutPage() {
                   whileInView="visible"
                   viewport={viewportOnce}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white rounded-2xl p-6 shadow-warm-lg hover:shadow-warm-xl transition-shadow text-center border border-brand-silver/10"
+                  className="bg-white rounded-sm p-6 border border-border-light hover:border-2 hover:border-brand-silver transition-all text-center"
                 >
                   <Icon className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                   <h3 className="font-bold text-lg text-brand-dark mb-2">{feature.title}</h3>
@@ -293,7 +295,7 @@ export default function AboutPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="relative h-96 rounded-3xl overflow-hidden shadow-warm-lg"
+            className="relative h-96 rounded-sm overflow-hidden border border-border-light"
           >
             <img
               src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1600&h=600&fit=crop"
@@ -335,7 +337,7 @@ export default function AboutPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className="bg-white rounded-2xl p-6 shadow-warm-lg hover:shadow-warm-xl transition-all duration-300 group border border-brand-silver/10"
+                  className="bg-white rounded-sm p-6 border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-300 group"
                 >
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-7 h-7 text-white" />
@@ -372,7 +374,7 @@ export default function AboutPage() {
                 viewport={viewportOnce}
                 transition={{ delay: idx * 0.05 }}
                 whileHover={{ scale: 1.05 }}
-                className="bg-white rounded-2xl p-6 shadow-warm-lg text-center border border-brand-silver/10"
+                className="bg-white rounded-sm p-6 border border-border-light hover:border-2 hover:border-brand-silver transition-all text-center"
               >
                 <Award className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                 <h3 className="font-bold text-brand-dark mb-1">{award.name}</h3>
@@ -407,7 +409,7 @@ export default function AboutPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl hover:shadow-warm-xl transition-shadow"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl hover:shadow-warm-xl transition-shadow"
                 >
                   {t.cta.button}
                   <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
@@ -417,7 +419,7 @@ export default function AboutPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm text-white font-semibold text-lg border-2 border-white/30 hover:bg-white/20 transition-colors"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white/10 backdrop-blur-sm text-white font-semibold text-lg border-2 border-white/30 hover:bg-white/20 transition-colors"
                 >
                   {t.cta.secondary}
                 </motion.button>

@@ -63,8 +63,8 @@ export default function CareersPage() {
             {t.culture.values.map((value, idx) => {
               const Icon = resolveIcon(value.icon);
               return (
-                <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -5 }} className="bg-white rounded-2xl shadow-warm-lg p-8 hover:shadow-warm-xl transition-all">
-                  <div className="w-14 h-14 rounded-2xl bg-brand-red/10 flex items-center justify-center mb-4">
+                <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -5 }} className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all">
+                  <div className="w-14 h-14 rounded-sm bg-brand-red/10 flex items-center justify-center mb-4">
                     <Icon className="w-7 h-7 text-brand-red" />
                   </div>
                   <h3 className="text-xl font-bold text-brand-dark mb-2">{value.title}</h3>
@@ -96,7 +96,7 @@ export default function CareersPage() {
           <div className={`flex flex-wrap justify-center gap-3 mb-12 ${isRTL ? 'flex-row-reverse' : ''}`}>
             {Object.entries(t.filters).map(([key, label]) => (
               <motion.button key={key} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setActiveFilter(key)}
-                className={`px-6 py-2.5 rounded-full font-medium transition-all ${activeFilter === key ? 'bg-brand-red text-white shadow-lg' : 'bg-white text-brand-gray hover:bg-brand-bg border border-brand-silver/20'}`}>
+                className={`px-6 py-2.5 rounded-none font-medium transition-all ${activeFilter === key ? 'bg-brand-red text-white' : 'bg-white text-brand-gray hover:bg-brand-bg border border-brand-silver/20'}`}>
                 {label}
               </motion.button>
             ))}
@@ -104,12 +104,12 @@ export default function CareersPage() {
 
           <div className="space-y-6">
             {filteredJobs.map((job, idx) => (
-              <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-3xl shadow-warm-lg overflow-hidden">
+              <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-sm overflow-hidden border border-border-light hover:border-2 hover:border-brand-silver">
                 <button onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)} className="w-full p-6 lg:p-8 text-left hover:bg-brand-bg transition-colors">
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-start gap-3 mb-3">
-                        <div className="w-12 h-12 rounded-xl bg-brand-red/10 flex items-center justify-center flex-shrink-0">
+                        <div className="w-12 h-12 rounded-sm bg-brand-red/10 flex items-center justify-center flex-shrink-0">
                           <Briefcase className="w-6 h-6 text-brand-red" />
                         </div>
                         <div className="flex-1">
@@ -150,7 +150,7 @@ export default function CareersPage() {
                           </div>
                         </div>
                         <div className="mt-8">
-                          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => handleApply(job)} className="w-full px-8 py-4 rounded-xl bg-brand-red text-white font-bold text-lg shadow-warm-lg hover:bg-brand-red-dark transition-all">
+                          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => handleApply(job)} className="w-full px-8 py-4 rounded-none bg-brand-red text-white font-bold text-lg hover:bg-brand-red-dark transition-all">
                             {language === 'en' ? 'Apply Now' : 'تقدم الآن'}
                           </motion.button>
                         </div>
@@ -179,7 +179,7 @@ export default function CareersPage() {
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>
             <p className="text-xl text-white/70 mb-8">{t.cta.description}</p>
             <a href={`mailto:${t.application.email}`}>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl">
+              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl">
                 {t.cta.button}
               </motion.button>
             </a>

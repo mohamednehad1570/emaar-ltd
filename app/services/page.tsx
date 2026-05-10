@@ -73,11 +73,11 @@ export default function ServicesPage() {
               const Icon = resolveIcon(step.icon);
               return (
                 <motion.div key={idx} variants={fadeUp} className="relative">
-                  <div className="bg-white rounded-3xl p-6 md:p-8 shadow-warm-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/10">
+                  <div className="bg-white rounded-sm p-6 md:p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all">
                     <div className="flex flex-col md:flex-row gap-6 items-start">
                       <div className="flex-shrink-0">
                         <div className="relative">
-                          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-3">
+                          <div className="w-20 h-20 rounded-sm bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-3">
                             <Icon className="w-10 h-10 text-white" />
                           </div>
                           <div className="text-4xl font-bold text-brand-silver/30 absolute -top-4 -left-4">{step.number}</div>
@@ -87,11 +87,11 @@ export default function ServicesPage() {
                         <h3 className="text-2xl font-bold text-brand-dark mb-3">{step.title}</h3>
                         <p className="text-brand-gray leading-relaxed mb-4">{step.description}</p>
                         <div className="flex flex-wrap gap-4">
-                          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-bg">
+                          <div className="flex items-center gap-2 px-4 py-2 rounded-none bg-brand-bg">
                             <Clock className="w-4 h-4 text-brand-red" />
                             <span className="text-sm font-semibold text-brand-dark">{step.duration}</span>
                           </div>
-                          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-red/5">
+                          <div className="flex items-center gap-2 px-4 py-2 rounded-none bg-brand-red/5">
                             <CheckCircle2 className="w-4 h-4 text-brand-red" />
                             <span className="text-sm font-semibold text-brand-dark">{step.deliverable}</span>
                           </div>
@@ -137,11 +137,11 @@ export default function ServicesPage() {
               return (
                 <motion.div key={idx} variants={fadeUp} className="relative">
                   {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold text-sm shadow-lg z-10">
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold text-sm z-10">
                       {language === 'en' ? 'Most Popular' : 'الأكثر شعبية'}
                     </div>
                   )}
-                  <div className={`bg-white rounded-3xl p-8 shadow-warm-xl hover:shadow-warm-lg transition-all h-full border ${plan.popular ? 'border-brand-red ring-2 ring-brand-red/20' : 'border-brand-silver/10'}`}>
+                  <div className={`bg-white rounded-sm p-8 transition-all h-full border `}>
                     <Icon className="w-12 h-12 text-brand-red mb-4" />
                     <h3 className="text-2xl font-bold text-brand-dark mb-2">{plan.name}</h3>
                     <div className="text-3xl font-bold text-brand-red mb-6">{plan.price}</div>
@@ -157,7 +157,7 @@ export default function ServicesPage() {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        className="w-full px-6 py-3 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold hover:shadow-lg transition-shadow"
+                        className="w-full px-6 py-3 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold transition-all"
                       >
                         {language === 'en' ? 'Choose Plan' : 'اختر الخطة'}
                       </motion.button>
@@ -174,7 +174,7 @@ export default function ServicesPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="bg-gradient-to-br from-brand-red to-brand-red-dark rounded-3xl p-8 md:p-12 text-white"
+            className="bg-gradient-to-br from-brand-red to-brand-red-dark rounded-sm p-8 md:p-12 text-white"
           >
             <div className="text-center mb-8">
               <AlertCircle className="w-16 h-16 mx-auto mb-4" />
@@ -187,7 +187,7 @@ export default function ServicesPage() {
                 const FIcon = resolveIcon(feature.icon);
                 return (
                   <div key={idx} className="text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
+                    <div className="w-16 h-16 rounded-sm bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
                       <FIcon className="w-8 h-8" />
                     </div>
                     <h4 className="font-bold mb-2">{feature.title}</h4>
@@ -203,7 +203,7 @@ export default function ServicesPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
                 >
                   <Phone className="w-5 h-5" />
                   {language === 'en' ? 'Call Now' : 'اتصل الآن'}
@@ -239,7 +239,7 @@ export default function ServicesPage() {
             {t.warranty.coverage.map((item, idx) => {
               const Icon = resolveIcon(item.icon);
               return (
-                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-warm-xl border border-brand-silver/10">
+                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all">
                   <div className="flex items-start gap-4 mb-6">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-silver to-brand-red flex items-center justify-center flex-shrink-0">
                       <Icon className="w-7 h-7 text-white" />
@@ -269,7 +269,7 @@ export default function ServicesPage() {
               initial="hidden"
               whileInView="visible"
               viewport={viewportOnce}
-              className="bg-brand-bg rounded-2xl p-8"
+              className="bg-brand-bg rounded-sm p-8"
             >
               <h3 className="text-2xl font-bold text-brand-dark mb-6">{t.warranty.exclusions.title}</h3>
               <ul className="space-y-3">
@@ -287,7 +287,7 @@ export default function ServicesPage() {
               initial="hidden"
               whileInView="visible"
               viewport={viewportOnce}
-              className="bg-brand-red/5 rounded-2xl p-8"
+              className="bg-brand-red/5 rounded-sm p-8"
             >
               <h3 className="text-2xl font-bold text-brand-dark mb-6">{t.warranty.claim.title}</h3>
               <ol className="space-y-4">
@@ -328,14 +328,14 @@ export default function ServicesPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={viewportOnce}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/20 transition-colors"
+                className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm p-6 hover:bg-white/20 transition-colors"
               >
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex-1">
                     <h3 className="text-xl font-bold mb-2">{phase.phase}</h3>
                     <p className="text-white/70">{phase.description}</p>
                   </div>
-                  <div className="px-6 py-3 rounded-full bg-brand-silver text-brand-dark font-bold text-lg whitespace-nowrap">
+                  <div className="px-6 py-3 rounded-none bg-brand-silver text-brand-dark font-bold text-lg whitespace-nowrap">
                     {phase.duration}
                   </div>
                 </div>
@@ -348,7 +348,7 @@ export default function ServicesPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center"
+            className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm p-6 text-center"
           >
             <p className="text-white/70 italic">{t.timeline.note}</p>
           </motion.div>
@@ -366,7 +366,7 @@ export default function ServicesPage() {
               whileInView="visible"
               viewport={viewportOnce}
               transition={{ delay: idx * 0.15 }}
-              className={`relative overflow-hidden rounded-3xl p-8 md:p-12 text-center ${cta.primary
+              className={`relative overflow-hidden rounded-sm p-8 md:p-12 text-center ${cta.primary
                 ? 'bg-gradient-to-br from-brand-red to-brand-red-dark text-white'
                 : 'bg-gradient-to-br from-brand-silver to-brand-dark text-white'
               }`}
@@ -385,7 +385,7 @@ export default function ServicesPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-lg shadow-warm-xl ${cta.primary ? 'bg-white text-brand-red' : 'bg-white text-brand-dark'}`}
+                    className={`inline-flex items-center gap-2 px-8 py-4 rounded-none font-semibold text-lg shadow-warm-xl ${cta.primary ? 'bg-white text-brand-red' : 'bg-white text-brand-dark'}`}
                   >
                     {cta.button}
                     {cta.primary ? (

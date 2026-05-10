@@ -76,14 +76,14 @@ export default function FAQPage() {
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder={t.search.placeholder}
-              className={`w-full ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-4 rounded-2xl border-2 border-brand-silver/20 focus:border-brand-red focus:outline-none text-brand-dark bg-white text-lg transition-colors shadow-sm`}
+              className={`w-full ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-4 rounded-none border-2 border-brand-silver/20 focus:border-brand-red focus:outline-none text-brand-dark bg-white text-lg transition-colors`}
             />
           </motion.div>
         </div>
       </section>
 
       {/* ── Category Filter ───────────────────────────────── */}
-      <section className="py-8 px-6 bg-white/70 backdrop-blur-sm sticky top-20 z-40 border-b border-brand-silver/10 shadow-sm">
+      <section className="py-8 px-6 bg-white/70 backdrop-blur-sm sticky top-20 z-40 border-b border-border-light">
         <div className="max-w-6xl mx-auto">
           <div className={`flex flex-wrap justify-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
             {Object.entries(t.categories).map(([key, label]) => {
@@ -94,10 +94,10 @@ export default function FAQPage() {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveCategory(key)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all ${
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-none font-medium transition-all ${
                     activeCategory === key
-                      ? 'bg-gradient-to-r from-brand-red to-brand-red-dark text-white shadow-lg'
-                      : 'bg-white text-brand-gray hover:bg-brand-bg border border-brand-silver/20'
+                      ? 'bg-gradient-to-r from-brand-red to-brand-red-dark text-white'
+                      : 'bg-white text-brand-gray hover:bg-brand-bg border border-border-light'
                   }`}
                 >
                   {Icon && <Icon className="w-4 h-4" />}
@@ -137,7 +137,7 @@ export default function FAQPage() {
                       setActiveCategory(faq.category);
                       setExpandedId(t.faqs.indexOf(faq));
                     }}
-                    className={`${isRTL ? 'text-right' : 'text-left'} p-5 rounded-2xl bg-white border-2 border-brand-silver/10 hover:border-brand-red transition-colors group shadow-sm`}
+                    className={`${isRTL ? 'text-right' : 'text-left'} p-5 rounded-sm bg-white border border-border-light hover:border-2 hover:border-brand-silver transition-colors group`}
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-full bg-brand-red/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
@@ -145,7 +145,7 @@ export default function FAQPage() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2 py-1 rounded-full bg-brand-silver/10 text-brand-red text-xs font-bold">
+                          <span className="px-2 py-1 rounded-none bg-brand-silver/10 text-brand-red text-xs font-bold">
                             {t.popular.badge}
                           </span>
                         </div>
@@ -185,7 +185,7 @@ export default function FAQPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.04 }}
-                    className="bg-white rounded-2xl shadow-warm-md overflow-hidden border border-brand-silver/10"
+                    className="bg-white rounded-sm overflow-hidden border border-border-light"
                   >
                     <button
                       onClick={() => setExpandedId(isExpanded ? null : idx)}
@@ -197,7 +197,7 @@ export default function FAQPage() {
                       <div className="flex-1">
                         <h3 className="text-lg font-bold text-brand-dark mb-1">{faq.question}</h3>
                         {faq.popular && (
-                          <span className="inline-block px-2 py-1 rounded-full bg-brand-silver/10 text-brand-red text-xs font-bold">
+                          <span className="inline-block px-2 py-1 rounded-none bg-brand-silver/10 text-brand-red text-xs font-bold">
                             {t.popular.badge}
                           </span>
                         )}
@@ -248,7 +248,7 @@ export default function FAQPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
                 >
                   {t.cta.button}
                   <MessageCircle className="w-5 h-5" />
@@ -258,7 +258,7 @@ export default function FAQPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-full bg-[#25D366] text-white font-semibold text-lg hover:bg-[#128C7E] transition-colors"
+                  className="px-8 py-4 rounded-none bg-whatsapp text-white font-semibold text-lg hover:bg-whatsapp-dark transition-colors"
                 >
                   {t.cta.whatsapp}
                 </motion.button>

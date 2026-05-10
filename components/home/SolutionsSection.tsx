@@ -67,7 +67,7 @@ export default function SolutionsSection() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="group relative overflow-hidden rounded-3xl h-[420px]"
+            className="group relative overflow-hidden rounded-sm h-[420px]"
           >
             <Image
               src={RESIDENTIAL_IMG}
@@ -80,8 +80,8 @@ export default function SolutionsSection() {
             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/85 via-brand-dark/30 to-transparent" />
 
             <div className={`absolute inset-0 p-8 flex flex-col justify-between ${isRTL ? 'items-end' : 'items-start'}`}>
-              {/* Residential badge — brand-red tint per spec */}
-              <span className="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.14em] bg-brand-red/20 border border-brand-red/50 text-brand-red">
+              {/* Residential badge — brand-red tint; rounded-none per --radius-button badge rule */}
+              <span className="px-3 py-1.5 rounded-none text-xs font-bold uppercase tracking-[0.14em] bg-brand-red/20 border border-brand-red/50 text-brand-red">
                 {residential.hero.subtitle}
               </span>
 
@@ -112,7 +112,7 @@ export default function SolutionsSection() {
             viewport={viewportOnce}
             /* Slight delay so cards enter in sequence, not simultaneously */
             transition={{ delay: 0.1 }}
-            className="group relative overflow-hidden rounded-3xl h-[420px]"
+            className="group relative overflow-hidden rounded-sm h-[420px]"
           >
             <Image
               src={COMMERCIAL_IMG}
@@ -124,8 +124,8 @@ export default function SolutionsSection() {
             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/85 via-brand-dark/30 to-transparent" />
 
             <div className={`absolute inset-0 p-8 flex flex-col justify-between ${isRTL ? 'items-end' : 'items-start'}`}>
-              {/* Commercial badge — brand-silver tint per spec */}
-              <span className="px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.14em] bg-brand-silver/20 border border-brand-silver/50 text-brand-silver">
+              {/* Commercial badge — brand-silver tint; rounded-none per badge rule */}
+              <span className="px-3 py-1.5 rounded-none text-xs font-bold uppercase tracking-[0.14em] bg-brand-silver/20 border border-brand-silver/50 text-brand-silver">
                 {commercial.hero.subtitle}
               </span>
 

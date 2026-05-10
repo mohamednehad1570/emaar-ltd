@@ -98,7 +98,7 @@ export default function WhyChooseUsSection() {
                             viewport={{ once: true, amount: 0.3 }}
                             transition={{ delay: index * 0.1, duration: 0.5 }}
                             whileHover={{ y: -5 }}
-                            className={`p-8 rounded-2xl bg-white border border-border-light shadow-warm-xl hover:shadow-warm-lg transition-all duration-300 group ${isRTL ? 'text-right' : 'text-left'}`}
+                            className={`p-8 rounded-sm bg-white border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-300 group ${isRTL ? 'text-right' : 'text-left'}`}
                         >
                             <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6 bg-gradient-to-br from-off-white to-cream group-hover:from-brand-red group-hover:to-brand-red-dark transition-colors duration-300">
                                 <feature.icon size={32} className="text-text-body group-hover:text-white transition-colors duration-300" />

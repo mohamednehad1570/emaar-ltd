@@ -229,7 +229,7 @@ export default function HeroSection() {
               <motion.div variants={fadeUp} className="mb-5 lg:mb-7">
                 <span className="
                   inline-flex items-center gap-2
-                  px-4 py-1.5 rounded-full
+                    px-4 py-1.5 rounded-none
                   border border-white/20 bg-white/10 backdrop-blur-sm
                   text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em]
                   text-white/75
@@ -317,7 +317,7 @@ export default function HeroSection() {
                     href="/contact"
                     className="
                       inline-flex items-center gap-2
-                      px-7 py-3.5 rounded-full
+                      px-7 py-3.5 rounded-none
                       text-sm font-bold text-white
                       bg-brand-red hover:bg-brand-red-dark
                       shadow-[0_4px_20px_rgba(231,76,60,0.42)]
@@ -343,7 +343,7 @@ export default function HeroSection() {
                     href="/products/upvc"
                     className="
                       inline-flex items-center gap-2
-                      px-7 py-3.5 rounded-full
+                      px-7 py-3.5 rounded-none
                       text-sm font-semibold text-white
                       bg-white/10 hover:bg-white/[0.17]
                       border border-white/25 hover:border-white/45

@@ -60,7 +60,8 @@ export default function WhyChooseUsPage() {
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-white rounded-2xl shadow-warm-lg group-hover:shadow-warm-lg transition-shadow" />
+                  {/* value prop card bg: rounded-sm, no shadow */}
+                  <div className="absolute inset-0 bg-white rounded-sm" />
                   <div className="relative p-6 text-center">
                     <Icon className="w-12 h-12 mx-auto mb-4 text-brand-red" />
                     <h3 className="font-bold text-lg text-brand-dark mb-2">{prop.title}</h3>
@@ -100,7 +101,7 @@ export default function WhyChooseUsPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className="bg-white rounded-3xl p-8 shadow-warm-xl hover:shadow-warm-lg transition-shadow border border-brand-silver/10"
+                  className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
                 >
                   <div className="flex items-start gap-6">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0">
@@ -150,7 +151,7 @@ export default function WhyChooseUsPage() {
               const Icon = resolveIcon(step.icon);
               return (
                 <motion.div key={idx} variants={fadeUp} className="relative group">
-                  <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/20 transition-colors h-full">
+                  <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm p-6 hover:bg-white/20 transition-colors h-full">
                     <div className="text-5xl font-bold text-brand-silver/30 mb-4">{step.number}</div>
                     <Icon className="w-10 h-10 text-brand-silver mb-4" />
                     <h3 className="text-xl font-bold mb-2">{step.title}</h3>
@@ -187,7 +188,7 @@ export default function WhyChooseUsPage() {
             {t.certifications.items.map((cert, idx) => {
               const Icon = resolveIcon(cert.icon);
               return (
-                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-warm-xl border border-brand-silver/10">
+                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all">
                   <div className="flex items-start gap-6">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-silver to-brand-red flex items-center justify-center flex-shrink-0">
                       <Icon className="w-8 h-8 text-white" />
@@ -195,7 +196,8 @@ export default function WhyChooseUsPage() {
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-xl font-bold text-brand-dark">{cert.name}</h3>
-                        <span className="px-3 py-1 rounded-full bg-brand-silver/10 text-brand-dark text-sm font-semibold">{cert.year}</span>
+                        {/* year badge: rounded-none */}
+                        <span className="px-3 py-1 rounded-none bg-brand-silver/10 text-brand-dark text-sm font-semibold">{cert.year}</span>
                       </div>
                       <p className="text-brand-gray leading-relaxed">{cert.description}</p>
                     </div>
@@ -211,12 +213,12 @@ export default function WhyChooseUsPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="bg-gradient-to-br from-brand-bg to-white rounded-3xl p-8 md:p-12 border border-brand-silver/10"
+            className="bg-gradient-to-br from-brand-bg to-white rounded-sm p-8 md:p-12 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
           >
             <h3 className="text-3xl font-bold text-brand-dark mb-8 text-center">{t.certifications.standards.title}</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {t.certifications.standards.items.map((standard, idx) => (
-                <div key={idx} className="flex items-center gap-3 bg-white rounded-xl p-4 shadow-sm border border-brand-silver/10">
+                <div key={idx} className="flex items-center gap-3 bg-white rounded-sm p-4 border border-border-light">
                   <CheckCircle2 className="w-5 h-5 text-brand-red flex-shrink-0" />
                   <span className="text-brand-gray">{standard}</span>
                 </div>
@@ -240,7 +242,8 @@ export default function WhyChooseUsPage() {
           </motion.h2>
           <div className="w-24 h-1.5 bg-brand-red rounded-full mx-auto mb-16" />
 
-          <div className="bg-white rounded-3xl overflow-hidden shadow-warm-lg border border-brand-silver/10">
+          {/* comparison table: rounded-sm, no shadow */}
+          <div className="bg-white rounded-sm overflow-hidden border border-border-light">
             <div className={`grid grid-cols-3 gap-4 p-6 bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold ${isRTL ? 'text-right' : 'text-left'}`}>
               <div>{language === 'en' ? 'Metric' : 'المقياس'}</div>
               <div className="text-center">EMAAR</div>
@@ -292,7 +295,8 @@ export default function WhyChooseUsPage() {
             className="grid md:grid-cols-2 gap-8"
           >
             {t.testimonials.items.map((testimonial, idx) => (
-              <motion.div key={idx} variants={fadeUp} className="bg-white rounded-3xl p-8 shadow-warm-xl relative border border-brand-silver/10">
+              
+              <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all relative">
                 <Quote className="w-12 h-12 text-brand-silver/20 absolute top-6 right-6" />
                 <div className="flex gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -334,7 +338,7 @@ export default function WhyChooseUsPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
                 >
                   {t.cta.button}
                   <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
@@ -344,7 +348,7 @@ export default function WhyChooseUsPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm text-white font-semibold text-lg border-2 border-white/30 hover:bg-white/20 transition-colors"
+                  className="px-8 py-4 rounded-none bg-white/10 backdrop-blur-sm text-white font-semibold text-lg border-2 border-white/30 hover:bg-white/20 transition-colors"
                 >
                   {t.cta.secondary}
                 </motion.button>

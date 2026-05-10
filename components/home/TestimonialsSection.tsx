@@ -55,7 +55,7 @@ export default function TestimonialsSection() {
               viewport={viewportOnce}
               /* 0.1 s stagger — each card enters 100 ms after the previous */
               transition={{ delay: idx * 0.1 }}
-              className="relative bg-white/5 border border-white/10 rounded-2xl p-8"
+              className="relative bg-white/5 border border-white/10 rounded-sm p-8"
             >
               {/* Decorative quote — right in LTR, left in RTL so it stays
                   at the reading-end corner rather than the reading-start */}

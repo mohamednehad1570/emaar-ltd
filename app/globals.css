@@ -34,6 +34,12 @@
   --border:        #E4E2DC; /* light border */
   --border-medium: #CCCAC4; /* medium border */
 
+  /* ── Component Radius Tokens ── */
+  --radius-button: 0px;  /* buttons, inputs, badges, filter chips, tags — fully sharp */
+  --radius-card:   2px;  /* cards — minimal, industrial precision */
+  --radius-image:  0px;  /* images in tiles / grids */
+  --radius-modal:  4px;  /* modals, dropdowns — slight softening */
+
   /* ── Surfaces ── */
   --card-bg:    #FFFFFF;
   --bg-surface: #FFFFFF;
@@ -126,7 +132,8 @@
   --shadow-warm-red: 0 4px 15px rgba(231, 76, 60, 0.20); /* CTA glow */
 
   /* ── Border Radius Scale ── */
-  --radius-sm:   4px;
+  /* --radius (bare) = Tailwind default 4px → rounded utility → modals/dropdowns */
+  --radius-sm:   2px;    /* cards → rounded-sm; matches --radius-card */
   --radius-md:   8px;
   --radius-lg:   12px;
   --radius-xl:   16px;
@@ -217,14 +224,14 @@ a:hover { color: #E74C3C; }
 /* ── Premium Card ── */
 .card-premium {
   background: white;
-  border-radius: 9999px; /* overridden per card — default pill for badge elements */
+  border-radius: 2px; /* --radius-card: sharp with 2px minimum */
+  border: 1px solid #E4E2DC; /* border-border-light at rest */
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(45, 41, 38, 0.05);
   transition: all 0.3s ease;
 }
 .card-premium:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(45, 41, 38, 0.1);
+  border: 2px solid #C0C6CA; /* border-brand-silver on hover, no shadow */
 }
 
 /* ── Text Gradients ── */
@@ -241,12 +248,12 @@ a:hover { color: #E74C3C; }
   background-clip: text;
 }
 
-/* ── Unified Button Styles (rounded-full pills) ── */
+/* ── Unified Button Styles — sharp corners per design system ── */
 .btn-primary {
   background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
   color: white;
   padding: 0.75rem 2rem;
-  border-radius: 9999px;
+  border-radius: 0px; /* --radius-button: fully sharp */
   font-weight: 600;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
@@ -260,7 +267,7 @@ a:hover { color: #E74C3C; }
   background: linear-gradient(135deg, #C0C0C0 0%, #808080 100%);
   color: white;
   padding: 0.75rem 2rem;
-  border-radius: 9999px;
+  border-radius: 0px; /* --radius-button: fully sharp */
   font-weight: 600;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(128, 128, 128, 0.2);

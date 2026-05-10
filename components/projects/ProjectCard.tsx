@@ -32,7 +32,8 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
             transition={{ duration: 0.5 }}
             className="group relative"
         >
-            <div className="relative overflow-hidden rounded-2xl shadow-lg aspect-[4/3] cursor-pointer">
+            {/* image tile: rounded-sm; shadow-lg was cold rgba(0,0,0) — removed; border instead */}
+            <div className="relative overflow-hidden rounded-sm aspect-[4/3] cursor-pointer border border-border-light hover:border-2 hover:border-brand-silver transition-all">
                 <Image
                     src={project.image}
                     alt={project.title}
@@ -51,10 +52,12 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
                         transition={{ delay: 0.1 }}
                     >
                         <div className={`flex items-start justify-between mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                            <span className="px-3 py-1 bg-brand-red text-xs font-bold uppercase tracking-wider rounded-md">
+                            {/* badge: rounded-none per --radius-button */}
+                            <span className="px-3 py-1 bg-brand-red text-xs font-bold uppercase tracking-wider rounded-none">
                                 {project.category}
                             </span>
-                            <div className="bg-white/20 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            {/* hover-reveal expand icon: rounded-none (button rule) */}
+                            <div className="bg-white/20 backdrop-blur-sm p-2 rounded-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
                                 <Expand className="w-4 h-4 text-white" />
                             </div>
                         </div>

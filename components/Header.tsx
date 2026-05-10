@@ -192,8 +192,9 @@ export default function Header() {
               aria-label="Emaar International — home"
             >
               {/* Icon box */}
+              {/* logo icon box: rounded-sm (card/icon container, not a button) */}
               <div className="
-                w-10 h-10 rounded-xl overflow-hidden bg-brand-dark flex items-center justify-center
+                w-10 h-10 rounded-sm overflow-hidden bg-brand-dark flex items-center justify-center
                 shadow-[0_2px_8px_rgba(45,41,38,0.15)]
                 group-hover:shadow-[0_4px_16px_rgba(231,76,60,0.25)]
                 transition-shadow duration-300
@@ -242,7 +243,7 @@ export default function Header() {
                       href={item.href}
                       className={`
                         relative flex items-center gap-1 px-3.5 py-2 text-sm font-semibold
-                        rounded-lg transition-colors duration-200 group/link
+                        rounded-none transition-colors duration-200 group/link
                         ${active
                           ? 'text-brand-red'
                           : 'text-text-heading hover:text-brand-red'}
@@ -287,7 +288,8 @@ export default function Header() {
                           className={`
                             absolute top-[calc(100%+8px)]
                             ${isRTL ? 'right-0' : 'left-0'}
-                            w-60 bg-white rounded-xl border border-border-light
+                            {/* dropdown: rounded (4px = --radius-modal); shadow-warm-sm kept on dropdowns */}
+                          w-60 bg-white rounded border border-border-light
                             shadow-[0_10px_40px_rgba(45,41,38,0.12)] p-2
                           `}
                         >
@@ -307,7 +309,7 @@ export default function Header() {
                                 href={d.href}
                                 className="
                                   group/dd flex items-center justify-between
-                                  px-3 py-2.5 rounded-lg text-sm text-text-body
+                                  px-3 py-2.5 rounded-none text-sm text-text-body
                                   hover:bg-cream hover:text-brand-red
                                   transition-all duration-150
                                 "
@@ -339,7 +341,7 @@ export default function Header() {
               <a
                 href={PHONE_HREF}
                 className="
-                  hidden xl:flex items-center gap-1.5 px-2 py-2 rounded-lg
+                  hidden xl:flex items-center gap-1.5 px-2 py-2 rounded-none
                   text-sm font-medium text-text-body
                   hover:text-brand-red hover:bg-cream
                   transition-colors duration-200
@@ -356,7 +358,7 @@ export default function Header() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="
-                  flex items-center justify-center w-9 h-9 rounded-full
+                  flex items-center justify-center w-9 h-9 rounded-none
                   text-whatsapp hover:bg-whatsapp/10
                   transition-colors duration-200
                 "
@@ -372,7 +374,7 @@ export default function Header() {
               <button
                 onClick={toggleLanguage}
                 className="
-                  px-3.5 py-1.5 rounded-full text-xs font-bold
+                  px-3.5 py-1.5 rounded-none text-xs font-bold
                   bg-cream text-text-heading hover:bg-border-light
                   transition-colors duration-200
                 "
@@ -388,7 +390,7 @@ export default function Header() {
                 <Link
                   href="/contact"
                   className="
-                    flex items-center gap-1.5 px-5 py-2.5 rounded-full
+                    flex items-center gap-1.5 px-5 py-2.5 rounded-none
                     text-sm font-bold text-white
                     bg-brand-red hover:bg-brand-red-dark
                     shadow-[0_4px_15px_rgba(231,76,60,0.25)]
@@ -413,7 +415,7 @@ export default function Header() {
               <button
                 onClick={toggleLanguage}
                 className="
-                  flex items-center justify-center px-3 h-11 rounded-full
+                  flex items-center justify-center px-3 h-11 rounded-none
                   text-xs font-bold bg-cream text-text-heading
                   hover:bg-border-light transition-colors duration-200
                 "
@@ -428,7 +430,7 @@ export default function Header() {
               <button
                 onClick={() => setMenuOpen(true)}
                 className="
-                  flex items-center justify-center w-11 h-11 rounded-xl
+                  flex items-center justify-center w-11 h-11 rounded-none
                   text-text-heading hover:bg-cream
                   transition-colors duration-200
                 "
@@ -495,7 +497,7 @@ export default function Header() {
                   aria-label="Emaar International — home"
                 >
                   <div className="
-                    w-9 h-9 rounded-xl overflow-hidden bg-brand-dark
+                    w-9 h-9 rounded-sm overflow-hidden bg-brand-dark
                     flex items-center justify-center
                   ">
                     <Image
@@ -515,7 +517,7 @@ export default function Header() {
                 <button
                   onClick={closeMenu}
                   className="
-                    flex items-center justify-center w-11 h-11 rounded-xl
+                    flex items-center justify-center w-11 h-11 rounded-none
                     text-text-muted hover:bg-cream hover:text-text-heading
                     transition-colors duration-200
                   "
@@ -542,7 +544,7 @@ export default function Header() {
                             }
                             className={`
                               w-full flex items-center justify-between
-                              px-4 py-3 min-h-[52px] rounded-xl
+                              px-4 py-3 min-h-[52px] rounded-none
                               text-base font-semibold transition-colors duration-200
                               ${active
                                 ? 'text-brand-red bg-cream'
@@ -601,7 +603,7 @@ export default function Header() {
                                         onClick={closeMenu}
                                         className={`
                                           flex items-center gap-2.5
-                                          px-3 py-3 min-h-[48px] rounded-lg
+                                          px-3 py-3 min-h-[48px] rounded-none
                                           text-sm font-medium
                                           transition-colors duration-150
                                           ${pathname === d.href
@@ -632,7 +634,7 @@ export default function Header() {
                           onClick={closeMenu}
                           className={`
                             flex items-center
-                            px-4 py-3 min-h-[52px] rounded-xl
+                            px-4 py-3 min-h-[52px] rounded-none
                             text-base font-semibold
                             transition-colors duration-200
                             ${active
@@ -662,7 +664,7 @@ export default function Header() {
                   onClick={closeMenu}
                   className="
                     flex items-center justify-center gap-2
-                    w-full min-h-[52px] rounded-full
+                    w-full min-h-[52px] rounded-none
                     text-base font-bold text-white
                     bg-brand-red hover:bg-brand-red-dark
                     shadow-[0_4px_15px_rgba(231,76,60,0.25)]
@@ -683,7 +685,7 @@ export default function Header() {
                     href={PHONE_HREF}
                     className="
                       flex items-center justify-center gap-2
-                      min-h-[48px] rounded-full
+                      min-h-[48px] rounded-none
                       border border-border-medium bg-white
                       text-sm font-semibold text-text-heading
                       hover:bg-cream transition-colors duration-200
@@ -698,7 +700,7 @@ export default function Header() {
                     rel="noopener noreferrer"
                     className="
                       flex items-center justify-center gap-2
-                      min-h-[48px] rounded-full
+                      min-h-[48px] rounded-none
                       border border-whatsapp/40 bg-white
                       text-sm font-semibold text-whatsapp
                       hover:bg-whatsapp/5 transition-colors duration-200

@@ -39,7 +39,7 @@ export default function CTASection() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8 }}
                 >
-                    <div className="mb-6 inline-block p-4 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                    <div className="mb-6 inline-block p-4 rounded-sm bg-white/5 border border-white/10 backdrop-blur-sm">
                         <Award className="w-12 h-12 text-brand-silver" />
                     </div>
 
@@ -53,7 +53,7 @@ export default function CTASection() {
 
                     <Link
                         href="/contact"
-                        className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold text-lg overflow-hidden shadow-warm-lg shadow-brand-red-dark/30 hover:shadow-brand-red/50 transition-all duration-300 hover:scale-105"
+                        className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold text-lg overflow-hidden shadow-warm-red hover:shadow-[0_8px_32px_rgba(231,76,60,0.4)] transition-all duration-300 hover:scale-105"
                     >
                         <span className="relative z-10">{t.button}</span>
                         <ArrowRight className={`relative z-10 w-6 h-6 transition-transform duration-300 group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />

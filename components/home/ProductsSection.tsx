@@ -109,7 +109,8 @@ export default function ProductsSection() {
                                 transition={{ delay: idx * 0.05 }}
                                 className="group min-w-[280px] sm:min-w-[320px] lg:min-w-[360px]"
                             >
-                                <div className="relative h-full bg-white rounded-xl overflow-hidden shadow-warm-lg border border-border-light hover:border-brand-red/10 transition-all duration-500 hover:shadow-warm-lg">
+                                {/* no shadow; image card → rounded-sm per design token */}
+                                <div className="relative h-full bg-white rounded-sm overflow-hidden border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-500">
                                     <div className="relative h-80 overflow-hidden">
                                         <Image
                                             src={product.image}
@@ -137,7 +138,7 @@ export default function ProductsSection() {
                 <div className="text-center">
                     <Link
                         href="/products/upvc"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gray-900 text-white font-semibold hover:bg-brand-red transition-colors shadow-warm-lg hover:shadow-brand-red/30"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-brand-dark text-white font-bold hover:bg-brand-red transition-colors"
                     >
                         {t.viewAll}
                         <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />

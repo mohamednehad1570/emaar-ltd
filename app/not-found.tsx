@@ -51,7 +51,7 @@ export default function NotFound() {
           {/* Primary — solid red, same as site CTA buttons */}
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-brand-red hover:bg-brand-red-dark text-white font-bold transition-colors duration-200 shadow-warm-red min-h-[52px]"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-brand-red hover:bg-brand-red-dark text-white font-bold transition-colors duration-200 shadow-warm-red min-h-[52px]"
           >
             <House size={20} weight="fill" />
             Back to Home
@@ -60,7 +60,7 @@ export default function NotFound() {
           {/* Secondary — white pill, warm border */}
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-brand-dark font-semibold border border-border-medium hover:border-brand-silver transition-colors duration-200 shadow-warm-md min-h-[52px]"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-dark font-semibold border border-border-medium hover:border-brand-silver transition-colors duration-200 shadow-warm-md min-h-[52px]"
           >
             Contact Us
             <ArrowRight size={18} weight="bold" />

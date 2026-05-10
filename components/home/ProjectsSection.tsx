@@ -109,7 +109,8 @@ export default function ProjectsSection() {
                                 transition={{ delay: idx * 0.05 }}
                                 className="group min-w-[300px] sm:min-w-[350px] lg:min-w-[400px]"
                             >
-                                <div className="relative h-[400px] bg-white rounded-xl overflow-hidden shadow-warm-lg border border-border-light transition-all duration-500 hover:shadow-warm-lg hover:border-brand-red/10">
+                                {/* image card: rounded-sm (--radius-image: 0px for the inner img; outer tile gets 2px) */}
+                                <div className="relative h-[400px] bg-white rounded-sm overflow-hidden border border-border-light transition-all duration-500 hover:border-2 hover:border-brand-silver">
                                     <Image
                                         src={project.image}
                                         alt={project.title[language]}
@@ -139,7 +140,7 @@ export default function ProjectsSection() {
                 <div className="text-center">
                     <Link
                         href="/projects"
-                        className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-gray-900 border-2 border-gray-900 hover:bg-gray-900 hover:text-white transition-all font-semibold shadow-warm-lg hover:shadow-warm-xl"
+                        className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-dark border-2 border-brand-dark hover:bg-brand-dark hover:text-white transition-all font-semibold"
                     >
                         {t.viewAll}
                         <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />

@@ -43,7 +43,8 @@ export default function ContactPage() {
     setIsSubmitting(false);
   };
 
-  const inputClass = `w-full px-4 py-3 rounded-xl border border-brand-silver/20 bg-white text-brand-dark placeholder:text-brand-silver focus:border-brand-red focus:outline-none transition-colors`;
+  /* inputs: rounded-none per --radius-button (inputs are in same group as buttons) */
+  const inputClass = `w-full px-4 py-3 rounded-none border border-brand-silver/20 bg-white text-brand-dark placeholder:text-brand-silver focus:border-brand-red focus:outline-none transition-colors`;
 
   return (
     <div className={`min-h-screen bg-gradient-to-b from-brand-bg via-white to-brand-bg ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
@@ -76,7 +77,7 @@ export default function ContactPage() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: idx * 0.1 + 0.3 }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-brand-silver/10 shadow-sm"
+                    className="flex items-center gap-2 px-4 py-2 rounded-none bg-white border border-border-light"
                   >
                     <Icon className="w-5 h-5 text-brand-silver" />
                     <span className="text-sm font-semibold text-brand-dark">{item.text}</span>
@@ -99,7 +100,8 @@ export default function ContactPage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="bg-white rounded-2xl p-8 shadow-warm-xl border border-brand-silver/10">
+              {/* form card: rounded-sm, no shadow */}
+              <div className="bg-white rounded-sm p-8 border border-border-light">
                 <h2 className="text-3xl font-bold mb-2 text-brand-dark">{t.form.title}</h2>
                 <p className="text-sm text-brand-gray mb-6">{t.form.subtitle}</p>
 
@@ -154,12 +156,12 @@ export default function ContactPage() {
                     <p className="text-xs text-brand-gray mb-2">{t.form.fields.file.hint}</p>
                     <div className="relative">
                       <input type="file" id="file-upload" onChange={handleFileChange} accept=".pdf,.jpg,.jpeg,.png,.dwg" className="hidden" />
-                      <label htmlFor="file-upload" className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border border-brand-silver/20 bg-brand-bg text-brand-gray hover:border-brand-silver hover:text-brand-dark transition-colors cursor-pointer">
+                      <label htmlFor="file-upload" className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-none border border-brand-silver/20 bg-brand-bg text-brand-gray hover:border-brand-silver hover:text-brand-dark transition-colors cursor-pointer">
                         <Upload size={18} />
                         <span className="text-sm">{formData.file ? formData.file.name : (language === 'en' ? 'Choose file' : 'اختر ملف')}</span>
                       </label>
                       {formData.file && (
-                        <button type="button" onClick={() => setFormData({ ...formData, file: null })} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-brand-bg transition-colors">
+                        <button type="button" onClick={() => setFormData({ ...formData, file: null })} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-none hover:bg-brand-bg transition-colors">
                           <X size={16} className="text-brand-red" />
                         </button>
                       )}
@@ -170,7 +172,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full px-6 py-4 rounded-full bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg hover:shadow-warm-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group"
+                    className="w-full px-6 py-4 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg hover:shadow-warm-red disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group"
                   >
                     {isSubmitting ? (
                       <>
@@ -200,7 +202,7 @@ export default function ContactPage() {
                 <h3 className="text-2xl font-bold mb-5 text-brand-dark">{t.contact.title}</h3>
                 <div className="space-y-4">
                   {/* Phone */}
-                  <a href="tel:+971501234567" className="block bg-white rounded-xl p-5 border border-brand-silver/10 shadow-sm hover:border-brand-silver/30 transition-all group">
+                  <a href="tel:+971501234567" className="block bg-white rounded-sm p-5 border border-border-light hover:border-2 hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <Phone size={20} className="text-white" />
@@ -214,7 +216,7 @@ export default function ContactPage() {
                   </a>
 
                   {/* WhatsApp */}
-                  <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-xl p-5 border border-brand-silver/10 shadow-sm hover:border-whatsapp/30 transition-all group">
+                  <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-sm p-5 border border-border-light hover:border-2 hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-whatsapp to-whatsapp-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <MessageCircle size={20} className="text-white" />
@@ -228,7 +230,7 @@ export default function ContactPage() {
                   </a>
 
                   {/* Email */}
-                  <a href="mailto:info@emaar-international.ae" className="block bg-white rounded-xl p-5 border border-brand-silver/10 shadow-sm hover:border-brand-silver/30 transition-all group">
+                  <a href="mailto:info@emaar-international.ae" className="block bg-white rounded-sm p-5 border border-border-light hover:border-2 hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-silver to-brand-gray flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <Mail size={20} className="text-white" />
@@ -248,7 +250,7 @@ export default function ContactPage() {
                 <h3 className="text-2xl font-bold mb-5 text-brand-dark">{t.offices.title}</h3>
                 <div className="space-y-4">
                   {t.offices.list.map((office, idx) => (
-                    <div key={idx} className="bg-white rounded-xl p-5 border border-brand-silver/10 shadow-sm">
+                    <div key={idx} className="bg-white rounded-sm p-5 border border-border-light">
                       <h4 className="font-bold text-brand-dark mb-3 flex items-center gap-2">
                         <MapPin size={18} className="text-brand-red" />
                         {office.name}
@@ -277,7 +279,8 @@ export default function ContactPage() {
       <section className="py-12 px-6 bg-brand-bg">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-8 text-brand-dark">{t.map.title}</h2>
-          <div className="bg-white rounded-2xl p-4 h-96 flex items-center justify-center border border-brand-silver/10 shadow-sm">
+          {/* map placeholder: rounded-sm, no shadow */}
+          <div className="bg-white rounded-sm p-4 h-96 flex items-center justify-center border border-border-light">
             <div className="text-center">
               <MapPin size={48} className="mx-auto mb-4 text-brand-silver" />
               <p className="text-brand-gray mb-4">
@@ -287,7 +290,7 @@ export default function ContactPage() {
                 href="https://maps.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-brand-silver to-brand-gray text-white font-semibold hover:shadow-warm-lg transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-none bg-gradient-to-r from-brand-silver to-brand-gray text-white font-semibold transition-all"
               >
                 <MapPin size={18} />
                 {t.map.viewMap}
@@ -305,7 +308,7 @@ export default function ContactPage() {
             initial="hidden"
             whileInView="visible"
             viewport={viewportOnce}
-            className="bg-white rounded-2xl p-10 border border-brand-silver/10 shadow-warm-xl"
+            className="bg-white rounded-sm p-10 border border-border-light"
           >
             <MessageCircle size={48} className="mx-auto mb-4 text-whatsapp" />
             <h2 className="text-3xl font-bold mb-3 text-brand-dark">{t.cta.title}</h2>
@@ -314,7 +317,7 @@ export default function ContactPage() {
               href="https://wa.me/971501234567"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-whatsapp hover:bg-whatsapp-dark text-white font-semibold text-lg transition-colors shadow-warm-lg"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-whatsapp hover:bg-whatsapp-dark text-white font-semibold text-lg transition-colors"
             >
               <MessageCircle size={20} />
               {t.cta.button}

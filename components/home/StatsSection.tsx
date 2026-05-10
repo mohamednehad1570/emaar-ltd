@@ -42,8 +42,9 @@ export default function StatsSection() {
                             transition={{ delay: idx * 0.1, duration: 0.6, type: 'spring' }}
                             className="group relative"
                         >
-                            <div className="absolute inset-0 bg-white rounded-2xl shadow-warm-lg transform transition-transform group-hover:-translate-y-2 group-hover:shadow-warm-lg duration-300" />
-                            <div className="relative p-8 text-center border border-border-light rounded-2xl group-hover:border-brand-red/10 transition-colors">
+                            {/* no shadow at rest or hover; border-brand-silver at 2px on hover */}
+                            <div className="absolute inset-0 bg-white rounded-sm transform transition-transform group-hover:-translate-y-2 duration-300" />
+                            <div className="relative p-8 text-center border border-border-light rounded-sm group-hover:border-2 group-hover:border-brand-silver transition-all">
                                 <h3 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-brand-red to-brand-red-dark mb-2 font-cairo tabular-nums tracking-tighter">
                                     {stat.number}
                                 </h3>
