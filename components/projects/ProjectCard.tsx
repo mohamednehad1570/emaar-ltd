@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { MapPin, ArrowsOut as Expand, ArrowRight } from '@phosphor-icons/react';
 import Image from 'next/image';
@@ -32,6 +33,8 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
             transition={{ duration: 0.5 }}
             className="group relative"
         >
+            {/* Link wraps the entire tile — nested <a> inside removed to keep valid HTML */}
+            <Link href={`/projects/${project.id}`} className="block">
             {/* image tile: rounded-sm; shadow-lg was cold rgba(0,0,0) — removed; border instead */}
             <div className="relative overflow-hidden rounded-sm aspect-[4/3] cursor-pointer border border-border-light hover:border-2 hover:border-brand-silver transition-all">
                 <Image
@@ -74,14 +77,16 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
                         </div>
 
                         <div className={`h-0 overflow-hidden group-hover:h-auto transition-all duration-300 ease-in-out`}>
-                            <a href="#" className={`inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-brand-red transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                <span>View Details</span>
+                            {/* Styled span — the parent Link already handles navigation */}
+                            <span className={`inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-brand-red transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                <span>{isRTL ? 'عرض التفاصيل' : 'View Details'}</span>
                                 <ArrowRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
-                            </a>
+                            </span>
                         </div>
                     </motion.div>
                 </div>
             </div>
+            </Link>
         </motion.div>
     );
 }

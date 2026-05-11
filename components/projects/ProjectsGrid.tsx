@@ -6,70 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useSearchParams } from 'next/navigation';
 import ProjectCard from './ProjectCard';
 import { Funnel as Filter } from '@phosphor-icons/react';
-
-// Mock data - In a real app, this would come from a CMS or API
-const projectsData = [
-    {
-        id: 1,
-        title: { en: 'Luxury Villa Complex', ar: 'مجمع فلل فاخر' },
-        category: { en: 'Residential', ar: 'سكني' },
-        location: { en: 'Palm Jumeirah, Dubai', ar: 'نخلة جميرا، دبي' },
-        image: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80',
-        year: '2023',
-        type: 'residential',
-        material: 'upvc'
-    },
-    {
-        id: 2,
-        title: { en: 'Skyline Tower', ar: 'برج الأفق' },
-        category: { en: 'Commercial', ar: 'تجاري' },
-        location: { en: 'Downtown Dubai', ar: 'وسط مدينة دبي' },
-        image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80',
-        year: '2022',
-        type: 'commercial',
-        material: 'aluminum'
-    },
-    {
-        id: 3,
-        title: { en: 'Modern Office Hub', ar: 'مركز مكاتب حديث' },
-        category: { en: 'Commercial', ar: 'تجاري' },
-        location: { en: 'Business Bay', ar: 'الخليج التجاري' },
-        image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80',
-        year: '2023',
-        type: 'commercial',
-        material: 'aluminum'
-    },
-    {
-        id: 4,
-        title: { en: 'Seaside Resort', ar: 'منتجع ساحلي' },
-        category: { en: 'Hospitality', ar: 'ضيافة' },
-        location: { en: 'Saadiyat Island', ar: 'جزيرة السعديات' },
-        image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
-        year: '2021',
-        type: 'hospitality',
-        material: 'upvc'
-    },
-    {
-        id: 5,
-        title: { en: 'Private Mansion', ar: 'قصر خاص' },
-        category: { en: 'Residential', ar: 'سكني' },
-        location: { en: 'Emirates Hills', ar: 'تلال الإمارات' },
-        image: 'https://images.unsplash.com/photo-1600596542815-22b5c1275efb?w=800&q=80',
-        year: '2022',
-        type: 'residential',
-        material: 'aluminum'
-    },
-    {
-        id: 6,
-        title: { en: 'Shopping Mall Facade', ar: 'واجهة مركز تسوق' },
-        category: { en: 'Commercial', ar: 'تجاري' },
-        location: { en: 'Yas Island', ar: 'جزيرة ياس' },
-        image: 'https://images.unsplash.com/photo-1519567241046-7f570eee3c9e?w=800&q=80',
-        year: '2020',
-        type: 'commercial',
-        material: 'aluminum'
-    }
-];
+import { projectsData } from '@/lib/data/projects';
 
 export default function ProjectsGrid() {
     const { language, isRTL } = useLanguage();
@@ -190,7 +127,7 @@ export default function ProjectsGrid() {
                 </motion.div>
 
                 {filteredProjects.length === 0 && (
-                    <div className="text-center py-20 text-gray-500">
+                    <div className="text-center py-20 text-text-muted">
                         {language === 'en' ? 'No projects found matching these filters.' : 'لا توجد مشاريع تطابق هذه معايير التصفية.'}
                     </div>
                 )}
