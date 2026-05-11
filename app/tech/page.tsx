@@ -18,6 +18,10 @@ export default function TechnicalDownloadsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [filterProduct, setFilterProduct] = useState('all');
+  /* Per-file downloading flag — shows spinner on the clicked button for 2s */
+  const [downloadingIds, setDownloadingIds] = useState<Record<number, boolean>>({});
+  /* Which file ID just showed the "not available" notice — clears after 3s */
+  const [unavailableId, setUnavailableId] = useState<number | null>(null);
 
   const t = techData[language];
 
@@ -59,9 +63,35 @@ export default function TechnicalDownloadsPage() {
   }, [activeCategory, filterProduct, searchQuery, t.files]);
 
   const handleDownload = (file: DownloadFile) => {
-    // Simulate download
-    console.log('Downloading:', file.name);
-    // In production, trigger actual file download
+    if (!file.downloadUrl) {
+      /* File pending — show inline notice, auto-clear after 3s */
+      setUnavailableId(file.id);
+      setTimeout(
+        () => setUnavailableId(prev => (prev === file.id ? null : prev)),
+        3000
+      );
+      return;
+    }
+
+    /* Mark this file as downloading — resets after browser dialog opens (~2s) */
+    setDownloadingIds(prev => ({ ...prev, [file.id]: true }));
+
+    /* Programmatic anchor click — the only cross-browser way to force a download */
+    const anchor = document.createElement('a');
+    anchor.href = file.downloadUrl;
+    anchor.download = file.name;
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+
+    setTimeout(() => {
+      setDownloadingIds(prev => {
+        const next = { ...prev };
+        delete next[file.id];
+        return next;
+      });
+    }, 2000);
   };
 
   return (
@@ -349,15 +379,33 @@ export default function TechnicalDownloadsPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleDownload(file)}
-                          className="flex-1 px-4 py-2 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold transition-all flex items-center justify-center gap-2"
+                          disabled={downloadingIds[file.id]}
+                          className="flex-1 px-4 py-2 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-wait"
                         >
-                          <Download className="w-4 h-4" />
-                          {t.actions.download}
+                          {downloadingIds[file.id] ? (
+                            <>
+                              {/* Spinner reuses the border-t-white pattern from the contact form */}
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                              {language === 'en' ? 'Downloading…' : 'جارٍ التحميل…'}
+                            </>
+                          ) : (
+                            <>
+                              <Download className="w-4 h-4" />
+                              {t.actions.download}
+                            </>
+                          )}
                         </button>
                         <button className="px-4 py-2 rounded-none border-2 border-border-light hover:border-brand-red transition-colors">
                           <Eye className="w-4 h-4 text-text-body" />
                         </button>
                       </div>
+
+                      {/* ── Unavailable notice — shown when downloadUrl is absent ── */}
+                      {unavailableId === file.id && (
+                        <p className="mt-2 text-xs font-semibold text-brand-red" role="alert">
+                          {language === 'en' ? 'File not available yet.' : 'الملف غير متاح بعد.'}
+                        </p>
+                      )}
                     </div>
                   </motion.div>
                 );
@@ -399,17 +447,35 @@ export default function TechnicalDownloadsPage() {
                         </div>
                       </div>
 
-                      <div className="flex gap-2 flex-shrink-0">
-                        <button
-                          onClick={() => handleDownload(file)}
-                          className="px-6 py-2 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold transition-all flex items-center gap-2"
-                        >
-                          <Download className="w-4 h-4" />
-                          {t.actions.download}
-                        </button>
-                        <button className="px-4 py-2 rounded-none border-2 border-border-light hover:border-brand-red transition-colors">
-                          <Eye className="w-4 h-4 text-text-body" />
-                        </button>
+                      <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => handleDownload(file)}
+                            disabled={downloadingIds[file.id]}
+                            className="px-6 py-2 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold transition-all flex items-center gap-2 disabled:opacity-70 disabled:cursor-wait"
+                          >
+                            {downloadingIds[file.id] ? (
+                              <>
+                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                {language === 'en' ? 'Downloading…' : 'جارٍ التحميل…'}
+                              </>
+                            ) : (
+                              <>
+                                <Download className="w-4 h-4" />
+                                {t.actions.download}
+                              </>
+                            )}
+                          </button>
+                          <button className="px-4 py-2 rounded-none border-2 border-border-light hover:border-brand-red transition-colors">
+                            <Eye className="w-4 h-4 text-text-body" />
+                          </button>
+                        </div>
+                        {/* Unavailable notice — right-aligned to stay near the button */}
+                        {unavailableId === file.id && (
+                          <p className="text-xs font-semibold text-brand-red" role="alert">
+                            {language === 'en' ? 'File not available yet.' : 'الملف غير متاح بعد.'}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </motion.div>
