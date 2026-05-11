@@ -15,12 +15,21 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 /* Simple regex — accepts anything with an @ and a dot after it */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: Request) {
+  /* ── Guard: fail at runtime, not at build time ──────────────────────── */
+  if (!process.env.RESEND_API_KEY) {
+    return NextResponse.json(
+      { error: 'Email service not configured.' },
+      { status: 500 }
+    );
+  }
+
+  /* Instantiated inside the handler so the module loads without the env var */
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
   let body: unknown;
 
   try {
