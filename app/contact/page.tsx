@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Phone, Envelope as Mail, MapPin, Clock, PaperPlaneTilt as Send, UploadSimple as Upload, X, ChatCircle as MessageCircle,
+  Phone, Envelope as Mail, MapPin, Clock, PaperPlaneTilt as Send, UploadSimple as Upload, X, ChatCircle as MessageCircle, CheckCircle,
 } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { contactData } from '@/lib/data/contact';
@@ -21,6 +21,8 @@ export default function ContactPage() {
     file: null as File | null,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitError, setSubmitError] = useState('');
 
   const t = contactData[language];
 
@@ -37,10 +39,41 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    alert(language === 'en' ? 'Quote request sent successfully!' : 'تم إرسال طلب العرض بنجاح!');
-    setFormData({ name: '', email: '', phone: '', projectType: '', message: '', file: null });
-    setIsSubmitting(false);
+    setSubmitStatus('idle');
+    setSubmitError('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          service: formData.projectType,
+          message: formData.message,
+        }),
+      });
+
+      const data = await res.json() as { success?: boolean; error?: string };
+
+      if (!res.ok) {
+        setSubmitError(data.error ?? (language === 'en'
+          ? 'Something went wrong. Please try again.'
+          : 'حدث خطأ ما. يرجى المحاولة مرة أخرى.'));
+        setSubmitStatus('error');
+      } else {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', phone: '', projectType: '', message: '', file: null });
+      }
+    } catch {
+      setSubmitError(language === 'en'
+        ? 'Network error. Please check your connection and try again.'
+        : 'خطأ في الشبكة. يرجى التحقق من الاتصال والمحاولة مرة أخرى.');
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   /* inputs: rounded-none per --radius-button (inputs are in same group as buttons) */
@@ -186,6 +219,25 @@ export default function ContactPage() {
                       </>
                     )}
                   </button>
+
+                  {/* ── Inline success message ──────────────────────────── */}
+                  {submitStatus === 'success' && (
+                    <div className="flex items-start gap-3 p-4 bg-off-white border border-border-light">
+                      <CheckCircle size={20} className="text-brand-dark shrink-0 mt-0.5" aria-hidden="true" />
+                      <p className="text-sm font-semibold text-brand-dark">
+                        {language === 'en'
+                          ? "Message sent — we'll be in touch within 24 hours."
+                          : 'تم الإرسال — سنتواصل معك خلال 24 ساعة.'}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* ── Inline error message ─────────────────────────────── */}
+                  {submitStatus === 'error' && (
+                    <p className="text-sm font-semibold text-brand-red" role="alert">
+                      {submitError}
+                    </p>
+                  )}
                 </form>
               </div>
             </motion.div>
