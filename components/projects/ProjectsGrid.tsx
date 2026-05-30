@@ -43,7 +43,7 @@ export default function ProjectsGrid() {
     });
 
     return (
-        <section className="py-24 px-6 bg-off-white min-h-screen">
+        <section className="pt-32 pb-16 px-6 bg-off-white min-h-screen">
             <div className="max-w-7xl mx-auto">
 
                 {/* Header */}
@@ -53,13 +53,16 @@ export default function ProjectsGrid() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h1 className="text-5xl md:text-7xl font-bold mb-6 text-brand-dark">
+                        <h1
+                            className="font-extrabold text-brand-dark mb-6 tracking-[-0.02em] leading-[0.95] text-balance"
+                            style={{ fontSize: 'clamp(2.75rem, 5vw, 5rem)' }}
+                        >
                             {language === 'en' ? 'Our Portfolio' : 'أعمالنا'}
                         </h1>
                         <p className="text-xl text-text-body max-w-2xl mx-auto mb-10">
                             {language === 'en'
-                                ? 'Discover how we bring architectural visions to life with precision and elegance.'
-                                : 'اكتشف كيف نحول الرؤى المعمارية إلى واقع بدقة وأناقة.'}
+                                ? 'Projects across the UAE — from beachfront resorts to commercial towers, each delivered to specification.'
+                                : 'مشاريع في جميع أنحاء الإمارات — من المنتجعات الساحلية إلى الأبراج التجارية، كل منها وفق المواصفات.'}
                         </p>
                     </motion.div>
 
@@ -74,9 +77,9 @@ export default function ProjectsGrid() {
                                 <button
                                     key={cat.id}
                                     onClick={() => setSectorFilter(cat.id)}
-                                    className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-all duration-300 ${sectorFilter === cat.id
-                                        ? 'bg-brand-dark text-white shadow-md'
-                                        : 'bg-white text-text-body hover:bg-off-white border border-border-light'
+                                    className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-colors duration-150 ${sectorFilter === cat.id
+                                        ? 'bg-brand-dark text-white'
+                                        : 'bg-white text-text-body hover:bg-cream border border-border-light'
                                         }`}
                                 >
                                     {cat.label[language]}
@@ -93,9 +96,9 @@ export default function ProjectsGrid() {
                                 <button
                                     key={mat.id}
                                     onClick={() => setMaterialFilter(mat.id)}
-                                    className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-all duration-300 ${materialFilter === mat.id
-                                        ? 'bg-brand-red text-white shadow-md'
-                                        : 'bg-white text-text-body hover:bg-off-white border border-border-light'
+                                    className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-colors duration-150 ${materialFilter === mat.id
+                                        ? 'bg-brand-red text-white'
+                                        : 'bg-white text-text-body hover:bg-cream border border-border-light'
                                         }`}
                                 >
                                     {mat.label[language]}

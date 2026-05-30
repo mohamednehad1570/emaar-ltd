@@ -47,7 +47,8 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
                 />
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                {/* Warm overlay — brand-dark instead of cold black */}
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-brand-dark/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
 
                 <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
                     <motion.div
@@ -61,12 +62,13 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
                                 {project.category}
                             </span>
                             {/* hover-reveal expand icon: rounded-none (button rule) */}
-                            <div className="bg-white/20 backdrop-blur-sm p-2 rounded-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
+                            <div className="bg-white/25 p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-4 group-hover:translate-y-0">
                                 <Expand className="w-4 h-4 text-white" />
                             </div>
                         </div>
 
-                        <h3 className="text-xl md:text-2xl font-bold mb-1 group-hover:text-brand-red transition-colors duration-300">
+                        {/* White throughout — brand-red on near-black overlay fails 3:1 contrast */}
+                        <h3 className="text-xl md:text-2xl font-bold mb-1 text-white">
                             {project.title}
                         </h3>
 
@@ -77,9 +79,9 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
                             <span>{project.year}</span>
                         </div>
 
-                        <div className={`h-0 overflow-hidden group-hover:h-auto transition-all duration-300 ease-in-out`}>
-                            {/* Styled span — the parent Link already handles navigation */}
-                            <span className={`inline-flex items-center gap-2 text-sm font-semibold text-white group-hover:text-brand-red transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        {/* opacity+translate reveal — CSS cannot transition height:auto */}
+                        <div className="opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out">
+                            <span className={`inline-flex items-center gap-2 text-sm font-semibold text-white ${isRTL ? 'flex-row-reverse' : ''}`}>
                                 <span>{isRTL ? 'عرض التفاصيل' : 'View Details'}</span>
                                 <ArrowRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
                             </span>
