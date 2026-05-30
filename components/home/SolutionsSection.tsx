@@ -31,11 +31,6 @@ export default function SolutionsSection() {
   const residential = residentialData[language];
   const commercial  = commercialData[language];
 
-  const heading = {
-    en: { title: 'Built for Every Project', subtitle: 'From private villas to landmark towers' },
-    ar: { title: 'مصمم لكل مشروع', subtitle: 'من الفلل الخاصة إلى الأبراج الشامخة' },
-  }[language];
-
   return (
     <section
       className="py-20 px-6 bg-off-white"
@@ -43,22 +38,7 @@ export default function SolutionsSection() {
     >
       <div className="container-custom">
 
-        {/* ── Section heading ──────────────────────────────────────── */}
-        <motion.div
-          className="text-center mb-12"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-4">
-            {heading.title}
-          </h2>
-          <div className="h-1 w-24 bg-brand-red rounded-full mx-auto mb-4" />
-          <p className="text-xl text-text-body max-w-2xl mx-auto">{heading.subtitle}</p>
-        </motion.div>
-
-        {/* ── Two-card grid ─────────────────────────────────────────── */}
+        {/* ── Two-card grid — section introduces itself through the images ── */}
         <div className="grid md:grid-cols-2 gap-6">
 
           {/* Residential card */}

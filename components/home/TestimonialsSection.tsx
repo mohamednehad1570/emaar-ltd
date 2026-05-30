@@ -36,9 +36,9 @@ export default function TestimonialsSection() {
     >
       <div className="container-custom">
 
-        {/* ── Section heading ──────────────────────────────────────────── */}
+        {/* ── Section heading — left-aligned ───────────────────────────── */}
         <motion.div
-          className="mb-14 text-center"
+          className={`mb-14 ${isRTL ? 'text-right' : 'text-left'}`}
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -46,12 +46,12 @@ export default function TestimonialsSection() {
         >
           <h2
             id="testimonials-heading"
-            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-4"
+            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-3"
           >
             {t.title}
           </h2>
-          <div className="h-0.5 w-12 bg-brand-red mx-auto mb-5" />
-          <p className="text-lg text-text-body max-w-xl mx-auto">{t.subtitle}</p>
+          <div className={`h-0.5 w-12 bg-brand-red mb-4 ${isRTL ? 'mr-0 ml-auto md:ml-0' : ''}`} />
+          <p className="text-lg text-text-body max-w-xl">{t.subtitle}</p>
         </motion.div>
 
         {/* ── 2-column card grid ───────────────────────────────────────── */}

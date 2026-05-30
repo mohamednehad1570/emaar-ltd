@@ -76,10 +76,9 @@ export default function HomePage() {
 
       <HeroSection />
 
-      <SectionDivider label={labels.numbers} />
+      {/* Stats and certifications open without a divider announcement —
+          the numerals and trust-band introduce themselves.              */}
       <StatsSection />
-
-      <SectionDivider label={labels.quality} />
       <CertificationsSection />
 
       <SectionDivider label={labels.products} />

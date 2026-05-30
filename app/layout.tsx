@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import MotionProvider from "@/components/MotionProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -26,13 +27,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${cairo.variable} antialiased`}>
-        <LanguageProvider>
-          <Header />
-          <main className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
-        </LanguageProvider>
+        <MotionProvider>
+          <LanguageProvider>
+            <Header />
+            <main className="min-h-screen">
+              {children}
+            </main>
+            <Footer />
+          </LanguageProvider>
+        </MotionProvider>
       </body>
     </html>
   );

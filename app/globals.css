@@ -363,3 +363,13 @@ a:hover { color: #E74C3C; }
   body { background: white; color: black; }
   .no-print { display: none !important; }
 }
+
+/* ── Reduced Motion — stop all CSS-based animations for users who prefer it ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

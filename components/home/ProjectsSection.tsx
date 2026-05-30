@@ -75,22 +75,30 @@ export default function ProjectsSection() {
     >
       <div className="container-custom">
 
-        {/* ── Section heading ──────────────────────────────────────────── */}
+        {/* ── Section heading — left h2, CTA on the right ─────────────── */}
         <motion.div
-          className="mb-14 text-center"
+          className={`mb-14 flex items-end justify-between gap-6 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
         >
-          <h2
-            id="projects-heading"
-            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-4"
+          <div className={isRTL ? 'text-right' : 'text-left'}>
+            <h2
+              id="projects-heading"
+              className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-2"
+            >
+              {t.title}
+            </h2>
+            <p className="text-lg text-text-muted">{t.subtitle}</p>
+          </div>
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-sm font-bold text-brand-dark border-b-2 border-brand-red pb-0.5 hover:text-brand-red transition-colors duration-200 shrink-0"
           >
-            {t.title}
-          </h2>
-          <div className="h-0.5 w-12 bg-brand-red mx-auto mb-5" />
-          <p className="text-lg text-text-body max-w-xl mx-auto">{t.subtitle}</p>
+            {t.cta}
+            <ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />
+          </Link>
         </motion.div>
 
         {/* ── 3-column project grid ────────────────────────────────────── */}
@@ -148,22 +156,6 @@ export default function ProjectsSection() {
           ))}
         </motion.div>
 
-        {/* ── CTA ──────────────────────────────────────────────────────── */}
-        <motion.div
-          className="mt-12 text-center"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-        >
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 text-sm font-bold text-brand-dark border-b-2 border-brand-red pb-0.5 hover:text-brand-red transition-colors duration-200"
-          >
-            {t.cta}
-            <ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />
-          </Link>
-        </motion.div>
 
       </div>
     </section>

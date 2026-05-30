@@ -191,8 +191,8 @@ export default function HeroSection() {
         <div
           className={`absolute inset-0 ${
             isRTL
-              ? 'bg-gradient-to-l from-brand-dark/85 via-brand-dark/55 to-brand-dark/10'
-              : 'bg-gradient-to-r from-brand-dark/85 via-brand-dark/55 to-brand-dark/10'
+              ? 'bg-gradient-to-l from-brand-dark/75 via-brand-dark/45 to-brand-dark/10'
+              : 'bg-gradient-to-r from-brand-dark/75 via-brand-dark/45 to-brand-dark/10'
           }`}
         />
         {/* Vertical vignette */}
@@ -230,9 +230,9 @@ export default function HeroSection() {
                 <span className="
                   inline-flex items-center gap-2
                     px-4 py-1.5 rounded-none
-                  border border-white/20 bg-white/10 backdrop-blur-sm
+                  border border-white/20
                   text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em]
-                  text-white/75
+                  text-white/70
                 ">
                   <span
                     className="w-1.5 h-1.5 rounded-full bg-brand-red shrink-0"
@@ -320,8 +320,8 @@ export default function HeroSection() {
                       px-7 py-3.5 rounded-none
                       text-sm font-bold text-white
                       bg-brand-red hover:bg-brand-red-dark
-                      shadow-[0_4px_20px_rgba(231,76,60,0.42)]
-                      hover:shadow-[0_8px_32px_rgba(231,76,60,0.58)]
+                      shadow-[0_4px_15px_rgba(231,76,60,0.20)]
+                      hover:shadow-[0_8px_32px_rgba(231,76,60,0.40)]
                       transition-all duration-200
                     "
                   >

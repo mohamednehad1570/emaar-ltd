@@ -68,7 +68,7 @@ export default function StatsSection() {
 
               {/* Numeral — tabular-nums keeps '100%' same width as '500+' */}
               <span
-                className="text-5xl font-bold font-cairo tabular-nums text-brand-dark leading-none mb-3"
+                className="text-5xl font-extrabold font-cairo tabular-nums text-brand-dark leading-none mb-3"
                 /* dir=ltr so digit order is always left-to-right, even in Arabic mode */
                 dir="ltr"
               >

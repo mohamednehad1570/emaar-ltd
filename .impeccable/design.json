@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-30T00:00:00.000Z",
+  "title": "Design System: Emaar International Industry",
+  "extensions": {
+    "colorMeta": {
+      "cta-red": {
+        "role": "primary",
+        "displayName": "Anodized Red",
+        "canonical": "oklch(58% 0.227 26)",
+        "tonalRamp": ["#2A0808", "#4D1010", "#7A1A16", "#A82620", "#E74C3C", "#EF8176", "#F5AFA8", "#FDECEA"]
+      },
+      "cta-red-deep": {
+        "role": "primary",
+        "displayName": "Anodized Red Deep",
+        "canonical": "oklch(51% 0.209 26)",
+        "tonalRamp": ["#220606", "#430E0E", "#6B1612", "#92201A", "#C0392B", "#D17068", "#E0A09A", "#F5E6E5"]
+      },
+      "silver-material": {
+        "role": "secondary",
+        "displayName": "Raw Silver",
+        "canonical": "oklch(79% 0.008 220)",
+        "tonalRamp": ["#282D30", "#3D4448", "#5B6368", "#7A8286", "#C0C6CA", "#D4D8DB", "#E6E9EA", "#F4F5F6"]
+      },
+      "silver-dark": {
+        "role": "secondary",
+        "displayName": "Silver Dark",
+        "canonical": "oklch(67% 0.008 220)",
+        "tonalRamp": ["#1E2326", "#32383C", "#4C5357", "#677075", "#9AA0A6", "#B8BCC0", "#D4D7D9", "#EEF0F1"]
+      },
+      "silver-light": {
+        "role": "secondary",
+        "displayName": "Silver Light",
+        "canonical": "oklch(91% 0.005 70)",
+        "tonalRamp": ["#242220", "#3D3A37", "#5E5A56", "#857F78", "#C4C1BB", "#D8D5D0", "#E4E2DC", "#F0EFEC"]
+      },
+      "surface-off-white": {
+        "role": "neutral",
+        "displayName": "Treated Surface",
+        "canonical": "oklch(96% 0.005 70)",
+        "tonalRamp": ["#242220", "#3D3A37", "#6B6762", "#928E8A", "#C4C1BB", "#E0DDD8", "#ECEAE4", "#F5F4F0"]
+      },
+      "surface-cream": {
+        "role": "neutral",
+        "displayName": "Surface Cream",
+        "canonical": "oklch(93% 0.006 70)",
+        "tonalRamp": ["#242220", "#3D3A37", "#6B6762", "#928E8A", "#BBBAAF", "#D4D1CB", "#ECEAE4", "#F5F4F0"]
+      },
+      "ink-heading": {
+        "role": "neutral",
+        "displayName": "Ink Heading",
+        "canonical": "oklch(14% 0.003 220)",
+        "tonalRamp": ["#0D0D0D", "#1A1A1A", "#2E2E2E", "#474747", "#6B6B6B", "#9A9A9A", "#C8C8C8", "#F0F0F0"]
+      },
+      "ink-body": {
+        "role": "neutral",
+        "displayName": "Ink Body",
+        "canonical": "oklch(28% 0.006 60)",
+        "tonalRamp": ["#161412", "#3D3A37", "#5A5652", "#7A756F", "#9A9590", "#BCBAB4", "#D8D6D0", "#F0EEED"]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Ink Muted",
+        "canonical": "oklch(58% 0.01 200)",
+        "tonalRamp": ["#1A2020", "#2E3A3A", "#4A5A5A", "#627474", "#7F8C8D", "#A0AAAB", "#C4CBCC", "#E8ECEC"]
+      },
+      "gold-award": {
+        "role": "tertiary",
+        "displayName": "Award Gold",
+        "canonical": "oklch(73% 0.14 78)",
+        "tonalRamp": ["#251E08", "#3D3212", "#6A5318", "#9E7A28", "#C9A84C", "#D9BF80", "#E8D4A8", "#F5EDD6"]
+      },
+      "void": {
+        "role": "neutral",
+        "displayName": "Void",
+        "canonical": "oklch(8% 0.002 220)",
+        "tonalRamp": ["#0D0D0D", "#1A1A1A", "#2A2A2A", "#3D3D3D", "#555555", "#777777", "#AAAAAA", "#E0E0E0"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines and full-viewport section titles only. Leading 0.90 is intentional — the visual mass of tight stacked lines reads as a single stamped nameplate." },
+      "headline": { "displayName": "Headline", "purpose": "Section headers and page titles. Distinct from display by weight (700 vs 800) and leading (1.1 vs 0.90)." },
+      "title": { "displayName": "Title", "purpose": "Card headers, feature names, sub-section labels." },
+      "body": { "displayName": "Body", "purpose": "All running prose. Max 65–75ch line length." },
+      "label": { "displayName": "Label", "purpose": "Section divider text, stat labels, certification metadata. Uppercase only for ≤4-word identifiers." }
+    },
+    "shadows": [
+      { "name": "warm-sm", "value": "0 2px 8px rgba(45, 41, 38, 0.08)", "purpose": "Subtle hover lift for small interactive elements." },
+      { "name": "warm-md", "value": "0 4px 20px rgba(45, 41, 38, 0.10)", "purpose": "Scrolled header state shadow." },
+      { "name": "warm-lg", "value": "0 10px 40px rgba(45, 41, 38, 0.12)", "purpose": "Card hover elevation — appears only on hover, never at rest." },
+      { "name": "warm-xl", "value": "0 15px 60px rgba(45, 41, 38, 0.16)", "purpose": "Modal and mega-panel floating shadow." },
+      { "name": "cta-red-glow", "value": "0 4px 15px rgba(231, 76, 60, 0.20)", "purpose": "Resting glow beneath red CTA buttons." },
+      { "name": "cta-red-glow-hover", "value": "0 8px 32px rgba(231, 76, 60, 0.40)", "purpose": "Deepened red glow on button hover." }
+    ],
+    "motion": [
+      { "name": "ease-expo-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "All content reveals and nav underline slides. Exponential out." },
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "State transitions (color, border, shadow). Global transition default." },
+      { "name": "duration-fast", "value": "150ms", "purpose": "Color and border state changes. The global transition-duration." },
+      { "name": "duration-reveal", "value": "700ms", "purpose": "Content fade-up reveals on scroll entry." },
+      { "name": "duration-slide", "value": "350ms", "purpose": "Mobile overlay slide-in/out." },
+      { "name": "stagger-children", "value": "0.13s", "purpose": "Stagger delay between sibling items in reveal sequences." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "max-content", "value": "1280px", "purpose": "max-w-7xl — the site's maximum content width." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The sole CTA. Red fill, zero radius, slight scale on press.",
+      "html": "<button class=\"ds-btn-primary\"><span>Request a Quote</span><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #E74C3C; color: #fff; font-family: 'Cairo', sans-serif; font-size: 0.875rem; font-weight: 700; border: none; border-radius: 0; cursor: pointer; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.20); transition: background 0.15s cubic-bezier(0.4,0,0.2,1), box-shadow 0.15s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1); } .ds-btn-primary:hover { background: #C0392B; box-shadow: 0 8px 32px rgba(231, 76, 60, 0.40); transform: scale(1.03); } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 2px solid #E74C3C; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Used on dark/hero backgrounds only. Glass fill, white text, backdrop blur.",
+      "html": "<button class=\"ds-btn-ghost\">Explore Products</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: rgba(255,255,255,0.10); color: #fff; font-family: 'Cairo', sans-serif; font-size: 0.875rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.25); border-radius: 0; cursor: pointer; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: background 0.15s cubic-bezier(0.4,0,0.2,1), border-color 0.15s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1); } .ds-btn-ghost:hover { background: rgba(255,255,255,0.17); border-color: rgba(255,255,255,0.45); transform: scale(1.03); } .ds-btn-ghost:active { transform: scale(0.97); } .ds-btn-ghost:focus-visible { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 2px; }"
+    },
+    {
+      "name": "Nav CTA Button",
+      "kind": "button",
+      "refersTo": "nav-cta",
+      "description": "Compact red CTA in the site header. 36px height, tighter padding.",
+      "html": "<a class=\"ds-nav-cta\" href=\"#\"><span>Request Quote</span><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 256 256\" fill=\"currentColor\"><path d=\"M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z\"/></svg></a>",
+      "css": ".ds-nav-cta { display: inline-flex; align-items: center; gap: 6px; padding: 0 16px; height: 36px; background: #E74C3C; color: #fff; font-family: 'Cairo', sans-serif; font-size: 0.875rem; font-weight: 700; text-decoration: none; border-radius: 0; transition: background 0.15s cubic-bezier(0.4,0,0.2,1), transform 0.15s cubic-bezier(0.4,0,0.2,1); } .ds-nav-cta:hover { background: #C0392B; transform: scale(1.03); } .ds-nav-cta:focus-visible { outline: 2px solid #E74C3C; outline-offset: 2px; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Standard content card. White on off-white, 2px radius, flat at rest, lifts on hover.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">uPVC Casement Window</h3><p class=\"ds-card-body\">Multi-chamber profiles engineered for the UAE climate. Thermal performance, acoustic attenuation, and impact resistance in a single extrusion.</p></div>",
+      "css": ".ds-card { background: #fff; border-radius: 2px; border: 1px solid #E4E2DC; padding: 32px; transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), border-color 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1); } .ds-card:hover { transform: translateY(-4px); border-color: #C0C6CA; box-shadow: 0 10px 40px rgba(45, 41, 38, 0.12); } .ds-card-title { font-family: 'Cairo', sans-serif; font-size: 1.25rem; font-weight: 600; color: #1A1A1A; line-height: 1.3; margin: 0 0 12px; } .ds-card-body { font-family: 'Cairo', sans-serif; font-size: 1rem; font-weight: 400; color: #3D3A37; line-height: 1.6; margin: 0; }"
+    },
+    {
+      "name": "Navigation Link",
+      "kind": "nav",
+      "description": "Desktop nav item with red underline animation on hover and active.",
+      "html": "<div class=\"ds-nav-item\"><a class=\"ds-nav-link\" href=\"#\">Solutions</a><span class=\"ds-nav-underline\" aria-hidden=\"true\"></span></div>",
+      "css": ".ds-nav-item { position: relative; display: flex; align-items: center; height: 52px; } .ds-nav-link { font-family: 'Cairo', sans-serif; font-size: 0.875rem; font-weight: 600; color: #3D3A37; text-decoration: none; transition: color 0.15s cubic-bezier(0.4,0,0.2,1); } .ds-nav-link:hover { color: #1A1A1A; } .ds-nav-underline { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: #E74C3C; transform: scaleX(0); transform-origin: left center; transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1); } .ds-nav-item:hover .ds-nav-underline { transform: scaleX(1); } .ds-nav-link:focus-visible { outline: 2px solid #E74C3C; outline-offset: 2px; }"
+    },
+    {
+      "name": "Stat Display",
+      "kind": "custom",
+      "description": "Large numeral with red rule above and uppercase label below. No card, no border.",
+      "html": "<div class=\"ds-stat\"><div class=\"ds-stat-rule\" aria-hidden=\"true\"></div><span class=\"ds-stat-number\" dir=\"ltr\">500+</span><span class=\"ds-stat-label\">Projects Completed</span></div>",
+      "css": ".ds-stat { display: flex; flex-direction: column; } .ds-stat-rule { width: 32px; height: 2px; background: #E74C3C; margin-bottom: 20px; } .ds-stat-number { font-family: 'Cairo', sans-serif; font-size: 3rem; font-weight: 700; color: #1A1A1A; line-height: 1; font-variant-numeric: tabular-nums; margin-bottom: 12px; } .ds-stat-label { font-family: 'Cairo', sans-serif; font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.18em; color: #7F8C8D; }"
+    },
+    {
+      "name": "Section Divider",
+      "kind": "custom",
+      "description": "Hairline ruled separator with centered uppercase label between major page sections.",
+      "html": "<div class=\"ds-section-divider\"><div class=\"ds-divider-rule\" aria-hidden=\"true\"></div><span class=\"ds-divider-label\">Our Products</span><div class=\"ds-divider-rule\" aria-hidden=\"true\"></div></div>",
+      "css": ".ds-section-divider { display: flex; align-items: center; gap: 24px; padding: 20px 32px; background: #fff; border-top: 1px solid #E4E2DC; border-bottom: 1px solid #E4E2DC; } .ds-divider-rule { flex: 1; height: 1px; background: #E4E2DC; } .ds-divider-label { font-family: 'Cairo', sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.25em; color: #7F8C8D; white-space: nowrap; user-select: none; }"
+    },
+    {
+      "name": "Language Toggle",
+      "kind": "button",
+      "description": "EN/AR language switcher in header. Sharp, compact, cream background.",
+      "html": "<button class=\"ds-lang-toggle\">ع</button>",
+      "css": ".ds-lang-toggle { padding: 6px 12px; background: #ECEAE4; color: #1A1A1A; font-family: 'Cairo', sans-serif; font-size: 0.75rem; font-weight: 700; border: none; border-radius: 0; cursor: pointer; transition: background 0.15s cubic-bezier(0.4,0,0.2,1); } .ds-lang-toggle:hover { background: #E4E2DC; } .ds-lang-toggle:focus-visible { outline: 2px solid #E74C3C; outline-offset: 2px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Aluminum Extrusion",
+    "overview": "The visual system takes its logic from the product itself. Extruded aluminum profiles have a direction: horizontal or vertical, never diagonal. Their tolerances are tight. Their corners are sharp because the extrusion die doesn't round. The silver is not a decorative choice — it is the material.\n\nThe three-tier surface structure (void → off-white → white) mirrors the product's own material logic: raw dark substrate, treated surface, finished face. The silver system carries the material's identity. The red CTA is the anodized accent stripe on an otherwise bare metal surface — singular, deliberate, unmistakable.\n\nWarmth in this system does not come from the UI. It comes from the interior photography: sunlight through glazing, timber floors seen through large-format windows, the glow of a lit residence at dusk. The UI is the frame. The photography is the view.",
+    "keyCharacteristics": [
+      "Sharp corners throughout — 0px radius on all interactive elements; 2px on cards as minimum structural rounding only",
+      "Two-axis discipline — lines, dividers, and layout rules run horizontally or vertically; no diagonal accents",
+      "One accent color — brand red on ≤10% of any screen surface",
+      "Silver as material — the neutral system reads as the metal itself, not as gray",
+      "Typography in a single family — Cairo carries both Arabic and Latin; weight and scale create all hierarchy",
+      "Motion serves the frame — transitions reveal content; they do not animate the frame itself"
+    ],
+    "rules": [
+      { "name": "The One Voice Rule", "body": "Brand red (#E74C3C) occupies ≤10% of any given screen surface at any time. Its rarity is the point. If more than one element on a screen is red, one of them is wrong.", "section": "colors" },
+      { "name": "The No-Warmth-In-UI Rule", "body": "Warmth is a photography responsibility, not a UI responsibility. Do not add tinted warm overlays, amber glows, or warm-hued gradients to UI elements. The surfaces are industrial neutrals. The photographs are warm.", "section": "colors" },
+      { "name": "The Material Rule", "body": "Silver (#C0C6CA) is the material, not a gray default. Never use a generic CSS gray as a substitute; reach for a named silver token.", "section": "colors" },
+      { "name": "The Single Family Rule", "body": "Cairo is the only typeface on this site. Adding a second family breaks the Arabic-Latin parity. Weight and scale contrast create all hierarchy.", "section": "typography" },
+      { "name": "The Tight Display Rule", "body": "Display headings use line-height: 0.90. This is intentional. The visual mass of a tight stacked headline is the design. Do not fix it to 1.2.", "section": "typography" },
+      { "name": "The Frame Rule", "body": "Surfaces are flat. The UI is the frame; shadows are not the default. Never add a shadow to a card at rest — only on hover, as a response to user intent.", "section": "elevation" },
+      { "name": "The Warm Shadow Rule", "body": "All box-shadow values use rgba(45, 41, 38, x) as the shadow color. The value rgba(0, 0, 0, x) is banned.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use border-radius: 0px on all buttons, inputs, and tags.",
+      "Do keep shadows warm: rgba(45, 41, 38, x). Swap rgba(0, 0, 0, x) for the warm equivalent every time.",
+      "Do keep brand red at ≤10% of any screen surface. One primary CTA per viewport.",
+      "Do force dir=\"ltr\" on numerals and codes rendered inside an Arabic (dir=\"rtl\") context.",
+      "Do let photography carry warmth. The UI surfaces are industrial neutrals.",
+      "Do apply text-wrap: balance on h1–h3 elements.",
+      "Do use gold (#C9A84C) only on certification icons and award badges.",
+      "Do test every component in both LTR (English) and RTL (Arabic) before shipping."
+    ],
+    "donts": [
+      "Don't add blue or any blue derivative to any element, shadow, or border.",
+      "Don't use rgba(0,0,0,x) in any box-shadow.",
+      "Don't round button corners. Not even 4px.",
+      "Don't use ornamental Arabic calligraphic patterns, geometric Islamic tile patterns, or traditional decorative borders.",
+      "Don't use gradient text (background-clip: text).",
+      "Don't put a shadow on a card at rest. Only hover reveals the shadow.",
+      "Don't use gold (#C9A84C) as a general accent or hover color.",
+      "Don't introduce a second typeface.",
+      "Don't add diagonal lines, rotated shapes, or angled decorative elements."
+    ]
+  }
+}

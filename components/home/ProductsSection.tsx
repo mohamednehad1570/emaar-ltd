@@ -69,8 +69,8 @@ const PRODUCTS: ProductTile[] = [
 ];
 
 const copy = {
-  en: { title: 'Our Products', subtitle: 'Premium quality for every application', cta: 'Browse All Products' },
-  ar: { title: 'منتجاتنا',     subtitle: 'جودة ممتازة لكل تطبيق',                cta: 'تصفح كل المنتجات'  },
+  en: { title: 'Our Products', subtitle: 'uPVC and aluminium systems for every project type', cta: 'Browse All Products' },
+  ar: { title: 'منتجاتنا',     subtitle: 'أنظمة uPVC والألومنيوم لكل نوع مشروع',              cta: 'تصفح كل المنتجات'  },
 } as const;
 
 /* ── Component ─────────────────────────────────────────────────────────── */
@@ -87,23 +87,24 @@ export default function ProductsSection() {
     >
       <div className="container-custom">
 
-        {/* ── Section heading ──────────────────────────────────────────── */}
+        {/* ── Section heading — left-aligned; no accent bar ──────────── */}
         <motion.div
-          className="mb-14 text-center"
+          className={`mb-14 ${isRTL ? 'text-right' : 'text-left'}`}
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
         >
+          <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-red mb-3">
+            {language === 'en' ? 'Product Range' : 'نطاق المنتجات'}
+          </p>
           <h2
             id="products-heading"
-            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-4"
+            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-3"
           >
             {t.title}
           </h2>
-          {/* Accent line — same weight as section divider strokes */}
-          <div className="h-0.5 w-12 bg-brand-red mx-auto mb-5" />
-          <p className="text-lg text-text-body max-w-xl mx-auto">{t.subtitle}</p>
+          <p className="text-lg text-text-body max-w-lg">{t.subtitle}</p>
         </motion.div>
 
         {/* ── 4-column product grid ────────────────────────────────────── */}
@@ -160,7 +161,7 @@ export default function ProductsSection() {
           viewport={viewportOnce}
         >
           <Link
-            href="/products/upvc"
+            href="/products"
             className="inline-flex items-center gap-2 text-sm font-bold text-brand-dark border-b-2 border-brand-red pb-0.5 hover:text-brand-red transition-colors duration-200"
           >
             {t.cta}

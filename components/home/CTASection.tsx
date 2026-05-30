@@ -1,66 +1,106 @@
 'use client';
 
+/**
+ * components/home/CTASection.tsx
+ *
+ * Full-bleed dark conversion section.
+ * Void background + subtle dot pattern — the button earns its place
+ * through isolation, not decoration.
+ *
+ * Design rules (CLAUDE.md / DESIGN.md):
+ *   - No em dashes in copy (banned)
+ *   - leading-[0.90] on display headings per DESIGN.md spec
+ *   - text-balance on h2 for even line wrapping
+ *   - Warm shadow only: rgba(231,76,60,x) for the CTA glow
+ *   - transition-[background-color,box-shadow] so the glow deepens smoothly
+ */
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Medal as Award, ArrowRight } from '@phosphor-icons/react';
+import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function CTASection() {
-    const { language, isRTL } = useLanguage();
+  const { language, isRTL } = useLanguage();
 
-    const content = {
-        en: {
-            title: 'Ready to Transform Your Space?',
-            subtitle: 'Get expert consultation and a custom quote for your project',
-            button: 'Contact Us Now',
-        },
-        ar: {
-            title: 'هل أنت مستعد لتحويل مساحتك؟',
-            subtitle: 'احصل على استشارة متخصصة وعرض سعر مخصص لمشروعك',
-            button: 'اتصل بنا الآن',
-        },
-    };
+  const content = {
+    en: {
+      title:    'Ready to start your project?',
+      subtitle: 'Get a quote within 24 hours, no commitment required.',
+      button:   'Contact Us Now',
+    },
+    ar: {
+      title:    'هل أنت مستعد لبدء مشروعك؟',
+      subtitle: 'احصل على عرض سعر خلال 24 ساعة، دون أي التزام.',
+      button:   'اتصل بنا الآن',
+    },
+  };
 
-    const t = content[language];
+  const t = content[language];
 
-    return (
-        <section className="py-24 px-6 bg-brand-void relative overflow-hidden text-white">
-            {/* dot-pattern uses currentColor — inherits white from section text-white */}
-            <div className="absolute inset-0 dot-pattern opacity-5" />
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-red via-transparent to-brand-red opacity-50" />
+  return (
+    <section
+      className="py-32 px-6 bg-brand-void relative overflow-hidden text-white"
+      dir={isRTL ? 'rtl' : 'ltr'}
+      aria-labelledby="cta-heading"
+    >
+      {/* Dot pattern — inherits white from parent text-white; opacity-5 stays in token scale */}
+      <div className="absolute inset-0 dot-pattern opacity-5" aria-hidden="true" />
 
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-red rounded-full blur-[120px] opacity-10 animate-pulse" />
+      <div className="relative max-w-3xl mx-auto text-center z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Display heading — leading-[0.90] per DESIGN.md; text-balance prevents orphans */}
+          <h2
+            id="cta-heading"
+            className="
+              text-4xl md:text-5xl lg:text-6xl
+              font-extrabold leading-[0.90] tracking-tight
+              text-white text-balance
+              mb-6
+            "
+          >
+            {t.title}
+          </h2>
 
-            <div className="relative max-w-4xl mx-auto text-center z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                >
-                    <div className="mb-6 inline-block p-4 rounded-sm bg-white/5 border border-white/10 backdrop-blur-sm">
-                        <Award className="w-12 h-12 text-brand-silver" />
-                    </div>
+          {/* Subtitle — font-light creates weight contrast with the extrabold heading */}
+          <p className="text-lg text-white/55 font-light mb-10 max-w-md mx-auto">
+            {t.subtitle}
+          </p>
 
-                    <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight tracking-tight">
-                        {t.title}
-                    </h2>
-
-                    <p className="text-xl md:text-2xl text-text-muted mb-10 max-w-2xl mx-auto font-light">
-                        {t.subtitle}
-                    </p>
-
-                    <Link
-                        href="/contact"
-                        className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold text-lg overflow-hidden shadow-warm-red hover:shadow-[0_8px_32px_rgba(231,76,60,0.4)] transition-all duration-300 hover:scale-105"
-                    >
-                        <span className="relative z-10">{t.button}</span>
-                        <ArrowRight className={`relative z-10 w-6 h-6 transition-transform duration-300 group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
-                        <div className="absolute inset-0 bg-gradient-to-r from-brand-red/90 to-brand-red opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </Link>
-                </motion.div>
-            </div>
-        </section>
-    );
+          {/* Primary CTA — scale via Framer Motion; bg + shadow transition together */}
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="inline-block"
+          >
+            <Link
+              href="/contact"
+              className="
+                inline-flex items-center gap-3
+                px-10 py-5 rounded-none
+                bg-brand-red hover:bg-brand-red-dark
+                text-white font-bold text-base
+                shadow-[0_4px_20px_rgba(231,76,60,0.30)]
+                hover:shadow-[0_8px_36px_rgba(231,76,60,0.45)]
+                [transition:background-color_200ms,box-shadow_200ms]
+              "
+            >
+              {t.button}
+              <ArrowRight
+                size={20}
+                weight="bold"
+                className={isRTL ? 'rotate-180' : ''}
+              />
+            </Link>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
 }
