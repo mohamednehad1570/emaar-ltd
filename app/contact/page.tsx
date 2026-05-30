@@ -1,9 +1,28 @@
 'use client';
 
+/**
+ * app/contact/page.tsx
+ *
+ * Contact page — the conversion endpoint for the entire site.
+ * Left-aligned hero (engineering register, not celebratory), quote form,
+ * contact methods sidebar, office locations, map placeholder, and a direct-action
+ * dark strip at the bottom for visitors who prefer to call or message immediately.
+ *
+ * Design compliance:
+ *   - No gradient text, no gradient backgrounds on interactive elements
+ *   - All shadows warm (rgba 45,41,38)
+ *   - bg-off-white page background, solid semantic token colors throughout
+ *   - Icons: WhatsappLogo for WhatsApp contexts; no MessageCircle substitution
+ *   - Placeholder contrast: text-text-muted (best available token)
+ *   - RTL: every directional class is conditional; Send icon reverses in AR
+ */
+
 import React, { useState } from 'react';
-import { motion , useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
-  Phone, Envelope as Mail, MapPin, Clock, PaperPlaneTilt as Send, UploadSimple as Upload, X, ChatCircle as MessageCircle, CheckCircle, ArrowRight,
+  Phone, Envelope as Mail, MapPin, Clock,
+  PaperPlaneTilt as Send, UploadSimple as Upload, X,
+  WhatsappLogo, CheckCircle, ArrowRight,
 } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { contactData } from '@/lib/data/contact';
@@ -32,7 +51,7 @@ export default function ContactPage() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
+    if (e.target.files?.[0]) {
       setFormData({ ...formData, file: e.target.files[0] });
     }
   };
@@ -42,7 +61,6 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setSubmitStatus('idle');
     setSubmitError('');
-
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -55,9 +73,7 @@ export default function ContactPage() {
           message: formData.message,
         }),
       });
-
       const data = await res.json() as { success?: boolean; error?: string };
-
       if (!res.ok) {
         setSubmitError(data.error ?? (language === 'en'
           ? 'Something went wrong. Please try again.'
@@ -77,44 +93,56 @@ export default function ContactPage() {
     }
   };
 
-  /* inputs: rounded-none per --radius-button (inputs are in same group as buttons) */
-  const inputClass = `w-full px-4 py-3.5 rounded-none border border-brand-silver/20 bg-white text-brand-dark placeholder:text-brand-silver focus:border-brand-red focus:outline-none transition-colors`;
+  /* Shared input class — sharp corners, brand borders, accessible placeholder */
+  const inputClass = [
+    'w-full px-4 py-3.5 rounded-none',
+    'border border-border-light bg-white',
+    'text-text-body placeholder:text-text-muted',
+    'focus:border-brand-red focus:outline-none',
+    'transition-colors duration-150',
+  ].join(' ');
 
   return (
-    <div className={`min-h-screen bg-gradient-to-b from-brand-bg via-white to-brand-bg ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
 
-      {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-16 px-6 overflow-hidden">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-20 left-1/4 w-96 h-96 bg-brand-silver/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-brand-red/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        </div>
-
-        <div className="max-w-7xl mx-auto text-center">
+      {/* ── Hero — left-aligned, confident, no decoration ──── */}
+      <section className="pt-32 pb-14 px-6">
+        <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial={shouldReduce ? {} : "hidden"}
+            initial={shouldReduce ? {} : 'hidden'}
             animate="visible"
+            className={isRTL ? 'text-right' : 'text-left'}
           >
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 bg-gradient-to-r from-brand-red to-brand-silver bg-clip-text text-transparent">
+            {/* Label eyebrow — restricted to this one instance per page */}
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-red mb-4">
+              {language === 'en' ? 'Get in Touch' : 'تواصل معنا'}
+            </p>
+
+            {/* h1 — display scale, solid ink, no gradient */}
+            <h1
+              className="font-extrabold text-brand-dark leading-[0.95] tracking-[-0.02em] mb-5 text-balance"
+              style={{ fontSize: 'clamp(2.75rem, 5vw, 5rem)' }}
+            >
               {t.hero.title}
             </h1>
-            <p className="text-xl text-brand-gray mb-8">{t.hero.subtitle}</p>
 
-            {/* Trust indicators */}
-            <div className="flex justify-center gap-8 flex-wrap">
+            <p className="text-lg text-text-body max-w-xl mb-10">{t.hero.subtitle}</p>
+
+            {/* Trust chips — border, white bg, red icon, no shadow */}
+            <div className={`flex flex-wrap gap-3 ${isRTL ? 'justify-end' : ''}`}>
               {t.hero.trust.map((item, idx) => {
                 const Icon = resolveIcon(item.icon);
                 return (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: idx * 0.1 + 0.3 }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-none bg-white border border-border-light"
+                    initial={shouldReduce ? {} : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.08 + 0.2 }}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-border-light"
                   >
-                    <Icon className="w-5 h-5 text-brand-silver" />
-                    <span className="text-sm font-semibold text-brand-dark">{item.text}</span>
+                    <Icon className="w-4 h-4 text-brand-red shrink-0" aria-hidden="true" />
+                    <span className="text-sm font-semibold text-text-body">{item.text}</span>
                   </motion.div>
                 );
               })}
@@ -123,202 +151,303 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ── Main Content ──────────────────────────────────── */}
-      <section className="py-24 px-6">
+      {/* ── Main: Quote Form + Contact Sidebar ────────────── */}
+      <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12">
 
-            {/* LEFT: Quote Form */}
+            {/* ── LEFT: Quote Form ─────────────────────────── */}
             <motion.div
-              initial={{ opacity: 0, x: isRTL ? 50 : -50 }}
+              initial={shouldReduce ? {} : { opacity: 0, x: isRTL ? 40 : -40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              {/* form card: rounded-sm, no shadow */}
-              <div className="bg-white rounded-sm p-8 border border-border-light">
-                <h2 className="text-3xl font-bold mb-2 text-brand-dark">{t.form.title}</h2>
-                <p className="text-sm text-brand-gray mb-6">{t.form.subtitle}</p>
+              <div className="bg-white p-8 border border-border-light">
+                <h2 className="text-2xl font-bold mb-1 text-brand-dark">{t.form.title}</h2>
+                <p className="text-sm text-text-muted mb-7">{t.form.subtitle}</p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  {/* Name */}
-                  <div>
-                    <label className="block text-sm font-semibold text-brand-dark mb-2">
-                      {t.form.fields.name.label} {t.form.fields.name.required && <span className="text-brand-red">*</span>}
-                    </label>
-                    <input type="text" name="name" value={formData.name} onChange={handleInputChange} required placeholder={t.form.fields.name.placeholder} className={inputClass} />
+
+                  {/* Name + Email — 2-col on md+ */}
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm font-semibold text-text-body mb-2">
+                        {t.form.fields.name.label}
+                        {t.form.fields.name.required && <span className="text-brand-red ms-0.5">*</span>}
+                      </label>
+                      <input
+                        type="text" name="name" value={formData.name}
+                        onChange={handleInputChange} required
+                        placeholder={t.form.fields.name.placeholder}
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-text-body mb-2">
+                        {t.form.fields.email.label}
+                        {t.form.fields.email.required && <span className="text-brand-red ms-0.5">*</span>}
+                      </label>
+                      <input
+                        type="email" name="email" value={formData.email}
+                        onChange={handleInputChange} required
+                        placeholder={t.form.fields.email.placeholder}
+                        className={inputClass}
+                      />
+                    </div>
                   </div>
 
-                  {/* Email */}
-                  <div>
-                    <label className="block text-sm font-semibold text-brand-dark mb-2">
-                      {t.form.fields.email.label} {t.form.fields.email.required && <span className="text-brand-red">*</span>}
-                    </label>
-                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder={t.form.fields.email.placeholder} className={inputClass} />
-                  </div>
-
-                  {/* Phone */}
-                  <div>
-                    <label className="block text-sm font-semibold text-brand-dark mb-2">
-                      {t.form.fields.phone.label} {t.form.fields.phone.required && <span className="text-brand-red">*</span>}
-                    </label>
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder={t.form.fields.phone.placeholder} className={inputClass} />
-                  </div>
-
-                  {/* Project Type */}
-                  <div>
-                    <label className="block text-sm font-semibold text-brand-dark mb-2">
-                      {t.form.fields.projectType.label} {t.form.fields.projectType.required && <span className="text-brand-red">*</span>}
-                    </label>
-                    <select name="projectType" value={formData.projectType} onChange={handleInputChange} required className={inputClass}>
-                      {t.form.fields.projectType.options.map((option, idx) => (
-                        <option key={idx} value={idx === 0 ? '' : option} disabled={idx === 0}>{option}</option>
-                      ))}
-                    </select>
+                  {/* Phone + Project Type — 2-col on md+ */}
+                  <div className="grid md:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm font-semibold text-text-body mb-2">
+                        {t.form.fields.phone.label}
+                        {t.form.fields.phone.required && <span className="text-brand-red ms-0.5">*</span>}
+                      </label>
+                      <input
+                        type="tel" name="phone" value={formData.phone}
+                        onChange={handleInputChange} required
+                        placeholder={t.form.fields.phone.placeholder}
+                        className={inputClass}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-text-body mb-2">
+                        {t.form.fields.projectType.label}
+                        {t.form.fields.projectType.required && <span className="text-brand-red ms-0.5">*</span>}
+                      </label>
+                      <select
+                        name="projectType" value={formData.projectType}
+                        onChange={handleInputChange} required
+                        className={inputClass}
+                      >
+                        {t.form.fields.projectType.options.map((option, idx) => (
+                          <option key={idx} value={idx === 0 ? '' : option} disabled={idx === 0}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
 
                   {/* Message */}
                   <div>
-                    <label className="block text-sm font-semibold text-brand-dark mb-2">
-                      {t.form.fields.message.label} {t.form.fields.message.required && <span className="text-brand-red">*</span>}
+                    <label className="block text-sm font-semibold text-text-body mb-2">
+                      {t.form.fields.message.label}
+                      {t.form.fields.message.required && <span className="text-brand-red ms-0.5">*</span>}
                     </label>
-                    <textarea name="message" value={formData.message} onChange={handleInputChange} required rows={4} placeholder={t.form.fields.message.placeholder} className={`${inputClass} resize-none`} />
+                    <textarea
+                      name="message" value={formData.message}
+                      onChange={handleInputChange} required rows={5}
+                      placeholder={t.form.fields.message.placeholder}
+                      className={`${inputClass} resize-none`}
+                    />
                   </div>
 
                   {/* File Upload */}
                   <div>
-                    <label className="block text-sm font-semibold text-brand-dark mb-2">{t.form.fields.file.label}</label>
-                    <p className="text-xs text-brand-gray mb-2">{t.form.fields.file.hint}</p>
+                    <label className="block text-sm font-semibold text-text-body mb-1">
+                      {t.form.fields.file.label}
+                    </label>
+                    <p className="text-xs text-text-muted mb-2">{t.form.fields.file.hint}</p>
                     <div className="relative">
-                      <input type="file" id="file-upload" onChange={handleFileChange} accept=".pdf,.jpg,.jpeg,.png,.dwg" className="hidden" />
-                      <label htmlFor="file-upload" className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-none border border-brand-silver/20 bg-brand-bg text-brand-gray hover:border-brand-silver hover:text-brand-dark transition-colors cursor-pointer">
-                        <Upload size={18} />
-                        <span className="text-sm">{formData.file ? formData.file.name : (language === 'en' ? 'Choose file' : 'اختر ملف')}</span>
+                      <input
+                        type="file" id="file-upload"
+                        onChange={handleFileChange}
+                        accept=".pdf,.jpg,.jpeg,.png,.dwg"
+                        className="hidden"
+                      />
+                      {/* Dashed border — standard file-drop affordance */}
+                      <label
+                        htmlFor="file-upload"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-3 border border-dashed border-border-medium bg-off-white text-text-muted hover:border-brand-silver hover:text-text-body transition-colors cursor-pointer text-sm"
+                      >
+                        <Upload size={16} className="shrink-0" aria-hidden="true" />
+                        <span>
+                          {formData.file
+                            ? formData.file.name
+                            : (language === 'en' ? 'Attach a file' : 'إرفاق ملف')}
+                        </span>
                       </label>
                       {formData.file && (
-                        <button type="button" onClick={() => setFormData({ ...formData, file: null })} className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-none hover:bg-brand-bg transition-colors">
-                          <X size={16} className="text-brand-red" />
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, file: null })}
+                          className={`absolute top-1/2 -translate-y-1/2 p-2.5 hover:bg-cream transition-colors ${isRTL ? 'left-3' : 'right-3'}`}
+                          aria-label={language === 'en' ? 'Remove file' : 'إزالة الملف'}
+                        >
+                          <X size={14} className="text-text-muted" />
                         </button>
                       )}
                     </div>
                   </div>
 
-                  {/* Submit */}
-                  <button
+                  {/* Submit — solid brand-red, no gradient */}
+                  <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full px-6 py-4 rounded-none bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-semibold text-lg hover:shadow-warm-red disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 group"
+                    whileHover={isSubmitting ? {} : { scale: 1.02 }}
+                    whileTap={isSubmitting ? {} : { scale: 0.98 }}
+                    className="w-full px-6 py-4 bg-brand-red hover:bg-brand-red-dark text-white font-bold text-base disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 group"
                   >
                     {isSubmitting ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        {/* Spinner — border-t-white is the visible arc */}
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                         {t.form.sending}
                       </>
                     ) : (
                       <>
-                        <Send size={20} className="group-hover:translate-x-1 transition-transform" />
+                        {/* Send icon rotated in RTL so arrow points in reading direction */}
+                        <Send
+                          size={18}
+                          className={`transition-transform duration-150 ${
+                            isRTL
+                              ? 'rotate-180 group-hover:-translate-x-1'
+                              : 'group-hover:translate-x-1'
+                          }`}
+                          aria-hidden="true"
+                        />
                         {t.form.submit}
                       </>
                     )}
-                  </button>
+                  </motion.button>
 
-                  {/* ── Inline success message ──────────────────────────── */}
+                  {/* Success state */}
                   {submitStatus === 'success' && (
                     <div className="flex items-start gap-3 p-4 bg-off-white border border-border-light">
-                      <CheckCircle size={20} className="text-brand-dark shrink-0 mt-0.5" aria-hidden="true" />
+                      <CheckCircle size={18} className="text-brand-dark shrink-0 mt-0.5" aria-hidden="true" />
                       <p className="text-sm font-semibold text-brand-dark">
                         {language === 'en'
-                          ? "Message sent — we'll be in touch within 24 hours."
-                          : 'تم الإرسال — سنتواصل معك خلال 24 ساعة.'}
+                          ? "Message sent. We'll be in touch within 24 hours."
+                          : 'تم الإرسال. سنتواصل معك خلال 24 ساعة.'}
                       </p>
                     </div>
                   )}
 
-                  {/* ── Inline error message ─────────────────────────────── */}
+                  {/* Error state */}
                   {submitStatus === 'error' && (
                     <p className="text-sm font-semibold text-brand-red" role="alert">
                       {submitError}
                     </p>
                   )}
+
                 </form>
               </div>
             </motion.div>
 
-            {/* RIGHT: Contact Methods & Offices */}
+            {/* ── RIGHT: Contact Methods + Offices ─────────── */}
             <motion.div
-              initial={{ opacity: 0, x: isRTL ? -50 : 50 }}
+              initial={shouldReduce ? {} : { opacity: 0, x: isRTL ? -40 : 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="space-y-8"
             >
-              {/* Contact Methods */}
+
+              {/* Contact Method cards */}
               <div>
-                <h3 className="text-2xl font-bold mb-5 text-brand-dark">{t.contact.title}</h3>
-                <div className="space-y-4">
+                <h3 className={`text-[11px] font-bold uppercase tracking-[0.22em] text-text-muted mb-4 ${isRTL ? 'text-right' : ''}`}>
+                  {t.contact.title}
+                </h3>
+
+                <div className="space-y-2">
+
                   {/* Phone */}
-                  <a href="tel:+971501234567" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <Phone size={20} className="text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-brand-dark mb-1">{t.contact.phone.title}</h4>
-                        <p className="text-lg font-semibold text-brand-silver mb-1">{t.contact.phone.number}</p>
-                        <p className="text-xs text-brand-gray">{t.contact.phone.hours}</p>
-                      </div>
+                  <a
+                    href="tel:+971501234567"
+                    className="flex items-center gap-4 bg-white p-5 border border-border-light hover:border-brand-silver transition-colors duration-200 group"
+                  >
+                    {/* Solid brand-red icon box — no gradient */}
+                    <div className="w-10 h-10 bg-brand-red flex items-center justify-center shrink-0">
+                      <Phone size={18} className="text-white" aria-hidden="true" />
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold uppercase tracking-[0.1em] text-text-muted mb-0.5">
+                        {t.contact.phone.title}
+                      </p>
+                      <p className="font-bold text-brand-dark">{t.contact.phone.number}</p>
+                      <p className="text-xs text-text-muted mt-0.5">{t.contact.phone.hours}</p>
+                    </div>
+                    <ArrowRight
+                      size={15}
+                      className={`text-brand-silver group-hover:text-brand-dark transition-colors shrink-0 ${isRTL ? 'rotate-180' : ''}`}
+                      aria-hidden="true"
+                    />
                   </a>
 
-                  {/* WhatsApp */}
-                  <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-sm bg-brand-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <MessageCircle size={20} className="text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-brand-dark mb-1">{t.contact.whatsapp.title}</h4>
-                        <p className="text-sm text-brand-gray mb-2">{t.contact.whatsapp.text}</p>
-                        <span className="inline-flex items-center gap-1 text-xs text-text-muted font-semibold">
-                          {t.contact.whatsapp.cta}
-                          <ArrowRight size={12} className={isRTL ? 'rotate-180' : ''} />
-                        </span>
-                      </div>
+                  {/* WhatsApp — bg-brand-dark, WhatsappLogo icon */}
+                  <a
+                    href="https://wa.me/971501234567"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 bg-white p-5 border border-border-light hover:border-brand-silver transition-colors duration-200 group"
+                  >
+                    <div className="w-10 h-10 bg-brand-dark flex items-center justify-center shrink-0">
+                      <WhatsappLogo size={18} className="text-white" weight="fill" aria-hidden="true" />
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold uppercase tracking-[0.1em] text-text-muted mb-0.5">
+                        {t.contact.whatsapp.title}
+                      </p>
+                      <p className="font-bold text-brand-dark text-sm">{t.contact.whatsapp.text}</p>
+                      <span className="inline-flex items-center gap-1 text-xs text-text-muted mt-0.5">
+                        {t.contact.whatsapp.cta}
+                        <ArrowRight size={10} className={isRTL ? 'rotate-180' : ''} aria-hidden="true" />
+                      </span>
+                    </div>
+                    <ArrowRight
+                      size={15}
+                      className={`text-brand-silver group-hover:text-brand-dark transition-colors shrink-0 ${isRTL ? 'rotate-180' : ''}`}
+                      aria-hidden="true"
+                    />
                   </a>
 
-                  {/* Email */}
-                  <a href="mailto:info@emaar-international.ae" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-brand-silver to-brand-gray flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                        <Mail size={20} className="text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-bold text-brand-dark mb-1">{t.contact.email.title}</h4>
-                        <p className="text-sm text-brand-silver mb-1 break-all">{t.contact.email.address}</p>
-                        <p className="text-xs text-brand-gray">{t.contact.email.response}</p>
-                      </div>
+                  {/* Email — bg-brand-silver (the material) */}
+                  <a
+                    href="mailto:info@emaar-international.ae"
+                    className="flex items-center gap-4 bg-white p-5 border border-border-light hover:border-brand-silver transition-colors duration-200 group"
+                  >
+                    <div className="w-10 h-10 bg-brand-silver flex items-center justify-center shrink-0">
+                      <Mail size={18} className="text-white" aria-hidden="true" />
                     </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold uppercase tracking-[0.1em] text-text-muted mb-0.5">
+                        {t.contact.email.title}
+                      </p>
+                      <p className="font-bold text-brand-dark text-sm truncate">
+                        {t.contact.email.address}
+                      </p>
+                      <p className="text-xs text-text-muted mt-0.5">{t.contact.email.response}</p>
+                    </div>
+                    <ArrowRight
+                      size={15}
+                      className={`text-brand-silver group-hover:text-brand-dark transition-colors shrink-0 ${isRTL ? 'rotate-180' : ''}`}
+                      aria-hidden="true"
+                    />
                   </a>
+
                 </div>
               </div>
 
               {/* Office Locations */}
               <div>
-                <h3 className="text-2xl font-bold mb-5 text-brand-dark">{t.offices.title}</h3>
-                <div className="space-y-4">
+                <h3 className={`text-[11px] font-bold uppercase tracking-[0.22em] text-text-muted mb-4 ${isRTL ? 'text-right' : ''}`}>
+                  {t.offices.title}
+                </h3>
+                <div className="space-y-2">
                   {t.offices.list.map((office, idx) => (
-                    <div key={idx} className="bg-white rounded-sm p-5 border border-border-light">
-                      <h4 className="font-bold text-brand-dark mb-3 flex items-center gap-2">
-                        <MapPin size={18} className="text-brand-red" />
+                    <div key={idx} className="bg-white p-5 border border-border-light">
+                      <h4 className={`font-bold text-brand-dark mb-3 flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <MapPin size={14} className="text-brand-red shrink-0" aria-hidden="true" />
                         {office.name}
                       </h4>
-                      <div className="space-y-2 text-sm text-brand-gray">
+                      <div className="space-y-1.5 text-sm text-text-body">
                         <p>{office.address}</p>
-                        <p className="flex items-center gap-2">
-                          <Phone size={14} className="text-brand-silver" />
+                        <p className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <Phone size={12} className="text-brand-silver shrink-0" aria-hidden="true" />
                           {office.phone}
                         </p>
-                        <p className="flex items-center gap-2">
-                          <Clock size={14} className="text-brand-silver" />
+                        <p className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <Clock size={12} className="text-brand-silver shrink-0" aria-hidden="true" />
                           {office.hours}
                         </p>
                       </div>
@@ -326,29 +455,39 @@ export default function ContactPage() {
                   ))}
                 </div>
               </div>
+
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* ── Map ───────────────────────────────────────────── */}
-      <section className="py-24 px-6 bg-brand-bg">
+      <section className="py-16 px-6 bg-cream">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-8 text-brand-dark">{t.map.title}</h2>
-          {/* map placeholder: rounded-sm, no shadow */}
-          <div className="bg-white rounded-sm p-4 h-96 flex items-center justify-center border border-border-light">
-            <div className="text-center">
-              <MapPin size={48} className="mx-auto mb-4 text-brand-silver" />
-              <p className="text-brand-gray mb-4">
-                {language === 'en' ? 'Interactive map will be integrated here' : 'سيتم دمج الخريطة التفاعلية هنا'}
+          <motion.h2
+            variants={fadeUp}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+            className={`text-2xl font-bold mb-8 text-brand-dark ${isRTL ? 'text-right' : ''}`}
+          >
+            {t.map.title}
+          </motion.h2>
+
+          {/* Map placeholder — matches border-light system, no shadow */}
+          <div className="bg-white h-80 flex items-center justify-center border border-border-light">
+            <div className={`text-center ${isRTL ? 'rtl' : ''}`}>
+              <MapPin size={36} className="mx-auto mb-3 text-brand-silver" aria-hidden="true" />
+              <p className="text-sm text-text-muted mb-5">
+                {language === 'en' ? 'Interactive map coming soon' : 'الخريطة التفاعلية قريبًا'}
               </p>
               <a
                 href="https://maps.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-none bg-gradient-to-r from-brand-silver to-brand-gray text-white font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-dark hover:bg-brand-dark/90 text-white text-sm font-bold transition-colors"
               >
-                <MapPin size={18} />
+                <MapPin size={14} aria-hidden="true" />
                 {t.map.viewMap}
               </a>
             </div>
@@ -356,31 +495,41 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ── CTA ──────────────────────────────────────────── */}
-      <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            variants={fadeUp}
-            initial={shouldReduce ? {} : "hidden"}
-            whileInView={shouldReduce ? undefined : "visible"}
-            viewport={shouldReduce ? undefined : viewportOnce}
-            className="bg-white rounded-sm p-10 border border-border-light"
-          >
-            <MessageCircle size={48} className="mx-auto mb-4 text-brand-silver" />
-            <h2 className="text-3xl font-bold mb-3 text-brand-dark">{t.cta.title}</h2>
-            <p className="text-lg text-brand-gray mb-6">{t.cta.subtitle}</p>
-            <a
-              href="https://wa.me/971501234567"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-brand-dark hover:bg-brand-dark/90 text-white font-semibold text-lg transition-colors"
-            >
-              <MessageCircle size={20} />
-              {t.cta.button}
-            </a>
-          </motion.div>
+      {/* ── Direct-action strip — void background, two CTA buttons ── */}
+      <section className="py-14 px-6 bg-brand-dark text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-8 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
+            <div className={isRTL ? 'text-right' : ''}>
+              <h2 className="text-2xl font-bold mb-1">
+                {t.cta.title}
+              </h2>
+              <p className="text-white/60 text-sm max-w-sm">
+                {t.cta.subtitle}
+              </p>
+            </div>
+
+            <div className={`flex flex-col sm:flex-row gap-3 shrink-0 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+              <a
+                href="tel:+971501234567"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-brand-dark font-bold text-sm hover:bg-off-white transition-colors"
+              >
+                <Phone size={15} aria-hidden="true" />
+                {language === 'en' ? 'Call Now' : 'اتصل الآن'}
+              </a>
+              <a
+                href="https://wa.me/971501234567"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 border border-white/20 text-white font-bold text-sm hover:bg-white/20 transition-colors"
+              >
+                <WhatsappLogo size={15} weight="fill" aria-hidden="true" />
+                {t.cta.button}
+              </a>
+            </div>
+          </div>
         </div>
       </section>
+
     </div>
   );
 }

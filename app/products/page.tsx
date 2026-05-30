@@ -28,7 +28,7 @@ const content = {
   en: {
     eyebrow: 'Our Systems',
     title: 'Choose Your Material',
-    subtitle: "World-class window and door systems engineered for the Gulf's climate and architectural standards.",
+    subtitle: "Window and door systems precision-engineered for the Gulf's climate and structural standards.",
     cards: [
       {
         title: 'uPVC Systems',

@@ -64,7 +64,8 @@ export default function ProductShowcase({
       <section className="relative h-[80vh] min-h-[600px] flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image src={heroImage} alt={title} fill className="object-cover" priority />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
+          {/* Gradient direction flips in RTL so the dark side stays behind the text */}
+          <div className={`absolute inset-0 ${isRTL ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-brand-dark/90 via-brand-dark/60 to-transparent`} />
         </div>
 
         <div className="container-custom relative z-10 px-6">
@@ -74,7 +75,7 @@ export default function ProductShowcase({
             transition={{ duration: 0.8 }}
             className="max-w-3xl text-white"
           >
-            <div className="h-1 w-24 mb-8 bg-brand-red rounded-full" />
+            <div className="h-0.5 w-12 mb-8 bg-brand-red" />
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">{title}</h1>
             <p className="text-2xl md:text-3xl font-light text-white/80 mb-8">{subtitle}</p>
             <p className="text-lg text-white/70 leading-relaxed max-w-2xl mb-10">{description}</p>
@@ -108,13 +109,16 @@ export default function ProductShowcase({
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={shouldReduce ? undefined : { once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white p-8 rounded-sm border-2 border-transparent hover:border-brand-silver transition-all duration-300 border-t-4 border-t-brand-red"
+                  className="bg-white p-8 border border-border-light hover:border-brand-silver transition-colors duration-200"
                 >
-                  <div className="w-16 h-16 rounded-full bg-brand-red/10 flex items-center justify-center mb-6">
-                    <Icon className="w-8 h-8 text-brand-red" />
+                  {/* Sharp flat icon box + inline title — no rounded-full container */}
+                  <div className={`flex items-center gap-3 mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <div className="w-8 h-8 bg-brand-red flex items-center justify-center shrink-0">
+                      <Icon className="w-4 h-4 text-white" aria-hidden="true" />
+                    </div>
+                    <h3 className="text-lg font-bold text-brand-dark">{feature.title}</h3>
                   </div>
-                  <h3 className="text-xl font-bold text-brand-dark mb-3">{feature.title}</h3>
-                  <p className="text-brand-gray leading-relaxed">{feature.description}</p>
+                  <p className="text-text-body leading-relaxed text-sm">{feature.description}</p>
                 </motion.div>
               );
             })}
@@ -130,7 +134,7 @@ export default function ProductShowcase({
               <h2 className="text-4xl font-bold text-brand-dark mb-4">
                 {language === 'en' ? 'Our Products' : 'منتجاتنا'}
               </h2>
-              <div className="h-1 w-24 bg-brand-red rounded-full" />
+              <div className="h-0.5 w-12 bg-brand-red" />
             </div>
 
             {/* Category Filter */}
@@ -139,10 +143,10 @@ export default function ProductShowcase({
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-6 py-2 min-h-[44px] rounded-none text-sm font-semibold transition-all capitalize ${
+                  className={`px-6 py-2 min-h-[44px] rounded-none text-sm font-semibold transition-colors duration-150 capitalize ${
                     activeCategory === cat
-                      ? 'bg-brand-red text-white shadow-lg scale-105'
-                      : 'bg-white text-brand-gray border border-brand-silver/20 hover:bg-brand-bg'
+                      ? 'bg-brand-red text-white'
+                      : 'bg-white text-text-muted border border-border-light hover:border-brand-silver hover:text-text-body'
                   }`}
                 >
                   {cat}
@@ -169,9 +173,9 @@ export default function ProductShowcase({
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute top-4 left-4">
-                      {/* product category badge: rounded-none */}
-                      <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-none text-xs font-bold uppercase tracking-wider text-brand-dark">
+                    {/* Badge position flips in RTL to the reading-start corner */}
+                    <div className={`absolute top-4 ${isRTL ? 'right-4' : 'left-4'}`}>
+                      <span className="px-3 py-1 bg-white/90 rounded-none text-xs font-bold uppercase tracking-wider text-brand-dark">
                         {product.category}
                       </span>
                     </div>
@@ -181,12 +185,12 @@ export default function ProductShowcase({
                     <h3 className="text-2xl font-bold text-brand-dark mb-3 group-hover:text-brand-red transition-colors">
                       {product.title}
                     </h3>
-                    <p className="text-brand-gray mb-6 line-clamp-2">{product.description}</p>
+                    <p className="text-text-body mb-6 line-clamp-2">{product.description}</p>
 
                     <ul className="space-y-2 mb-8">
                       {product.features.slice(0, 3).map((feat, i) => (
-                        <li key={i} className="flex items-center gap-2 text-sm text-brand-gray">
-                          <CheckCircle2 className="w-4 h-4 text-brand-red flex-shrink-0" />
+                        <li key={i} className={`flex items-center gap-2 text-sm text-text-body ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <CheckCircle2 className="w-4 h-4 text-brand-red flex-shrink-0" aria-hidden="true" />
                           <span>{feat}</span>
                         </li>
                       ))}
@@ -206,7 +210,7 @@ export default function ProductShowcase({
       </section>
 
       {/* ── Materials Info ───────────────────────────────── */}
-      <section className="py-24 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
+      <section className="py-24 bg-brand-dark text-white">
         <div className="container-custom px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
@@ -246,7 +250,7 @@ export default function ProductShowcase({
       <section className="py-24 bg-white px-6">
         <div className="max-w-7xl mx-auto">
           {/* cross-link CTA block: rounded-sm (card rule) */}
-          <div className="bg-gradient-to-br from-brand-dark to-brand-dark-mid rounded-sm p-12 md:p-16 text-center text-white relative overflow-hidden">
+          <div className="bg-brand-dark p-12 md:p-16 text-center text-white relative overflow-hidden">
             <div
               className="absolute inset-0 opacity-5"
               style={{
