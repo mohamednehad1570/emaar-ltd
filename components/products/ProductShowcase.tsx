@@ -196,11 +196,13 @@ export default function ProductShowcase({
                       ))}
                     </ul>
 
-                    {/* View Details button: rounded-none */}
-                    <button className="w-full py-4 rounded-none border-2 border-brand-red text-brand-red font-bold transition-all hover:bg-brand-red hover:text-white flex items-center justify-center gap-2">
+                    <Link
+                      href={`/products/${product.id.toLowerCase()}`}
+                      className="w-full py-4 rounded-none border-2 border-brand-red text-brand-red font-bold transition-all hover:bg-brand-red hover:text-white flex items-center justify-center gap-2"
+                    >
                       {language === 'en' ? 'View Details' : 'عرض التفاصيل'}
                       <ChevronRight className={`w-5 h-5 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
-                    </button>
+                    </Link>
                   </div>
                 </motion.div>
               ))}
