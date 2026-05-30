@@ -78,7 +78,7 @@ const COLUMNS: Column[] = [
       { en: 'About Us',  ar: 'من نحن',           href: '/about'    },
       { en: 'Projects',  ar: 'المشاريع',         href: '/projects' },
       { en: 'Careers',   ar: 'الوظائف',          href: '/careers'  },
-      { en: 'Services',  ar: 'الخدمات',          href: '/services' },
+      { en: 'Why Emaar', ar: 'لماذا إمار',         href: '/why-emaar' },
       { en: 'FAQ',       ar: 'الأسئلة الشائعة',  href: '/faq'      },
     ],
   },

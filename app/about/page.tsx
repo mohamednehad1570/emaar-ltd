@@ -140,7 +140,7 @@ export default function AboutPage() {
             </div>
 
             <div className={`mt-10 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <Link href="/why-choose-us">
+              <Link href="/why-emaar">
                 <motion.span
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -514,7 +514,7 @@ export default function AboutPage() {
             </h2>
             <p className="text-lg text-white/85 mb-8 max-w-2xl mx-auto">{t.cta.description}</p>
             <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-              <Link href="/why-choose-us">
+              <Link href="/why-emaar">
                 <motion.span
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
