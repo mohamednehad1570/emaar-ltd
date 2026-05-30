@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ArrowRight, FileText, Gear as Cog } from '@phosphor-icons/react';
 import Link from 'next/link';
@@ -11,6 +11,7 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function CommercialPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = commercialData[language];
 
   return (
@@ -41,7 +42,7 @@ export default function CommercialPage() {
             {t.capabilities.map((cap, i) => {
               const Icon = resolveIcon(cap.icon);
               return (
-                <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce} transition={{ delay: i * 0.1 }} className="bg-brand-bg border border-border-light p-8 rounded-sm">
+                <motion.div key={i} variants={fadeUp} initial={shouldReduce ? {} : "hidden"} whileInView={shouldReduce ? undefined : "visible"} viewport={shouldReduce ? undefined : viewportOnce} transition={{ delay: i * 0.1 }} className="bg-brand-bg border border-border-light p-8 rounded-sm">
                   <div className="mb-6 p-4 bg-white rounded-sm inline-block shadow-sm"><Icon className="w-8 h-8 text-brand-red" /></div>
                   <h3 className="text-2xl font-bold text-brand-dark mb-4">{cap.title}</h3>
                   <p className="text-brand-gray leading-relaxed">{cap.description}</p>
@@ -53,7 +54,7 @@ export default function CommercialPage() {
       </section>
 
       {/* Tech Hub */}
-      <section className="py-20 bg-brand-dark text-white overflow-hidden relative">
+      <section className="py-24 bg-brand-dark text-white overflow-hidden relative">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
@@ -75,7 +76,7 @@ export default function CommercialPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white">
+      <section className="py-24 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-8">{t.cta.title}</h2>
           <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red rounded-none font-bold text-lg hover:shadow-warm-xl transition-all">

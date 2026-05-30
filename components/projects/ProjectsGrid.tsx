@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence , useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSearchParams } from 'next/navigation';
 import ProjectCard from './ProjectCard';
@@ -43,7 +43,7 @@ export default function ProjectsGrid() {
     });
 
     return (
-        <section className="py-20 px-6 bg-off-white min-h-screen">
+        <section className="py-24 px-6 bg-off-white min-h-screen">
             <div className="max-w-7xl mx-auto">
 
                 {/* Header */}

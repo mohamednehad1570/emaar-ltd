@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence , useReducedMotion } from 'framer-motion';
 import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,6 +11,7 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function FAQPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -111,13 +112,13 @@ export default function FAQPage() {
 
       {/* ── Popular Questions ──────────────────────────────── */}
       {activeCategory === 'all' && !searchQuery && (
-        <section className="py-12 px-6">
+        <section className="py-24 px-6">
           <div className="max-w-6xl mx-auto">
             <motion.h2
               variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
+              initial={shouldReduce ? {} : "hidden"}
+              whileInView={shouldReduce ? undefined : "visible"}
+              viewport={shouldReduce ? undefined : viewportOnce}
               className="text-3xl font-bold text-brand-dark mb-8 text-center"
             >
               {t.popular.title}
@@ -131,13 +132,13 @@ export default function FAQPage() {
                     key={idx}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={viewportOnce}
+                    viewport={shouldReduce ? undefined : viewportOnce}
                     transition={{ delay: idx * 0.1 }}
                     onClick={() => {
                       setActiveCategory(faq.category);
                       setExpandedId(t.faqs.indexOf(faq));
                     }}
-                    className={`${isRTL ? 'text-right' : 'text-left'} p-5 rounded-sm bg-white border border-border-light hover:border-2 hover:border-brand-silver transition-colors group`}
+                    className={`${isRTL ? 'text-right' : 'text-left'} p-5 rounded-sm bg-white border-2 border-transparent hover:border-brand-silver transition-colors group`}
                   >
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-full bg-brand-red/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
@@ -163,7 +164,7 @@ export default function FAQPage() {
       )}
 
       {/* ── FAQ Accordion ──────────────────────────────────── */}
-      <section className="py-12 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-4xl mx-auto">
           {filteredFAQs.length === 0 ? (
             <motion.div
@@ -232,13 +233,13 @@ export default function FAQPage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────── */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
+      <section className="py-24 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
           >
             <HelpCircle className="w-16 h-16 mx-auto mb-6 text-brand-silver" />
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>

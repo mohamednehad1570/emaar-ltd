@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView , useReducedMotion } from 'framer-motion';
 import { ArrowRight, Medal as Award } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,6 +11,7 @@ import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function AboutPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const [activeYear, setActiveYear] = useState(2004);
 
   const statsRef = useRef(null);
@@ -60,7 +61,7 @@ export default function AboutPage() {
           <motion.div
             ref={statsRef}
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={statsInView ? 'visible' : 'hidden'}
             className="grid grid-cols-2 md:grid-cols-4 gap-6"
           >
@@ -85,14 +86,14 @@ export default function AboutPage() {
       </section>
 
       {/* ── Our Story ────────────────────────────────────── */}
-      <section className="py-20 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="bg-white rounded-sm p-8 md:p-12 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
+            className="bg-white rounded-sm p-8 md:p-12 border-2 border-transparent hover:border-brand-silver transition-all"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-6 text-center">
               {t.story.title}
@@ -129,7 +130,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={timelineInView ? 'visible' : 'hidden'}
             className="text-center mb-16"
           >
@@ -158,9 +159,9 @@ export default function AboutPage() {
               isRTL ? 'flex-row-reverse' : ''
             }`}
             variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
           >
             {t.timeline.events.map((event) => (
               <motion.div
@@ -202,9 +203,9 @@ export default function AboutPage() {
           <motion.div
             className="flex flex-col gap-8"
             variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
           >
             {t.timeline.events.map((event) => (
               <motion.div
@@ -238,13 +239,13 @@ export default function AboutPage() {
       </section>
 
       {/* ── Mission & Vision ─────────────────────────────── */}
-      <section className="py-20 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.h2
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="text-4xl md:text-5xl font-bold text-center text-brand-dark mb-4"
           >
             {t.mission.title}
@@ -258,11 +259,11 @@ export default function AboutPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={viewportOnce}
+                  initial={shouldReduce ? {} : "hidden"}
+                  whileInView={shouldReduce ? undefined : "visible"}
+                  viewport={shouldReduce ? undefined : viewportOnce}
                   transition={{ delay: idx * 0.15 }}
-                  className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
+                  className="bg-white rounded-sm p-8 border-2 border-transparent hover:border-brand-silver transition-all"
                 >
                   <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-white" />
@@ -277,11 +278,11 @@ export default function AboutPage() {
       </section>
 
       {/* ── Leadership Team ──────────────────────────────── */}
-      <section ref={teamRef} className="py-20 px-6 bg-gradient-to-b from-brand-bg to-white">
+      <section ref={teamRef} className="py-24 px-6 bg-gradient-to-b from-brand-bg to-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={teamInView ? 'visible' : 'hidden'}
             className="text-center mb-16"
           >
@@ -292,14 +293,14 @@ export default function AboutPage() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={teamInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-8"
           >
             {t.team.members.map((member, idx) => (
               <motion.div key={idx} variants={fadeUp} className="group">
                 {/* team card: rounded-sm, no shadow */}
-                <div className="bg-white rounded-sm overflow-hidden border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-300">
+                <div className="bg-white rounded-sm overflow-hidden border-2 border-transparent hover:border-brand-silver transition-all duration-300">
                   <div className="relative h-64 overflow-hidden">
                     <img
                       src={member.image}
@@ -321,13 +322,13 @@ export default function AboutPage() {
       </section>
 
       {/* ── Factory Excellence ───────────────────────────── */}
-      <section className="py-20 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-4">{t.factory.title}</h2>
@@ -342,11 +343,11 @@ export default function AboutPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={viewportOnce}
+                  initial={shouldReduce ? {} : "hidden"}
+                  whileInView={shouldReduce ? undefined : "visible"}
+                  viewport={shouldReduce ? undefined : viewportOnce}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white rounded-sm p-6 border border-border-light hover:border-2 hover:border-brand-silver transition-all text-center"
+                  className="bg-white rounded-sm p-6 border-2 border-transparent hover:border-brand-silver transition-all text-center"
                 >
                   <Icon className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                   <h3 className="font-bold text-lg text-brand-dark mb-2">{feature.title}</h3>
@@ -358,9 +359,9 @@ export default function AboutPage() {
 
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="relative h-96 rounded-sm overflow-hidden border border-border-light"
           >
             <img
@@ -378,11 +379,11 @@ export default function AboutPage() {
       </section>
 
       {/* ── Core Values ──────────────────────────────────── */}
-      <section ref={valuesRef} className="py-20 px-6 bg-gradient-to-b from-brand-bg to-white">
+      <section ref={valuesRef} className="py-24 px-6 bg-gradient-to-b from-brand-bg to-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={valuesInView ? 'visible' : 'hidden'}
             className="text-center mb-16"
           >
@@ -393,7 +394,7 @@ export default function AboutPage() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={valuesInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
@@ -403,7 +404,7 @@ export default function AboutPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className="bg-white rounded-sm p-6 border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-300 group"
+                  className="bg-white rounded-sm p-6 border-2 border-transparent hover:border-brand-silver transition-all duration-300 group"
                 >
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <Icon className="w-7 h-7 text-white" />
@@ -418,13 +419,13 @@ export default function AboutPage() {
       </section>
 
       {/* ── Awards & Certifications ───────────────────────── */}
-      <section className="py-20 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-6xl mx-auto">
           <motion.h2
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="text-4xl md:text-5xl font-bold text-center text-brand-dark mb-4"
           >
             {t.awards.title}
@@ -437,10 +438,10 @@ export default function AboutPage() {
                 key={idx}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={viewportOnce}
+                viewport={shouldReduce ? undefined : viewportOnce}
                 transition={{ delay: idx * 0.05 }}
                 whileHover={{ scale: 1.05 }}
-                className="bg-white rounded-sm p-6 border border-border-light hover:border-2 hover:border-brand-silver transition-all text-center"
+                className="bg-white rounded-sm p-6 border-2 border-transparent hover:border-brand-silver transition-all text-center"
               >
                 <Award className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
                 <h3 className="font-bold text-brand-dark mb-1">{award.name}</h3>
@@ -452,7 +453,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────── */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white relative overflow-hidden">
+      <section className="py-24 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -464,9 +465,9 @@ export default function AboutPage() {
         <div className="relative max-w-4xl mx-auto text-center">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">{t.cta.title}</h2>
             <p className="text-xl text-white/90 mb-8">{t.cta.description}</p>

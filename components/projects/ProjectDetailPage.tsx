@@ -17,7 +17,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { MapPin, CalendarBlank, Cube, Briefcase, ArrowLeft, ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { projectsData } from '@/lib/data/projects';
@@ -27,6 +27,7 @@ interface Props { id: number; }
 
 export default function ProjectDetailPage({ id }: Props) {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const project = projectsData.find(p => p.id === id);
 
   /* ── Not found fallback ──────────────────────────────────────────────── */
@@ -92,7 +93,7 @@ export default function ProjectDetailPage({ id }: Props) {
         <motion.div
           className={`absolute bottom-12 px-8 md:px-24 ${isRTL ? 'text-right right-0' : 'text-left left-0'}`}
           variants={fadeUp}
-          initial="hidden"
+          initial={shouldReduce ? {} : "hidden"}
           animate="visible"
         >
           <span className="px-3 py-1 bg-brand-red text-white text-xs font-bold uppercase tracking-wider mb-4 inline-block">
@@ -108,9 +109,9 @@ export default function ProjectDetailPage({ id }: Props) {
       <motion.div
         className="grid grid-cols-2 md:grid-cols-4 border-b border-border-light bg-white"
         variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={viewportOnce}
+        initial={shouldReduce ? {} : "hidden"}
+        whileInView={shouldReduce ? undefined : "visible"}
+        viewport={shouldReduce ? undefined : viewportOnce}
       >
         {stats.map(({ label, value, Icon }, idx) => (
           <motion.div
@@ -130,9 +131,9 @@ export default function ProjectDetailPage({ id }: Props) {
       <motion.div
         className="max-w-4xl mx-auto px-8 md:px-24 py-16"
         variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={viewportOnce}
+        initial={shouldReduce ? {} : "hidden"}
+        whileInView={shouldReduce ? undefined : "visible"}
+        viewport={shouldReduce ? undefined : viewportOnce}
       >
         <div className={`h-0.5 w-12 bg-brand-red mb-8 ${isRTL ? 'mr-0 ml-auto' : ''}`} />
         <p className={`text-lg text-text-body leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -147,9 +148,9 @@ export default function ProjectDetailPage({ id }: Props) {
       <motion.div
         className="px-8 md:px-24 pb-20"
         variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={viewportOnce}
+        initial={shouldReduce ? {} : "hidden"}
+        whileInView={shouldReduce ? undefined : "visible"}
+        viewport={shouldReduce ? undefined : viewportOnce}
       >
         <p className={`text-xs font-semibold uppercase tracking-[0.25em] text-text-muted mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
           {ui.gallery}

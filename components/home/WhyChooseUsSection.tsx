@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 
@@ -84,6 +84,7 @@ const content: Record<'en' | 'ar', { heading: string; sub: string; items: Differ
 
 export default function WhyChooseUsSection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = content[language];
 
   return (
@@ -98,9 +99,9 @@ export default function WhyChooseUsSection() {
         <motion.div
           className={`mb-16 ${isRTL ? 'text-right' : 'text-left'}`}
           variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           <h2
             id="why-heading"
@@ -116,9 +117,9 @@ export default function WhyChooseUsSection() {
         <motion.div
           className="flex flex-col md:flex-row"
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           {t.items.map((item, idx) => (
             <React.Fragment key={idx}>

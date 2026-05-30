@@ -23,7 +23,7 @@
  */
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence , useReducedMotion } from 'framer-motion';
 import {
   List        as MenuIcon,
   X,
@@ -32,8 +32,6 @@ import {
   CaretDown,
   House,
   Buildings,
-  FrameCorners,
-  Stack,
 } from '@phosphor-icons/react';
 import Image    from 'next/image';
 import Link     from 'next/link';
@@ -68,12 +66,10 @@ const WA_HREF = 'https://wa.me/971501234567';
 const NAV: NavItem[] = [
   { en: 'Home',           ar: 'الرئيسية',      href: '/'         },
   {
-    en: 'Solutions', ar: 'الحلول', href: '/solutions',
+    en: 'Solutions', ar: 'الحلول', href: '',
     mega: [
-      { en: 'Residential',      ar: 'القطاع السكني',    href: '/solutions/residential', Icon: House        },
-      { en: 'Commercial',       ar: 'القطاع التجاري',   href: '/solutions/commercial',  Icon: Buildings    },
-      { en: 'uPVC Systems',     ar: 'أنظمة uPVC',       href: '/products/upvc',         Icon: FrameCorners },
-      { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum',     Icon: Stack        },
+      { en: 'Residential Solutions', ar: 'الحلول السكنية',  href: '/solutions/residential', Icon: House     },
+      { en: 'Commercial Solutions',  ar: 'الحلول التجارية', href: '/solutions/commercial',  Icon: Buildings },
     ],
   },
   { en: 'Projects',      ar: 'المشاريع',      href: '/projects'  },
@@ -119,7 +115,7 @@ function MegaPanel({ items, language, isRTL, onEnter, onLeave }: MegaPanelProps)
     >
       {/* py-8 px-24 per design spec — generous inset for visual breathing room */}
       <div className="max-w-7xl mx-auto py-8 px-24" dir={isRTL ? 'rtl' : 'ltr'}>
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 gap-6">
           {items.map((item) => (
             <Link
               key={item.href}
@@ -279,17 +275,18 @@ export default function Header() {
                       }}
                       onMouseLeave={scheduleClose}
                     >
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          'flex items-center gap-1 text-sm font-semibold transition-colors duration-150',
-                          active || isOpen
-                            ? 'text-brand-dark'
-                            : 'text-text-body hover:text-brand-dark',
-                        )}
-                      >
-                        {t(item)}
-                        {item.mega && (
+                      {item.mega ? (
+                        /* Dropdown-only trigger — no top-level route, hover opens panel */
+                        <button
+                          type="button"
+                          className={cn(
+                            'flex items-center gap-1 text-sm font-semibold transition-colors duration-150',
+                            active || isOpen
+                              ? 'text-brand-dark'
+                              : 'text-text-body hover:text-brand-dark',
+                          )}
+                        >
+                          {t(item)}
                           <CaretDown
                             size={12}
                             weight="bold"
@@ -298,8 +295,20 @@ export default function Header() {
                               isOpen && 'rotate-180',
                             )}
                           />
-                        )}
-                      </Link>
+                        </button>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className={cn(
+                            'flex items-center gap-1 text-sm font-semibold transition-colors duration-150',
+                            active || isOpen
+                              ? 'text-brand-dark'
+                              : 'text-text-body hover:text-brand-dark',
+                          )}
+                        >
+                          {t(item)}
+                        </Link>
+                      )}
 
                       {/* 2px underline — slides in from reading-start edge.
                           origin-right in RTL so it grows from the correct side. */}

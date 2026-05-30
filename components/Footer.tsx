@@ -19,7 +19,7 @@
  */
 
 import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion , useReducedMotion } from 'framer-motion';
 import {
   FacebookLogo,
   InstagramLogo,
@@ -283,6 +283,7 @@ function MobileAccordion({
 
 export default function Footer() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
 
   const l = (en: string, ar: string) => (language === 'en' ? en : ar);
   const year = new Date().getFullYear();

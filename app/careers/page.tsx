@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence , useReducedMotion } from 'framer-motion';
 import { Briefcase, MapPin, Clock, CurrencyDollar as DollarSign, Users, CheckCircle, CaretDown as ChevronDown, Buildings as Building2 } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { careersData, CareersJob } from '@/lib/data/careers';
@@ -10,6 +10,7 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function CareersPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const [activeFilter, setActiveFilter] = useState('all');
   const [expandedJob, setExpandedJob] = useState<number | null>(null);
 
@@ -52,9 +53,9 @@ export default function CareersPage() {
       </section>
 
       {/* Culture */}
-      <section className="py-20 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce} className="text-center mb-16">
+          <motion.div variants={fadeUp} initial={shouldReduce ? {} : "hidden"} whileInView={shouldReduce ? undefined : "visible"} viewport={shouldReduce ? undefined : viewportOnce} className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-brand-dark mb-4">{t.culture.title}</h2>
             <p className="text-xl text-brand-gray max-w-3xl mx-auto">{t.culture.subtitle}</p>
           </motion.div>
@@ -63,7 +64,7 @@ export default function CareersPage() {
             {t.culture.values.map((value, idx) => {
               const Icon = resolveIcon(value.icon);
               return (
-                <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -5 }} className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all">
+                <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={shouldReduce ? undefined : { once: true }} transition={{ delay: idx * 0.1 }} whileHover={{ y: -5 }} className="bg-white rounded-sm p-8 border-2 border-transparent hover:border-brand-silver transition-all">
                   <div className="w-14 h-14 rounded-sm bg-brand-red/10 flex items-center justify-center mb-4">
                     <Icon className="w-7 h-7 text-brand-red" />
                   </div>
@@ -74,7 +75,7 @@ export default function CareersPage() {
             })}
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={shouldReduce ? undefined : { once: true }} className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {t.culture.stats.map((stat, idx) => (
               <div key={idx} className="text-center">
                 <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-brand-red to-brand-silver bg-clip-text text-transparent mb-2">{stat.number}</div>
@@ -86,9 +87,9 @@ export default function CareersPage() {
       </section>
 
       {/* Job Listings */}
-      <section className="py-20 px-6 bg-brand-bg">
+      <section className="py-24 px-6 bg-brand-bg">
         <div className="max-w-7xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce} className="text-center mb-12">
+          <motion.div variants={fadeUp} initial={shouldReduce ? {} : "hidden"} whileInView={shouldReduce ? undefined : "visible"} viewport={shouldReduce ? undefined : viewportOnce} className="text-center mb-12">
             <h2 className="text-4xl font-bold text-brand-dark mb-4">{language === 'en' ? 'Open Positions' : 'الوظائف المتاحة'}</h2>
             <p className="text-lg text-brand-gray">{language === 'en' ? 'Find your perfect role' : 'اعثر على دورك المثالي'}</p>
           </motion.div>
@@ -104,7 +105,7 @@ export default function CareersPage() {
 
           <div className="space-y-6">
             {filteredJobs.map((job, idx) => (
-              <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-sm overflow-hidden border border-border-light hover:border-2 hover:border-brand-silver">
+              <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-sm overflow-hidden border-2 border-transparent hover:border-brand-silver">
                 <button onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)} className="w-full p-6 lg:p-8 text-left hover:bg-brand-bg transition-colors">
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                     <div className="flex-1">
@@ -172,9 +173,9 @@ export default function CareersPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
+      <section className="py-24 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce}>
+          <motion.div variants={fadeUp} initial={shouldReduce ? {} : "hidden"} whileInView={shouldReduce ? undefined : "visible"} viewport={shouldReduce ? undefined : viewportOnce}>
             <Users className="w-16 h-16 mx-auto mb-6 text-brand-silver" />
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>
             <p className="text-xl text-white/70 mb-8">{t.cta.description}</p>

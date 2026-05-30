@@ -253,10 +253,10 @@ a:hover { color: #E74C3C; }
   background: linear-gradient(135deg, #E74C3C 0%, #C0392B 100%);
   color: white;
   padding: 0.75rem 2rem;
-  border-radius: 0px; /* --radius-button: fully sharp */
+  border-radius: 0px;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
+  /* no resting shadow — shadow appears on hover only (DESIGN.md Frame Rule) */
 }
 .btn-primary:hover {
   transform: scale(1.05);
@@ -267,14 +267,14 @@ a:hover { color: #E74C3C; }
   background: linear-gradient(135deg, #C0C0C0 0%, #808080 100%);
   color: white;
   padding: 0.75rem 2rem;
-  border-radius: 0px; /* --radius-button: fully sharp */
+  border-radius: 0px;
   font-weight: 600;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(128, 128, 128, 0.2);
+  box-shadow: 0 4px 15px rgba(45, 41, 38, 0.06); /* warm shadow — no cold gray */
 }
 .btn-secondary:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 30px rgba(128, 128, 128, 0.3);
+  box-shadow: 0 8px 30px rgba(45, 41, 38, 0.10);
 }
 
 /* ── Decorative Floating Gradients ── */
@@ -333,8 +333,8 @@ a:hover { color: #E74C3C; }
 .animate-float { animation: float 3s ease-in-out infinite; }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(231, 76, 60, 0.3); }
-  50%       { box-shadow: 0 0 40px rgba(231, 76, 60, 0.5); }
+  0%, 100% { box-shadow: 0 0 20px rgba(45, 41, 38, 0.3); }
+  50%       { box-shadow: 0 0 40px rgba(45, 41, 38, 0.5); }
 }
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence , useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ArrowRight, CheckCircle as CheckCircle2, CaretRight as ChevronRight, DownloadSimple as Download } from '@phosphor-icons/react';
 import Image from 'next/image';
@@ -48,6 +48,7 @@ export default function ProductShowcase({
   crossLink,
 }: ProductShowcaseProps) {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState('all');
 
   const categories = ['all', ...Array.from(new Set(products.map(p => p.category)))];
@@ -95,7 +96,7 @@ export default function ProductShowcase({
       </section>
 
       {/* ── Features Grid ────────────────────────────────── */}
-      <section className="py-20 px-6 -mt-20 relative z-20">
+      <section className="py-24 px-6 -mt-20 relative z-20">
         <div className="container-custom">
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature, idx) => {
@@ -105,9 +106,9 @@ export default function ProductShowcase({
                   key={idx}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={shouldReduce ? undefined : { once: true }}
                   transition={{ delay: idx * 0.1 }}
-                  className="bg-white p-8 rounded-sm border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-300 border-t-4 border-t-brand-red"
+                  className="bg-white p-8 rounded-sm border-2 border-transparent hover:border-brand-silver transition-all duration-300 border-t-4 border-t-brand-red"
                 >
                   <div className="w-16 h-16 rounded-full bg-brand-red/10 flex items-center justify-center mb-6">
                     <Icon className="w-8 h-8 text-brand-red" />
@@ -122,7 +123,7 @@ export default function ProductShowcase({
       </section>
 
       {/* ── Products Display ─────────────────────────────── */}
-      <section className="py-20 px-6">
+      <section className="py-24 px-6">
         <div className="container-custom">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div>
@@ -159,7 +160,7 @@ export default function ProductShowcase({
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   key={product.id}
-                  className="group bg-white rounded-sm overflow-hidden border border-border-light hover:border-2 hover:border-brand-silver transition-all duration-300"
+                  className="group bg-white rounded-sm overflow-hidden border-2 border-transparent hover:border-brand-silver transition-all duration-300"
                 >
                   <div className="relative h-64 overflow-hidden">
                     <Image
@@ -205,7 +206,7 @@ export default function ProductShowcase({
       </section>
 
       {/* ── Materials Info ───────────────────────────────── */}
-      <section className="py-20 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
+      <section className="py-24 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="container-custom px-6">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>

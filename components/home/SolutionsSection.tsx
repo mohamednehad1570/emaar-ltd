@@ -12,7 +12,7 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react';
@@ -28,6 +28,7 @@ const COMMERCIAL_IMG =
 
 export default function SolutionsSection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const residential = residentialData[language];
   const commercial  = commercialData[language];
 
@@ -44,9 +45,9 @@ export default function SolutionsSection() {
           {/* Residential card */}
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="group relative overflow-hidden rounded-sm h-[420px]"
           >
             <Image
@@ -87,9 +88,9 @@ export default function SolutionsSection() {
           {/* Commercial card */}
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             /* Slight delay so cards enter in sequence, not simultaneously */
             transition={{ delay: 0.1 }}
             className="group relative overflow-hidden rounded-sm h-[420px]"

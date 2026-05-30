@@ -14,7 +14,7 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 
@@ -39,6 +39,7 @@ const content = {
 
 export default function StatsSection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const stats = content[language];
 
   return (
@@ -51,9 +52,9 @@ export default function StatsSection() {
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12"
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           {stats.map((stat, idx) => (
             <motion.div

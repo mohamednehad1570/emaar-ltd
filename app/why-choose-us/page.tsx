@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView , useReducedMotion } from 'framer-motion';
 import { CheckCircle as CheckCircle2, ArrowRight, Quotes as Quote, Star } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,6 +11,7 @@ import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function WhyChooseUsPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
 
   const advantagesRef = useRef(null);
   const qualityRef = useRef(null);
@@ -76,11 +77,11 @@ export default function WhyChooseUsPage() {
       </section>
 
       {/* ── Competitive Advantages ────────────────────────── */}
-      <section ref={advantagesRef} className="py-20 px-6">
+      <section ref={advantagesRef} className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={advantagesInView ? 'visible' : 'hidden'}
             className="text-center mb-16"
           >
@@ -91,7 +92,7 @@ export default function WhyChooseUsPage() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={advantagesInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-2 gap-8"
           >
@@ -101,7 +102,7 @@ export default function WhyChooseUsPage() {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
+                  className="bg-white rounded-sm p-8 border-2 border-transparent hover:border-brand-silver transition-all"
                 >
                   <div className="flex items-start gap-6">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0">
@@ -128,11 +129,11 @@ export default function WhyChooseUsPage() {
       </section>
 
       {/* ── Quality Process ───────────────────────────────── */}
-      <section ref={qualityRef} className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
+      <section ref={qualityRef} className="py-24 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={qualityInView ? 'visible' : 'hidden'}
             className="text-center mb-16"
           >
@@ -143,7 +144,7 @@ export default function WhyChooseUsPage() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={qualityInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
@@ -165,11 +166,11 @@ export default function WhyChooseUsPage() {
       </section>
 
       {/* ── Certifications ────────────────────────────────── */}
-      <section ref={certificationsRef} className="py-20 px-6">
+      <section ref={certificationsRef} className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={certificationsInView ? 'visible' : 'hidden'}
             className="text-center mb-16"
           >
@@ -181,14 +182,14 @@ export default function WhyChooseUsPage() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={certificationsInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-2 gap-8 mb-12"
           >
             {t.certifications.items.map((cert, idx) => {
               const Icon = resolveIcon(cert.icon);
               return (
-                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all">
+                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border-2 border-transparent hover:border-brand-silver transition-all">
                   <div className="flex items-start gap-6">
                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-silver to-brand-red flex items-center justify-center flex-shrink-0">
                       <Icon className="w-8 h-8 text-white" />
@@ -210,10 +211,10 @@ export default function WhyChooseUsPage() {
           {/* Standards */}
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className="bg-gradient-to-br from-brand-bg to-white rounded-sm p-8 md:p-12 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
+            className="bg-gradient-to-br from-brand-bg to-white rounded-sm p-8 md:p-12 border-2 border-transparent hover:border-brand-silver transition-all"
           >
             <h3 className="text-3xl font-bold text-brand-dark mb-8 text-center">{t.certifications.standards.title}</h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -229,13 +230,13 @@ export default function WhyChooseUsPage() {
       </section>
 
       {/* ── Comparison Table ───────────────────────────────── */}
-      <section className="py-20 px-6 bg-gradient-to-b from-brand-bg to-white">
+      <section className="py-24 px-6 bg-gradient-to-b from-brand-bg to-white">
         <div className="max-w-6xl mx-auto">
           <motion.h2
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="text-4xl md:text-5xl font-bold text-center text-brand-dark mb-4"
           >
             {t.comparison.title}
@@ -257,7 +258,7 @@ export default function WhyChooseUsPage() {
                   key={idx}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={viewportOnce}
+                  viewport={shouldReduce ? undefined : viewportOnce}
                   transition={{ delay: idx * 0.05 }}
                   className={`grid grid-cols-3 gap-4 p-6 border-b border-brand-silver/10 last:border-0 ${isRTL ? 'text-right' : 'text-left'}`}
                 >
@@ -275,11 +276,11 @@ export default function WhyChooseUsPage() {
       </section>
 
       {/* ── Testimonials ──────────────────────────────────── */}
-      <section ref={testimonialsRef} className="py-20 px-6">
+      <section ref={testimonialsRef} className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={testimonialsInView ? 'visible' : 'hidden'}
             className="text-center mb-16"
           >
@@ -290,13 +291,13 @@ export default function WhyChooseUsPage() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={testimonialsInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-2 gap-8"
           >
             {t.testimonials.items.map((testimonial, idx) => (
               
-              <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all relative">
+              <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border-2 border-transparent hover:border-brand-silver transition-all relative">
                 <Quote className="w-12 h-12 text-brand-silver/20 absolute top-6 right-6" />
                 <div className="flex gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
@@ -316,7 +317,7 @@ export default function WhyChooseUsPage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────── */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white relative overflow-hidden">
+      <section className="py-24 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -327,9 +328,9 @@ export default function WhyChooseUsPage() {
         <div className="relative max-w-4xl mx-auto text-center">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">{t.cta.title}</h2>
             <p className="text-xl text-white/90 mb-8">{t.cta.description}</p>

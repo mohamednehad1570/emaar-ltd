@@ -16,13 +16,14 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function CTASection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
 
   const content = {
     en: {
@@ -52,7 +53,7 @@ export default function CTASection() {
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={shouldReduce ? undefined : { once: true }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           {/* Display heading — leading-[0.90] per DESIGN.md; text-balance prevents orphans */}

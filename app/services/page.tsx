@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView , useReducedMotion } from 'framer-motion';
 import { Phone, CheckCircle as CheckCircle2, Clock, WarningCircle as AlertCircle, ArrowRight } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -11,6 +11,7 @@ import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function ServicesPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
 
   const processRef = useRef(null);
   const maintenanceRef = useRef(null);
@@ -49,11 +50,11 @@ export default function ServicesPage() {
       </section>
 
       {/* ── Building Process ──────────────────────────────── */}
-      <section ref={processRef} className="py-20 px-6">
+      <section ref={processRef} className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={processInView ? 'visible' : 'hidden'}
             className="text-center mb-12"
           >
@@ -65,7 +66,7 @@ export default function ServicesPage() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={processInView ? 'visible' : 'hidden'}
             className="space-y-6"
           >
@@ -73,7 +74,7 @@ export default function ServicesPage() {
               const Icon = resolveIcon(step.icon);
               return (
                 <motion.div key={idx} variants={fadeUp} className="relative">
-                  <div className="bg-white rounded-sm p-6 md:p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all">
+                  <div className="bg-white rounded-sm p-6 md:p-8 border-2 border-transparent hover:border-brand-silver transition-all">
                     <div className="flex flex-col md:flex-row gap-6 items-start">
                       <div className="flex-shrink-0">
                         <div className="relative">
@@ -111,11 +112,11 @@ export default function ServicesPage() {
       </section>
 
       {/* ── Maintenance Services ──────────────────────────── */}
-      <section ref={maintenanceRef} className="py-20 px-6 bg-gradient-to-b from-brand-bg to-white">
+      <section ref={maintenanceRef} className="py-24 px-6 bg-gradient-to-b from-brand-bg to-white">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={maintenanceInView ? 'visible' : 'hidden'}
             className="text-center mb-12"
           >
@@ -128,7 +129,7 @@ export default function ServicesPage() {
           {/* Plans */}
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={maintenanceInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-3 gap-8 mb-16"
           >
@@ -171,9 +172,9 @@ export default function ServicesPage() {
           {/* Emergency */}
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="bg-gradient-to-br from-brand-red to-brand-red-dark rounded-sm p-8 md:p-12 text-white"
           >
             <div className="text-center mb-8">
@@ -215,11 +216,11 @@ export default function ServicesPage() {
       </section>
 
       {/* ── Warranty ──────────────────────────────────────── */}
-      <section ref={warrantyRef} className="py-20 px-6">
+      <section ref={warrantyRef} className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={warrantyInView ? 'visible' : 'hidden'}
             className="text-center mb-12"
           >
@@ -232,14 +233,14 @@ export default function ServicesPage() {
           {/* Coverage Cards */}
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate={warrantyInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-2 gap-8 mb-12"
           >
             {t.warranty.coverage.map((item, idx) => {
               const Icon = resolveIcon(item.icon);
               return (
-                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border border-border-light hover:border-2 hover:border-brand-silver transition-all">
+                <motion.div key={idx} variants={fadeUp} className="bg-white rounded-sm p-8 border-2 border-transparent hover:border-brand-silver transition-all">
                   <div className="flex items-start gap-4 mb-6">
                     <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-silver to-brand-red flex items-center justify-center flex-shrink-0">
                       <Icon className="w-7 h-7 text-white" />
@@ -266,9 +267,9 @@ export default function ServicesPage() {
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div
               variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
+              initial={shouldReduce ? {} : "hidden"}
+              whileInView={shouldReduce ? undefined : "visible"}
+              viewport={shouldReduce ? undefined : viewportOnce}
               className="bg-brand-bg rounded-sm p-8"
             >
               <h3 className="text-2xl font-bold text-brand-dark mb-6">{t.warranty.exclusions.title}</h3>
@@ -284,9 +285,9 @@ export default function ServicesPage() {
 
             <motion.div
               variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
+              initial={shouldReduce ? {} : "hidden"}
+              whileInView={shouldReduce ? undefined : "visible"}
+              viewport={shouldReduce ? undefined : viewportOnce}
               className="bg-brand-red/5 rounded-sm p-8"
             >
               <h3 className="text-2xl font-bold text-brand-dark mb-6">{t.warranty.claim.title}</h3>
@@ -306,13 +307,13 @@ export default function ServicesPage() {
       </section>
 
       {/* ── Timeline ──────────────────────────────────────── */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
+      <section className="py-24 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-6xl mx-auto">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="text-center mb-12"
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-4">{t.timeline.title}</h2>
@@ -326,7 +327,7 @@ export default function ServicesPage() {
                 key={idx}
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={viewportOnce}
+                viewport={shouldReduce ? undefined : viewportOnce}
                 transition={{ delay: idx * 0.1 }}
                 className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm p-6 hover:bg-white/20 transition-colors"
               >
@@ -345,9 +346,9 @@ export default function ServicesPage() {
 
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-sm p-6 text-center"
           >
             <p className="text-white/70 italic">{t.timeline.note}</p>
@@ -356,15 +357,15 @@ export default function ServicesPage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────── */}
-      <section className="py-20 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
           {t.cta.map((cta, idx) => (
             <motion.div
               key={idx}
               variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
+              initial={shouldReduce ? {} : "hidden"}
+              whileInView={shouldReduce ? undefined : "visible"}
+              viewport={shouldReduce ? undefined : viewportOnce}
               transition={{ delay: idx * 0.15 }}
               className={`relative overflow-hidden rounded-sm p-8 md:p-12 text-center ${cta.primary
                 ? 'bg-gradient-to-br from-brand-red to-brand-red-dark text-white'

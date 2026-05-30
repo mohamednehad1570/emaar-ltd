@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ArrowRight } from '@phosphor-icons/react';
 import Link from 'next/link';
@@ -11,6 +11,7 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function ResidentialPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = residentialData[language];
 
   return (
@@ -41,7 +42,7 @@ export default function ResidentialPage() {
             {t.benefits.map((b, i) => {
               const Icon = resolveIcon(b.icon);
               return (
-                <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce} transition={{ delay: i * 0.1 }} className="bg-brand-bg p-8 rounded-sm border border-border-light hover:border-2 hover:border-brand-silver transition-all">
+                <motion.div key={i} variants={fadeUp} initial={shouldReduce ? {} : "hidden"} whileInView={shouldReduce ? undefined : "visible"} viewport={shouldReduce ? undefined : viewportOnce} transition={{ delay: i * 0.1 }} className="bg-brand-bg p-8 rounded-sm border-2 border-transparent hover:border-brand-silver transition-all">
                   <div className="mb-6 p-4 bg-brand-red/10 rounded-sm inline-block"><Icon className="w-8 h-8 text-brand-red" /></div>
                   <h3 className="text-2xl font-bold text-brand-dark mb-4">{b.title}</h3>
                   <p className="text-brand-gray leading-relaxed">{b.description}</p>
@@ -85,7 +86,7 @@ export default function ResidentialPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white">
+      <section className="py-24 px-6 bg-gradient-to-br from-brand-red via-brand-red-dark to-brand-red text-white">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-8">{t.cta.title}</h2>
           <Link href="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red rounded-none font-bold text-lg hover:shadow-warm-xl transition-all">

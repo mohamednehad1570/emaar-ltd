@@ -16,7 +16,7 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { Quotes, Star } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { whyChooseUsData } from '@/lib/data/whyChooseUs';
@@ -26,6 +26,7 @@ import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function TestimonialsSection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = whyChooseUsData[language].testimonials;
 
   return (
@@ -40,9 +41,9 @@ export default function TestimonialsSection() {
         <motion.div
           className={`mb-14 ${isRTL ? 'text-right' : 'text-left'}`}
           variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           <h2
             id="testimonials-heading"
@@ -58,9 +59,9 @@ export default function TestimonialsSection() {
         <motion.div
           className="grid md:grid-cols-2 gap-6"
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           {t.items.map((testimonial, idx) => (
             <motion.div

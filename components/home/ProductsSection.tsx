@@ -22,7 +22,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
@@ -77,6 +77,7 @@ const copy = {
 
 export default function ProductsSection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = copy[language];
 
   return (
@@ -91,9 +92,9 @@ export default function ProductsSection() {
         <motion.div
           className={`mb-14 ${isRTL ? 'text-right' : 'text-left'}`}
           variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-red mb-3">
             {language === 'en' ? 'Product Range' : 'نطاق المنتجات'}
@@ -111,9 +112,9 @@ export default function ProductsSection() {
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-5"
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           {PRODUCTS.map((product, idx) => (
             <motion.div
@@ -156,9 +157,9 @@ export default function ProductsSection() {
         <motion.div
           className="mt-12 text-center"
           variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           <Link
             href="/products"

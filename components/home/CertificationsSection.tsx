@@ -10,7 +10,7 @@
  */
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { whyChooseUsData } from '@/lib/data/whyChooseUs';
 import { resolveIcon } from '@/lib/iconMap';
@@ -18,6 +18,7 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function CertificationsSection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = whyChooseUsData[language].certifications;
 
   return (
@@ -33,9 +34,9 @@ export default function CertificationsSection() {
         <motion.p
           className="text-[11px] font-bold uppercase tracking-[0.18em] text-text-muted text-center mb-8"
           variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           {t.title}
         </motion.p>
@@ -50,9 +51,9 @@ export default function CertificationsSection() {
               <motion.div
                 key={idx}
                 variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={viewportOnce}
+                initial={shouldReduce ? {} : "hidden"}
+                whileInView={shouldReduce ? undefined : "visible"}
+                viewport={shouldReduce ? undefined : viewportOnce}
                 /* 0.08 s stagger — quick, trust-band items shouldn't linger */
                 transition={{ delay: idx * 0.08 }}
                 /* min-w keeps mobile items from collapsing in the scroll row */

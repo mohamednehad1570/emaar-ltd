@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import {
   FileText, DownloadSimple as Download, MagnifyingGlass as Search, Funnel as Filter, Eye,
   FolderOpen, Package, Wrench, BookOpen,
@@ -14,6 +14,7 @@ import { techData, DownloadFile } from '@/lib/data/tech';
 
 export default function TechnicalDownloadsPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
@@ -301,7 +302,7 @@ export default function TechnicalDownloadsPage() {
       </section>
 
       {/* Files Grid/List */}
-      <section className="py-12 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
 
           {/* Results Count */}
@@ -334,7 +335,7 @@ export default function TechnicalDownloadsPage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white rounded-sm overflow-hidden border border-border-light hover:border-2 hover:border-brand-silver transition-all"
+                    className="bg-white rounded-sm overflow-hidden border-2 border-transparent hover:border-brand-silver transition-all"
                   >
                     {/* Preview Image */}
                     {file.preview && (
@@ -422,7 +423,7 @@ export default function TechnicalDownloadsPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: idx * 0.05 }}
-                    className="bg-white rounded-sm p-6 border border-border-light hover:border-2 hover:border-brand-silver transition-all"
+                    className="bg-white rounded-sm p-6 border-2 border-transparent hover:border-brand-silver transition-all"
                   >
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-brand-red/10 to-brand-silver/10 flex items-center justify-center flex-shrink-0">
@@ -487,12 +488,12 @@ export default function TechnicalDownloadsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
+      <section className="py-24 px-6 bg-gradient-to-br from-brand-dark to-brand-dark-mid text-white">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={shouldReduce ? undefined : { once: true }}
           >
             <FileText className="w-16 h-16 mx-auto mb-6 text-brand-silver" />
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>

@@ -17,7 +17,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
@@ -119,6 +119,7 @@ function MaterialCard({ title, desc, cta, href, image, alt, isRTL }: CardData & 
 
 export default function ProductsPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = content[language];
 
   return (
@@ -128,7 +129,7 @@ export default function ProductsPage() {
       <motion.div
         className="py-20 text-center px-6"
         variants={fadeUp}
-        initial="hidden"
+        initial={shouldReduce ? {} : "hidden"}
         animate="visible"
       >
         <span className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-red mb-4 block">
@@ -142,9 +143,9 @@ export default function ProductsPage() {
       <motion.div
         className="grid md:grid-cols-2 md:min-h-[80vh]"
         variants={staggerContainer}
-        initial="hidden"
-        whileInView="visible"
-        viewport={viewportOnce}
+        initial={shouldReduce ? {} : "hidden"}
+        whileInView={shouldReduce ? undefined : "visible"}
+        viewport={shouldReduce ? undefined : viewportOnce}
       >
         {t.cards.map(card => (
           <MaterialCard key={card.href} {...card} isRTL={isRTL} />

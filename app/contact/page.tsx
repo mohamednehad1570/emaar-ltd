@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import {
   Phone, Envelope as Mail, MapPin, Clock, PaperPlaneTilt as Send, UploadSimple as Upload, X, ChatCircle as MessageCircle, CheckCircle,
 } from '@phosphor-icons/react';
@@ -12,6 +12,7 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 
 export default function ContactPage() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -92,7 +93,7 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto text-center">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
+            initial={shouldReduce ? {} : "hidden"}
             animate="visible"
           >
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-4 bg-gradient-to-r from-brand-red to-brand-silver bg-clip-text text-transparent">
@@ -123,7 +124,7 @@ export default function ContactPage() {
       </section>
 
       {/* ── Main Content ──────────────────────────────────── */}
-      <section className="py-12 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12">
 
@@ -254,7 +255,7 @@ export default function ContactPage() {
                 <h3 className="text-2xl font-bold mb-5 text-brand-dark">{t.contact.title}</h3>
                 <div className="space-y-4">
                   {/* Phone */}
-                  <a href="tel:+971501234567" className="block bg-white rounded-sm p-5 border border-border-light hover:border-2 hover:border-brand-silver transition-all group">
+                  <a href="tel:+971501234567" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <Phone size={20} className="text-white" />
@@ -268,7 +269,7 @@ export default function ContactPage() {
                   </a>
 
                   {/* WhatsApp */}
-                  <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-sm p-5 border border-border-light hover:border-2 hover:border-brand-silver transition-all group">
+                  <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-whatsapp to-whatsapp-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <MessageCircle size={20} className="text-white" />
@@ -282,7 +283,7 @@ export default function ContactPage() {
                   </a>
 
                   {/* Email */}
-                  <a href="mailto:info@emaar-international.ae" className="block bg-white rounded-sm p-5 border border-border-light hover:border-2 hover:border-brand-silver transition-all group">
+                  <a href="mailto:info@emaar-international.ae" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-silver to-brand-gray flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <Mail size={20} className="text-white" />
@@ -328,7 +329,7 @@ export default function ContactPage() {
       </section>
 
       {/* ── Map ───────────────────────────────────────────── */}
-      <section className="py-12 px-6 bg-brand-bg">
+      <section className="py-24 px-6 bg-brand-bg">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-8 text-brand-dark">{t.map.title}</h2>
           {/* map placeholder: rounded-sm, no shadow */}
@@ -353,13 +354,13 @@ export default function ContactPage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────── */}
-      <section className="py-16 px-6">
+      <section className="py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
+            initial={shouldReduce ? {} : "hidden"}
+            whileInView={shouldReduce ? undefined : "visible"}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="bg-white rounded-sm p-10 border border-border-light"
           >
             <MessageCircle size={48} className="mx-auto mb-4 text-whatsapp" />

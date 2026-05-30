@@ -17,7 +17,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { MapPin, ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
@@ -65,6 +65,7 @@ const copy = {
 
 export default function ProjectsSection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = copy[language];
 
   return (
@@ -79,9 +80,9 @@ export default function ProjectsSection() {
         <motion.div
           className={`mb-14 flex items-end justify-between gap-6 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}
           variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           <div className={isRTL ? 'text-right' : 'text-left'}>
             <h2
@@ -105,9 +106,9 @@ export default function ProjectsSection() {
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          initial={shouldReduce ? {} : "hidden"}
+          whileInView={shouldReduce ? undefined : "visible"}
+          viewport={shouldReduce ? undefined : viewportOnce}
         >
           {PROJECTS.map((project, idx) => (
             <motion.article
@@ -116,7 +117,7 @@ export default function ProjectsSection() {
               transition={{ delay: idx * 0.1 }}
             >
               <Link
-                href="/projects"
+                href={`/projects/${project.id}`}
                 className="group block border-2 border-border-light hover:border-brand-silver transition-colors duration-300"
                 aria-label={project.title[language]}
               >

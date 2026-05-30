@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion , useReducedMotion } from 'framer-motion';
 import { MapPin, ArrowsOut as Expand, ArrowRight } from '@phosphor-icons/react';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -23,20 +23,21 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project, idx }: ProjectCardProps) {
     const { isRTL } = useLanguage();
+    const shouldReduce = useReducedMotion();
 
     return (
         <motion.div
             layout
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            exit={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.5 }}
             className="group relative"
         >
             {/* Link wraps the entire tile — nested <a> inside removed to keep valid HTML */}
             <Link href={`/projects/${project.id}`} className="block">
             {/* image tile: rounded-sm; shadow-lg was cold rgba(0,0,0) — removed; border instead */}
-            <div className="relative overflow-hidden rounded-sm aspect-[4/3] cursor-pointer border border-border-light hover:border-2 hover:border-brand-silver transition-all">
+            <div className="relative overflow-hidden rounded-sm aspect-[4/3] cursor-pointer border-2 border-transparent hover:border-brand-silver transition-all">
                 <Image
                     src={project.image}
                     alt={project.title}

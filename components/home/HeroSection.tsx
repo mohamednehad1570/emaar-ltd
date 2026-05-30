@@ -36,6 +36,7 @@ import {
   AnimatePresence,
   useScroll,
   useTransform,
+  useReducedMotion,
 } from 'framer-motion';
 import { ArrowRight, ArrowDown } from '@phosphor-icons/react';
 import Image from 'next/image';
@@ -105,6 +106,7 @@ const scaleLine = {
 
 export default function HeroSection() {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -161,8 +163,8 @@ export default function HeroSection() {
           <motion.div
             key={activeSlide}
             className="absolute inset-0"
-            initial={{ opacity: 0, scale: 1.04 }}
-            animate={{ opacity: 1, scale: 1   }}
+            initial={shouldReduce ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.4, ease: 'easeOut' }}
           >
@@ -218,8 +220,8 @@ export default function HeroSection() {
             <motion.div
               className={`max-w-xl sm:max-w-2xl lg:max-w-3xl ${isRTL ? 'mr-0 ml-auto lg:ml-0' : ''}`}
               variants={staggerContainer}
-              initial="hidden"
-              whileInView="show"
+              initial={shouldReduce ? {} : "hidden"}
+              whileInView={shouldReduce ? undefined : "show"}
               viewport={{ once: true, amount: 0.2 }}
             >
 
@@ -432,7 +434,7 @@ export default function HeroSection() {
       <motion.div
         className="absolute bottom-7 right-6 sm:bottom-8 sm:right-8 z-20 flex flex-col items-center gap-1.5"
         aria-hidden="true"
-        animate={{ y: [0, 8, 0] }}
+        animate={shouldReduce ? {} : { y: [0, 8, 0] }}
         transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
       >
         <span className="hidden sm:block text-[9px] uppercase tracking-[0.25em] text-white/28 font-semibold select-none">
