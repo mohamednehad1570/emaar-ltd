@@ -87,7 +87,7 @@ export default function ProjectsSection() {
           <div className={isRTL ? 'text-right' : 'text-left'}>
             <h2
               id="projects-heading"
-              className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-2"
+              className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-2 text-balance"
             >
               {t.title}
             </h2>
@@ -117,7 +117,8 @@ export default function ProjectsSection() {
             >
               <Link
                 href={`/projects/${project.id}`}
-                className="group block border-2 border-border-light hover:border-brand-silver transition-colors duration-200"
+                /* Card hover: lift 4px + warm LG shadow — per DESIGN.md Frame Rule */
+                className="group block border-2 border-border-light hover:border-brand-silver hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(45,41,38,0.12)] [transition:border-color_200ms,transform_220ms_cubic-bezier(0.22,1,0.36,1),box-shadow_220ms_cubic-bezier(0.22,1,0.36,1)]"
                 aria-label={project.title[language]}
               >
                 {/* Image — aspect-[16/9], no overlay, rounded-none */}

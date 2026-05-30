@@ -352,6 +352,12 @@ a:hover { color: #E74C3C; }
   100% { background-position: -200% 0; }
 }
 
+/* CTA section pulsing red glow — per DESIGN.md CTA Section spec */
+@keyframes ctaGlow {
+  0%, 100% { opacity: 0.7; transform: scale(1);    }
+  50%       { opacity: 1;   transform: scale(1.08); }
+}
+
 /* ── Container Utility ── */
 .container-custom {
   max-width: 1280px;

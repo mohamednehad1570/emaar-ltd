@@ -67,7 +67,7 @@ export default function SolutionsSection() {
               </span>
 
               <div className={isRTL ? 'text-right' : 'text-left'}>
-                <h3 className="text-2xl md:text-3xl font-bold font-cairo text-white mb-2">
+                <h3 className="text-2xl md:text-3xl font-bold font-cairo text-white mb-2 text-balance">
                   {residential.hero.title}
                 </h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-6 max-w-xs">
@@ -111,7 +111,7 @@ export default function SolutionsSection() {
               </span>
 
               <div className={isRTL ? 'text-right' : 'text-left'}>
-                <h3 className="text-2xl md:text-3xl font-bold font-cairo text-white mb-2">
+                <h3 className="text-2xl md:text-3xl font-bold font-cairo text-white mb-2 text-balance">
                   {commercial.hero.title}
                 </h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-6 max-w-xs">

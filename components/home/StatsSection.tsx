@@ -7,14 +7,19 @@
  * No cards, borders, or shadows — raw numerals carry the authority.
  * A 2px brand-red top stroke above each stat grounds it to the grid.
  *
+ * Interaction:
+ *   Numbers count up from 0 to target on first viewport entry.
+ *   Easing: cubic ease-out (fast start, decelerates to the final value).
+ *   Reduced-motion: numbers jump immediately to their targets.
+ *
  * Design rules:
  *   • tabular-nums keeps digit columns aligned as numbers animate in
- *   • stagger delay 0.12s — enough separation without feeling slow
  *   • uppercase + tracking-wide on labels: editorial, not technical
+ *   • dir="ltr" on numerals preserves digit order in Arabic mode
  */
 
-import React from 'react';
-import { motion , useReducedMotion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useReducedMotion, useInView } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 
@@ -35,15 +40,64 @@ const content = {
   ],
 } as const;
 
+/* ── Count-up helpers ──────────────────────────────────────────────────── */
+
+function parseStatNumber(str: string): { value: number; suffix: string } {
+  const match = str.match(/^(\d+)([+%]?)$/);
+  if (!match) return { value: 0, suffix: '' };
+  return { value: parseInt(match[1]), suffix: match[2] };
+}
+
+interface StatCounterProps {
+  raw:         string;
+  inView:      boolean;
+  shouldReduce: boolean | null;
+}
+
+function StatCounter({ raw, inView, shouldReduce }: StatCounterProps) {
+  const { value, suffix } = parseStatNumber(raw);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    /* Reduced-motion: jump to final value immediately */
+    if (shouldReduce === true) { setCount(value); return; }
+    if (!inView) return;
+
+    let animId: number;
+    let startTime: number | null = null;
+    const duration = 1600; /* ms — long enough to feel satisfying */
+
+    const step = (ts: number) => {
+      if (startTime === null) startTime = ts;
+      const t = Math.min((ts - startTime) / duration, 1);
+      /* Cubic ease-out: decelerates into the final value */
+      const eased = 1 - Math.pow(1 - t, 3);
+      setCount(Math.floor(eased * value));
+      if (t < 1) animId = requestAnimationFrame(step);
+      else setCount(value);
+    };
+
+    animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [inView, shouldReduce, value]);
+
+  /* dir=ltr keeps digit order correct when rendered inside an RTL container */
+  return <span dir="ltr">{count}{suffix}</span>;
+}
+
 /* ── Component ─────────────────────────────────────────────────────────── */
 
 export default function StatsSection() {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
   const stats = content[language];
+  const sectionRef = useRef<HTMLElement>(null);
+  /* Fires once when 50% of the section is in view — triggers count-up */
+  const inView = useInView(sectionRef, { once: true, amount: 0.5 });
 
   return (
     <section
+      ref={sectionRef}
       className="py-24 bg-white"
       dir={isRTL ? 'rtl' : 'ltr'}
       aria-label={language === 'en' ? 'Key statistics' : 'الإحصاءات الرئيسية'}
@@ -52,27 +106,22 @@ export default function StatsSection() {
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12"
           variants={staggerContainer}
-          initial={shouldReduce ? {} : "hidden"}
-          whileInView={shouldReduce ? undefined : "visible"}
+          initial={shouldReduce ? {} : 'hidden'}
+          whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
           {stats.map((stat, idx) => (
             <motion.div
               key={idx}
               variants={fadeUp}
-              /* staggerContainer handles sequencing — no per-item delay needed */
               className="flex flex-col"
             >
               {/* 2px red stroke — grounds the stat, links back to brand accent */}
               <div className="w-8 h-0.5 bg-brand-red mb-5" aria-hidden="true" />
 
-              {/* Numeral — tabular-nums keeps '100%' same width as '500+' */}
-              <span
-                className="text-5xl font-extrabold font-cairo tabular-nums text-brand-dark leading-none mb-3"
-                /* dir=ltr so digit order is always left-to-right, even in Arabic mode */
-                dir="ltr"
-              >
-                {stat.number}
+              {/* Numeral — count-up animates from 0; tabular-nums keeps '100%' same width as '500+' */}
+              <span className="text-5xl font-extrabold font-cairo tabular-nums text-brand-dark leading-none mb-3">
+                <StatCounter raw={stat.number} inView={inView} shouldReduce={shouldReduce} />
               </span>
 
               <span className="text-sm font-semibold uppercase tracking-wide text-text-muted">

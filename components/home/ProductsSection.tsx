@@ -101,7 +101,7 @@ export default function ProductsSection() {
           </p>
           <h2
             id="products-heading"
-            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-3"
+            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-3 text-balance"
           >
             {t.title}
           </h2>
@@ -124,7 +124,8 @@ export default function ProductsSection() {
             >
               <Link
                 href={product.href}
-                className="group block border-2 border-border-light hover:border-brand-silver transition-colors duration-200"
+                /* Card hover: lift 4px + warm Lg shadow — per DESIGN.md Frame Rule */
+                className="group block border-2 border-border-light hover:border-brand-silver hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(45,41,38,0.12)] [transition:border-color_200ms,transform_220ms_cubic-bezier(0.22,1,0.36,1),box-shadow_220ms_cubic-bezier(0.22,1,0.36,1)]"
                 aria-label={product.title[language]}
               >
                 {/* Image — 0px radius (--radius-image), no overlay gradient */}

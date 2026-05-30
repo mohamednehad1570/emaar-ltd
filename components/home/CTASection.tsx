@@ -48,6 +48,15 @@ export default function CTASection() {
     >
       {/* Dot pattern — inherits white from parent text-white; opacity-5 stays in token scale */}
       <div className="absolute inset-0 dot-pattern opacity-5" aria-hidden="true" />
+      {/* Pulsing red glow — per DESIGN.md CTA Section spec: "one pulsing red glow at opacity 0.10" */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 60% 50% at 50% 70%, rgba(231,76,60,0.10) 0%, transparent 70%)',
+          animation: 'ctaGlow 4s ease-in-out infinite',
+        }}
+        aria-hidden="true"
+      />
 
       <div className="relative max-w-3xl mx-auto text-center z-10">
         <motion.div

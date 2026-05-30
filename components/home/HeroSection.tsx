@@ -256,7 +256,7 @@ export default function HeroSection() {
                 variants={fadeUp}
                 className="
                   text-[2.75rem] sm:text-6xl lg:text-[4.5rem] xl:text-[5rem]
-                  font-extrabold leading-[0.90] tracking-tight text-white
+                  font-extrabold leading-[0.90] tracking-tight text-white text-balance
                   mb-5 lg:mb-6
                 "
               >

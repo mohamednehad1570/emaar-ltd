@@ -47,7 +47,7 @@ export default function TestimonialsSection() {
         >
           <h2
             id="testimonials-heading"
-            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-3"
+            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-3 text-balance"
           >
             {t.title}
           </h2>

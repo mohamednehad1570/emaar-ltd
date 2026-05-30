@@ -89,10 +89,23 @@ export default function WhyChooseUsSection() {
 
   return (
     <section
-      className="py-24 bg-brand-dark"
+      className="py-24 bg-brand-dark relative overflow-hidden"
       dir={isRTL ? 'rtl' : 'ltr'}
       aria-labelledby="why-heading"
     >
+      {/* Ambient warm glow — breaks the completely flat dark field.
+          Warm red emanates from the bottom-reading-start corner; echoes
+          brand-red without violating the "≤10% screen surface" rule.   */}
+      <div
+        className="absolute bottom-0 pointer-events-none"
+        style={{
+          insetInlineStart: 0,
+          width: '600px',
+          height: '400px',
+          background: 'radial-gradient(ellipse at 20% 80%, rgba(231,76,60,0.07) 0%, transparent 60%)',
+        }}
+        aria-hidden="true"
+      />
       <div className="container-custom">
 
         {/* ── Section heading ──────────────────────────────────────────── */}
@@ -105,7 +118,7 @@ export default function WhyChooseUsSection() {
         >
           <h2
             id="why-heading"
-            className="text-4xl md:text-5xl font-bold font-cairo text-white mb-3"
+            className="text-4xl md:text-5xl font-bold font-cairo text-white mb-3 text-balance"
           >
             {t.heading}
           </h2>
@@ -149,7 +162,7 @@ export default function WhyChooseUsSection() {
                 </p>
 
                 {/* Title — specific measurable claim; text-balance prevents awkward wrapping */}
-                <h3 className="text-xl font-bold text-white mb-4 leading-[1.3] text-balance">
+                <h3 className="text-xl font-bold text-white mb-4 leading-[1.3] text-balance text-pretty">
                   {item.title}
                 </h3>
 
