@@ -139,7 +139,7 @@ export default function ProductShowcase({
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-6 py-2 rounded-none text-sm font-semibold transition-all capitalize ${
+                  className={`px-6 py-2 min-h-[44px] rounded-none text-sm font-semibold transition-all capitalize ${
                     activeCategory === cat
                       ? 'bg-brand-red text-white shadow-lg scale-105'
                       : 'bg-white text-brand-gray border border-brand-silver/20 hover:bg-brand-bg'

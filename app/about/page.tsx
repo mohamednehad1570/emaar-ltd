@@ -184,7 +184,7 @@ export default function AboutPage() {
               >
                 {/* 4×4px red diamond sitting on the horizontal connecting line */}
                 <div
-                  className="w-1 h-1 rotate-45 bg-brand-red shrink-0"
+                  className="w-3 h-3 rotate-45 bg-brand-red shrink-0"
                   aria-hidden="true"
                 />
 

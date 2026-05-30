@@ -243,7 +243,8 @@ export default function WhyChooseUsPage() {
           </motion.h2>
           <div className="w-24 h-1.5 bg-brand-red rounded-full mx-auto mb-16" />
 
-          {/* comparison table: rounded-sm, no shadow */}
+          {/* comparison table: overflow-x-auto for narrow viewports */}
+          <div className="overflow-x-auto">
           <div className="bg-white rounded-sm overflow-hidden border border-border-light">
             <div className={`grid grid-cols-3 gap-4 p-6 bg-gradient-to-r from-brand-red to-brand-red-dark text-white font-bold ${isRTL ? 'text-right' : 'text-left'}`}>
               <div>{language === 'en' ? 'Metric' : 'المقياس'}</div>
@@ -271,6 +272,7 @@ export default function WhyChooseUsPage() {
                 </motion.div>
               );
             })}
+          </div>
           </div>
         </div>
       </section>

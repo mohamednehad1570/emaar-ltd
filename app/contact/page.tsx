@@ -78,7 +78,7 @@ export default function ContactPage() {
   };
 
   /* inputs: rounded-none per --radius-button (inputs are in same group as buttons) */
-  const inputClass = `w-full px-4 py-3 rounded-none border border-brand-silver/20 bg-white text-brand-dark placeholder:text-brand-silver focus:border-brand-red focus:outline-none transition-colors`;
+  const inputClass = `w-full px-4 py-3.5 rounded-none border border-brand-silver/20 bg-white text-brand-dark placeholder:text-brand-silver focus:border-brand-red focus:outline-none transition-colors`;
 
   return (
     <div className={`min-h-screen bg-gradient-to-b from-brand-bg via-white to-brand-bg ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
@@ -195,7 +195,7 @@ export default function ContactPage() {
                         <span className="text-sm">{formData.file ? formData.file.name : (language === 'en' ? 'Choose file' : 'اختر ملف')}</span>
                       </label>
                       {formData.file && (
-                        <button type="button" onClick={() => setFormData({ ...formData, file: null })} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-none hover:bg-brand-bg transition-colors">
+                        <button type="button" onClick={() => setFormData({ ...formData, file: null })} className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-none hover:bg-brand-bg transition-colors">
                           <X size={16} className="text-brand-red" />
                         </button>
                       )}
@@ -257,7 +257,7 @@ export default function ContactPage() {
                   {/* Phone */}
                   <a href="tel:+971501234567" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <Phone size={20} className="text-white" />
                       </div>
                       <div className="flex-1">
@@ -271,7 +271,7 @@ export default function ContactPage() {
                   {/* WhatsApp */}
                   <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-brand-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-sm bg-brand-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <MessageCircle size={20} className="text-white" />
                       </div>
                       <div className="flex-1">
@@ -288,7 +288,7 @@ export default function ContactPage() {
                   {/* Email */}
                   <a href="mailto:info@emaar-international.ae" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-brand-silver to-brand-gray flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-sm bg-gradient-to-br from-brand-silver to-brand-gray flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <Mail size={20} className="text-white" />
                       </div>
                       <div className="flex-1">

@@ -74,7 +74,7 @@ export default function ProjectsGrid() {
                                 <button
                                     key={cat.id}
                                     onClick={() => setSectorFilter(cat.id)}
-                                    className={`px-5 py-2 rounded-none text-sm font-medium transition-all duration-300 ${sectorFilter === cat.id
+                                    className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-all duration-300 ${sectorFilter === cat.id
                                         ? 'bg-brand-dark text-white shadow-md'
                                         : 'bg-white text-text-body hover:bg-off-white border border-border-light'
                                         }`}
@@ -93,7 +93,7 @@ export default function ProjectsGrid() {
                                 <button
                                     key={mat.id}
                                     onClick={() => setMaterialFilter(mat.id)}
-                                    className={`px-5 py-2 rounded-none text-sm font-medium transition-all duration-300 ${materialFilter === mat.id
+                                    className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-all duration-300 ${materialFilter === mat.id
                                         ? 'bg-brand-red text-white shadow-md'
                                         : 'bg-white text-text-body hover:bg-off-white border border-border-light'
                                         }`}

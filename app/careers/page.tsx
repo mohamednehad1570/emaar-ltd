@@ -91,6 +91,7 @@ export default function CareersPage() {
         <div className="max-w-7xl mx-auto">
           <motion.div variants={fadeUp} initial={shouldReduce ? {} : "hidden"} whileInView={shouldReduce ? undefined : "visible"} viewport={shouldReduce ? undefined : viewportOnce} className="text-center mb-12">
             <h2 className="text-4xl font-bold text-brand-dark mb-4">{language === 'en' ? 'Open Positions' : 'الوظائف المتاحة'}</h2>
+            <div className="h-px w-12 bg-brand-red mx-auto mt-3 mb-5" />
             <p className="text-lg text-brand-gray">{language === 'en' ? 'Find your perfect role' : 'اعثر على دورك المثالي'}</p>
           </motion.div>
 

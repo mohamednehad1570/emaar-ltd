@@ -84,7 +84,7 @@ export default function FAQPage() {
       </section>
 
       {/* ── Category Filter ───────────────────────────────── */}
-      <section className="py-8 px-6 bg-white/70 backdrop-blur-sm sticky top-20 z-40 border-b border-border-light">
+      <section className="py-8 px-6 bg-white/70 backdrop-blur-sm sticky top-[52px] z-40 border-b border-border-light">
         <div className="max-w-6xl mx-auto">
           <div className={`flex flex-wrap justify-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
             {Object.entries(t.categories).map(([key, label]) => {

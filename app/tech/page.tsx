@@ -152,11 +152,12 @@ export default function TechnicalDownloadsPage() {
           {/* ── Category tabs ─────────────────────────────────────────────
               border-b on this row is the separator; active tab's motion.div
               sits flush at bottom-0, overlapping that border with brand-red. */}
-          <div
-            className={`border-b border-border-light flex overflow-x-auto ${
-              isRTL ? 'flex-row-reverse' : ''
-            }`}
-          >
+          <div className="relative">
+            <div
+              className={`border-b border-border-light flex overflow-x-auto scrollbar-hide ${
+                isRTL ? 'flex-row-reverse' : ''
+              }`}
+            >
             {Object.entries(t.categories).map(([key, label]) => {
               const Icon = key === 'all'
                 ? FolderOpen
@@ -200,6 +201,9 @@ export default function TechnicalDownloadsPage() {
                 </button>
               );
             })}
+            </div>
+            {/* Right-edge fade — signals horizontal scroll on narrow screens */}
+            <div className="absolute right-0 top-0 h-full w-12 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
           </div>
 
           {/* ── Secondary row: search + product chips + view toggle ────── */}
