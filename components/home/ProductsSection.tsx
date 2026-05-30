@@ -3,26 +3,24 @@
 /**
  * components/home/ProductsSection.tsx
  *
- * Static 4-column product grid on bg-off-white.
- * Replaces the previous horizontal carousel — static grids perform better
- * on mobile and avoid the JS overhead of auto-scroll hooks.
+ * Asymmetric bento grid — 5-column desktop layout with Z-pattern distribution.
+ * Products 1 & 4 (3/5 width): wide landscape tiles, hero-scale presence.
+ * Products 2 & 3 (2/5 width): portrait tiles, full product-height visibility.
  *
- * Tile design:
- *   • aspect-[4/3] image, rounded-none (--radius-image: 0px)
- *   • 2px solid border-border-light at rest
- *   • Hover: border-brand-silver (2px), image scales 1.04 — subtle, not flashy
- *   • Category label sits below the image frame, no overlay
+ * Each tile is full-bleed: image fills the card, category + title overlay
+ * the bottom with a warm gradient (functional for legibility, not decoration).
  *
- * Design rules:
- *   • bg-off-white on section — alternates with the white hero above
- *   • No shadow on tiles per updated shadow spec
- *   • sizes prop tuned to actual rendered widths at each breakpoint
+ * Bento pattern (desktop):
+ *   [Product 1 — 3 cols]  [Product 2 — 2 cols]
+ *   [Product 3 — 2 cols]  [Product 4 — 3 cols]
+ *
+ * Mobile: cols-2 grid, Product 1&4 full-width, Product 2&3 half-width stacked.
  */
 
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion , useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
@@ -35,42 +33,48 @@ interface ProductTile {
   category: { en: string; ar: string };
   image:    string;
   href:     string;
+  /** true = 3/5 width + landscape; false = 2/5 width + portrait */
+  wide:     boolean;
 }
 
 const PRODUCTS: ProductTile[] = [
   {
     id:       1,
+    wide:     true,
     title:    { en: 'uPVC Windows',    ar: 'نوافذ uPVC'           },
     category: { en: 'Residential & Commercial', ar: 'سكني وتجاري' },
-    image:    'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=800&h=600&fit=crop',
+    image:    'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=1200&h=900&fit=crop',
     href:     '/products/upvc',
   },
   {
     id:       2,
+    wide:     false,
     title:    { en: 'Sliding Systems', ar: 'أنظمة الانزلاق'        },
-    category: { en: 'Modern Solutions',        ar: 'حلول عصرية'    },
-    image:    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop',
+    category: { en: 'Modern Solutions', ar: 'حلول عصرية'           },
+    image:    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=1067&fit=crop',
     href:     '/products/upvc',
   },
   {
     id:       3,
+    wide:     false,
     title:    { en: 'Aluminum Doors',  ar: 'أبواب الألومنيوم'      },
-    category: { en: 'Premium Quality',         ar: 'جودة ممتازة'   },
-    image:    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop',
+    category: { en: 'Premium Quality', ar: 'جودة ممتازة'           },
+    image:    'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=1067&fit=crop',
     href:     '/products/aluminum',
   },
   {
     id:       4,
+    wide:     true,
     title:    { en: 'Curtain Walls',   ar: 'الجدران الستائرية'     },
-    category: { en: 'Commercial',              ar: 'تجاري'          },
-    image:    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop',
+    category: { en: 'Commercial', ar: 'تجاري'                      },
+    image:    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=900&fit=crop',
     href:     '/products/aluminum',
   },
 ];
 
 const copy = {
   en: { title: 'Our Products', subtitle: 'uPVC and aluminium systems for every project type', cta: 'Browse All Products' },
-  ar: { title: 'منتجاتنا',     subtitle: 'أنظمة uPVC والألومنيوم لكل نوع مشروع',              cta: 'تصفح كل المنتجات'  },
+  ar: { title: 'منتجاتنا',     subtitle: 'أنظمة uPVC والألومنيوم لكل نوع مشروع', cta: 'تصفح كل المنتجات'             },
 } as const;
 
 /* ── Component ─────────────────────────────────────────────────────────── */
@@ -88,12 +92,12 @@ export default function ProductsSection() {
     >
       <div className="container-custom">
 
-        {/* ── Section heading — left-aligned; no accent bar ──────────── */}
+        {/* ── Section heading ────────────────────────────────────────────── */}
         <motion.div
           className={`mb-14 ${isRTL ? 'text-right' : 'text-left'}`}
           variants={fadeUp}
-          initial={shouldReduce ? {} : "hidden"}
-          whileInView={shouldReduce ? undefined : "visible"}
+          initial={shouldReduce ? {} : 'hidden'}
+          whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-red mb-3">
@@ -108,44 +112,60 @@ export default function ProductsSection() {
           <p className="text-lg text-text-body max-w-lg">{t.subtitle}</p>
         </motion.div>
 
-        {/* ── 4-column product grid ────────────────────────────────────── */}
+        {/* ── Asymmetric bento grid ────────────────────────────────────────
+            Desktop: 5-column grid, wide tiles take 3 cols, narrow take 2.
+            Z-pattern: wide-left/narrow-right → narrow-left/wide-right.
+            Mobile: 2-column grid, wide tiles span both columns.          */}
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-5"
+          className="grid grid-cols-2 md:grid-cols-5 gap-4"
           variants={staggerContainer}
-          initial={shouldReduce ? {} : "hidden"}
-          whileInView={shouldReduce ? undefined : "visible"}
+          initial={shouldReduce ? {} : 'hidden'}
+          whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
-          {PRODUCTS.map((product, idx) => (
+          {PRODUCTS.map((product) => (
             <motion.div
               key={product.id}
               variants={fadeUp}
-              transition={{ delay: idx * 0.08 }}
+              /* staggerContainer handles sequencing — no per-item delay */
+              className={product.wide
+                ? 'col-span-2 md:col-span-3'
+                : 'col-span-1 md:col-span-2'
+              }
             >
               <Link
                 href={product.href}
-                /* Card hover: lift 4px + warm Lg shadow — per DESIGN.md Frame Rule */
-                className="group block border-2 border-border-light hover:border-brand-silver hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(45,41,38,0.12)] [transition:border-color_200ms,transform_220ms_cubic-bezier(0.22,1,0.36,1),box-shadow_220ms_cubic-bezier(0.22,1,0.36,1)]"
+                /* Aspect ratios: wide tiles = landscape 4/3, portrait tiles = 4/3 on mobile, 3/4 on desktop */
+                className={`group relative block overflow-hidden ${
+                  product.wide
+                    ? 'aspect-[4/3]'
+                    : 'aspect-[4/3] md:aspect-[3/4]'
+                }`}
                 aria-label={product.title[language]}
               >
-                {/* Image — 0px radius (--radius-image), no overlay gradient */}
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={product.image}
-                    alt={product.title[language]}
-                    fill
-                    /* 25vw = quarter of viewport at md+; 50vw on mobile 2-col */
-                    sizes="(min-width: 768px) 25vw, 50vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
-                </div>
+                {/* Full-bleed image */}
+                <Image
+                  src={product.image}
+                  alt={product.title[language]}
+                  fill
+                  sizes={product.wide
+                    ? '(min-width: 768px) 60vw, 100vw'
+                    : '(min-width: 768px) 40vw, 50vw'
+                  }
+                  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                />
 
-                {/* Text below image — separated from the image frame */}
-                <div className="pt-3 pb-4 px-1">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-text-muted mb-1">
+                {/* Functional gradient overlay — warm, not cold black */}
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/85 via-brand-dark/25 to-transparent" />
+
+                {/* Text block — bottom aligned, inside the image */}
+                <div className={`absolute bottom-0 p-5 z-10 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/65 mb-1">
                     {product.category[language]}
                   </p>
-                  <h3 className="text-sm font-bold font-cairo text-brand-dark leading-snug">
+                  <h3 className={`font-bold font-cairo text-white leading-snug ${
+                    product.wide ? 'text-xl' : 'text-base'
+                  }`}>
                     {product.title[language]}
                   </h3>
                 </div>
@@ -158,16 +178,15 @@ export default function ProductsSection() {
         <motion.div
           className="mt-12 text-center"
           variants={fadeUp}
-          initial={shouldReduce ? {} : "hidden"}
-          whileInView={shouldReduce ? undefined : "visible"}
+          initial={shouldReduce ? {} : 'hidden'}
+          whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 text-sm font-bold text-brand-dark border-b-2 border-brand-red pb-0.5 hover:text-brand-red transition-colors duration-200"
+            className={`inline-flex items-center gap-2 text-sm font-bold text-brand-dark border-b-2 border-brand-red pb-0.5 hover:text-brand-red transition-colors duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}
           >
             {t.cta}
-            {/* Arrow rotates 180° in RTL — pointing left instead of right */}
             <ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />
           </Link>
         </motion.div>
