@@ -271,13 +271,13 @@ export default function ContactPage() {
                   {/* WhatsApp */}
                   <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer" className="block bg-white rounded-sm p-5 border-2 border-transparent hover:border-brand-silver transition-all group">
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-whatsapp to-whatsapp-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                      <div className="w-12 h-12 rounded-full bg-brand-dark flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
                         <MessageCircle size={20} className="text-white" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-bold text-brand-dark mb-1">{t.contact.whatsapp.title}</h4>
                         <p className="text-sm text-brand-gray mb-2">{t.contact.whatsapp.text}</p>
-                        <span className="text-xs text-whatsapp font-semibold">{t.contact.whatsapp.cta} →</span>
+                        <span className="text-xs text-text-muted font-semibold">{t.contact.whatsapp.cta} →</span>
                       </div>
                     </div>
                   </a>
@@ -363,14 +363,14 @@ export default function ContactPage() {
             viewport={shouldReduce ? undefined : viewportOnce}
             className="bg-white rounded-sm p-10 border border-border-light"
           >
-            <MessageCircle size={48} className="mx-auto mb-4 text-whatsapp" />
+            <MessageCircle size={48} className="mx-auto mb-4 text-brand-silver" />
             <h2 className="text-3xl font-bold mb-3 text-brand-dark">{t.cta.title}</h2>
             <p className="text-lg text-brand-gray mb-6">{t.cta.subtitle}</p>
             <a
               href="https://wa.me/971501234567"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-whatsapp hover:bg-whatsapp-dark text-white font-semibold text-lg transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-brand-dark hover:bg-brand-dark/90 text-white font-semibold text-lg transition-colors"
             >
               <MessageCircle size={20} />
               {t.cta.button}

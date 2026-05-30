@@ -347,7 +347,7 @@ export default function Header() {
                 href={WA_HREF}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-8 h-8 text-whatsapp hover:bg-whatsapp/10 transition-colors duration-200"
+                className="flex items-center justify-center w-8 h-8 text-text-muted hover:bg-cream transition-colors duration-200"
                 aria-label="Chat on WhatsApp"
               >
                 <WhatsappLogo size={20} weight="fill" />

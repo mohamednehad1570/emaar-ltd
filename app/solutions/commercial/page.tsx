@@ -43,7 +43,7 @@ export default function CommercialPage() {
               const Icon = resolveIcon(cap.icon);
               return (
                 <motion.div key={i} variants={fadeUp} initial={shouldReduce ? {} : "hidden"} whileInView={shouldReduce ? undefined : "visible"} viewport={shouldReduce ? undefined : viewportOnce} transition={{ delay: i * 0.1 }} className="bg-brand-bg border border-border-light p-8 rounded-sm">
-                  <div className="mb-6 p-4 bg-white rounded-sm inline-block shadow-sm"><Icon className="w-8 h-8 text-brand-red" /></div>
+                  <div className="mb-6 p-4 bg-white rounded-sm inline-block"><Icon className="w-8 h-8 text-brand-red" /></div>
                   <h3 className="text-2xl font-bold text-brand-dark mb-4">{cap.title}</h3>
                   <p className="text-brand-gray leading-relaxed">{cap.description}</p>
                 </motion.div>

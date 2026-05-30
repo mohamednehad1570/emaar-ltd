@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence , useReducedMotion } from 'framer-motion';
-import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle } from '@phosphor-icons/react';
+import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle, WhatsappLogo } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { faqData, faqCategoryIcons } from '@/lib/data/faq';
@@ -259,8 +259,9 @@ export default function FAQPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 rounded-none bg-whatsapp text-white font-semibold text-lg hover:bg-whatsapp-dark transition-colors"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-brand-dark text-white font-semibold text-lg hover:bg-brand-dark/90 transition-colors"
                 >
+                  <WhatsappLogo size={20} weight="fill" />
                   {t.cta.whatsapp}
                 </motion.button>
               </a>

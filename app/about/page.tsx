@@ -443,7 +443,7 @@ export default function AboutPage() {
                 whileHover={{ scale: 1.05 }}
                 className="bg-white rounded-sm p-6 border-2 border-transparent hover:border-brand-silver transition-all text-center"
               >
-                <Award className="w-12 h-12 mx-auto mb-4 text-brand-silver" />
+                <Award className="w-12 h-12 mx-auto mb-4 text-gold" />
                 <h3 className="font-bold text-brand-dark mb-1">{award.name}</h3>
                 <p className="text-brand-gray text-sm">{award.year}</p>
               </motion.div>
