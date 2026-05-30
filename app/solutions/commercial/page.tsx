@@ -62,8 +62,8 @@ export default function CommercialPage() {
               <h2 className="text-3xl font-bold mb-6">{t.techHub.title}</h2>
               <p className="text-white/70 text-lg mb-8">{t.techHub.description}</p>
               <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-sm"><FileText className="w-4 h-4 text-brand-red" /><span>PDF Specifications</span></div>
-                <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-sm"><Cog className="w-4 h-4 text-brand-red" /><span>CAD Drawings</span></div>
+                <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-sm"><FileText className="w-4 h-4 text-brand-red" /><span>{t.techHub.pdfLabel}</span></div>
+                <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-sm"><Cog className="w-4 h-4 text-brand-red" /><span>{t.techHub.cadLabel}</span></div>
               </div>
             </div>
             <div className="md:w-auto">

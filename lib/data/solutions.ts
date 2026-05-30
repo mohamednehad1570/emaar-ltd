@@ -8,7 +8,7 @@ export interface SolutionData {
 export interface CommercialData {
   hero: { title: string; subtitle: string; description: string; cta: string };
   capabilities: SolutionBenefit[];
-  techHub: { title: string; description: string; button: string };
+  techHub: { title: string; description: string; button: string; pdfLabel: string; cadLabel: string };
   cta: { title: string; button: string };
 }
 
@@ -43,7 +43,7 @@ export const commercialData: Record<'en'|'ar', CommercialData> = {
       { icon: 'Briefcase', title: 'Retail & Office', description: 'Durable shop fronts and flexible office partitioning.' },
       { icon: 'Award', title: 'Certified Quality', description: 'ISO certified processes meeting rigorous civil defense standards.' },
     ],
-    techHub: { title: 'Technical Resources for Professionals', description: 'Access our comprehensive database of CAD files, specifications, and certifications.', button: 'Visit Technical Hub' },
+    techHub: { title: 'Technical Resources for Professionals', description: 'Access our comprehensive database of CAD files, specifications, and certifications.', button: 'Visit Technical Hub', pdfLabel: 'PDF Specifications', cadLabel: 'CAD Drawings' },
     cta: { title: 'Submit a Tender or Request Info', button: 'Contact Commercial Team' },
   },
   ar: {
@@ -53,7 +53,7 @@ export const commercialData: Record<'en'|'ar', CommercialData> = {
       { icon: 'Briefcase', title: 'التجزئة والمكاتب', description: 'واجهات محال متينة وتقسيمات مرنة للمكاتب.' },
       { icon: 'Award', title: 'جودة معتمدة', description: 'عمليات معتمدة من ISO تلبي معايير الدفاع المدني الصارمة.' },
     ],
-    techHub: { title: 'الموارد التقنية للمحترفين', description: 'الوصول إلى قاعدة بياناتنا الشاملة لملفات CAD والمواصفات والشهادات.', button: 'زيارة المركز التقني' },
+    techHub: { title: 'الموارد التقنية للمحترفين', description: 'الوصول إلى قاعدة بياناتنا الشاملة لملفات CAD والمواصفات والشهادات.', button: 'زيارة المركز التقني', pdfLabel: 'مواصفات PDF', cadLabel: 'رسومات CAD' },
     cta: { title: 'تقديم مناقصة أو طلب معلومات', button: 'اتصل بالفريق التجاري' },
   },
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView , useReducedMotion } from 'framer-motion';
 import { ArrowRight, Medal as Award } from '@phosphor-icons/react';
 import Link from 'next/link';
@@ -18,6 +18,8 @@ export default function AboutPage() {
   const timelineRef = useRef(null);
   const teamRef = useRef(null);
   const valuesRef = useRef(null);
+  /* Ref for the horizontal scroll track — used to jump to end in RTL so most-recent event is visible first */
+  const scrollTrackRef = useRef<HTMLDivElement>(null);
 
   const statsInView = useInView(statsRef, { once: true, amount: 0.3 });
   const timelineInView = useInView(timelineRef, { once: true, amount: 0.2 });
@@ -25,6 +27,14 @@ export default function AboutPage() {
   const valuesInView = useInView(valuesRef, { once: true, amount: 0.2 });
 
   const t = aboutData[language];
+
+  /* Scroll the timeline track to the end when entering RTL mode so the
+     most-recent event (rightmost in flex-row-reverse) is the first visible */
+  useEffect(() => {
+    if (isRTL && scrollTrackRef.current) {
+      scrollTrackRef.current.scrollLeft = scrollTrackRef.current.scrollWidth;
+    }
+  }, [isRTL]);
 
   return (
     <div
@@ -154,6 +164,7 @@ export default function AboutPage() {
           />
 
           <motion.div
+            ref={scrollTrackRef}
             className={`flex overflow-x-auto scrollbar-hide px-24 ${
               /* RTL: reverse card order so reading direction matches scroll */
               isRTL ? 'flex-row-reverse' : ''

@@ -81,7 +81,7 @@ export default function ServicesPage() {
                           <div className="w-20 h-20 rounded-sm bg-gradient-to-br from-brand-red to-brand-red-dark flex items-center justify-center mb-3">
                             <Icon className="w-10 h-10 text-white" />
                           </div>
-                          <div className="text-4xl font-bold text-brand-silver/30 absolute -top-4 -left-4">{step.number}</div>
+                          <div className={`text-4xl font-bold text-brand-silver/30 absolute -top-4 ${isRTL ? '-right-4' : '-left-4'}`}>{step.number}</div>
                         </div>
                       </div>
                       <div className="flex-1">

@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion , useReducedMotion } from 'framer-motion';
 import {
-  Phone, Envelope as Mail, MapPin, Clock, PaperPlaneTilt as Send, UploadSimple as Upload, X, ChatCircle as MessageCircle, CheckCircle,
+  Phone, Envelope as Mail, MapPin, Clock, PaperPlaneTilt as Send, UploadSimple as Upload, X, ChatCircle as MessageCircle, CheckCircle, ArrowRight,
 } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { contactData } from '@/lib/data/contact';
@@ -277,7 +277,10 @@ export default function ContactPage() {
                       <div className="flex-1">
                         <h4 className="font-bold text-brand-dark mb-1">{t.contact.whatsapp.title}</h4>
                         <p className="text-sm text-brand-gray mb-2">{t.contact.whatsapp.text}</p>
-                        <span className="text-xs text-text-muted font-semibold">{t.contact.whatsapp.cta} →</span>
+                        <span className="inline-flex items-center gap-1 text-xs text-text-muted font-semibold">
+                          {t.contact.whatsapp.cta}
+                          <ArrowRight size={12} className={isRTL ? 'rotate-180' : ''} />
+                        </span>
                       </div>
                     </div>
                   </a>

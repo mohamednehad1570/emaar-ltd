@@ -106,7 +106,7 @@ export default function CareersPage() {
           <div className="space-y-6">
             {filteredJobs.map((job, idx) => (
               <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="bg-white rounded-sm overflow-hidden border-2 border-transparent hover:border-brand-silver">
-                <button onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)} className="w-full p-6 lg:p-8 text-left hover:bg-brand-bg transition-colors">
+                <button onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)} className={`w-full p-6 lg:p-8 ${isRTL ? 'text-right' : 'text-left'} hover:bg-brand-bg transition-colors`}>
                   <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-start gap-3 mb-3">
