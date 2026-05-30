@@ -63,11 +63,10 @@ const COLUMNS: Column[] = [
     en: 'Products',
     ar: 'المنتجات',
     links: [
-      { en: 'uPVC Windows & Doors',  ar: 'نوافذ وأبواب uPVC',      href: '/products/upvc'            },
-      { en: 'Aluminum Systems',      ar: 'أنظمة الألومنيوم',        href: '/products/aluminum'        },
-      { en: 'Residential',           ar: 'القطاع السكني',            href: '/solutions?type=residential' },
-      { en: 'Commercial',            ar: 'القطاع التجاري',           href: '/solutions?type=commercial'  },
-      { en: 'Technical Hub',         ar: 'المركز التقني',            href: '/tech'                     },
+      { en: 'All Products',     ar: 'جميع المنتجات',   href: '/products'          },
+      { en: 'uPVC Systems',     ar: 'أنظمة UPVC',      href: '/products/upvc'     },
+      { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum' },
+      { en: 'Solutions',        ar: 'الحلول',           href: '/solutions'         },
     ],
   },
   {
@@ -75,11 +74,11 @@ const COLUMNS: Column[] = [
     en: 'Company',
     ar: 'الشركة',
     links: [
-      { en: 'About Us',  ar: 'من نحن',           href: '/about'    },
-      { en: 'Projects',  ar: 'المشاريع',         href: '/projects' },
-      { en: 'Careers',   ar: 'الوظائف',          href: '/careers'  },
-      { en: 'Why Emaar', ar: 'لماذا إمار',         href: '/why-emaar' },
-      { en: 'FAQ',       ar: 'الأسئلة الشائعة',  href: '/faq'      },
+      { en: 'About Us',  ar: 'من نحن',          href: '/about'     },
+      { en: 'Why Emaar', ar: 'لماذا إمار',       href: '/why-emaar' },
+      { en: 'Projects',  ar: 'المشاريع',         href: '/projects'  },
+      { en: 'Careers',   ar: 'الوظائف',          href: '/careers'   },
+      { en: 'FAQ',       ar: 'الأسئلة الشائعة',  href: '/faq'       },
     ],
   },
 ];
