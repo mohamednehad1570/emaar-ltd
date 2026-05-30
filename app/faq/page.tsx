@@ -92,8 +92,8 @@ export default function FAQPage() {
               return (
                 <motion.button
                   key={key}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  /* Filter chips are high-frequency — no hover scale; whileTap is sufficient feedback */
+                  whileTap={{ scale: 0.97, transition: { duration: 0.12 } }}
                   onClick={() => setActiveCategory(key)}
                   className={`flex items-center gap-2 px-5 py-2.5 rounded-none font-medium transition-all ${
                     activeCategory === key
@@ -247,8 +247,9 @@ export default function FAQPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
                 >
                   {t.cta.button}
@@ -257,8 +258,9 @@ export default function FAQPage() {
               </Link>
               <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-brand-dark text-white font-semibold text-lg hover:bg-brand-dark/90 transition-colors"
                 >
                   <WhatsappLogo size={20} weight="fill" />

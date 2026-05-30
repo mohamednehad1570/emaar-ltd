@@ -182,6 +182,8 @@ export default function AboutPage() {
           />
           <motion.div
             ref={scrollTrackRef}
+            /* scroll-snap-type: x mandatory — user always lands on a card, never mid-gap */
+            style={{ scrollSnapType: 'x mandatory' }}
             className={`flex overflow-x-auto scrollbar-hide px-24 ${isRTL ? 'flex-row-reverse' : ''}`}
             variants={staggerContainer}
             initial={shouldReduce ? {} : 'hidden'}
@@ -192,6 +194,8 @@ export default function AboutPage() {
               <motion.div
                 key={event.year}
                 variants={fadeUp}
+                /* scroll-snap-align: start — each card snaps to the start edge */
+                style={{ scrollSnapAlign: 'start' }}
                 className="w-64 flex-shrink-0 relative z-10 pt-12 pb-10 flex flex-col items-center"
               >
                 {/* Diamond marker on the connecting line */}

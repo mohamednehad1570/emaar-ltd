@@ -192,8 +192,9 @@ export default function TechnicalDownloadsPage() {
                   {isActive && (
                     <motion.div
                       layoutId="tab-underline"
-                      /* stiffness 400 / damping 30 — snappy but not jarring */
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      /* ζ = damping / (2·√stiffness) = 48/(2·√500) ≈ 1.07 — overdamped, zero bounce */
+                      /* Precision brand: the indicator should glide, not spring */
+                      transition={{ type: 'spring', stiffness: 500, damping: 48 }}
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-red"
                       aria-hidden="true"
                     />
@@ -504,8 +505,9 @@ export default function TechnicalDownloadsPage() {
             <p className="text-xl text-dim mb-8">{t.cta.description}</p>
             <Link href="/contact">
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
                 className="px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
               >
                 {t.cta.button}

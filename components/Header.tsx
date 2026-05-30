@@ -206,6 +206,7 @@ export default function Header() {
         initial={{
           backgroundColor: 'rgba(255,255,255,1)',
           boxShadow:       '0 0 0 rgba(45,41,38,0)',
+          backdropFilter:  'blur(0px)',
         }}
         animate={{
           backgroundColor: isScrolled
@@ -215,12 +216,12 @@ export default function Header() {
           boxShadow: isScrolled
             ? '0 4px 20px rgba(45,41,38,0.08)'
             : '0 0 0 rgba(45,41,38,0)',
+          /* Animate blur instead of class-toggling (class toggle snaps in one frame) */
+          backdropFilter: isScrolled ? 'blur(12px)' : 'blur(0px)',
         }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-        className={cn(
-          'fixed top-0 left-0 right-0 z-50',
-          isScrolled && 'backdrop-blur-md',
-        )}
+        /* Strong custom ease-out — feels snappier than the weak CSS easeOut preset */
+        transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+        className="fixed top-0 left-0 right-0 z-50"
       >
         {/* ── Inner constrained container ────────────────────────────── */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -357,7 +358,7 @@ export default function Header() {
               <span className="w-px h-4 bg-border-light" aria-hidden="true" />
 
               {/* Request Quote CTA — 0px radius, 36px height, px-4 */}
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}>
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-1.5 px-4 h-9 bg-brand-red hover:bg-brand-red-dark text-white text-sm font-bold transition-colors duration-200"
@@ -429,7 +430,8 @@ export default function Header() {
               dir={isRTL ? 'rtl' : 'ltr'}
               initial={{ x: isRTL ? '-100%' : '100%' }}
               animate={{ x: 0 }}
-              exit={{ x: isRTL ? '-100%' : '100%' }}
+              /* Close is faster than open — the system responds immediately to dismiss */
+              exit={{ x: isRTL ? '-100%' : '100%', transition: { type: 'tween', duration: 0.22, ease: [0.32, 0.72, 0, 1] } }}
               transition={{ type: 'tween', duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
               className={cn(
                 'fixed top-0 h-full w-full bg-white z-[70] lg:hidden flex flex-col',
@@ -510,7 +512,7 @@ export default function Header() {
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
                                 exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.25, ease: 'easeOut' }}
+                                transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
                                 className="overflow-hidden"
                               >
                                 {/* Red accent line — warm, signals sub-nav depth */}

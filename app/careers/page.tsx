@@ -97,7 +97,7 @@ export default function CareersPage() {
 
           <div className={`flex flex-wrap justify-center gap-3 mb-12 ${isRTL ? 'flex-row-reverse' : ''}`}>
             {Object.entries(t.filters).map(([key, label]) => (
-              <motion.button key={key} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setActiveFilter(key)}
+              <motion.button key={key} whileTap={{ scale: 0.97, transition: { duration: 0.12 } }} onClick={() => setActiveFilter(key)}
                 className={`px-6 py-2.5 rounded-none font-medium transition-all ${activeFilter === key ? 'bg-brand-red text-white' : 'bg-white text-brand-gray hover:bg-brand-bg border border-brand-silver/20'}`}>
                 {label}
               </motion.button>
@@ -181,7 +181,7 @@ export default function CareersPage() {
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>
             <p className="text-xl text-white/70 mb-8">{t.cta.description}</p>
             <a href={`mailto:${t.application.email}`}>
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl">
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }} className="px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl">
                 {t.cta.button}
               </motion.button>
             </a>
