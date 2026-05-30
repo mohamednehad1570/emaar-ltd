@@ -124,7 +124,7 @@ export default function ProductsSection() {
             >
               <Link
                 href={product.href}
-                className="group block border-2 border-border-light hover:border-brand-silver transition-colors duration-300"
+                className="group block border-2 border-border-light hover:border-brand-silver transition-colors duration-200"
                 aria-label={product.title[language]}
               >
                 {/* Image — 0px radius (--radius-image), no overlay gradient */}

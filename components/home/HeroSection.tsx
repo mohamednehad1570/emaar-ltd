@@ -75,7 +75,7 @@ const staggerContainer = {
   show: {
     transition: {
       staggerChildren: 0.13,
-      delayChildren:   0.10,
+      /* delayChildren removed — dead time before first element moves felt like hesitation */
     },
   },
 };

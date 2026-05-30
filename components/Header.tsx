@@ -108,7 +108,8 @@ function MegaPanel({ items, language, isRTL, onEnter, onLeave }: MegaPanelProps)
       initial={{ opacity: 0, y: -4 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
+      /* Strong expo-out — panel snaps into position immediately, no initial lag */
+      transition={{ duration: 0.18, ease: [0.23, 1, 0.32, 1] }}
       className="absolute top-full left-0 right-0 bg-white border-b border-border-light"
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}

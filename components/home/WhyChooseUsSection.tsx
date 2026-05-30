@@ -127,7 +127,6 @@ export default function WhyChooseUsSection() {
               {/* ── Column ─────────────────────────────────────────────── */}
               <motion.div
                 variants={fadeUp}
-                transition={{ delay: idx * 0.1 }}
                 className={`
                   flex-1 px-8 py-10 md:py-0
                   flex flex-col

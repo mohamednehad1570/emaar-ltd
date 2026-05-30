@@ -114,11 +114,10 @@ export default function ProjectsSection() {
             <motion.article
               key={project.id}
               variants={fadeUp}
-              transition={{ delay: idx * 0.1 }}
             >
               <Link
                 href={`/projects/${project.id}`}
-                className="group block border-2 border-border-light hover:border-brand-silver transition-colors duration-300"
+                className="group block border-2 border-border-light hover:border-brand-silver transition-colors duration-200"
                 aria-label={project.title[language]}
               >
                 {/* Image — aspect-[16/9], no overlay, rounded-none */}

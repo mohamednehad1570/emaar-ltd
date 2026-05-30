@@ -55,7 +55,7 @@ export default function SolutionsSection() {
               alt="Residential windows and doors — Palm Villas project"
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             {/* Gradient overlay keeps text legible on any image */}
             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/85 via-brand-dark/30 to-transparent" />
@@ -100,7 +100,7 @@ export default function SolutionsSection() {
               alt="Commercial facade systems — Skyline Tower project"
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/85 via-brand-dark/30 to-transparent" />
 

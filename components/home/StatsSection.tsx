@@ -60,8 +60,7 @@ export default function StatsSection() {
             <motion.div
               key={idx}
               variants={fadeUp}
-              /* 0.12s stagger — readable without feeling mechanical */
-              transition={{ delay: idx * 0.12 }}
+              /* staggerContainer handles sequencing — no per-item delay needed */
               className="flex flex-col"
             >
               {/* 2px red stroke — grounds the stat, links back to brand accent */}
