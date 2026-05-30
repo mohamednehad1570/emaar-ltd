@@ -25,7 +25,7 @@ export const upvcData = {
       title: 'Perfect for Residential Homes',
       description: 'Discover how our uPVC solutions transform living spaces with superior comfort and style.',
       button: 'View Residential Solutions',
-      link: '/solutions/residential',
+      link: '/solutions?type=residential',
     },
   },
   ar: {
@@ -49,7 +49,7 @@ export const upvcData = {
       title: 'مثالية للمنازل السكنية',
       description: 'اكتشف كيف تحول حلول uPVC مساحات المعيشة براحة وأناقة فائقة.',
       button: 'عرض الحلول السكنية',
-      link: '/solutions/residential',
+      link: '/solutions?type=residential',
     },
   },
 } as const;
@@ -76,7 +76,7 @@ export const aluminumData = {
       title: 'Ideal for Commercial Projects',
       description: 'Explore how our aluminum systems deliver performance and aesthetics for commercial spaces.',
       button: 'View Commercial Solutions',
-      link: '/solutions/commercial',
+      link: '/solutions?type=commercial',
     },
   },
   ar: {
@@ -100,7 +100,7 @@ export const aluminumData = {
       title: 'مثالية للمشاريع التجارية',
       description: 'اكتشف كيف توفر أنظمة الألومنيوم لدينا الأداء والجماليات للمساحات التجارية.',
       button: 'عرض الحلول التجارية',
-      link: '/solutions/commercial',
+      link: '/solutions?type=commercial',
     },
   },
 } as const;

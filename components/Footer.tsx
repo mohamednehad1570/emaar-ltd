@@ -65,8 +65,8 @@ const COLUMNS: Column[] = [
     links: [
       { en: 'uPVC Windows & Doors',  ar: 'نوافذ وأبواب uPVC',      href: '/products/upvc'            },
       { en: 'Aluminum Systems',      ar: 'أنظمة الألومنيوم',        href: '/products/aluminum'        },
-      { en: 'Residential',           ar: 'القطاع السكني',            href: '/solutions/residential'    },
-      { en: 'Commercial',            ar: 'القطاع التجاري',           href: '/solutions/commercial'     },
+      { en: 'Residential',           ar: 'القطاع السكني',            href: '/solutions?type=residential' },
+      { en: 'Commercial',            ar: 'القطاع التجاري',           href: '/solutions?type=commercial'  },
       { en: 'Technical Hub',         ar: 'المركز التقني',            href: '/tech'                     },
     ],
   },

@@ -74,7 +74,7 @@ export default function SolutionsSection() {
                   {residential.hero.description}
                 </p>
                 <Link
-                  href="/solutions/residential"
+                  href="/solutions?type=residential"
                   className="inline-flex items-center gap-2 text-white font-semibold hover:text-brand-red transition-colors duration-200"
                 >
                   {residential.cta.button}
@@ -118,7 +118,7 @@ export default function SolutionsSection() {
                   {commercial.hero.description}
                 </p>
                 <Link
-                  href="/solutions/commercial"
+                  href="/solutions?type=commercial"
                   className="inline-flex items-center gap-2 text-white font-semibold hover:text-brand-silver transition-colors duration-200"
                 >
                   {commercial.cta.button}

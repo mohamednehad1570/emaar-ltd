@@ -68,8 +68,8 @@ const NAV: NavItem[] = [
   {
     en: 'Solutions', ar: 'الحلول', href: '',
     mega: [
-      { en: 'Residential Solutions', ar: 'الحلول السكنية',  href: '/solutions/residential', Icon: House     },
-      { en: 'Commercial Solutions',  ar: 'الحلول التجارية', href: '/solutions/commercial',  Icon: Buildings },
+      { en: 'Residential Solutions', ar: 'الحلول السكنية',  href: '/solutions?type=residential', Icon: House     },
+      { en: 'Commercial Solutions',  ar: 'الحلول التجارية', href: '/solutions?type=commercial',  Icon: Buildings },
     ],
   },
   { en: 'Projects',      ar: 'المشاريع',      href: '/projects'  },
@@ -84,8 +84,11 @@ const NAV: NavItem[] = [
 
 function isActive(pathname: string, href: string, mega?: MegaItem[]): boolean {
   if (href === '/') return pathname === '/';
-  if (pathname.startsWith(href)) return true;
-  return mega?.some(m => pathname.startsWith(m.href)) ?? false;
+  /* Strip query params before comparison so /solutions?type=X matches /solutions.
+     Also guard against empty href — pathname.startsWith('') is always true.   */
+  const hrefPath = href.split('?')[0];
+  if (hrefPath && pathname.startsWith(hrefPath)) return true;
+  return mega?.some(m => pathname.startsWith(m.href.split('?')[0])) ?? false;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -535,7 +538,9 @@ export default function Header() {
                                         'flex items-center gap-3',
                                         'px-3 py-3 min-h-[48px]',
                                         'text-sm font-medium transition-colors duration-150',
-                                        pathname.startsWith(sub.href)
+                                        /* Query-param routes can't be checked via pathname alone —
+                                           skip sub-item highlighting; parent item is still active. */
+                                        !sub.href.includes('?') && pathname.startsWith(sub.href)
                                           ? 'text-brand-red'
                                           : 'text-text-body hover:text-brand-red hover:bg-cream',
                                       )}
