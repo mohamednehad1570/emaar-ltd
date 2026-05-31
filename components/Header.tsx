@@ -35,10 +35,6 @@ import {
   Package,
   Cube,
   GridFour,
-  Info,
-  Trophy,
-  Briefcase,
-  Question,
 } from '@phosphor-icons/react';
 import Image    from 'next/image';
 import Link     from 'next/link';
@@ -71,33 +67,25 @@ interface NavItem {
 const WA_HREF = 'https://wa.me/971501234567';
 
 const NAV: NavItem[] = [
-  { en: 'Home',     ar: 'الرئيسية',  href: '/'        },
+  { en: 'Home',      ar: 'الرئيسية',  href: '/'          },
   {
-    en: 'Products', ar: 'المنتجات', href: '',
+    en: 'Products',  ar: 'المنتجات',  href: '',
     mega: [
       { en: 'uPVC Systems',     ar: 'أنظمة UPVC',       href: '/products/upvc',     Icon: Package  },
       { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم',  href: '/products/aluminum', Icon: Cube     },
       { en: 'Browse All',       ar: 'تصفح الكل',         href: '/products',          Icon: GridFour },
     ],
   },
-  { en: 'Projects', ar: 'المشاريع',  href: '/projects' },
   {
-    en: 'Solutions', ar: 'الحلول', href: '',
+    en: 'Solutions', ar: 'الحلول',    href: '',
     mega: [
       { en: 'Residential Solutions', ar: 'الحلول السكنية',  href: '/solutions?type=residential', Icon: House     },
       { en: 'Commercial Solutions',  ar: 'الحلول التجارية', href: '/solutions?type=commercial',  Icon: Buildings },
     ],
   },
-  {
-    en: 'About', ar: 'معلوماتنا', href: '',
-    mega: [
-      { en: 'About Us',  ar: 'من نحن',           href: '/about',     Icon: Info      },
-      { en: 'Why Emaar', ar: 'لماذا إمار',        href: '/why-choose-us', Icon: Trophy    },
-      { en: 'Careers',   ar: 'الوظائف',           href: '/careers',   Icon: Briefcase },
-      { en: 'FAQ',       ar: 'الأسئلة الشائعة',   href: '/faq',       Icon: Question  },
-    ],
-  },
-  { en: 'Contact',  ar: 'اتصل بنا', href: '/contact'  },
+  { en: 'Projects',  ar: 'المشاريع',  href: '/projects'  },
+  { en: 'Technical', ar: 'المواصفات', href: '/technical' },
+  { en: 'Contact',   ar: 'اتصل بنا', href: '/contact'   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
