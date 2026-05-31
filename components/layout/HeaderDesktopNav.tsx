@@ -40,15 +40,14 @@ export default function HeaderDesktopNav() {
 
   useEffect(() => { setOpenDrop(null); }, [pathname]);
 
-  const navItems = isRTL ? [...NAV].reverse() : NAV;
-
   return (
     <nav
-      className="absolute left-1/2 -translate-x-1/2 hidden lg:flex items-center h-full"
+      dir={isRTL ? 'rtl' : 'ltr'}
+      className="hidden lg:flex items-center justify-center h-full"
       aria-label="Primary navigation"
     >
       <div className="flex items-center gap-8 h-full">
-        {navItems.map((item) => {
+        {NAV.map((item) => {
           const active  = isActive(pathname, item.href, item.dropdown);
           const isOpen  = openDrop === item.en;
           const variant = active || isOpen ? 'hovered' : 'rest';

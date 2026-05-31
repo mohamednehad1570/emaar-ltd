@@ -50,10 +50,10 @@ export default function Header() {
             aria-label={aria} aria-pressed={language === lang}
             whileHover={r ? undefined : { scale: 1.05 }}
             transition={{ duration: 0.15, ease: EASE }}
-            className={cn('px-2 py-1 text-xs',
+            className={cn('px-1.5 text-xs',
               language === lang
-                ? 'bg-cream font-bold text-text-heading'
-                : 'text-text-muted hover:text-text-body')}
+                ? 'font-bold text-text-heading'
+                : 'font-normal text-text-muted hover:text-text-body')}
           >{label}</motion.button>
         </React.Fragment>
       ))}
@@ -74,10 +74,14 @@ export default function Header() {
         style={r ? { backgroundColor: scrolled ? 'rgba(255,255,255,0.92)' : '#fff' } : undefined}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative flex items-center h-[52px] lg:h-14">
+          <div
+            className="h-[52px] lg:h-14"
+            style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center' }}
+          >
 
+            {/* LEFT — logo always anchored left, never moves */}
             <Link href="/" aria-label="EMAAR International — home"
-              className="inline-flex items-center gap-2 shrink-0 group">
+              className="inline-flex items-center gap-2 flex-shrink-0 group">
               <div className="w-8 h-8 bg-brand-dark flex items-center justify-center group-hover:opacity-90 transition-opacity">
                 <Image src="/logo.svg" alt="" aria-hidden="true" width={32} height={32}
                   className="w-5 h-5 object-contain brightness-0 invert" priority />
@@ -87,48 +91,51 @@ export default function Header() {
               </span>
             </Link>
 
+            {/* CENTER — nav */}
             <HeaderDesktopNav />
 
-            {/* Desktop right */}
-            <div className={cn('ml-auto hidden lg:flex items-center gap-3 shrink-0', isRTL && 'flex-row-reverse')}>
-              <LangToggle />
-              <motion.a href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
-                whileHover={r ? undefined : { scale: 1.1, boxShadow: '0 2px 8px rgba(45,41,38,0.08)' }}
-                whileTap={r ? undefined : { scale: 0.92 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                className="flex items-center justify-center w-8 h-8">
-                <WhatsappLogo size={20} weight="fill" className="text-whatsapp" />
-              </motion.a>
-              <motion.div
-                whileHover={r ? undefined : { scale: 1.03, boxShadow: '0 8px 32px rgba(231,76,60,0.40)' }}
-                whileTap={r ? undefined : { scale: 0.97 }}
-                transition={{ duration: 0.2, ease: EASE }}
-                style={{ boxShadow: '0 4px 15px rgba(231,76,60,0.20)' }}>
-                <Link href="/contact"
-                  className={cn('inline-flex items-center gap-1.5 px-4 h-9 bg-brand-red hover:bg-brand-red-dark text-white text-[13px] font-bold transition-colors', isRTL && 'flex-row-reverse')}>
-                  {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
-                  <ArrowRight size={13} weight="bold" className={isRTL ? 'rotate-180' : ''} />
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Mobile right */}
-            <div className={cn('ml-auto flex lg:hidden items-center gap-1 shrink-0', isRTL && 'flex-row-reverse')}>
-              <LangToggle />
-              <a href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
-                className="flex items-center justify-center w-8 h-8">
-                <WhatsappLogo size={20} weight="fill" className="text-whatsapp" />
-              </a>
-              <button onClick={() => setOpen(v => !v)} aria-label={open ? 'Close menu' : 'Open menu'}
-                aria-expanded={open} aria-controls="mobile-nav"
-                className="flex flex-col items-center justify-center gap-[5px] w-10 h-10">
-                <motion.span animate={r ? undefined : { rotate: open ? 45 : 0, y: open ? 6 : 0 }}
-                  transition={SPRING} style={{ height: '1.5px' }}
-                  className="block w-6 bg-brand-dark origin-center" />
-                <motion.span animate={r ? undefined : { rotate: open ? -45 : 0, y: open ? -6 : 0 }}
-                  transition={SPRING} style={{ height: '1.5px' }}
-                  className="block w-6 bg-brand-dark origin-center" />
-              </button>
+            {/* RIGHT — lang toggle + whatsapp + CTA, dir change only on RTL */}
+            <div className="flex items-center gap-3" dir={isRTL ? 'rtl' : 'ltr'}>
+              {/* Desktop only */}
+              <div className="hidden lg:flex items-center gap-3">
+                <LangToggle />
+                <motion.a href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
+                  whileHover={r ? undefined : { scale: 1.1 }}
+                  whileTap={r ? undefined : { scale: 0.92 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                  className="flex items-center justify-center">
+                  <WhatsappLogo size={20} weight="fill" className="text-whatsapp" />
+                </motion.a>
+                <motion.div
+                  whileHover={r ? undefined : { scale: 1.03, boxShadow: '0 8px 32px rgba(231,76,60,0.40)' }}
+                  whileTap={r ? undefined : { scale: 0.97 }}
+                  transition={{ duration: 0.2, ease: EASE }}
+                  style={{ boxShadow: '0 4px 15px rgba(231,76,60,0.20)' }}>
+                  <Link href="/contact"
+                    className="inline-flex items-center gap-1.5 px-4 h-9 bg-brand-red hover:bg-brand-red-dark text-white text-[13px] font-bold transition-colors">
+                    {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
+                    <ArrowRight size={13} weight="bold" />
+                  </Link>
+                </motion.div>
+              </div>
+              {/* Mobile only */}
+              <div className="flex lg:hidden items-center gap-1">
+                <LangToggle />
+                <a href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
+                  className="flex items-center justify-center">
+                  <WhatsappLogo size={20} weight="fill" className="text-whatsapp" />
+                </a>
+                <button onClick={() => setOpen(v => !v)} aria-label={open ? 'Close menu' : 'Open menu'}
+                  aria-expanded={open} aria-controls="mobile-nav"
+                  className="flex flex-col items-center justify-center gap-[5px] w-10 h-10">
+                  <motion.span animate={r ? undefined : { rotate: open ? 45 : 0, y: open ? 6 : 0 }}
+                    transition={SPRING} style={{ height: '1.5px' }}
+                    className="block w-6 bg-brand-dark origin-center" />
+                  <motion.span animate={r ? undefined : { rotate: open ? -45 : 0, y: open ? -6 : 0 }}
+                    transition={SPRING} style={{ height: '1.5px' }}
+                    className="block w-6 bg-brand-dark origin-center" />
+                </button>
+              </div>
             </div>
 
           </div>

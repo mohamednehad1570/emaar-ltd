@@ -179,11 +179,7 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
           <Link
             href="/contact"
             onClick={onClose}
-            className={cn(
-              'flex items-center justify-center gap-2 w-full h-[52px]',
-              'bg-brand-red hover:bg-brand-red-dark text-white text-base font-bold transition-colors duration-150',
-              isRTL && 'flex-row-reverse',
-            )}
+            className="flex items-center justify-center gap-2 w-full h-[52px] bg-brand-red hover:bg-brand-red-dark text-white text-base font-bold transition-colors duration-150"
           >
             {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
             <ArrowRight size={18} weight="bold" className={isRTL ? 'rotate-180' : ''} />
