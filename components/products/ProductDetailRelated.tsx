@@ -15,6 +15,7 @@ interface Props {
 
 interface RelatedItem {
   slug: string;
+  material: 'upvc' | 'aluminum';
   image: string;
   title: string;
   category: string;
@@ -28,7 +29,7 @@ export default function ProductDetailRelated({ relatedSlugs, language, isRTL }: 
     const rawData = detail.material === 'aluminum' ? aluminumData[language] : upvcData[language];
     const product = rawData.products.find(p => p.id === detail.productId);
     if (!product) return acc;
-    acc.push({ slug, image: product.image, title: product.title, category: product.category, description: product.description });
+    acc.push({ slug, material: detail.material, image: product.image, title: product.title, category: product.category, description: product.description });
     return acc;
   }, []);
 
@@ -71,7 +72,7 @@ export default function ProductDetailRelated({ relatedSlugs, language, isRTL }: 
                 <h3 className="font-bold text-brand-dark mb-2 group-hover:text-brand-red transition-colors">{item.title}</h3>
                 <p className="text-sm text-text-body line-clamp-2 mb-4">{item.description}</p>
                 <Link
-                  href={`/products/${item.slug}`}
+                  href={`/products/${item.material}/${item.slug}`}
                   className="text-sm font-bold text-brand-red hover:text-brand-red-dark transition-colors"
                 >
                   {language === 'en' ? 'View Details →' : '← عرض التفاصيل'}

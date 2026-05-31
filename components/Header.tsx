@@ -92,7 +92,7 @@ const NAV: NavItem[] = [
     en: 'About', ar: 'معلوماتنا', href: '',
     mega: [
       { en: 'About Us',  ar: 'من نحن',           href: '/about',     Icon: Info      },
-      { en: 'Why Emaar', ar: 'لماذا إمار',        href: '/why-emaar', Icon: Trophy    },
+      { en: 'Why Emaar', ar: 'لماذا إمار',        href: '/why-choose-us', Icon: Trophy    },
       { en: 'Careers',   ar: 'الوظائف',           href: '/careers',   Icon: Briefcase },
       { en: 'FAQ',       ar: 'الأسئلة الشائعة',   href: '/faq',       Icon: Question  },
     ],

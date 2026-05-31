@@ -307,7 +307,7 @@ function CommercialContent({ t, isRTL, shouldReduce }: CommercialProps) {
             </div>
             <div className="md:w-auto shrink-0">
               <Link
-                href="/tech"
+                href="/technical"
                 className={`inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-dark font-bold text-base hover:bg-cream transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
               >
                 {t.techHub.button}
