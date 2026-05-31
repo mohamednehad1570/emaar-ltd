@@ -1,0 +1,46 @@
+export interface DropdownItem {
+  en:             string;
+  ar:             string;
+  href:           string;
+  dividerBefore?: boolean;
+}
+
+export interface NavItem {
+  en:        string;
+  ar:        string;
+  href:      string;
+  dropdown?: DropdownItem[];
+}
+
+export const NAV: NavItem[] = [
+  { en: 'Home',      ar: 'الرئيسية',  href: '/' },
+  {
+    en: 'Products', ar: 'المنتجات', href: '',
+    dropdown: [
+      { en: 'uPVC',         ar: 'UPVC',           href: '/products/upvc'     },
+      { en: 'Aluminum',     ar: 'الألومنيوم',      href: '/products/aluminum' },
+      { en: 'All Products', ar: 'جميع المنتجات',   href: '/products', dividerBefore: true },
+    ],
+  },
+  {
+    en: 'Solutions', ar: 'الحلول', href: '',
+    dropdown: [
+      { en: 'Residential', ar: 'السكنية',  href: '/solutions/residential' },
+      { en: 'Commercial',  ar: 'التجارية', href: '/solutions/commercial'  },
+    ],
+  },
+  { en: 'Projects',  ar: 'المشاريع',  href: '/projects'  },
+  { en: 'Technical', ar: 'المواصفات', href: '/technical' },
+  { en: 'Contact',   ar: 'اتصل بنا', href: '/contact'   },
+];
+
+export function isActive(
+  pathname: string,
+  href: string,
+  dropdown?: DropdownItem[],
+): boolean {
+  if (href === '/') return pathname === '/';
+  const hrefPath = href.split('?')[0];
+  if (hrefPath && pathname.startsWith(hrefPath)) return true;
+  return dropdown?.some(d => pathname.startsWith(d.href.split('?')[0])) ?? false;
+}
