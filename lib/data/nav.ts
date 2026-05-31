@@ -31,6 +31,15 @@ export const NAV: NavItem[] = [
   },
   { en: 'Projects',  ar: 'المشاريع',  href: '/projects'  },
   { en: 'Technical', ar: 'المواصفات', href: '/technical' },
+  {
+    en: 'About', ar: 'من نحن', href: '',
+    dropdown: [
+      { en: 'About Us',       ar: 'من نحن',       href: '/about'          },
+      { en: 'Why Choose Us',  ar: 'لماذا نحن',    href: '/why-choose-us'  },
+      { en: 'Careers',        ar: 'الوظائف',       href: '/careers', dividerBefore: true },
+      { en: 'FAQ',            ar: 'الأسئلة الشائعة', href: '/faq'          },
+    ],
+  },
   { en: 'Contact',   ar: 'اتصل بنا', href: '/contact'   },
 ];
 
