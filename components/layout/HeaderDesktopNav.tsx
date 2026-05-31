@@ -42,7 +42,6 @@ export default function HeaderDesktopNav() {
 
   return (
     <nav
-      dir={isRTL ? 'rtl' : 'ltr'}
       className="hidden lg:flex items-center justify-center h-full"
       aria-label="Primary navigation"
     >

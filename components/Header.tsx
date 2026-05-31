@@ -37,12 +37,11 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  const wa  = getWhatsAppURL({ page: 'home' });
-  const row = isRTL ? [...LANGS].reverse() : LANGS;
+  const wa = getWhatsAppURL({ page: 'home' });
 
   const LangToggle = () => (
     <div className="flex items-center">
-      {row.map(({ lang, label, aria }, i) => (
+      {LANGS.map(({ lang, label, aria }, i) => (
         <React.Fragment key={lang}>
           {i > 0 && <span className="text-dim text-xs select-none px-0.5" aria-hidden="true">|</span>}
           <motion.button
@@ -94,8 +93,8 @@ export default function Header() {
             {/* CENTER — nav */}
             <HeaderDesktopNav />
 
-            {/* RIGHT — lang toggle + whatsapp + CTA, dir change only on RTL */}
-            <div className="flex items-center gap-3" dir={isRTL ? 'rtl' : 'ltr'}>
+            {/* RIGHT — fixed: lang toggle · whatsapp · CTA, never moves */}
+            <div className="flex items-center gap-3">
               {/* Desktop only */}
               <div className="hidden lg:flex items-center gap-3">
                 <LangToggle />
