@@ -1,124 +1,139 @@
 'use client';
 
-/**
- * app/solutions/page.tsx
- *
- * Unified solutions hub with a tab switcher.
- * URL param: ?type=residential (default) | ?type=commercial
- *
- * Tab bar design:
- *   - Sticky top-[52px] (sits flush below the 52px fixed header)
- *   - Sharp corners — no pills, no rounded tabs
- *   - Underline active indicator using Framer Motion layoutId spring
- *   - Bilingual labels, RTL-aware flex direction
- *
- * useSearchParams requires a Suspense boundary. SolutionsContent (inner) does
- * the real work; SolutionsPage (default export) wraps it in Suspense so the
- * static shell renders without hydration errors.
- */
-
-import React, { Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight } from '@phosphor-icons/react';
+import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import ResidentialContent from '@/components/solutions/ResidentialContent';
-import CommercialContent from '@/components/solutions/CommercialContent';
+import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
+import { getWhatsAppURL } from '@/lib/whatsapp';
 
-type TabType = 'residential' | 'commercial';
+const content = {
+  en: {
+    eyebrow: 'Our Solutions',
+    heading: 'Tailored for Every Project',
+    subheading: 'From private homes to landmark towers — we deliver the right system for your needs.',
+    cards: [
+      {
+        title: 'Residential Solutions',
+        description: 'Premium windows and doors for comfort, privacy, and elegance in your home.',
+        href: '/solutions/residential',
+        cta: 'Explore Residential',
+      },
+      {
+        title: 'Commercial Solutions',
+        description: 'High-performance facade and glazing systems for offices, towers, and retail.',
+        href: '/solutions/commercial',
+        cta: 'Explore Commercial',
+      },
+    ],
+    ctaTitle: 'Not sure which solution fits your project?',
+    ctaButton: 'Request a Free Quote',
+  },
+  ar: {
+    eyebrow: 'حلولنا',
+    heading: 'مصممة لكل مشروع',
+    subheading: 'من المنازل الخاصة إلى الأبراج الشاهقة — نقدم النظام المناسب لاحتياجاتك.',
+    cards: [
+      {
+        title: 'الحلول السكنية',
+        description: 'نوافذ وأبواب متميزة للراحة والخصوصية والأناقة في منزلك.',
+        href: '/solutions/residential',
+        cta: 'استكشف الحلول السكنية',
+      },
+      {
+        title: 'الحلول التجارية',
+        description: 'أنظمة واجهات وتزجيج عالية الأداء للمكاتب والأبراج والتجزئة.',
+        href: '/solutions/commercial',
+        cta: 'استكشف الحلول التجارية',
+      },
+    ],
+    ctaTitle: 'غير متأكد من الحل المناسب لمشروعك؟',
+    ctaButton: 'اطلب عرض سعر مجاني',
+  },
+} as const;
 
-/* ─────────────────────────────────────────────────────────────────────────
-   Tab switcher — uses useSearchParams, must sit inside Suspense
-────────────────────────────────────────────────────────────────────────── */
-
-const TABS: { id: TabType; en: string; ar: string }[] = [
-  { id: 'residential', en: 'Residential Solutions', ar: 'الحلول السكنية'  },
-  { id: 'commercial',  en: 'Commercial Solutions',  ar: 'الحلول التجارية' },
-];
-
-function SolutionsContent() {
-  const router      = useRouter();
-  const params      = useSearchParams();
+export default function SolutionsPage() {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
-
-  /* Default to residential; reject any unknown param value */
-  const raw = params.get('type');
-  const tab: TabType = raw === 'commercial' ? 'commercial' : 'residential';
-
-  const switchTab = (next: TabType) => {
-    /* scroll: false keeps the viewport position when switching tabs */
-    router.push(`/solutions?type=${next}`, { scroll: false });
-  };
+  const t = content[language];
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
 
-      {/* ── Tab bar — sticky below 52px fixed header ────────────────── */}
-      <div className="sticky top-[52px] z-40 bg-white border-b border-border-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className={`flex ${isRTL ? 'flex-row-reverse' : ''}`}
-            role="tablist"
-            aria-label={language === 'en' ? 'Solution type' : 'نوع الحل'}
+      {/* ── Editorial Hub ──────────────────────────────────────────── */}
+      <section className="pt-[52px] pb-20 bg-off-white">
+        <div className="max-w-7xl mx-auto px-6 pt-16">
+          <motion.span
+            initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="inline-block px-3 py-1 bg-brand-red text-white text-xs font-semibold uppercase tracking-widest mb-6"
           >
-            {TABS.map(({ id, en, ar }) => {
-              const isActive = tab === id;
-              return (
-                <button
-                  key={id}
-                  role="tab"
-                  aria-selected={isActive}
-                  onClick={() => switchTab(id)}
-                  className={`relative px-6 py-4 text-sm font-semibold min-h-[52px] transition-colors duration-150 ${
-                    isActive
-                      ? 'text-brand-dark'
-                      : 'text-text-muted hover:text-brand-dark'
-                  }`}
+            {t.eyebrow}
+          </motion.span>
+          <motion.h1
+            initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            className="font-extrabold text-brand-dark mb-4"
+            style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', lineHeight: 1.05, letterSpacing: '-0.02em' }}
+          >
+            {t.heading}
+          </motion.h1>
+          <motion.p
+            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="text-text-body text-lg max-w-xl mb-16"
+          >
+            {t.subheading}
+          </motion.p>
+
+          {/* ── Entry Cards ──────────────────────────────────────────── */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
+            className="grid md:grid-cols-2 gap-6"
+          >
+            {t.cards.map((card) => (
+              <motion.div key={card.href} variants={fadeUp}>
+                <Link
+                  href={card.href}
+                  className="group flex flex-col justify-between h-full bg-white border border-border-light p-8 hover:border-brand-red transition-colors duration-300 min-h-[220px]"
                 >
-                  {language === 'en' ? en : ar}
-
-                  {/* Underline slides between tabs with a critically-damped spring (no bounce) */}
-                  {isActive && (
-                    <motion.div
-                      layoutId="solutions-tab-underline"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-red"
-                      transition={{ type: 'spring', stiffness: 500, damping: 48 }}
-                      aria-hidden="true"
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-brand-dark mb-3">{card.title}</h2>
+                    <p className="text-text-body text-base">{card.description}</p>
+                  </div>
+                  <div className={`flex items-center gap-2 mt-8 text-brand-red font-bold text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <span>{card.cta}</span>
+                    <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* ── Tab content — cross-fades on switch ─────────────────────── */}
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={tab}
-          initial={shouldReduce ? {} : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={shouldReduce ? {} : { opacity: 0 }}
-          transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {tab === 'residential' ? <ResidentialContent /> : <CommercialContent />}
-        </motion.div>
-      </AnimatePresence>
+      {/* ── CTA ────────────────────────────────────────────────────── */}
+      <section className="py-20 bg-brand-void text-white">
+        <div className={`max-w-3xl mx-auto px-6 text-center ${isRTL ? 'rtl' : ''}`}>
+          <h2 className="text-2xl md:text-3xl font-bold mb-8">{t.ctaTitle}</h2>
+          <a
+            href={getWhatsAppURL({ page: 'products' })}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`inline-flex items-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-red-dark text-white font-bold text-base transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+          >
+            {t.ctaButton}
+            <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
+          </a>
+        </div>
+      </section>
 
     </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   Page export — wraps inner component in Suspense so useSearchParams
-   doesn't break static pre-rendering of the shell.
-────────────────────────────────────────────────────────────────────────── */
-
-export default function SolutionsPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-off-white" aria-hidden="true" />}>
-      <SolutionsContent />
-    </Suspense>
   );
 }

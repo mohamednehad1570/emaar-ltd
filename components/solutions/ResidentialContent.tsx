@@ -2,29 +2,39 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { residentialData } from '@/lib/data/solutions';
+import { upvcData } from '@/lib/data/products';
+import { projectsData } from '@/lib/data/projects';
 import { resolveIcon } from '@/lib/iconMap';
 import { fadeUp, viewportOnce } from '@/lib/motion';
 import { getWhatsAppURL } from '@/lib/whatsapp';
+import SolutionProductsSection from './SolutionProductsSection';
+import SolutionProjectsSection from './SolutionProjectsSection';
+
+const residentialProjects = projectsData.filter((p) => p.type === 'residential');
+
+const labels = {
+  en: { products: 'Recommended for Your Home', viewAll: 'View All uPVC Products', projects: 'Residential Projects' },
+  ar: { products: 'موصى به لمنزلك', viewAll: 'عرض جميع منتجات uPVC', projects: 'المشاريع السكنية' },
+} as const;
 
 export default function ResidentialContent() {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
   const t = residentialData[language];
+  const lb = labels[language];
 
   return (
     <>
-      {/* ── Hero ─────────────────────────────────────────────────────── */}
-      <section className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-brand-dark">
-        <div className={`relative z-10 max-w-7xl mx-auto px-6 text-center text-white ${isRTL ? 'rtl' : ''}`}>
+      {/* ── Type-only Hero ─────────────────────────────────────────── */}
+      <section className="py-20 bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
+        <div className="max-w-7xl mx-auto px-6">
           <motion.span
-            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
+            initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-block py-1 px-4 bg-brand-red/20 border border-brand-red/40 text-brand-red text-sm font-semibold mb-6"
+            className="inline-block px-3 py-1 bg-brand-red text-white text-xs font-semibold uppercase tracking-widest mb-6"
           >
             {t.hero.subtitle}
           </motion.span>
@@ -32,30 +42,29 @@ export default function ResidentialContent() {
             initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="font-extrabold mb-6 text-balance"
+            className="font-extrabold text-brand-dark mb-5 text-balance"
             style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)', lineHeight: 1.05, letterSpacing: '-0.02em' }}
           >
             {t.hero.title}
           </motion.h1>
           <motion.p
-            initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="text-lg text-white/75 max-w-2xl mx-auto mb-10"
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            className="text-text-body text-lg max-w-2xl mb-10"
           >
             {t.hero.description}
           </motion.p>
           <motion.div
-            initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+            initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
             <a
               href={getWhatsAppURL({ page: 'solutions-residential' })}
               target="_blank"
               rel="noopener noreferrer"
               className={`inline-flex items-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-red-dark text-white font-bold text-base transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
-              style={{ boxShadow: '0 4px 15px rgba(231,76,60,0.20)' }}
             >
               {t.hero.cta}
               <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
@@ -64,7 +73,7 @@ export default function ResidentialContent() {
         </div>
       </section>
 
-      {/* ── Benefits ──────────────────────────────────────────────────── */}
+      {/* ── 3 Key Benefits ─────────────────────────────────────────── */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-10">
@@ -92,54 +101,28 @@ export default function ResidentialContent() {
         </div>
       </section>
 
-      {/* ── Product Pathways ──────────────────────────────────────────── */}
-      <section className="py-20 bg-off-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className={`mb-12 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <h2 className="text-2xl md:text-3xl font-bold text-brand-dark mb-3">{t.products.title}</h2>
-            <div className="h-0.5 w-12 bg-brand-red" />
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="group relative overflow-hidden aspect-[4/3] bg-brand-dark">
-              <Image src="https://images.unsplash.com/photo-1600596542815-22b5c1275efb?w=800&q=80" alt={t.products.upvc.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-brand-dark/70 z-10" />
-              <div className={`absolute inset-0 p-8 z-20 flex flex-col justify-end ${isRTL ? 'items-end text-right' : 'items-start text-left'}`}>
-                <div className="h-0.5 w-8 bg-brand-red mb-5" aria-hidden="true" />
-                <h3 className="text-2xl font-bold text-white mb-2">{t.products.upvc.title}</h3>
-                <p className="text-white/70 text-sm mb-6 max-w-xs">{t.products.upvc.description}</p>
-                <Link href="/products/upvc" className={`inline-flex items-center gap-2 text-sm font-bold text-white hover:text-brand-red transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  {t.products.upvc.linkText}
-                  <ArrowRight className={`w-4 h-4 group-hover:translate-x-1 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} aria-hidden="true" />
-                </Link>
-              </div>
-            </div>
-            <div className="group relative overflow-hidden aspect-[4/3] bg-brand-dark">
-              <Image src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80" alt={t.products.aluminum.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-brand-dark/70 z-10" />
-              <div className={`absolute inset-0 p-8 z-20 flex flex-col justify-end ${isRTL ? 'items-end text-right' : 'items-start text-left'}`}>
-                <div className="h-0.5 w-8 bg-brand-red mb-5" aria-hidden="true" />
-                <h3 className="text-2xl font-bold text-white mb-2">{t.products.aluminum.title}</h3>
-                <p className="text-white/70 text-sm mb-6 max-w-xs">{t.products.aluminum.description}</p>
-                <Link href="/products/aluminum" className={`inline-flex items-center gap-2 text-sm font-bold text-white hover:text-brand-red transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  {t.products.aluminum.linkText}
-                  <ArrowRight className={`w-4 h-4 group-hover:translate-x-1 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} aria-hidden="true" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── Recommended Products ───────────────────────────────────── */}
+      <SolutionProductsSection
+        products={upvcData[language].products}
+        material="upvc"
+        sectionTitle={lb.products}
+        viewAllHref="/products/upvc"
+        viewAllLabel={lb.viewAll}
+      />
 
-      {/* ── CTA ───────────────────────────────────────────────────────── */}
-      <section className="py-20 px-6 bg-brand-red text-white">
+      {/* ── Featured Residential Projects ──────────────────────────── */}
+      <SolutionProjectsSection projects={residentialProjects} sectionTitle={lb.projects} />
+
+      {/* ── CTA (void bg) ──────────────────────────────────────────── */}
+      <section className="py-20 px-6 bg-brand-void text-white">
         <div className={`max-w-4xl mx-auto text-center ${isRTL ? 'rtl' : ''}`}>
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-balance">{t.cta.title}</h2>
           <a
             href={getWhatsAppURL({ page: 'solutions-residential' })}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red font-bold text-base hover:bg-cream transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
-            style={{ boxShadow: '0 4px 20px rgba(45,41,38,0.15)', color: 'var(--color-brand-red)' }}
+            className={`inline-flex items-center gap-2 px-8 py-4 bg-white font-bold text-base hover:bg-cream transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+            style={{ color: 'var(--color-brand-dark)' }}
           >
             {t.cta.button}
             <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
