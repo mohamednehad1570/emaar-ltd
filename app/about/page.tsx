@@ -518,7 +518,7 @@ export default function AboutPage() {
                 <motion.span
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red font-bold text-lg cursor-pointer"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-cream text-brand-red font-bold text-lg cursor-pointer transition-colors"
                   style={{ boxShadow: '0 4px 20px rgba(45,41,38,0.15)' }}
                 >
                   {t.cta.button}

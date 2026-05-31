@@ -181,7 +181,7 @@ export default function CareersPage() {
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>
             <p className="text-xl text-white/70 mb-8">{t.cta.description}</p>
             <a href={`mailto:${t.application.email}`}>
-              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }} className="px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl">
+              <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }} className="px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors">
                 {t.cta.button}
               </motion.button>
             </a>

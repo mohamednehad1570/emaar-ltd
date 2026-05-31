@@ -30,7 +30,7 @@ export default function CTASection() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors"
               >
                 {t.cta.button}
                 <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
@@ -41,7 +41,7 @@ export default function CTASection() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                className="px-8 py-4 rounded-none bg-white/10 backdrop-blur-sm text-white font-semibold text-lg border-2 border-white/30 hover:bg-white/20 transition-colors"
+                className="px-8 py-4 rounded-none bg-white/10 backdrop-blur-sm text-white font-semibold text-lg border-2 border-white/40 hover:bg-white/20 hover:border-white/60 transition-colors"
               >
                 {t.cta.secondary}
               </motion.button>

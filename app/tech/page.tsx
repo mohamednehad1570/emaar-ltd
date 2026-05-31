@@ -508,7 +508,7 @@ export default function TechnicalDownloadsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                className="px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
+                className="px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors"
               >
                 {t.cta.button}
               </motion.button>

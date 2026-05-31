@@ -250,7 +250,7 @@ export default function FAQPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                   transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white text-brand-red font-semibold text-lg shadow-warm-xl"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors"
                 >
                   {t.cta.button}
                   <MessageCircle className="w-5 h-5" />
@@ -261,7 +261,7 @@ export default function FAQPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
                   transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-brand-dark text-white font-semibold text-lg hover:bg-brand-dark/90 transition-colors"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-brand-dark text-white font-semibold text-lg hover:bg-brand-dark-mid transition-colors"
                 >
                   <WhatsappLogo size={20} weight="fill" />
                   {t.cta.whatsapp}

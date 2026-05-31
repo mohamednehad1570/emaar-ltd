@@ -136,7 +136,7 @@ export default function ProductDetailPage({ slug }: Props) {
           <h2 className="text-3xl font-bold mb-4">{language === 'en' ? 'Ready to Get Started?' : 'مستعد للبدء؟'}</h2>
           <p className="text-white/85 mb-8">{language === 'en' ? 'Contact our team for a custom quote tailored to your project requirements.' : 'تواصل مع فريقنا للحصول على عرض سعر مخصص لمتطلبات مشروعك.'}</p>
           <Link href="/contact">
-            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className={`inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red font-bold text-lg ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className={`inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-cream text-brand-red font-bold text-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
               {language === 'en' ? 'Request Quote' : 'طلب عرض سعر'}
               <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
             </motion.button>

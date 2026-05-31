@@ -84,7 +84,7 @@ export default function MaintenanceSection() {
           <div className="text-center">
             <p className={`text-lg font-bold mb-4 ${isRTL ? 'rtl' : ''}`}>{t.maintenance.emergency.contact}</p>
             <a href="tel:+971501234567">
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className={`inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red font-bold text-base ${isRTL ? 'flex-row-reverse' : ''}`} style={{ boxShadow: '0 4px 20px rgba(45,41,38,0.15)' }}>
+              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className={`inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-cream text-brand-red font-bold text-base transition-colors ${isRTL ? 'flex-row-reverse' : ''}`} style={{ boxShadow: '0 4px 20px rgba(45,41,38,0.15)' }}>
                 <Phone className="w-5 h-5" aria-hidden="true" />
                 {language === 'en' ? 'Call Now' : 'اتصل الآن'}
               </motion.button>

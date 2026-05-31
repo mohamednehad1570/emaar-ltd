@@ -485,7 +485,7 @@ export default function ContactPage() {
                 href="https://maps.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-dark hover:bg-brand-dark/90 text-white text-sm font-bold transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-dark hover:bg-brand-dark-mid text-white text-sm font-bold transition-colors"
               >
                 <MapPin size={14} aria-hidden="true" />
                 {t.map.viewMap}
@@ -520,7 +520,7 @@ export default function ContactPage() {
                 href="https://wa.me/971501234567"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 border border-white/20 text-white font-bold text-sm hover:bg-white/20 transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 border border-white/30 text-white font-bold text-sm hover:bg-white/20 hover:border-white/50 transition-colors"
               >
                 <WhatsappLogo size={15} weight="fill" aria-hidden="true" />
                 {t.cta.button}

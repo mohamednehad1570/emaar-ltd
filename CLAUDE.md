@@ -21,3 +21,7 @@ Next.js 14 + TypeScript + Tailwind + Framer Motion + Phosphor Icons + Sanity.io 
 - components/sections/ — Hero, FeaturedProducts, etc.
 - lib/ — utilities, Sanity client, i18n
 - contexts/ — React context providers
+
+## Reference docs
+- PRODUCT.md — brand personality, audience, anti-references
+- DESIGN.md — full design system, component specs, do's and don'ts
