@@ -9,45 +9,64 @@ import { NAV, isActive } from '@/lib/data/nav';
 import { cn } from '@/lib/cn';
 
 interface Props {
+  id:       string;
   onClose:  () => void;
   language: 'en' | 'ar';
   isRTL:    boolean;
   pathname: string;
 }
 
-export default function HeaderMobileOverlay({ onClose, language, isRTL, pathname }: Props) {
+const EASE_UI: [number, number, number, number]     = [0.23, 1, 0.32, 1];
+const EASE_DRAWER: [number, number, number, number] = [0.32, 0.72, 0, 1];
+const SPRING = { type: 'spring' as const, stiffness: 300, damping: 25 };
+
+export default function HeaderMobileOverlay({ id, onClose, language, isRTL, pathname }: Props) {
   const [expanded, setExpanded] = useState<string | null>(null);
-  const shouldReduceMotion      = useReducedMotion();
+  const r = useReducedMotion();
 
   useEffect(() => { setExpanded(null); }, [pathname]);
 
-  const spring = shouldReduceMotion
-    ? { type: 'tween' as const, duration: 0 }
-    : { type: 'spring' as const, stiffness: 300, damping: 30 };
+  const itemVariants = (idx: number) => ({
+    initial: r ? { opacity: 0 }           : { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: r
+      ? { duration: 0.2 }
+      : { delay: idx * 0.05, duration: 0.3, ease: EASE_UI },
+  });
+
+  const subItemVariants = (idx: number) => ({
+    initial: r ? { opacity: 0 }           : { opacity: 0, y: -4 },
+    animate: { opacity: 1, y: 0 },
+    transition: r
+      ? { duration: 0.15 }
+      : { delay: idx * 0.03, duration: 0.2, ease: EASE_UI },
+  });
 
   return (
     <>
-      {/* Backdrop scrim — tap closes overlay */}
+      {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 bg-brand-dark/50 backdrop-blur-sm z-[60] lg:hidden"
+        style={{ backgroundColor: 'rgba(26,26,26,0.3)' }}
+        className="fixed inset-0 z-[60] lg:hidden"
         aria-hidden="true"
         onClick={onClose}
       />
 
       {/* Slide-in panel */}
       <motion.nav
+        id={id}
         role="dialog"
         aria-modal="true"
         aria-label="Site navigation"
         dir={isRTL ? 'rtl' : 'ltr'}
         initial={{ x: isRTL ? '-100%' : '100%' }}
         animate={{ x: 0 }}
-        exit={{ x: isRTL ? '-100%' : '100%', transition: { type: 'tween', duration: 0.22 } }}
-        transition={spring}
+        exit={{ x: isRTL ? '-100%' : '100%', transition: { ease: EASE_DRAWER, duration: 0.28 } }}
+        transition={r ? { duration: 0 } : { ease: EASE_DRAWER, duration: 0.35 }}
         className={cn(
           'fixed top-0 h-full w-full bg-off-white z-[70] lg:hidden flex flex-col',
           isRTL ? 'left-0' : 'right-0',
@@ -61,19 +80,22 @@ export default function HeaderMobileOverlay({ onClose, language, isRTL, pathname
             </div>
             <span className="font-bold text-sm text-brand-dark">{language === 'en' ? 'EMAAR' : 'إعمار'}</span>
           </Link>
-          <button onClick={onClose} className="flex items-center justify-center w-11 h-11 text-text-muted hover:bg-cream hover:text-text-heading transition-colors duration-200" aria-label="Close menu">
+          <button onClick={onClose}
+            className="flex items-center justify-center w-11 h-11 text-text-muted hover:bg-cream hover:text-text-heading transition-colors duration-200"
+            aria-label="Close menu">
             <X size={22} />
           </button>
         </div>
 
         {/* Nav list */}
         <div className="flex-1 overflow-y-auto">
-          {NAV.map((item) => {
+          {NAV.map((item, navIdx) => {
             const active     = isActive(pathname, item.href, item.dropdown);
             const isExpanded = expanded === item.en;
+            const v          = itemVariants(navIdx);
 
             return (
-              <div key={item.en} className="border-b border-border-light">
+              <motion.div key={item.en} {...v} className="border-b border-border-light">
                 {item.dropdown ? (
                   <>
                     <button
@@ -81,13 +103,13 @@ export default function HeaderMobileOverlay({ onClose, language, isRTL, pathname
                       className={cn(
                         'w-full flex items-center justify-between px-5 h-14',
                         'text-lg font-semibold transition-colors duration-150',
-                        active ? 'text-brand-red' : 'text-text-heading',
+                        active ? cn('text-brand-red bg-cream', isRTL ? 'border-r-2 border-brand-red' : 'border-l-2 border-brand-red') : 'text-text-heading',
                       )}
                     >
                       <span>{item[language]}</span>
                       <motion.span
-                        animate={shouldReduceMotion ? undefined : { rotate: isExpanded ? 180 : 0 }}
-                        transition={{ duration: 0.2 }}
+                        animate={r ? undefined : { rotate: isExpanded ? 180 : 0 }}
+                        transition={SPRING}
                       >
                         <CaretDown size={16} weight="bold" />
                       </motion.span>
@@ -98,27 +120,29 @@ export default function HeaderMobileOverlay({ onClose, language, isRTL, pathname
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}
-                          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                          transition={r ? { duration: 0 } : { duration: 0.25, ease: EASE_UI }}
                           className="overflow-hidden"
                         >
-                          {item.dropdown.map((sub) => {
+                          {item.dropdown.map((sub, subIdx) => {
                             const subActive = pathname.startsWith(sub.href);
+                            const sv = subItemVariants(subIdx);
                             return (
-                              <Link
-                                key={sub.href}
-                                href={sub.href}
-                                onClick={onClose}
-                                className={cn(
-                                  'flex items-center h-12',
-                                  isRTL ? 'pr-6 pl-5' : 'pl-6 pr-5',
-                                  'text-sm text-text-body transition-colors duration-150',
-                                  subActive
-                                    ? cn('text-brand-red font-semibold', isRTL ? 'border-r-2 border-brand-red' : 'border-l-2 border-brand-red')
-                                    : 'hover:bg-cream hover:text-text-heading',
-                                )}
-                              >
-                                {sub[language]}
-                              </Link>
+                              <motion.div key={sub.href} {...sv}>
+                                <Link
+                                  href={sub.href}
+                                  onClick={onClose}
+                                  className={cn(
+                                    'flex items-center h-12',
+                                    isRTL ? 'pr-6 pl-5' : 'pl-6 pr-5',
+                                    'text-sm transition-colors duration-150',
+                                    subActive
+                                      ? cn('text-brand-red font-semibold', isRTL ? 'border-r-2 border-brand-red' : 'border-l-2 border-brand-red')
+                                      : 'text-text-body hover:bg-cream hover:text-text-heading',
+                                  )}
+                                >
+                                  {sub[language]}
+                                </Link>
+                              </motion.div>
                             );
                           })}
                         </motion.div>
@@ -132,28 +156,39 @@ export default function HeaderMobileOverlay({ onClose, language, isRTL, pathname
                     className={cn(
                       'flex items-center h-14 px-5',
                       'text-lg font-semibold transition-colors duration-150',
-                      active ? 'text-brand-red' : 'text-text-heading hover:bg-cream',
+                      active
+                        ? cn('text-brand-red bg-cream', isRTL ? 'border-r-2 border-brand-red' : 'border-l-2 border-brand-red')
+                        : 'text-text-heading hover:bg-cream',
                     )}
                   >
                     {item[language]}
                   </Link>
                 )}
-              </div>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Bottom CTA */}
-        <div className="shrink-0 p-4 border-t border-border-light bg-off-white">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: r ? 0 : 0.4, duration: 0.3 }}
+          className="shrink-0 p-4 border-t border-border-light bg-off-white"
+        >
           <Link
             href="/contact"
             onClick={onClose}
-            className="flex items-center justify-center gap-2 w-full h-[52px] bg-brand-red hover:bg-brand-red-dark text-white text-base font-bold transition-colors duration-150"
+            className={cn(
+              'flex items-center justify-center gap-2 w-full h-[52px]',
+              'bg-brand-red hover:bg-brand-red-dark text-white text-base font-bold transition-colors duration-150',
+              isRTL && 'flex-row-reverse',
+            )}
           >
             {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
             <ArrowRight size={18} weight="bold" className={isRTL ? 'rotate-180' : ''} />
           </Link>
-        </div>
+        </motion.div>
       </motion.nav>
     </>
   );

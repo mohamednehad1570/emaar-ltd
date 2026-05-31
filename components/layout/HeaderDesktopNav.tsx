@@ -31,7 +31,7 @@ export default function HeaderDesktopNav() {
   }, []);
 
   const scheduleClose = useCallback(() => {
-    closeTimeout.current = setTimeout(() => setOpenDrop(null), 150);
+    closeTimeout.current = setTimeout(() => setOpenDrop(null), 100);
   }, []);
 
   const cancelClose = useCallback(() => {
