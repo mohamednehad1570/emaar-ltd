@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Phone, MapPin, Envelope } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -17,9 +17,11 @@ export default function ContactPage() {
   const [phone, setPhone]             = useState('');
   const [projectType, setProjectType] = useState('');
   const [brief, setBrief]             = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [errorMsg, setErrorMsg] = useState('');
+  const [isSubmitting, setIsSubmitting]   = useState(false);
+  const [status, setStatus]               = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg]           = useState('');
+  const [isRateLimited, setIsRateLimited] = useState(false);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const whatsappHref = getWhatsAppURL({ page: 'contact' });
   const types = language === 'en' ? PROJECT_TYPES_EN : PROJECT_TYPES_AR;
@@ -34,15 +36,26 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setStatus('idle');
     setErrorMsg('');
+    setIsRateLimited(false);
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, phone, service: projectType, message: brief }),
+        body: JSON.stringify({
+          name,
+          phone,
+          service: projectType,
+          message: brief,
+          website: honeypotRef.current?.value ?? '',
+        }),
       });
       const data = await res.json() as { success?: boolean; error?: string };
       if (!res.ok) {
-        setErrorMsg(data.error ?? (language === 'en' ? 'Something went wrong.' : 'حدث خطأ ما.'));
+        if (res.status === 429) {
+          setIsRateLimited(true);
+        } else {
+          setErrorMsg(data.error ?? (language === 'en' ? 'Something went wrong.' : 'حدث خطأ ما.'));
+        }
         setStatus('error');
       } else {
         setStatus('success');
@@ -126,6 +139,17 @@ export default function ContactPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
 
+            {/* Honeypot — hidden from users, filled only by bots */}
+            <input
+              ref={honeypotRef}
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              style={{ display: 'none' }}
+              aria-hidden="true"
+            />
+
             {/* Name */}
             <div>
               <label className={`block text-sm font-semibold text-text-body mb-2 ${isRTL ? 'text-right' : ''}`}>
@@ -183,12 +207,12 @@ export default function ContactPage() {
               </label>
               <textarea
                 value={brief} onChange={e => setBrief(e.target.value)} required
-                maxLength={300} rows={4}
+                maxLength={500} rows={4}
                 placeholder={language === 'en' ? 'Describe your project in a few words' : 'صف مشروعك في بضع كلمات'}
                 className={`w-full px-4 py-3 border border-border-light bg-white text-text-body placeholder:text-text-muted focus:border-brand-silver focus:outline-none transition-colors duration-150 resize-none ${isRTL ? 'text-right' : ''}`}
               />
               <p className={`text-xs text-text-muted mt-1 tabular-nums ${isRTL ? 'text-left' : 'text-right'}`} aria-live="polite">
-                {brief.length}/300
+                {brief.length}/500
               </p>
             </div>
 
@@ -210,7 +234,14 @@ export default function ContactPage() {
                 {language === 'en' ? "Sent. We'll be in touch shortly." : 'تم الإرسال. سنتواصل معك قريباً.'}
               </p>
             )}
-            {status === 'error' && (
+            {status === 'error' && isRateLimited && (
+              <p className="text-sm text-text-muted text-center">
+                {language === 'en'
+                  ? 'Too many attempts. Please wait a few minutes.'
+                  : 'محاولات كثيرة. يرجى الانتظار قليلاً.'}
+              </p>
+            )}
+            {status === 'error' && !isRateLimited && (
               <p className="text-sm font-semibold text-brand-red text-center" role="alert">
                 {errorMsg}
               </p>

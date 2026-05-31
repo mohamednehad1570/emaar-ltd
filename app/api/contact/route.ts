@@ -1,24 +1,31 @@
-/**
- * app/api/contact/route.ts
- *
- * POST-only handler for the contact/quote form.
- * Validates input server-side, then sends a formatted email via Resend.
- *
- * Environment:
- *   RESEND_API_KEY  — from https://resend.com/api-keys
- *
- * Sender note:
- *   `from` must be a Resend-verified domain in production.
- *   Use onboarding@resend.dev only during development/testing.
- */
-
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-/* Simple regex — accepts anything with an @ and a dot after it */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// Module-scope rate limit store — persists across requests within the same serverless instance
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT      = 3;
+const RATE_WINDOW_MS  = 10 * 60 * 1000; // 10 minutes
+
 export async function POST(request: Request) {
+  /* ── Rate limiting ──────────────────────────────────────────────────── */
+  const ip  = request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown';
+  const now = Date.now();
+  const rec = rateLimitStore.get(ip);
+
+  if (rec && now < rec.resetAt) {
+    if (rec.count >= RATE_LIMIT) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { status: 429 }
+      );
+    }
+    rec.count++;
+  } else {
+    rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
+  }
+
   /* ── Guard: fail at runtime, not at build time ──────────────────────── */
   if (!process.env.RESEND_API_KEY) {
     return NextResponse.json(
@@ -38,14 +45,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
   }
 
-  const { name, email, phone, company, message, service } =
+  const { name, email, phone, company, message, service, website } =
     body as Record<string, string | undefined>;
 
+  /* ── Honeypot check — silent rejection so bots get no signal ────────── */
+  if (website) {
+    return NextResponse.json({ success: true });
+  }
+
   /* ── Field validation ───────────────────────────────────────────────── */
-  if (!name?.trim())    return NextResponse.json({ error: 'Name is required.' }, { status: 400 });
-  if (!phone?.trim())   return NextResponse.json({ error: 'Phone is required.' }, { status: 400 });
-  if (!service?.trim()) return NextResponse.json({ error: 'Service type is required.' }, { status: 400 });
-  if (!message?.trim()) return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
+  if (!name?.trim())                 return NextResponse.json({ error: 'Name is required.' }, { status: 400 });
+  if (name.trim().length > 100)      return NextResponse.json({ error: 'Name is too long.' }, { status: 400 });
+  if (!phone?.trim())                return NextResponse.json({ error: 'Phone is required.' }, { status: 400 });
+  if (phone.trim().length > 30)      return NextResponse.json({ error: 'Phone number is too long.' }, { status: 400 });
+  if (!service?.trim())              return NextResponse.json({ error: 'Service type is required.' }, { status: 400 });
+  if (!message?.trim())              return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
+  if (message.trim().length > 500)   return NextResponse.json({ error: 'Message is too long (max 500 characters).' }, { status: 400 });
 
   if (email?.trim() && !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
