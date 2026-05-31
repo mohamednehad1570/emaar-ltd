@@ -75,7 +75,14 @@ export default function HeaderDesktopNav() {
                       : 'text-text-body hover:text-text-heading',
                   )}
                 >
-                  {item[language]}
+                  <span className="inline-grid justify-items-center">
+                    <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
+                      {item.en}
+                    </span>
+                    <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>
+                      {item.ar}
+                    </span>
+                  </span>
                   <motion.span
                     animate={shouldReduceMotion ? undefined : { rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.2 }}
@@ -93,7 +100,14 @@ export default function HeaderDesktopNav() {
                       : 'text-text-body hover:text-text-heading',
                   )}
                 >
-                  {item[language]}
+                  <span className="inline-grid justify-items-center">
+                    <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
+                      {item.en}
+                    </span>
+                    <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>
+                      {item.ar}
+                    </span>
+                  </span>
                 </Link>
               )}
 

@@ -62,14 +62,14 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
         role="dialog"
         aria-modal="true"
         aria-label="Site navigation"
-        dir={isRTL ? 'rtl' : 'ltr'}
-        initial={{ x: isRTL ? '-100%' : '100%' }}
+        dir="ltr"
+        initial={{ x: '100%' }}
         animate={{ x: 0 }}
-        exit={{ x: isRTL ? '-100%' : '100%', transition: { ease: EASE_DRAWER, duration: 0.28 } }}
+        exit={{ x: '100%', transition: { ease: EASE_DRAWER, duration: 0.28 } }}
         transition={r ? { duration: 0 } : { ease: EASE_DRAWER, duration: 0.35 }}
         className={cn(
           'fixed top-0 h-full w-full bg-off-white z-[70] lg:hidden flex flex-col',
-          isRTL ? 'left-0' : 'right-0',
+          'right-0',
         )}
       >
         {/* Top bar */}
@@ -103,7 +103,7 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
                       className={cn(
                         'w-full flex items-center justify-between px-5 h-14',
                         'text-lg font-semibold transition-colors duration-150',
-                        active ? cn('text-brand-red bg-cream', isRTL ? 'border-r-2 border-brand-red' : 'border-l-2 border-brand-red') : 'text-text-heading',
+                        active ? 'text-brand-red bg-cream border-l-2 border-brand-red' : 'text-text-heading',
                       )}
                     >
                       <span>{item[language]}</span>
@@ -133,10 +133,10 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
                                   onClick={onClose}
                                   className={cn(
                                     'flex items-center h-12',
-                                    isRTL ? 'pr-6 pl-5' : 'pl-6 pr-5',
+                                    'pl-6 pr-5',
                                     'text-sm transition-colors duration-150',
                                     subActive
-                                      ? cn('text-brand-red font-semibold', isRTL ? 'border-r-2 border-brand-red' : 'border-l-2 border-brand-red')
+                                      ? 'text-brand-red font-semibold border-l-2 border-brand-red'
                                       : 'text-text-body hover:bg-cream hover:text-text-heading',
                                   )}
                                 >
@@ -157,7 +157,7 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
                       'flex items-center h-14 px-5',
                       'text-lg font-semibold transition-colors duration-150',
                       active
-                        ? cn('text-brand-red bg-cream', isRTL ? 'border-r-2 border-brand-red' : 'border-l-2 border-brand-red')
+                        ? 'text-brand-red bg-cream border-l-2 border-brand-red'
                         : 'text-text-heading hover:bg-cream',
                     )}
                   >
@@ -182,7 +182,7 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
             className="flex items-center justify-center gap-2 w-full h-[52px] bg-brand-red hover:bg-brand-red-dark text-white text-base font-bold transition-colors duration-150"
           >
             {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
-            <ArrowRight size={18} weight="bold" className={isRTL ? 'rotate-180' : ''} />
+            <ArrowRight size={18} weight="bold" />
           </Link>
         </motion.div>
       </motion.nav>

@@ -62,6 +62,7 @@ export default function Header() {
   return (
     <>
       <motion.header
+        dir="ltr"
         animate={r ? undefined : {
           backgroundColor:   scrolled ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,1)',
           backdropFilter:    scrolled ? 'blur(16px)' : 'blur(0px)',
@@ -85,8 +86,13 @@ export default function Header() {
                 <Image src="/logo.svg" alt="" aria-hidden="true" width={32} height={32}
                   className="w-5 h-5 object-contain brightness-0 invert" priority />
               </div>
-              <span className="font-bold text-base tracking-tight text-brand-dark">
-                {language === 'en' ? 'EMAAR' : 'إعمار'}
+              <span className="font-bold text-base tracking-tight text-brand-dark inline-grid justify-items-center">
+                <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
+                  EMAAR
+                </span>
+                <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>
+                  إعمار
+                </span>
               </span>
             </Link>
 
@@ -112,7 +118,14 @@ export default function Header() {
                   style={{ boxShadow: '0 4px 15px rgba(231,76,60,0.20)' }}>
                   <Link href="/contact"
                     className="inline-flex items-center gap-1.5 px-4 h-9 bg-brand-red hover:bg-brand-red-dark text-white text-[13px] font-bold transition-colors">
-                    {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
+                    <span className="inline-grid justify-items-center">
+                      <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
+                        Request Quote
+                      </span>
+                      <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>
+                        اطلب عرضاً
+                      </span>
+                    </span>
                     <ArrowRight size={13} weight="bold" />
                   </Link>
                 </motion.div>
