@@ -17,13 +17,18 @@
 
 import React from 'react';
 import { motion , useReducedMotion } from 'framer-motion';
-import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getWhatsAppURL, WhatsAppContext } from '@/lib/whatsapp';
 
-export default function CTASection() {
+interface CTASectionProps {
+  whatsappContext?: WhatsAppContext;
+}
+
+export default function CTASection({ whatsappContext }: CTASectionProps) {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
+  const whatsappHref = getWhatsAppURL(whatsappContext ?? { page: 'home' });
 
   const content = {
     en: {
@@ -90,8 +95,10 @@ export default function CTASection() {
             transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
             className="inline-block"
           >
-            <Link
-              href="/contact"
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="
                 inline-flex items-center gap-3
                 px-10 py-5 rounded-none
@@ -108,7 +115,7 @@ export default function CTASection() {
                 weight="bold"
                 className={isRTL ? 'rotate-180' : ''}
               />
-            </Link>
+            </a>
           </motion.div>
         </motion.div>
       </div>

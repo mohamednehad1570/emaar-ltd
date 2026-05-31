@@ -13,7 +13,7 @@ export default function ProjectsPage() {
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
         <ProjectsGrid />
       </Suspense>
-      <CTASection />
+      <CTASection whatsappContext={{ page: 'projects' }} />
 
       {/* Global utility for hiding scrollbars if needed by sub-components */}
       <style jsx global>{`

@@ -22,6 +22,7 @@ import { MapPin, CalendarBlank, Cube, Briefcase, ArrowLeft, ArrowRight } from '@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { projectsData } from '@/lib/data/projects';
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
+import { getWhatsAppURL } from '@/lib/whatsapp';
 
 interface Props { id: number; }
 
@@ -180,13 +181,15 @@ export default function ProjectDetailPage({ id }: Props) {
       <div className="bg-brand-dark py-20 px-8 text-center">
         <p className="text-white/70 text-xs font-semibold uppercase tracking-[0.25em] mb-4">{ui.startLabel}</p>
         <h2 className="text-3xl md:text-4xl font-bold font-cairo text-white mb-8">{ui.startHeading}</h2>
-        <Link
-          href="/contact"
+        <a
+          href={getWhatsAppURL({ page: 'project-detail', projectName: project.title.en })}
+          target="_blank"
+          rel="noopener noreferrer"
           className={`inline-flex items-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-red-dark text-white font-bold transition-colors duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}
         >
           <span>{ui.cta}</span>
           <ArrowRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
-        </Link>
+        </a>
       </div>
 
     </div>

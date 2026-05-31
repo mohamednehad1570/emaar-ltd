@@ -43,12 +43,11 @@ export async function POST(request: Request) {
 
   /* ── Field validation ───────────────────────────────────────────────── */
   if (!name?.trim())    return NextResponse.json({ error: 'Name is required.' }, { status: 400 });
-  if (!email?.trim())   return NextResponse.json({ error: 'Email is required.' }, { status: 400 });
   if (!phone?.trim())   return NextResponse.json({ error: 'Phone is required.' }, { status: 400 });
   if (!service?.trim()) return NextResponse.json({ error: 'Service type is required.' }, { status: 400 });
   if (!message?.trim()) return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
 
-  if (!EMAIL_RE.test(email)) {
+  if (email?.trim() && !EMAIL_RE.test(email)) {
     return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
   }
 
@@ -58,7 +57,7 @@ export async function POST(request: Request) {
       /* Change to a verified sender domain before going live */
       from: 'Emaar Contact Form <onboarding@resend.dev>',
       to: 'info@emaar-intl.ae',
-      replyTo: email.trim(),
+      replyTo: email?.trim() ?? undefined,
       subject: `Quote Request: ${service.trim()} — ${name.trim()}`,
       html: buildHtml({ name, email, phone, company, message, service }),
     });

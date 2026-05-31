@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle as CheckCircle2, CaretRight as ChevronRight, Do
 import Image from 'next/image';
 import Link from 'next/link';
 import { resolveIcon } from '@/lib/iconMap';
+import { getWhatsAppURL } from '@/lib/whatsapp';
 
 interface ProductFeature {
   title: string;
@@ -80,13 +81,15 @@ export default function ProductShowcase({
             <p className="text-2xl md:text-3xl font-light text-white/80 mb-8">{subtitle}</p>
             <p className="text-lg text-white/70 leading-relaxed max-w-2xl mb-10">{description}</p>
             <div className="flex flex-wrap gap-4">
-              <Link
-                href="/contact"
+              <a
+                href={getWhatsAppURL({ page: 'products' })}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-8 py-4 rounded-none font-bold text-white bg-brand-red hover:bg-brand-red-dark transition-all flex items-center gap-2"
               >
                 {language === 'en' ? 'Request Quote' : 'طلب عرض سعر'}
                 <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
-              </Link>
+              </a>
               <button className="px-8 py-4 rounded-none font-bold text-white border-2 border-white/30 hover:bg-white/10 transition-all flex items-center gap-2">
                 {language === 'en' ? 'Download Catalog' : 'تحميل الكتالوج'}
                 <Download className="w-5 h-5" />

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { whyChooseUsData } from '@/lib/data/whyChooseUs';
 import { fadeUp, viewportOnce } from '@/lib/motion';
+import { getWhatsAppURL } from '@/lib/whatsapp';
 
 export default function CTASection() {
   const { language, isRTL } = useLanguage();
@@ -25,17 +26,19 @@ export default function CTASection() {
           <h2 className="text-4xl md:text-5xl font-bold mb-6">{t.cta.title}</h2>
           <p className="text-xl text-white/90 mb-8">{t.cta.description}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors"
-              >
-                {t.cta.button}
-                <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
-              </motion.button>
-            </Link>
+            <motion.a
+              href={getWhatsAppURL({ page: 'why-choose-us' })}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors"
+              style={{ color: 'var(--color-brand-red)' }}
+            >
+              {t.cta.button}
+              <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
+            </motion.a>
             <Link href="/about">
               <motion.button
                 whileHover={{ scale: 1.02 }}

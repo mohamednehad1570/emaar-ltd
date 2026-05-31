@@ -9,6 +9,7 @@ import { upvcData, aluminumData } from '@/lib/data/products';
 import { productDetails } from '@/lib/data/productDetails';
 import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+import { getWhatsAppURL } from '@/lib/whatsapp';
 import ProductDetailRelated from './ProductDetailRelated';
 
 interface Props { slug: string; }
@@ -139,12 +140,18 @@ export default function ProductDetailPage({ slug }: Props) {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">{language === 'en' ? 'Ready to Get Started?' : 'مستعد للبدء؟'}</h2>
           <p className="text-white/85 mb-8">{language === 'en' ? 'Contact our team for a custom quote tailored to your project requirements.' : 'تواصل مع فريقنا للحصول على عرض سعر مخصص لمتطلبات مشروعك.'}</p>
-          <Link href="/contact">
-            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }} className={`inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-cream text-brand-red font-bold text-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
-              {language === 'en' ? 'Request Quote' : 'طلب عرض سعر'}
-              <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
-            </motion.button>
-          </Link>
+          <motion.a
+            href={getWhatsAppURL({ page: 'product-detail', productName: productEn?.title ?? product.title })}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            className={`inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-cream text-brand-red font-bold text-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+            style={{ color: 'var(--color-brand-red)' }}
+          >
+            {language === 'en' ? 'Request Quote' : 'طلب عرض سعر'}
+            <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
+          </motion.a>
         </div>
       </section>
 

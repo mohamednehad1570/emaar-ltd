@@ -8,6 +8,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { residentialData } from '@/lib/data/solutions';
 import { resolveIcon } from '@/lib/iconMap';
 import { fadeUp, viewportOnce } from '@/lib/motion';
+import { getWhatsAppURL } from '@/lib/whatsapp';
 
 export default function ResidentialContent() {
   const { language, isRTL } = useLanguage();
@@ -49,14 +50,16 @@ export default function ResidentialContent() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Link
-              href="/contact"
+            <a
+              href={getWhatsAppURL({ page: 'solutions-residential' })}
+              target="_blank"
+              rel="noopener noreferrer"
               className={`inline-flex items-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-red-dark text-white font-bold text-base transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
               style={{ boxShadow: '0 4px 15px rgba(231,76,60,0.20)' }}
             >
               {t.hero.cta}
               <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
-            </Link>
+            </a>
           </motion.div>
         </div>
       </section>
@@ -131,14 +134,16 @@ export default function ResidentialContent() {
       <section className="py-20 px-6 bg-brand-red text-white">
         <div className={`max-w-4xl mx-auto text-center ${isRTL ? 'rtl' : ''}`}>
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-balance">{t.cta.title}</h2>
-          <Link
-            href="/contact"
+          <a
+            href={getWhatsAppURL({ page: 'solutions-residential' })}
+            target="_blank"
+            rel="noopener noreferrer"
             className={`inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red font-bold text-base hover:bg-cream transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
             style={{ boxShadow: '0 4px 20px rgba(45,41,38,0.15)', color: 'var(--color-brand-red)' }}
           >
             {t.cta.button}
             <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
-          </Link>
+          </a>
         </div>
       </section>
     </>

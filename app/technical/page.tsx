@@ -8,8 +8,8 @@ import {
   Medal as Award, Stack as Layers, CheckCircle, Archive,
   GridFour as Grid, List, ArrowSquareOut as ExternalLink, Calendar
 } from '@phosphor-icons/react';
-import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getWhatsAppURL } from '@/lib/whatsapp';
 import { techData, DownloadFile } from '@/lib/data/tech';
 
 export default function TechnicalDownloadsPage() {
@@ -503,16 +503,18 @@ export default function TechnicalDownloadsPage() {
             <FileText className="w-16 h-16 mx-auto mb-6 text-brand-silver" />
             <h2 className="text-4xl font-bold mb-4">{t.cta.title}</h2>
             <p className="text-xl text-dim mb-8">{t.cta.description}</p>
-            <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                className="px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors"
-              >
-                {t.cta.button}
-              </motion.button>
-            </Link>
+            <motion.a
+              href={getWhatsAppURL({ page: 'technical' })}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
+              className="px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors"
+              style={{ color: 'var(--color-brand-red)' }}
+            >
+              {t.cta.button}
+            </motion.a>
           </motion.div>
         </div>
       </section>

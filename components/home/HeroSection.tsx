@@ -42,6 +42,7 @@ import { ArrowRight, ArrowDown } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link  from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { getWhatsAppURL } from '@/lib/whatsapp';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Data
@@ -315,8 +316,10 @@ export default function HeroSection() {
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  <Link
-                    href="/contact"
+                  <a
+                    href={getWhatsAppURL({ page: 'home' })}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="
                       inline-flex items-center gap-2
                       px-7 py-3.5 rounded-none
@@ -333,7 +336,7 @@ export default function HeroSection() {
                       weight="bold"
                       className={isRTL ? 'rotate-180' : ''}
                     />
-                  </Link>
+                  </a>
                 </motion.div>
 
                 {/* Secondary — ghost */}
