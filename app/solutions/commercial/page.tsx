@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import SolutionTypePage from '@/components/solutions/SolutionTypePage';
 
 export default function CommercialSolutionsPage() {
-  redirect('/solutions?type=commercial');
+  return <SolutionTypePage type="commercial" />;
 }

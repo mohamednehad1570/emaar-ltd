@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import SolutionTypePage from '@/components/solutions/SolutionTypePage';
 
 export default function ResidentialSolutionsPage() {
-  redirect('/solutions?type=residential');
+  return <SolutionTypePage type="residential" />;
 }

@@ -10,6 +10,7 @@ import { productDetails } from '@/lib/data/productDetails';
 import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 import ProductDetailRelated from './ProductDetailRelated';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 interface Props { slug: string; }
 
@@ -22,6 +23,20 @@ export default function ProductDetailPage({ slug }: Props) {
   const rawData = detail.material === 'aluminum' ? aluminumData[language] : upvcData[language];
   const product = rawData.products.find(p => p.id === detail.productId);
   if (!product) return null;
+
+  const allData = detail.material === 'aluminum' ? aluminumData : upvcData;
+  const productEn = allData['en'].products.find(p => p.id === detail.productId);
+  const productAr = allData['ar'].products.find(p => p.id === detail.productId);
+
+  const breadcrumbItems = [
+    { label: 'Products', labelAr: 'المنتجات', href: '/products' },
+    {
+      label: detail.material === 'upvc' ? 'uPVC' : 'Aluminum',
+      labelAr: detail.material === 'upvc' ? 'يو بي في سي' : 'ألومنيوم',
+      href: `/products/${detail.material}`,
+    },
+    { label: productEn?.title ?? product.title, labelAr: productAr?.title ?? product.title },
+  ];
 
   const specEntries = [
     { label: language === 'en' ? 'Dimensions'      : 'الأبعاد',           value: detail.specs.dimensions     },
@@ -40,7 +55,8 @@ export default function ProductDetailPage({ slug }: Props) {
     : detail.material === 'upvc' ? 'جميع منتجات UPVC' : 'جميع منتجات الألومنيوم';
 
   return (
-    <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-off-white pt-[52px]" dir={isRTL ? 'rtl' : 'ltr'}>
+      <Breadcrumbs items={breadcrumbItems} />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="relative h-[70vh] min-h-[500px] flex items-end overflow-hidden">
