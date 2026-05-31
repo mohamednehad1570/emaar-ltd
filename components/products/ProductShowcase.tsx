@@ -197,7 +197,7 @@ export default function ProductShowcase({
                     </ul>
 
                     <Link
-                      href={`/products/${product.id.toLowerCase()}`}
+                      href={`/products/${product.id.startsWith('UPVC') ? 'upvc' : 'aluminum'}/${product.id.toLowerCase()}`}
                       className="w-full py-4 rounded-none border-2 border-brand-red text-brand-red font-bold transition-all hover:bg-brand-red hover:text-white flex items-center justify-center gap-2"
                     >
                       {language === 'en' ? 'View Details' : 'عرض التفاصيل'}

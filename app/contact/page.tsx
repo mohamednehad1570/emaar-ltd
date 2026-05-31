@@ -486,6 +486,7 @@ export default function ContactPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-dark hover:bg-brand-dark-mid text-white text-sm font-bold transition-colors"
+                style={{ color: 'var(--color-brand-surface)' }}
               >
                 <MapPin size={14} aria-hidden="true" />
                 {t.map.viewMap}
@@ -511,7 +512,8 @@ export default function ContactPage() {
             <div className={`flex flex-col sm:flex-row gap-3 shrink-0 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
               <a
                 href="tel:+971501234567"
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-brand-dark font-bold text-sm hover:bg-off-white transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-white text-brand-dark font-bold text-sm hover:bg-cream transition-colors"
+                style={{ color: 'var(--color-brand-dark)' }}
               >
                 <Phone size={15} aria-hidden="true" />
                 {language === 'en' ? 'Call Now' : 'اتصل الآن'}

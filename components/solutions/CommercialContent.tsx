@@ -109,7 +109,7 @@ export default function CommercialContent() {
               </div>
             </div>
             <div className="md:w-auto shrink-0">
-              <Link href="/technical" className={`inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-dark font-bold text-base hover:bg-cream transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Link href="/technical" className={`inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-dark font-bold text-base hover:bg-cream transition-colors ${isRTL ? 'flex-row-reverse' : ''}`} style={{ color: 'var(--color-brand-dark)' }}>
                 {t.techHub.button}
                 <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
               </Link>
@@ -125,7 +125,7 @@ export default function CommercialContent() {
           <Link
             href="/contact"
             className={`inline-flex items-center gap-2 px-8 py-4 bg-white text-brand-red font-bold text-base hover:bg-cream transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
-            style={{ boxShadow: '0 4px 20px rgba(45,41,38,0.15)' }}
+            style={{ boxShadow: '0 4px 20px rgba(45,41,38,0.15)', color: 'var(--color-brand-red)' }}
           >
             {t.cta.button}
             <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />

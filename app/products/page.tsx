@@ -97,7 +97,7 @@ function MaterialCard({ title, desc, cta, href, image, alt, isRTL }: CardData & 
       {/* bg-brand-dark/75 — ensures ≥ 4.5:1 contrast ratio for white text */}
       <div className="absolute inset-0 bg-brand-dark/75 group-hover:bg-brand-dark/65 transition-colors duration-500" />
 
-      <div className={`absolute inset-0 flex flex-col justify-end p-10 md:p-14 ${isRTL ? 'items-end text-right' : 'items-start text-left'}`}>
+      <div className={`absolute inset-0 z-10 flex flex-col justify-end p-10 md:p-14 ${isRTL ? 'items-end text-right' : 'items-start text-left'}`}>
         {/* 2px red accent line — editorial brand signature */}
         <div className="h-0.5 w-12 bg-brand-red mb-6" />
         <h2 className="text-4xl md:text-5xl font-bold font-cairo text-white mb-4">{title}</h2>

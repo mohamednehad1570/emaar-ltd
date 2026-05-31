@@ -22,7 +22,6 @@ import { MapPin, CalendarBlank, Cube, Briefcase, ArrowLeft, ArrowRight } from '@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { projectsData } from '@/lib/data/projects';
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
 interface Props { id: number; }
 
@@ -62,14 +61,8 @@ export default function ProjectDetailPage({ id }: Props) {
     { label: ui.client, value: project.client[language], Icon: Briefcase },
   ];
 
-  const breadcrumbItems = [
-    { label: 'Projects', labelAr: 'المشاريع', href: '/projects' },
-    { label: project.title.en, labelAr: project.title.ar },
-  ];
-
   return (
     <div className="min-h-screen bg-off-white pt-[52px]" dir={isRTL ? 'rtl' : 'ltr'}>
-      <Breadcrumbs items={breadcrumbItems} />
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <div className="relative h-[70vh] md:h-screen overflow-hidden">
