@@ -20,3 +20,13 @@ export const writeClient = createClient({
   useCdn: false,
   token: process.env.SANITY_API_WRITE_TOKEN,
 })
+
+// ISR-aware fetch — tagged for on-demand revalidation via /api/revalidate
+export async function sanityFetch<T>(
+  query: string,
+  params: Record<string, unknown> = {}
+): Promise<T> {
+  return publicClient.fetch<T>(query, params, {
+    next: { tags: ['sanity'] },
+  })
+}

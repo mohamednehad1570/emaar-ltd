@@ -64,6 +64,21 @@ export const project = defineType({
       of: [defineArrayMember({ type: 'image', options: { hotspot: true } })],
     }),
     defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'localizedText',
+    }),
+    defineField({
+      name: 'client',
+      title: 'Client',
+      type: 'localizedString',
+    }),
+    defineField({
+      name: 'scope',
+      title: 'Scope of Work',
+      type: 'localizedString',
+    }),
+    defineField({
       name: 'stats',
       title: 'Stats',
       type: 'array',

@@ -1,28 +1,21 @@
-'use client';
-
-import React, { Suspense } from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { Suspense } from 'react';
 import ProjectsGrid from '@/components/projects/ProjectsGrid';
 import CTASection from '@/components/home/CTASection';
+import { sanityFetch } from '@/lib/sanity/client';
+import { projectsQuery } from '@/lib/sanity/queries';
+import type { SanityProject } from '@/lib/sanity/types';
 
-export default function ProjectsPage() {
-  const { isRTL } = useLanguage();
+export const revalidate = 3600;
+
+export default async function ProjectsPage() {
+  const projects = await sanityFetch<SanityProject[]>(projectsQuery);
 
   return (
-    <div className={`min-h-screen bg-off-white ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
-      <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
-        <ProjectsGrid />
+    <div className="min-h-screen bg-off-white">
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center" />}>
+        <ProjectsGrid projects={projects} />
       </Suspense>
       <CTASection whatsappContext={{ page: 'projects' }} />
-
-      {/* Global utility for hiding scrollbars if needed by sub-components */}
-      <style jsx global>{`
-        .container-custom {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-      `}</style>
     </div>
   );
 }

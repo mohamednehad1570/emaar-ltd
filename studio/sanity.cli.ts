@@ -5,11 +5,9 @@ export default defineCliConfig({
     projectId: 'wv4sqx1y',
     dataset: 'production'
   },
+  studioHost: 'emaar-international',
   deployment: {
-    /**
-     * Enable auto-updates for studios.
-     * Learn more at https://www.sanity.io/docs/studio/latest-version-of-sanity#k47faf43faf56
-     */
     autoUpdates: true,
+    appId: 'gv4ipyahwf1akzjlskhgu2ht',
   },
 })

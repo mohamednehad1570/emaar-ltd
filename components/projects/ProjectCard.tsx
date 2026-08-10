@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Project {
-    id: number;
+    id: number | string;
     title: string;
     category: string;
     location: string;
@@ -18,7 +18,7 @@ interface Project {
 
 interface ProjectCardProps {
     project: Project;
-    idx: number;
+    idx: number | string;
 }
 
 export default function ProjectCard({ project, idx }: ProjectCardProps) {

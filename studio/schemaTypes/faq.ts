@@ -24,12 +24,19 @@ export const faq = defineType({
       options: {
         list: [
           { title: 'Products', value: 'products' },
+          { title: 'Services', value: 'services' },
+          { title: 'Technical', value: 'technical' },
+          { title: 'Ordering', value: 'ordering' },
           { title: 'Installation', value: 'installation' },
-          { title: 'Pricing', value: 'pricing' },
-          { title: 'Warranty', value: 'warranty' },
-          { title: 'General', value: 'general' },
+          { title: 'Maintenance', value: 'maintenance' },
         ],
       },
+    }),
+    defineField({
+      name: 'popular',
+      title: 'Mark as Popular',
+      type: 'boolean',
+      initialValue: false,
     }),
   ],
   preview: {
