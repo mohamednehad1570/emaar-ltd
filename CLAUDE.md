@@ -10,14 +10,20 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/products/ — ProductShowcase, ProductMaterialPage, ProductDetailPage, ProductDetailRelated
 - components/solutions/ — ResidentialContent, CommercialContent, SolutionTypePage, SolutionProductsSection, SolutionProjectsSection
 - components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage
+- components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
 - components/why-choose-us/ — page sections
 - components/ui/ — shared primitives (Breadcrumbs removed — never add back)
 - components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown (if split)
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
-- lib/data/*.ts — bilingual data { en: {...}, ar: {...} }
+- lib/data/*.ts — bilingual data { en: {...}, ar: {...} } — static fallback only for CMS-managed content
 - lib/cn.ts, lib/motion.ts, lib/iconMap.ts
+- lib/sanity/client.ts — publicClient, writeClient, sanityFetch<T>()
+- lib/sanity/queries.ts — typed GROQ query strings
+- lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, LocalizedString
 - contexts/LanguageContext.tsx — useLanguage() → { language, isRTL }
+- studio/ — Sanity Studio (Node 22 required — always `nvm use 22` before `npm run dev`)
+- studio/schemaTypes/ — 7 document schemas + 2 shared object types
 
 ## Reference docs (read only the section you need, never the full file)
 - DESIGN.md — design system, tokens, component specs, do/don't rules
@@ -92,6 +98,46 @@ RTL: reversed
 - Header "Request Quote" → href="/contact" only
 - WhatsApp links: target="_blank" rel="noopener noreferrer"
 - WHATSAPP_NUMBER constant in lib/whatsapp.ts — placeholder until client confirms
+
+## Sanity CMS
+
+### Studio
+- Hosted at https://emaar-international.sanity.studio/ (for Khadija)
+- Local dev: `cd studio && nvm use 22 && npm run dev` → localhost:3333
+- Project ID: `wv4sqx1y` · Dataset: `production`
+
+### Schema types (studio/schemaTypes/)
+Object types (shared): `localizedString`, `localizedText`
+Document types: `product`, `project`, `teamMember`, `faq`, `jobPosting`, `certificate`, `siteSettings`
+
+### Fetching data in server components
+```typescript
+import { sanityFetch } from '@/lib/sanity/client'
+import { projectsQuery } from '@/lib/sanity/queries'
+import type { SanityProject } from '@/lib/sanity/types'
+
+const projects = await sanityFetch<SanityProject[]>(projectsQuery)
+```
+- Always use `sanityFetch` (not `publicClient.fetch` directly) — it injects `next: { tags: ['sanity'] }`
+- Add `export const revalidate = 3600` at the top of every page that calls `sanityFetch`
+- Never call `sanityFetch` inside a client component
+
+### ISR revalidation
+- Webhook: `POST /api/revalidate?secret=<SANITY_WEBHOOK_SECRET>`
+- On trigger: calls `revalidateTag('sanity', 'default')` — purges all Sanity-tagged pages
+- `SANITY_WEBHOOK_SECRET` must be set in Vercel env vars
+- Configure the webhook in the Sanity dashboard → `https://<domain>/api/revalidate?secret=<value>`
+
+### Static fallback pattern
+When Sanity DB is empty, pages fall back to `lib/data/*.ts` static content automatically.
+Only these files are affected by Sanity: `products.ts` (products array), `projects.ts`, `faq.ts` (faqs array).
+UI strings in those files (hero titles, features, CTAs) always stay static — never replace them with Sanity calls.
+
+### GROQ queries (lib/sanity/queries.ts)
+- `projectsQuery` — all projects ordered by year desc
+- `projectBySlugQuery` — single project by `$slug`
+- `productsByCategoryQuery` — products filtered by `$category` ('upvc' | 'aluminum')
+- `faqsQuery` — all FAQs ordered by creation date
 
 ## Known gotchas
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits
