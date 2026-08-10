@@ -6,18 +6,24 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 
 ## File structure
 - app/ — App Router routes
-- components/home/ — homepage sections
+- app/api/contact/route.ts — contact form POST handler (Resend + rate limiting, 3 req/10 min per IP)
+- app/api/revalidate/route.ts — Sanity ISR webhook endpoint
+- components/home/ — HeroSection, StatsSection, ProductsSection, ProjectsSection, SolutionsSection, WhyChooseUsSection, CTASection, CertificationsSection, TestimonialsSection
+- components/MotionProvider.tsx — wraps app in MotionConfig reducedMotion="user" (prefers-reduced-motion handled globally here — no per-component useReducedMotion needed)
 - components/products/ — ProductShowcase, ProductMaterialPage, ProductDetailPage, ProductDetailRelated
 - components/solutions/ — ResidentialContent, CommercialContent, SolutionTypePage, SolutionProductsSection, SolutionProjectsSection
 - components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage
 - components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
-- components/why-choose-us/ — page sections
+- components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
 - components/ui/ — shared primitives (Breadcrumbs removed — never add back)
-- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown (if split)
+- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
+- lib/data/nav.ts — header dropdown items (DropdownItem interface, bilingual en/ar + href)
+- lib/data/productDetails.ts — extended per-product data: specs, gallery images, related slugs (bilingual title/description in products.ts)
 - lib/data/*.ts — bilingual data { en: {...}, ar: {...} } — static fallback only for CMS-managed content
 - lib/cn.ts, lib/motion.ts, lib/iconMap.ts
+- lib/hooks/useHorizontalAutoscroll.ts — carousel auto-scroll hook
 - lib/sanity/client.ts — publicClient, writeClient, sanityFetch<T>()
 - lib/sanity/queries.ts — typed GROQ query strings
 - lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, LocalizedString
@@ -44,6 +50,7 @@ RTL: reversed
 - Product URLs always /products/{material}/{slug}
 - material = upvc or aluminum — never flat /products/{slug}
 - No breadcrumbs — removed, never add back
+- /projects/[id] accepts both numeric IDs (static fallback) and string slugs (Sanity); page handler tries Sanity slug first, then falls back to static data
 
 ## Code rules
 - Server components by default — use client only for hooks/motion/events
@@ -145,7 +152,9 @@ UI strings in those files (hero titles, features, CTAs) always stay static — n
   light-bg buttons inside dark sections
 - Numerals in RTL: force dir="ltr" on number elements so digits stay left-to-right
 - Framer Motion owns all animations — no CSS transitions on animated elements
-- prefers-reduced-motion: disable all Framer Motion animations when set
+- prefers-reduced-motion: MotionProvider handles this globally via reducedMotion="user" — no per-component useReducedMotion() needed
+- revalidateTag in Next.js 16 requires two arguments: revalidateTag('sanity', 'default') — one-arg form is a type error
+- contact API (app/api/contact/route.ts) uses Resend; RESEND_API_KEY must be set in Vercel env vars
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev
