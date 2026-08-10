@@ -1,7 +1,29 @@
-import {defineConfig} from 'sanity'
-import {structureTool} from 'sanity/structure'
-import {visionTool} from '@sanity/vision'
-import {schemaTypes} from './schemaTypes'
+import { defineConfig } from 'sanity'
+import { structureTool } from 'sanity/structure'
+import { visionTool } from '@sanity/vision'
+import type { StructureResolver } from 'sanity/structure'
+import { schemaTypes } from './schemaTypes'
+
+const SINGLETON_TYPES = ['siteSettings'] as const
+
+const structure: StructureResolver = (S) =>
+  S.list()
+    .title('Content')
+    .items([
+      S.listItem()
+        .title('Site Settings')
+        .id('siteSettings')
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+            .title('Site Settings'),
+        ),
+      S.divider(),
+      ...S.documentTypeListItems().filter(
+        (item) => !SINGLETON_TYPES.includes(item.getId() as (typeof SINGLETON_TYPES)[number]),
+      ),
+    ])
 
 export default defineConfig({
   name: 'default',
@@ -10,7 +32,7 @@ export default defineConfig({
   projectId: 'wv4sqx1y',
   dataset: 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [structureTool({ structure }), visionTool()],
 
   schema: {
     types: schemaTypes,
