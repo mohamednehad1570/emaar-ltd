@@ -122,6 +122,21 @@
   --color-border-warm:    var(--border-warm);    /* border/bg-border-warm         */
   --color-border-warm-md: var(--border-warm-md); /* border/bg-border-warm-md      */
 
+  /* ── Ink text scale (CLAUDE.md semantic naming) ── */
+  --color-ink-heading:     var(--text-primary);    /* text-ink-heading = #1A1A1A */
+  --color-ink-body:        var(--text-secondary);  /* text-ink-body    = #3D3A37 */
+  --color-ink-muted:       var(--text-muted);      /* text-ink-muted   = #7F8C8D */
+
+  /* ── Semantic surface backgrounds ── */
+  --color-surface-white:   var(--brand-surface);   /* bg-surface-white = #FFFFFF  */
+  --color-surface-cream:   var(--cream);           /* bg-surface-cream = #ECEAE4  */
+
+  /* ── Silver material ── */
+  --color-silver-material: var(--silver-flat);     /* border/bg-silver-material = #C0C6CA */
+
+  /* ── Brand red deep (CLAUDE.md hover alias) ── */
+  --color-brand-red-deep:  var(--brand-red-dark);  /* hover:bg-brand-red-deep = #C0392B */
+
   /* ── Warm Shadow Scale (rgba(45,41,38,x) — never rgba(0,0,0,x)) ── */
   --shadow-warm-sm:  0 2px 8px  rgba(45, 41, 38, 0.08);
   --shadow-warm-md:  0 4px 20px rgba(45, 41, 38, 0.10);

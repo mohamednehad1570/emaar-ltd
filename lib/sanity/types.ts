@@ -146,3 +146,19 @@ export interface TechDocument {
   fileSize?: string
   featured?: boolean
 }
+
+// ── Batch 3 types ──────────────────────────────────────────────────────────
+
+export interface JobPosting {
+  _id: string
+  title: LocalizedString
+  department: string
+  type: string
+  location?: LocalizedString
+  experience?: string
+  salary?: string
+  description?: LocalizedText
+  requirements?: LocalizedText
+  responsibilities?: LocalizedString[]
+  benefits?: LocalizedString[]
+}

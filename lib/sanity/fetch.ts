@@ -8,6 +8,7 @@ import {
   clientLogosQuery,
   productBySlugQuery,
   techDocumentsQuery,
+  jobPostingsQuery,
 } from './queries'
 import type {
   SiteSettings,
@@ -18,6 +19,7 @@ import type {
   ClientLogo,
   SanityProductDetail,
   TechDocument,
+  JobPosting,
 } from './types'
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
@@ -84,6 +86,16 @@ export async function getProductBySlug(
 export async function getTechDocuments(): Promise<TechDocument[]> {
   try {
     return await sanityFetch<TechDocument[]>(techDocumentsQuery)
+  } catch {
+    return []
+  }
+}
+
+// ── Batch 3 fetchers ───────────────────────────────────────────────────────
+
+export async function getJobPostings(): Promise<JobPosting[]> {
+  try {
+    return await sanityFetch<JobPosting[]>(jobPostingsQuery)
   } catch {
     return []
   }

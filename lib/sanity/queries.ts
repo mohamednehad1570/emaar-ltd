@@ -146,3 +146,30 @@ export const techDocumentsQuery = `
     featured
   }
 `
+
+// ── Batch 3 queries ────────────────────────────────────────────────────────
+
+// All job postings ordered by newest first
+export const jobPostingsQuery = `
+  *[_type == "jobPosting"] | order(_createdAt desc) {
+    _id,
+    title,
+    department,
+    type,
+    location,
+    experience,
+    salary,
+    description,
+    requirements,
+    responsibilities,
+    benefits
+  }
+`
+
+// Solution page contact info from siteSettings
+export const solutionSettingsQuery = `
+  *[_type == "siteSettings"][0] {
+    phone,
+    whatsappNumber
+  }
+`

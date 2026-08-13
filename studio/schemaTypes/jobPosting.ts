@@ -4,6 +4,13 @@ export const jobPosting = defineType({
   name: 'jobPosting',
   title: 'Job Posting',
   type: 'document',
+  orderings: [
+    {
+      title: 'Newest First',
+      name: 'createdAtDesc',
+      by: [{ field: '_createdAt', direction: 'desc' }],
+    },
+  ],
   fields: [
     defineField({
       name: 'title',
@@ -28,6 +35,21 @@ export const jobPosting = defineType({
       },
     }),
     defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'localizedString',
+    }),
+    defineField({
+      name: 'experience',
+      title: 'Experience Required',
+      type: 'string',
+    }),
+    defineField({
+      name: 'salary',
+      title: 'Salary',
+      type: 'string',
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'localizedText',
@@ -36,6 +58,18 @@ export const jobPosting = defineType({
       name: 'requirements',
       title: 'Requirements',
       type: 'localizedText',
+    }),
+    defineField({
+      name: 'responsibilities',
+      title: 'Responsibilities',
+      type: 'array',
+      of: [{ type: 'localizedString' }],
+    }),
+    defineField({
+      name: 'benefits',
+      title: 'Benefits',
+      type: 'array',
+      of: [{ type: 'localizedString' }],
     }),
   ],
   preview: {

@@ -35,6 +35,52 @@ export const residentialData: Record<'en'|'ar', SolutionData> = {
   },
 };
 
+// Index page content for /solutions — hero + two entry cards + CTA
+export const solutionsIndexData = {
+  en: {
+    eyebrow: 'Our Solutions',
+    heading: 'Tailored for Every Project',
+    subheading: 'From private homes to landmark towers — we deliver the right system for your needs.',
+    cards: [
+      {
+        title: 'Residential Solutions',
+        description: 'Premium windows and doors for comfort, privacy, and elegance in your home.',
+        href: '/solutions/residential',
+        cta: 'Explore Residential',
+      },
+      {
+        title: 'Commercial Solutions',
+        description: 'High-performance facade and glazing systems for offices, towers, and retail.',
+        href: '/solutions/commercial',
+        cta: 'Explore Commercial',
+      },
+    ],
+    ctaTitle: 'Not sure which solution fits your project?',
+    ctaButton: 'Request a Free Quote',
+  },
+  ar: {
+    eyebrow: 'حلولنا',
+    heading: 'مصممة لكل مشروع',
+    subheading: 'من المنازل الخاصة إلى الأبراج الشاهقة — نقدم النظام المناسب لاحتياجاتك.',
+    cards: [
+      {
+        title: 'الحلول السكنية',
+        description: 'نوافذ وأبواب متميزة للراحة والخصوصية والأناقة في منزلك.',
+        href: '/solutions/residential',
+        cta: 'استكشف الحلول السكنية',
+      },
+      {
+        title: 'الحلول التجارية',
+        description: 'أنظمة واجهات وتزجيج عالية الأداء للمكاتب والأبراج والتجزئة.',
+        href: '/solutions/commercial',
+        cta: 'استكشف الحلول التجارية',
+      },
+    ],
+    ctaTitle: 'غير متأكد من الحل المناسب لمشروعك؟',
+    ctaButton: 'اطلب عرض سعر مجاني',
+  },
+} as const
+
 export const commercialData: Record<'en'|'ar', CommercialData> = {
   en: {
     hero: { title: 'Engineering Excellence for Commercial Projects', subtitle: 'Contractor & Developer Solutions', description: 'High-performance facade systems, durability, and technical compliance for heavy-duty applications.', cta: 'Partner With Us' },
