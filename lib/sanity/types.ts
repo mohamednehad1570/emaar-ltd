@@ -104,3 +104,45 @@ export interface SanityFaq {
   category: string
   popular: boolean
 }
+
+// ── Batch 2 types ──────────────────────────────────────────────────────────
+
+export interface SanityProductDetail {
+  _id: string
+  slug: string
+  title: LocalizedString
+  category: string
+  description?: LocalizedText
+  specs?: Array<{ label: LocalizedString; value: LocalizedString }>
+  features?: Array<{
+    icon: string
+    label: LocalizedString
+    value: LocalizedString
+  }>
+  images?: string[]
+  gallery?: string[]
+  cadFileUrl?: string
+  thermalValue?: string
+  acousticRating?: string
+  warranty?: string
+  dimensions?: string
+  relatedProducts?: Array<{
+    _id: string
+    slug: string
+    title: LocalizedString
+    category: string
+    images?: string[]
+  }>
+}
+
+export interface TechDocument {
+  _id: string
+  name: LocalizedString
+  category: string
+  format?: string
+  productType?: string
+  fileUrl?: string
+  previewImage?: string
+  fileSize?: string
+  featured?: boolean
+}

@@ -102,3 +102,47 @@ export const clientLogosQuery = `
     "logo": logo.asset->url
   }
 `
+
+// ── Batch 2 queries ────────────────────────────────────────────────────────
+
+// Single product by slug + category — used on detail pages
+export const productBySlugQuery = `
+  *[_type == "product" && slug.current == $slug && category == $category][0] {
+    _id,
+    "slug": slug.current,
+    title,
+    category,
+    description,
+    specs,
+    features,
+    "images": images[].asset->url,
+    "gallery": gallery[].asset->url,
+    cadFileUrl,
+    thermalValue,
+    acousticRating,
+    warranty,
+    dimensions,
+    "relatedProducts": relatedProducts[]-> {
+      _id,
+      "slug": slug.current,
+      title,
+      category,
+      "images": images[].asset->url
+    }
+  }
+`
+
+// All technical documents ordered by display order
+export const techDocumentsQuery = `
+  *[_type == "techDocument"] | order(order asc) {
+    _id,
+    name,
+    category,
+    format,
+    productType,
+    "fileUrl": file.asset->url,
+    "previewImage": previewImage.asset->url,
+    fileSize,
+    featured
+  }
+`

@@ -10,6 +10,7 @@ import { siteSettings } from './siteSettings'
 import { testimonial } from './testimonial'
 import { award } from './award'
 import { clientLogo } from './clientLogo'
+import { techDocument } from './techDocument'
 
 export const schemaTypes = [
   // Shared object types
@@ -26,4 +27,5 @@ export const schemaTypes = [
   testimonial,
   award,
   clientLogo,
+  techDocument,
 ]

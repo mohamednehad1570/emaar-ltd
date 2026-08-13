@@ -6,6 +6,8 @@ import {
   testimonialsQuery,
   awardsQuery,
   clientLogosQuery,
+  productBySlugQuery,
+  techDocumentsQuery,
 } from './queries'
 import type {
   SiteSettings,
@@ -14,6 +16,8 @@ import type {
   Testimonial,
   Award,
   ClientLogo,
+  SanityProductDetail,
+  TechDocument,
 } from './types'
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {
@@ -59,6 +63,27 @@ export async function getAwards(): Promise<Award[]> {
 export async function getClientLogos(): Promise<ClientLogo[]> {
   try {
     return await sanityFetch<ClientLogo[]>(clientLogosQuery)
+  } catch {
+    return []
+  }
+}
+
+// ── Batch 2 fetchers ───────────────────────────────────────────────────────
+
+export async function getProductBySlug(
+  slug: string,
+  category: string,
+): Promise<SanityProductDetail | null> {
+  try {
+    return await sanityFetch<SanityProductDetail>(productBySlugQuery, { slug, category })
+  } catch {
+    return null
+  }
+}
+
+export async function getTechDocuments(): Promise<TechDocument[]> {
+  try {
+    return await sanityFetch<TechDocument[]>(techDocumentsQuery)
   } catch {
     return []
   }
