@@ -12,7 +12,8 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/MotionProvider.tsx — wraps app in MotionConfig reducedMotion="user" (prefers-reduced-motion handled globally here — no per-component useReducedMotion needed)
 - components/products/ — ProductShowcase, ProductMaterialPage, ProductDetailPage, ProductDetailRelated, ProductDetailHero, ProductDetailSpecs
 - components/technical/ — TechnicalPageClient (client), TechFilters, TechDocumentGrid, TechDocumentCard (exports DisplayDocument interface)
-- components/solutions/ — ResidentialContent, CommercialContent, SolutionTypePage, SolutionProductsSection, SolutionProjectsSection
+- components/solutions/ — SolutionsPageClient (client, /solutions index), ResidentialContent, CommercialContent, SolutionTypePage, SolutionProductsSection, SolutionProjectsSection
+- components/careers/ — CareersPageClient (client, assembles page + CTA), CareersHero, CareersCulture, CareersJobList (filter + accordion), CareersJobCard, types.ts (DisplayJob interface)
 - components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage
 - components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
@@ -27,9 +28,9 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - lib/hooks/useHorizontalAutoscroll.ts — carousel auto-scroll hook
 - lib/hooks/useTechDocuments.ts — normalises CMS/static tech docs to DisplayDocument[], builds category + productType filter options
 - lib/sanity/client.ts — publicClient, writeClient, sanityFetch<T>()
-- lib/sanity/fetch.ts — typed fetcher functions: getProjects(), getProjectBySlug(), getProducts(), getProductBySlug(slug, category), getTechDocuments(), getFaqs()
+- lib/sanity/fetch.ts — typed fetcher functions: getProjects(), getProjectBySlug(), getProducts(), getProductBySlug(slug, category), getTechDocuments(), getFaqs(), getJobPostings()
 - lib/sanity/queries.ts — typed GROQ query strings
-- lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, SanityProductDetail, TechDocument, LocalizedString
+- lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, SanityProductDetail, TechDocument, JobPosting, LocalizedString
 - contexts/LanguageContext.tsx — useLanguage() → { language, isRTL } · useTranslation() → (en, ar) => string
 - lib/types.ts — shared display types: DisplayProject, ProjectPreview (re-exports Project, ProductSpec, ProductDetail from data layer)
 - studio/ — Sanity Studio (Node 22 required — always `nvm use 22` before `npm run dev`)
@@ -142,7 +143,7 @@ const projects = await sanityFetch<SanityProject[]>(projectsQuery)
 
 ### Static fallback pattern
 When Sanity DB is empty, pages fall back to `lib/data/*.ts` static content automatically.
-Only these files are affected by Sanity: `products.ts` (products array), `projects.ts`, `faq.ts` (faqs array), `tech.ts` (techDocument downloads).
+Only these files are affected by Sanity: `products.ts` (products array), `projects.ts`, `faq.ts` (faqs array), `tech.ts` (techDocument downloads), `careers.ts` (jobs array).
 UI strings in those files (hero titles, features, CTAs) always stay static — never replace them with Sanity calls.
 
 ### GROQ queries (lib/sanity/queries.ts)
@@ -152,6 +153,8 @@ UI strings in those files (hero titles, features, CTAs) always stay static — n
 - `productBySlugQuery` — single product detail by `$slug` + `$category`; includes gallery, features, relatedProducts[]
 - `faqsQuery` — all FAQs ordered by creation date
 - `techDocumentsQuery` — all tech documents ordered by `order` asc; includes resolved file URL and previewImage
+- `jobPostingsQuery` — all job postings ordered by `_createdAt` desc; full fields including responsibilities[], benefits[]
+- `solutionSettingsQuery` — siteSettings phone + whatsappNumber (for solutions contact info)
 
 ## Known gotchas
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits
