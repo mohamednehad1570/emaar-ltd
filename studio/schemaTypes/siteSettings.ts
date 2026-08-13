@@ -5,6 +5,63 @@ export const siteSettings = defineType({
   title: 'Site Settings',
   type: 'document',
   fields: [
+    // ── Hero content ───────────────────────────────────────────────────────
+    defineField({
+      name: 'heroTagline',
+      title: 'Hero Tagline',
+      type: 'localizedString',
+      description: 'Short overline in the hero — e.g. "German-Engineered Fenestration"',
+    }),
+    defineField({
+      name: 'heroSubtitle',
+      title: 'Hero Subtitle',
+      type: 'localizedString',
+      description: 'Body text below the hero headline',
+    }),
+    defineField({
+      name: 'heroCTAPrimary',
+      title: 'Hero Primary CTA Label',
+      type: 'localizedString',
+      description: 'Label for the WhatsApp/quote button — e.g. "Request a Quote"',
+    }),
+    defineField({
+      name: 'heroCTASecondary',
+      title: 'Hero Secondary CTA Label',
+      type: 'localizedString',
+      description: 'Label for the explore button — e.g. "Explore Products"',
+    }),
+    // ── Company identity ───────────────────────────────────────────────────
+    defineField({
+      name: 'companyBio',
+      title: 'Company Bio',
+      type: 'localizedText',
+      description: 'Main about paragraph shown on the About page intro',
+    }),
+    defineField({
+      name: 'foundedYear',
+      title: 'Founded Year',
+      type: 'number',
+      description: 'Year the company was founded — e.g. 2004',
+      validation: (rule) => rule.min(1900).max(2100).integer(),
+    }),
+    // ── Key statistics ─────────────────────────────────────────────────────
+    defineField({
+      name: 'stats',
+      title: 'Key Statistics',
+      type: 'array',
+      description: 'Displayed on the homepage stats bar and About hero',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({ name: 'label', title: 'Label', type: 'localizedString' }),
+            defineField({ name: 'value', title: 'Value', type: 'string', description: 'e.g. "500+"' }),
+            defineField({ name: 'icon', title: 'Icon Name', type: 'string', description: 'Phosphor icon name — e.g. "Buildings"' }),
+          ],
+        },
+      ],
+    }),
+    // ── Contact ────────────────────────────────────────────────────────────
     defineField({
       name: 'phone',
       title: 'Phone',

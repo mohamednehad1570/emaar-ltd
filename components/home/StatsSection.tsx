@@ -22,6 +22,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion, useInView } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+import type { SiteSettings } from '@/lib/sanity/types';
 
 /* ── Data ──────────────────────────────────────────────────────────────── */
 
@@ -85,12 +86,23 @@ function StatCounter({ raw, inView, shouldReduce }: StatCounterProps) {
   return <span dir="ltr">{count}{suffix}</span>;
 }
 
+interface StatsSectionProps {
+  stats?: SiteSettings['stats']
+}
+
 /* ── Component ─────────────────────────────────────────────────────────── */
 
-export default function StatsSection() {
+export default function StatsSection({ stats: cmsStats }: StatsSectionProps) {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
-  const stats = content[language];
+
+  // CMS stats take priority when provided and non-empty; otherwise use hardcoded fallback
+  const stats = (cmsStats && cmsStats.length > 0)
+    ? cmsStats.map((s) => ({
+        number: s.value,
+        label: isRTL ? s.label.ar : s.label.en,
+      }))
+    : content[language];
   const sectionRef = useRef<HTMLElement>(null);
   /* Fires once when 50% of the section is in view — triggers count-up */
   const inView = useInView(sectionRef, { once: true, amount: 0.5 });

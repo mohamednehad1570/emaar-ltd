@@ -44,6 +44,7 @@ import Link  from 'next/link';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import Container from '@/components/layout/Container';
 import { getWhatsAppURL } from '@/lib/whatsapp';
+import type { LocalizedString } from '@/lib/sanity/types';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Data
@@ -106,7 +107,19 @@ const scaleLine = {
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  heroTagline?: LocalizedString
+  heroSubtitle?: LocalizedString
+  heroCTAPrimary?: LocalizedString
+  heroCTASecondary?: LocalizedString
+}
+
+export default function HeroSection({
+  heroTagline,
+  heroSubtitle,
+  heroCTAPrimary,
+  heroCTASecondary,
+}: HeroSectionProps) {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
@@ -228,7 +241,8 @@ export default function HeroSection() {
 
               {/* ── Overline pill ───────────────────────────────────────
                    Glass morphism: white/10 bg + backdrop-blur + white/20
-                   border. Red dot signals brand presence.               */}
+                   border. Red dot signals brand presence.
+                   heroTagline from CMS overrides the fallback if provided. */}
               <motion.div variants={fadeUp} className="mb-6 lg:mb-7">
                 <span className="
                   inline-flex items-center gap-2
@@ -241,10 +255,9 @@ export default function HeroSection() {
                     className="w-1.5 h-1.5 rounded-full bg-brand-red shrink-0"
                     aria-hidden="true"
                   />
-                  {l(
-                    'Premium uPVC & Aluminium · UAE',
-                    'حلول uPVC والألومنيوم المتميزة · الإمارات',
-                  )}
+                  {heroTagline
+                    ? (isRTL ? heroTagline.ar : heroTagline.en)
+                    : l('Premium uPVC & Aluminium · UAE', 'حلول uPVC والألومنيوم المتميزة · الإمارات')}
                 </span>
               </motion.div>
 
@@ -290,7 +303,8 @@ export default function HeroSection() {
 
               {/* ── Subtitle ────────────────────────────────────────────
                    font-light creates optical contrast with the extrabold
-                   headline — luxury rhythm through weight disparity.    */}
+                   headline — luxury rhythm through weight disparity.
+                   heroSubtitle from CMS overrides the fallback if provided. */}
               <motion.p
                 variants={fadeUp}
                 className="
@@ -298,10 +312,12 @@ export default function HeroSection() {
                   max-w-lg mb-8 lg:mb-12
                 "
               >
-                {l(
-                  'Engineering-grade fenestration systems trusted by leading developers and contractors across the Emirates.',
-                  'أنظمة هندسية موثوق بها من كبار المطورين والمقاولين في الإمارات العربية المتحدة.',
-                )}
+                {heroSubtitle
+                  ? (isRTL ? heroSubtitle.ar : heroSubtitle.en)
+                  : l(
+                      'Engineering-grade fenestration systems trusted by leading developers and contractors across the Emirates.',
+                      'أنظمة هندسية موثوق بها من كبار المطورين والمقاولين في الإمارات العربية المتحدة.',
+                    )}
               </motion.p>
 
               {/* ── CTAs ────────────────────────────────────────────────
@@ -311,7 +327,7 @@ export default function HeroSection() {
                 variants={fadeUp}
                 className="flex flex-col sm:flex-row items-start gap-3 mb-12"
               >
-                {/* Primary — solid red */}
+                {/* Primary — solid red; heroCTAPrimary from CMS overrides label if provided */}
                 <motion.div
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
@@ -330,7 +346,9 @@ export default function HeroSection() {
                       transition-all duration-200
                     "
                   >
-                    {l('Request a Quote', 'اطلب عرض سعر')}
+                    {heroCTAPrimary
+                      ? (isRTL ? heroCTAPrimary.ar : heroCTAPrimary.en)
+                      : l('Request a Quote', 'اطلب عرض سعر')}
                     <ArrowRight
                       size={16}
                       weight="bold"
@@ -339,7 +357,7 @@ export default function HeroSection() {
                   </a>
                 </motion.div>
 
-                {/* Secondary — ghost */}
+                {/* Secondary — ghost; heroCTASecondary from CMS overrides label if provided */}
                 <motion.div
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.97 }}
@@ -356,7 +374,9 @@ export default function HeroSection() {
                       transition-all duration-200
                     "
                   >
-                    {l('Explore Products', 'استكشف المنتجات')}
+                    {heroCTASecondary
+                      ? (isRTL ? heroCTASecondary.ar : heroCTASecondary.en)
+                      : l('Explore Products', 'استكشف المنتجات')}
                   </Link>
                 </motion.div>
               </motion.div>

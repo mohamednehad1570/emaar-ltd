@@ -24,6 +24,12 @@ export const certificate = defineType({
       validation: (rule) => rule.min(2000).max(2100).integer(),
     }),
     defineField({
+      name: 'issuedBy',
+      title: 'Issued By',
+      type: 'localizedString',
+      description: 'Organisation that issued the certificate',
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',

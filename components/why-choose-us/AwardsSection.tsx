@@ -5,6 +5,7 @@ import { Medal } from '@phosphor-icons/react';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { staggerContainerSlow, fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
+import type { Award as CmsAward } from '@/lib/sanity/types';
 
 interface Award {
   year:   string;
@@ -15,7 +16,8 @@ interface Award {
 /* Gold (#C9A84C) is the project's ONLY awards/certifications colour — never used elsewhere */
 const GOLD = '#C9A84C';
 
-const awards: Award[] = [
+// Placeholder rows shown when CMS is empty
+const PLACEHOLDER_AWARDS: Award[] = [
   {
     year:   '2023',
     name:   { en: 'Excellence in uPVC Manufacturing',   ar: 'التميز في تصنيع uPVC'             },
@@ -38,10 +40,23 @@ const awards: Award[] = [
   },
 ];
 
-export default function AwardsSection() {
+interface AwardsSectionProps {
+  awards: CmsAward[]
+}
+
+export default function AwardsSection({ awards: cmsAwards }: AwardsSectionProps) {
   const { isRTL } = useLanguage();
   const t = useTranslation();
   const shouldReduce = useReducedMotion();
+
+  // Normalise CMS awards into the display shape; fall back to placeholders if empty
+  const displayAwards: Award[] = cmsAwards.length > 0
+    ? cmsAwards.map((a) => ({
+        year:   String(a.year),
+        name:   { en: a.name.en,     ar: a.name.ar     },
+        issuer: { en: a.issuedBy.en, ar: a.issuedBy.ar },
+      }))
+    : PLACEHOLDER_AWARDS;
 
   return (
     <section className="py-24 bg-white" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -70,14 +85,14 @@ export default function AwardsSection() {
           whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
-          {awards.map((award, i) => (
+          {displayAwards.map((award, i) => (
             <motion.div
               key={i}
               variants={shouldReduce ? undefined : fadeUp}
               /* 0.3s per row — snappier than default for list items */
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className={`flex items-center gap-6 py-6 ${
-                i < awards.length - 1 ? 'border-b border-border-light' : ''
+                i < displayAwards.length - 1 ? 'border-b border-border-light' : ''
               } ${isRTL ? 'flex-row-reverse' : ''}`}
             >
               {/* Year — gold text, awards only */}

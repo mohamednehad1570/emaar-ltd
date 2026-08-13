@@ -5,6 +5,7 @@ import { Buildings } from '@phosphor-icons/react';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { staggerContainerSlow, fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
+import type { Testimonial as CmsTestimonial } from '@/lib/sanity/types';
 
 interface Testimonial {
   quote:    { en: string; ar: string };
@@ -12,37 +13,51 @@ interface Testimonial {
   company:  { en: string; ar: string };
 }
 
-const testimonials: Testimonial[] = [
+// Placeholder cards shown when CMS is empty
+const PLACEHOLDER_TESTIMONIALS: Testimonial[] = [
   {
     quote: {
       en: 'Emaar delivered exceptional quality on our residential project. The uPVC window systems exceeded our specifications and were installed with complete professionalism.',
       ar: 'قدمت إعمار جودة استثنائية في مشروعنا السكني. تجاوزت أنظمة نوافذ uPVC مواصفاتنا وتم تركيبها باحترافية تامة.',
     },
-    director: { en: 'Eng. Ahmed Al Rashidi',   ar: 'م. أحمد الراشدي'     },
-    company:  { en: 'Al Rashidi Contracting LLC', ar: 'شركة الراشدي للمقاولات' },
+    director: { en: 'Eng. Ahmed Al Rashidi',      ar: 'م. أحمد الراشدي'          },
+    company:  { en: 'Al Rashidi Contracting LLC', ar: 'شركة الراشدي للمقاولات'   },
   },
   {
     quote: {
       en: 'Outstanding aluminium facade systems that transformed our commercial development. Precision engineering and on-time delivery made all the difference.',
       ar: 'أنظمة واجهات ألومنيوم رائعة حولت مشروعنا التجاري. الدقة الهندسية والتسليم في الوقت المحدد صنعا الفارق.',
     },
-    director: { en: 'Arch. Sara Mahmoud',    ar: 'م. سارة محمود'           },
-    company:  { en: 'Mahmoud Design Studio', ar: 'استوديو محمود للتصميم'   },
+    director: { en: 'Arch. Sara Mahmoud',    ar: 'م. سارة محمود'          },
+    company:  { en: 'Mahmoud Design Studio', ar: 'استوديو محمود للتصميم'  },
   },
   {
     quote: {
       en: 'A reliable partner for our real estate portfolio. Consistent quality across multiple projects and a responsive technical support team.',
       ar: 'شريك موثوق لمحفظتنا العقارية. جودة ثابتة عبر مشاريع متعددة وفريق دعم فني متجاوب.',
     },
-    director: { en: 'Mr. Khalid Al Mansoori',   ar: 'السيد خالد المنصوري'   },
+    director: { en: 'Mr. Khalid Al Mansoori',   ar: 'السيد خالد المنصوري'    },
     company:  { en: 'Al Mansoori Real Estate', ar: 'شركة المنصوري العقارية' },
   },
 ];
 
-export default function ClientTestimonialsSection() {
+interface ClientTestimonialsSectionProps {
+  testimonials: CmsTestimonial[]
+}
+
+export default function ClientTestimonialsSection({ testimonials: cmsTestimonials }: ClientTestimonialsSectionProps) {
   const { isRTL } = useLanguage();
   const t = useTranslation();
   const shouldReduce = useReducedMotion();
+
+  // Normalise CMS testimonials into the display shape; fall back to placeholders if empty
+  const displayTestimonials: Testimonial[] = cmsTestimonials.length > 0
+    ? cmsTestimonials.map((item) => ({
+        quote:    { en: item.quote.en,       ar: item.quote.ar       },
+        director: { en: item.directorName.en, ar: item.directorName.ar },
+        company:  { en: item.companyName.en,  ar: item.companyName.ar  },
+      }))
+    : PLACEHOLDER_TESTIMONIALS;
 
   return (
     <section className="py-24 bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -71,7 +86,7 @@ export default function ClientTestimonialsSection() {
           whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
-          {testimonials.map((item, i) => (
+          {displayTestimonials.map((item, i) => (
             <motion.div
               key={i}
               variants={shouldReduce ? undefined : fadeUp}

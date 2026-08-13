@@ -1,25 +1,15 @@
-'use client';
-
 /**
- * app/page.tsx
+ * app/page.tsx — Homepage (server component)
  *
- * Homepage composition.
- * Section dividers sit between every major section — thin ruled lines
- * with centred label text. They create visual breathing room and give
- * the reader a textual signal of what's coming next, like a chapter heading.
+ * Fetches CMS settings once at request time and passes CMS content as props
+ * to the relevant client sections. All sections fall back to their hardcoded
+ * strings when the CMS returns null or empty data.
  *
- * Divider anatomy:
- *   bg-white border-y border-border-light  — blends into any section bg
- *   h-px flex-1 bg-border-light           — hairline rules on each side
- *   text-xs uppercase tracking-[0.25em]   — editorial label register
- *
- * Section order rationale:
- *   Hero → credentials (Stats + Certs) → products → audience split (Solutions)
- *   → portfolio (Projects) → argument (Why) → evidence (Testimonials) → convert (CTA)
+ * Section order:
+ *   Hero → Stats + Certs → Products → Solutions → Projects → Why → Testimonials → CTA
  */
 
-import React from 'react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { getSiteSettings } from '@/lib/sanity/fetch';
 import HeroSection           from '@/components/home/HeroSection';
 import StatsSection          from '@/components/home/StatsSection';
 import CertificationsSection from '@/components/home/CertificationsSection';
@@ -29,71 +19,40 @@ import ProjectsSection       from '@/components/home/ProjectsSection';
 import WhyChooseUsSection    from '@/components/home/WhyChooseUsSection';
 import TestimonialsSection   from '@/components/home/TestimonialsSection';
 import CTASection            from '@/components/home/CTASection';
+import SectionDivider        from '@/components/home/SectionDivider';
 
-/* ── Section divider ───────────────────────────────────────────────────── */
+export const revalidate = 3600;
 
-function SectionDivider({ label }: { label: string }) {
-  return (
-    /* border-y on a white bg gives a hairline above and below the label row */
-    <div className="flex items-center gap-6 px-8 md:px-24 py-5 bg-white border-y border-border-light">
-      <div className="h-px flex-1 bg-border-light" aria-hidden="true" />
-      <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-muted select-none">
-        {label}
-      </span>
-      <div className="h-px flex-1 bg-border-light" aria-hidden="true" />
-    </div>
-  );
-}
-
-/* ── Page ──────────────────────────────────────────────────────────────── */
-
-export default function HomePage() {
-  const { isRTL, language } = useLanguage();
-
-  /* Bilingual divider labels — ordered as they appear on the page */
-  const labels = language === 'en'
-    ? {
-        numbers:  'By The Numbers',
-        quality:  'Quality Assured',
-        products: 'Our Products',
-        built:    'Built For You',
-        projects: 'Our Projects',
-        why:      'Why Emaar',
-        stories:  'Client Stories',
-      }
-    : {
-        numbers:  'بالأرقام',
-        quality:  'جودة مضمونة',
-        products: 'منتجاتنا',
-        built:    'صُمِّم لك',
-        projects: 'مشاريعنا',
-        why:      'لماذا إعمار',
-        stories:  'قصص العملاء',
-      };
+export default async function HomePage() {
+  const settings = await getSiteSettings();
 
   return (
-    <div className={`min-h-screen ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen">
 
-      <HeroSection />
+      <HeroSection
+        heroTagline={settings?.heroTagline}
+        heroSubtitle={settings?.heroSubtitle}
+        heroCTAPrimary={settings?.heroCTAPrimary}
+        heroCTASecondary={settings?.heroCTASecondary}
+      />
 
-      {/* Stats and certifications open without a divider announcement —
-          the numerals and trust-band introduce themselves.              */}
-      <StatsSection />
+      {/* Stats and certifications open without a divider — the numerals introduce themselves */}
+      <StatsSection stats={settings?.stats} />
       <CertificationsSection />
 
-      <SectionDivider label={labels.products} />
+      <SectionDivider en="Our Products" ar="منتجاتنا" />
       <ProductsSection />
 
-      <SectionDivider label={labels.built} />
+      <SectionDivider en="Built For You" ar="صُمِّم لك" />
       <SolutionsSection />
 
-      <SectionDivider label={labels.projects} />
+      <SectionDivider en="Our Projects" ar="مشاريعنا" />
       <ProjectsSection />
 
-      <SectionDivider label={labels.why} />
+      <SectionDivider en="Why Emaar" ar="لماذا إعمار" />
       <WhyChooseUsSection />
 
-      <SectionDivider label={labels.stories} />
+      <SectionDivider en="Client Stories" ar="قصص العملاء" />
       <TestimonialsSection />
 
       <CTASection />
