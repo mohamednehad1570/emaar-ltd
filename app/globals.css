@@ -356,6 +356,18 @@ a:hover { color: #E74C3C; }
   50%       { opacity: 1;   transform: scale(1.08); }
 }
 
+/* ── Logo Ticker Marquee — paired with LogoTickerSection.tsx ── */
+/* Two identical strips both animate translateX(-100%) simultaneously;
+   when one exits left the other (placed immediately after) fills in.
+   pr-16 on each strip matches the inter-item gap at the seam. */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+.animate-marquee { animation: marquee 30s linear infinite; }
+/* Pause on hover via CSS — no JS needed */
+.ticker-pause:hover .animate-marquee { animation-play-state: paused; }
+
 /* ── Container Utility ── */
 .container-custom {
   max-width: 1280px;
