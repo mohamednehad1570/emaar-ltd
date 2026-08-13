@@ -10,7 +10,8 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - app/api/revalidate/route.ts — Sanity ISR webhook endpoint
 - components/home/ — HeroSection, StatsSection, ProductsSection, ProjectsSection, SolutionsSection, WhyChooseUsSection, CTASection, CertificationsSection, TestimonialsSection
 - components/MotionProvider.tsx — wraps app in MotionConfig reducedMotion="user" (prefers-reduced-motion handled globally here — no per-component useReducedMotion needed)
-- components/products/ — ProductShowcase, ProductMaterialPage, ProductDetailPage, ProductDetailRelated
+- components/products/ — ProductShowcase, ProductMaterialPage, ProductDetailPage, ProductDetailRelated, ProductDetailHero, ProductDetailSpecs
+- components/technical/ — TechnicalPageClient (client), TechFilters, TechDocumentGrid, TechDocumentCard (exports DisplayDocument interface)
 - components/solutions/ — ResidentialContent, CommercialContent, SolutionTypePage, SolutionProductsSection, SolutionProjectsSection
 - components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage
 - components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
@@ -24,13 +25,15 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - lib/data/*.ts — bilingual data { en: {...}, ar: {...} } — static fallback only for CMS-managed content
 - lib/cn.ts, lib/motion.ts, lib/iconMap.ts
 - lib/hooks/useHorizontalAutoscroll.ts — carousel auto-scroll hook
+- lib/hooks/useTechDocuments.ts — normalises CMS/static tech docs to DisplayDocument[], builds category + productType filter options
 - lib/sanity/client.ts — publicClient, writeClient, sanityFetch<T>()
+- lib/sanity/fetch.ts — typed fetcher functions: getProjects(), getProjectBySlug(), getProducts(), getProductBySlug(slug, category), getTechDocuments(), getFaqs()
 - lib/sanity/queries.ts — typed GROQ query strings
-- lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, LocalizedString
+- lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, SanityProductDetail, TechDocument, LocalizedString
 - contexts/LanguageContext.tsx — useLanguage() → { language, isRTL } · useTranslation() → (en, ar) => string
 - lib/types.ts — shared display types: DisplayProject, ProjectPreview (re-exports Project, ProductSpec, ProductDetail from data layer)
 - studio/ — Sanity Studio (Node 22 required — always `nvm use 22` before `npm run dev`)
-- studio/schemaTypes/ — 7 document schemas + 2 shared object types
+- studio/schemaTypes/ — 8 document schemas + 2 shared object types
 
 ## Reference docs (read only the section you need, never the full file)
 - DESIGN.md — design system, tokens, component specs, do/don't rules
@@ -117,7 +120,7 @@ RTL: reversed
 
 ### Schema types (studio/schemaTypes/)
 Object types (shared): `localizedString`, `localizedText`
-Document types: `product`, `project`, `teamMember`, `faq`, `jobPosting`, `certificate`, `siteSettings`
+Document types: `product`, `project`, `teamMember`, `faq`, `jobPosting`, `certificate`, `siteSettings`, `techDocument`
 
 ### Fetching data in server components
 ```typescript
@@ -139,14 +142,16 @@ const projects = await sanityFetch<SanityProject[]>(projectsQuery)
 
 ### Static fallback pattern
 When Sanity DB is empty, pages fall back to `lib/data/*.ts` static content automatically.
-Only these files are affected by Sanity: `products.ts` (products array), `projects.ts`, `faq.ts` (faqs array).
+Only these files are affected by Sanity: `products.ts` (products array), `projects.ts`, `faq.ts` (faqs array), `tech.ts` (techDocument downloads).
 UI strings in those files (hero titles, features, CTAs) always stay static — never replace them with Sanity calls.
 
 ### GROQ queries (lib/sanity/queries.ts)
 - `projectsQuery` — all projects ordered by year desc
 - `projectBySlugQuery` — single project by `$slug`
 - `productsByCategoryQuery` — products filtered by `$category` ('upvc' | 'aluminum')
+- `productBySlugQuery` — single product detail by `$slug` + `$category`; includes gallery, features, relatedProducts[]
 - `faqsQuery` — all FAQs ordered by creation date
+- `techDocumentsQuery` — all tech documents ordered by `order` asc; includes resolved file URL and previewImage
 
 ## Known gotchas
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits
