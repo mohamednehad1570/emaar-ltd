@@ -34,7 +34,8 @@ import {
 } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link  from 'next/link';
-import { useLanguage } from '../contexts/LanguageContext';
+import { useLanguage, useTranslation } from '../contexts/LanguageContext';
+import Container from './layout/Container';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -145,7 +146,7 @@ function ContactBlock({
   language: 'en' | 'ar';
   isRTL: boolean;
 }) {
-  const l = (en: string, ar: string) => (language === 'en' ? en : ar);
+  const l = useTranslation();
 
   return (
     <ul className="space-y-3.5">
@@ -284,7 +285,7 @@ export default function Footer() {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
 
-  const l = (en: string, ar: string) => (language === 'en' ? en : ar);
+  const l = useTranslation();
   const year = new Date().getFullYear();
 
   return (
@@ -294,7 +295,7 @@ export default function Footer() {
           Fades in from both sides to avoid a harsh edge on wide viewports. */}
       <div className="h-px bg-gradient-to-r from-transparent via-brand-silver to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+      <Container className="pt-14 pb-8">
 
         {/* ════════════════════════════════════════════════════════════════
             DESKTOP LAYOUT  — 4-column grid, hidden on < lg
@@ -485,7 +486,7 @@ export default function Footer() {
           </div>
         </div>
 
-      </div>
+      </Container>
     </footer>
   );
 }

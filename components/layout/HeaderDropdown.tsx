@@ -27,11 +27,10 @@ export default function HeaderDropdown({
       transition={{ duration: 0.2, ease: EASE }}
       className={cn(
         'absolute top-full z-50 py-2',
-        'bg-white border border-border-light',
+        'bg-white border border-border-light shadow-warm-xl',
         'min-w-[220px] max-w-[280px] w-max',
         isRTL ? 'right-0' : 'left-0',
       )}
-      style={{ boxShadow: '0 15px 60px rgba(45,41,38,0.16)' }}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
     >

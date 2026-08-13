@@ -12,6 +12,7 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import SolutionProductsSection from './SolutionProductsSection';
 import SolutionProjectsSection from './SolutionProjectsSection';
+import Container from '@/components/layout/Container';
 
 const commercialProjects = projectsData.filter((p) => p.type === 'commercial');
 
@@ -30,7 +31,7 @@ export default function CommercialContent() {
     <>
       {/* ── Type-only Hero ─────────────────────────────────────────── */}
       <section className="py-20 bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
-        <div className="max-w-7xl mx-auto px-6">
+        <Container>
           <motion.span
             initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -71,12 +72,12 @@ export default function CommercialContent() {
               <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
             </a>
           </motion.div>
-        </div>
+        </Container>
       </section>
 
       {/* ── 3 Capabilities ─────────────────────────────────────────── */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
+        <Container>
           <div className="grid md:grid-cols-3 gap-10">
             {t.capabilities.map((cap, i) => {
               const Icon = resolveIcon(cap.icon);
@@ -99,13 +100,13 @@ export default function CommercialContent() {
               );
             })}
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* ── Technical Hub ──────────────────────────────────────────── */}
       <section className="py-20 bg-brand-dark text-white overflow-hidden relative">
         <div className="absolute inset-0 opacity-5 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} aria-hidden="true" />
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <Container className="relative z-10">
           <div className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-12 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
             <div className={`md:w-1/2 ${isRTL ? 'text-right' : ''}`}>
               <h2 className="text-2xl md:text-3xl font-bold mb-5">{t.techHub.title}</h2>
@@ -132,7 +133,7 @@ export default function CommercialContent() {
               </Link>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* ── Recommended Products ───────────────────────────────────── */}

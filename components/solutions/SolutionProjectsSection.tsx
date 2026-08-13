@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { Project } from '@/lib/data/projects';
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
+import Container from '@/components/layout/Container';
 
 interface Props {
   projects: Project[];
@@ -21,7 +22,7 @@ export default function SolutionProjectsSection({ projects, sectionTitle }: Prop
 
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+      <Container>
         <div className={`mb-10 ${isRTL ? 'text-right' : ''}`}>
           <h2 className="text-2xl md:text-3xl font-bold text-brand-dark mb-2">{sectionTitle}</h2>
           <div className="h-0.5 w-10 bg-brand-red" />
@@ -59,7 +60,7 @@ export default function SolutionProjectsSection({ projects, sectionTitle }: Prop
             </motion.div>
           ))}
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -7,17 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import ProjectCard from './ProjectCard';
 import { projectsData } from '@/lib/data/projects';
 import type { SanityProject } from '@/lib/sanity/types';
-
-interface DisplayProject {
-  id: number | string;
-  title: string;
-  category: string;
-  location: string;
-  image: string;
-  year: string;
-  type: string;
-  material: string;
-}
+import type { DisplayProject } from '@/lib/types';
 
 const typeLabels: Record<string, { en: string; ar: string }> = {
   residential: { en: 'Residential', ar: 'سكني' },

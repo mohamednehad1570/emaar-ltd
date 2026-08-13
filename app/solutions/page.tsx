@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
 import { getWhatsAppURL } from '@/lib/whatsapp';
+import Container from '@/components/layout/Container';
 
 const content = {
   en: {
@@ -62,7 +63,7 @@ export default function SolutionsPage() {
 
       {/* ── Editorial Hub ──────────────────────────────────────────── */}
       <section className="pt-[52px] pb-20 bg-off-white">
-        <div className="max-w-7xl mx-auto px-6 pt-16">
+        <Container className="pt-16">
           <motion.span
             initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -115,7 +116,7 @@ export default function SolutionsPage() {
               </motion.div>
             ))}
           </motion.div>
-        </div>
+        </Container>
       </section>
 
       {/* ── CTA ────────────────────────────────────────────────────── */}

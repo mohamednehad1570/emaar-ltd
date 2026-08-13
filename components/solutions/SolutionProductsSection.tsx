@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
+import Container from '@/components/layout/Container';
 
 interface SolutionProduct {
   id: string;
@@ -28,7 +29,7 @@ export default function SolutionProductsSection({ products, material, sectionTit
 
   return (
     <section className="py-20 bg-off-white">
-      <div className="max-w-7xl mx-auto px-6">
+      <Container>
         <div className={`flex items-end justify-between mb-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
           <div>
             <h2 className={`text-2xl md:text-3xl font-bold text-brand-dark mb-2 ${isRTL ? 'text-right' : ''}`}>
@@ -73,7 +74,7 @@ export default function SolutionProductsSection({ products, material, sectionTit
             </motion.div>
           ))}
         </motion.div>
-      </div>
+      </Container>
     </section>
   );
 }

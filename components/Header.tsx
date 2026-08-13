@@ -66,7 +66,7 @@ export default function Header() {
         animate={r ? undefined : {
           backgroundColor:   scrolled ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,1)',
           backdropFilter:    scrolled ? 'blur(16px)' : 'blur(0px)',
-          boxShadow:         scrolled ? '0 4px 20px rgba(45,41,38,0.10)' : '0 0 0 rgba(45,41,38,0)',
+          boxShadow:         scrolled ? 'var(--shadow-warm-md)' : '0 0 0 rgba(45,41,38,0)',
           borderBottomColor: scrolled ? 'rgba(192,198,202,1)' : 'rgba(228,226,220,0.8)',
         }}
         transition={{ duration: 0.4, ease: EASE }}
@@ -121,7 +121,7 @@ export default function Header() {
                   whileHover={r ? undefined : { scale: 1.03, boxShadow: '0 8px 32px rgba(231,76,60,0.40)' }}
                   whileTap={r ? undefined : { scale: 0.97 }}
                   transition={{ duration: 0.2, ease: EASE }}
-                  style={{ boxShadow: '0 4px 15px rgba(231,76,60,0.20)' }}>
+                  className="shadow-warm-red">
                   <Link href="/contact"
                     className="inline-flex items-center gap-1.5 px-4 h-9 bg-brand-red hover:bg-brand-red-dark text-white text-[13px] font-bold transition-colors">
                     <span className="inline-grid justify-items-center">

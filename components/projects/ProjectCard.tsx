@@ -6,18 +6,10 @@ import { motion , useReducedMotion } from 'framer-motion';
 import { MapPin, ArrowsOut as Expand, ArrowRight } from '@phosphor-icons/react';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-interface Project {
-    id: number | string;
-    title: string;
-    category: string;
-    location: string;
-    image: string;
-    year: string;
-}
+import type { DisplayProject } from '@/lib/types';
 
 interface ProjectCardProps {
-    project: Project;
+    project: DisplayProject;
     idx: number | string;
 }
 

@@ -9,7 +9,7 @@
  * Design rules:
  *   • bg-brand-dark/75 overlay — WCAG AA contrast for white text
  *   • Ghost button (border-white) fills white on hover — standard dark-bg CTA
- *   • 0px radius on images per --radius-image token
+ *   • 0px radius on images (--radius-button = 0px)
  *   • h-[60vh] on mobile cards, md:min-h-[80vh] on grid for desktop drama
  *   • RTL: arrow rotates 180°, flex-row-reverse on inline groups
  */

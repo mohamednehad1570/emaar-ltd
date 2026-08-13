@@ -21,18 +21,11 @@ import { motion , useReducedMotion } from 'framer-motion';
 import { MapPin, ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+import type { ProjectPreview } from '@/lib/types';
 
 /* ── Types & data ──────────────────────────────────────────────────────── */
 
-interface ProjectCard {
-  id:       number;
-  title:    { en: string; ar: string };
-  location: { en: string; ar: string };
-  year:     string;
-  image:    string;
-}
-
-const PROJECTS: ProjectCard[] = [
+const PROJECTS: ProjectPreview[] = [
   {
     id:       1,
     title:    { en: 'Downtown Residences',   ar: 'مساكن وسط المدينة'      },

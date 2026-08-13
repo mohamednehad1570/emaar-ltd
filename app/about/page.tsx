@@ -25,6 +25,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { aboutData } from '@/lib/data/about';
 import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+import Container from '@/components/layout/Container';
 
 export default function AboutPage() {
   const { language, isRTL } = useLanguage();
@@ -158,7 +159,7 @@ export default function AboutPage() {
       {/* ── Timeline ────────────────────────────────────────────────── */}
       <section ref={timelineRef} className="py-24 bg-off-white overflow-hidden">
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Container>
           <motion.div
             variants={fadeUp}
             initial={shouldReduce ? {} : 'hidden'}
@@ -171,7 +172,7 @@ export default function AboutPage() {
             <div className="h-0.5 w-12 bg-brand-red mx-auto mb-4" />
             <p className="text-lg text-text-body max-w-xl mx-auto">{t.timeline.subtitle}</p>
           </motion.div>
-        </div>
+        </Container>
 
         {/* DESKTOP: horizontal scroll track, full viewport width */}
         <div className="hidden md:block relative">

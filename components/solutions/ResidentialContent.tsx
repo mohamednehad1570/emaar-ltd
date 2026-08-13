@@ -11,6 +11,7 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import SolutionProductsSection from './SolutionProductsSection';
 import SolutionProjectsSection from './SolutionProjectsSection';
+import Container from '@/components/layout/Container';
 
 const residentialProjects = projectsData.filter((p) => p.type === 'residential');
 
@@ -29,7 +30,7 @@ export default function ResidentialContent() {
     <>
       {/* ── Type-only Hero ─────────────────────────────────────────── */}
       <section className="py-20 bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
-        <div className="max-w-7xl mx-auto px-6">
+        <Container>
           <motion.span
             initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -70,12 +71,12 @@ export default function ResidentialContent() {
               <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
             </a>
           </motion.div>
-        </div>
+        </Container>
       </section>
 
       {/* ── 3 Key Benefits ─────────────────────────────────────────── */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
+        <Container>
           <div className="grid md:grid-cols-3 gap-10">
             {t.benefits.map((b, i) => {
               const Icon = resolveIcon(b.icon);
@@ -98,7 +99,7 @@ export default function ResidentialContent() {
               );
             })}
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* ── Recommended Products ───────────────────────────────────── */}

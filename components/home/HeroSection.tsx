@@ -41,7 +41,8 @@ import {
 import { ArrowRight, ArrowDown } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link  from 'next/link';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
+import Container from '@/components/layout/Container';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -136,8 +137,7 @@ export default function HeroSection() {
   // Background zooms slowly as user scrolls — extends the per-slide Ken Burns.
   const bgScale        = useTransform(scrollYProgress, [0, 1],    [1, 1.08]);
 
-  /** Bilingual string helper. */
-  const l = (en: string, ar: string) => (language === 'en' ? en : ar);
+  const l = useTranslation();
 
   return (
     <section
@@ -211,7 +211,7 @@ export default function HeroSection() {
         className="relative z-10 h-full flex items-center"
         style={{ opacity: contentOpacity, y: contentY }}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Container className="w-full">
           {/*
             pt-20 — offsets the fixed 80 px header so the stacked content
             sits in the visual centre of the remaining viewport, not the
@@ -388,7 +388,7 @@ export default function HeroSection() {
 
             </motion.div>
           </div>
-        </div>
+        </Container>
       </motion.div>
 
       {/* ══════════════════════════════════════════════════════════════════════

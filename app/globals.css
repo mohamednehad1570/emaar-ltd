@@ -37,8 +37,6 @@
   /* ── Component Radius Tokens ── */
   --radius-button: 0px;  /* buttons, inputs, badges, filter chips, tags — fully sharp */
   --radius-card:   8px;  /* cards — approachable precision */
-  --radius-image:  0px;  /* images in tiles / grids */
-  --radius-modal:  4px;  /* modals, dropdowns — slight softening */
 
   /* ── Surfaces ── */
   --card-bg:    #FFFFFF;

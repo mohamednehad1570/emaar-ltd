@@ -59,3 +59,9 @@ export function useLanguage() {
   }
   return context;
 }
+
+/** Returns a bilingual string resolver bound to the current language. */
+export function useTranslation() {
+  const { language } = useLanguage();
+  return (en: string, ar: string) => (language === 'en' ? en : ar);
+}
