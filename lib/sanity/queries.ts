@@ -51,7 +51,14 @@ export const siteSettingsQuery = `
     email,
     whatsappNumber,
     address,
-    workingHours
+    workingHours,
+    mapEmbedUrl,
+    officeLocations[] {
+      name,
+      address,
+      phone,
+      workingHours
+    }
   }
 `
 

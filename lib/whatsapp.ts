@@ -31,8 +31,10 @@ const MESSAGES: Record<WhatsAppContext['page'], MessageFactory> = {
   'why-choose-us':         "Hi, I've been reading about Emaar International and I'd like to get a quote.",
 };
 
-export function getWhatsAppURL(context: WhatsAppContext): string {
+// Optional override lets server-fetched CMS number replace the constant
+export function getWhatsAppURL(context: WhatsAppContext, whatsappNumber?: string): string {
+  const number = whatsappNumber ?? WHATSAPP_NUMBER;
   const factory = MESSAGES[context.page];
   const message = typeof factory === 'function' ? factory(context) : factory;
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }

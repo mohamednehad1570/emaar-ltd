@@ -31,6 +31,14 @@ export interface SiteSettings {
   whatsappNumber?: string
   address?: LocalizedString
   workingHours?: LocalizedString
+  // ── Batch 4 additions ──────────────────────────────────────────────────
+  mapEmbedUrl?: string
+  officeLocations?: Array<{
+    name: LocalizedString
+    address: LocalizedString
+    phone: string
+    workingHours: LocalizedString
+  }>
 }
 
 export interface TeamMember {

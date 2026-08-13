@@ -22,7 +22,11 @@ const LANGS = [
   { lang: 'ar' as const, label: 'ع',  aria: 'Switch to Arabic'  },
 ];
 
-export default function Header() {
+interface HeaderProps {
+  whatsappNumber?: string;
+}
+
+export default function Header({ whatsappNumber }: HeaderProps) {
   const { language, toggleLanguage, isRTL } = useLanguage();
   const pathname = usePathname();
   const r = useReducedMotion();
@@ -37,7 +41,8 @@ export default function Header() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  const wa = getWhatsAppURL({ page: 'home' });
+  // CMS number overrides the hardcoded constant when configured
+  const wa = getWhatsAppURL({ page: 'home' }, whatsappNumber);
 
   const LangToggle = () => (
     <div className="flex items-center">

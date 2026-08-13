@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle, WhatsappLogo } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -15,9 +15,9 @@ interface Props {
   sanityFaqs?: SanityFaq[];
 }
 
+// MotionProvider in app/layout.tsx handles prefers-reduced-motion globally
 export default function FAQPageClient({ sanityFaqs = [] }: Props) {
   const { language, isRTL } = useLanguage();
-  const shouldReduce = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -63,7 +63,7 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
       <section className="relative pt-32 pb-20 px-6 overflow-hidden bg-surface-white">
         <div className="max-w-5xl mx-auto">
           <motion.div
-            initial={shouldReduce ? {} : { opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
@@ -77,7 +77,7 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
           </motion.div>
 
           <motion.div
-            initial={shouldReduce ? {} : { opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="relative max-w-2xl mx-auto"
@@ -125,9 +125,9 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
           <div className="max-w-6xl mx-auto">
             <motion.h2
               variants={fadeUp}
-              initial={shouldReduce ? {} : 'hidden'}
-              whileInView={shouldReduce ? undefined : 'visible'}
-              viewport={shouldReduce ? undefined : viewportOnce}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
               className="text-2xl font-bold text-ink-heading mb-8 text-center"
             >
               {t.popular.title}
@@ -171,7 +171,7 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
         <div className="max-w-4xl mx-auto">
           {filteredFAQs.length === 0 ? (
             <motion.div
-              initial={shouldReduce ? {} : { opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-20"
             >
@@ -237,9 +237,9 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             variants={fadeUp}
-            initial={shouldReduce ? {} : 'hidden'}
-            whileInView={shouldReduce ? undefined : 'visible'}
-            viewport={shouldReduce ? undefined : viewportOnce}
+            initial="hidden"
+            whileInView="visible"
+            viewport={viewportOnce}
           >
             <HelpCircle className="w-16 h-16 mx-auto mb-6 text-ink-muted" />
             <h2 className="text-3xl font-bold mb-4">{t.cta.title}</h2>

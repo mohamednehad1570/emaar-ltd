@@ -142,32 +142,43 @@ function LinksList({
 function ContactBlock({
   language,
   isRTL,
+  phone,
+  email,
+  whatsappNumber,
 }: {
   language: 'en' | 'ar';
   isRTL: boolean;
+  phone?: string;
+  email?: string;
+  whatsappNumber?: string;
 }) {
   const l = useTranslation();
+
+  // CMS values override hardcoded fallbacks when configured
+  const displayEmail    = email          ?? 'info@emaar-international.ae';
+  const displayPhone    = phone          ?? '+971 50 123 4567';
+  const waNumber        = whatsappNumber ?? '971501234567';
 
   return (
     <ul className="space-y-3.5">
       {/* Email */}
       <li>
         <a
-          href="mailto:info@emaar-international.ae"
+          href={`mailto:${displayEmail}`}
           className="flex items-start gap-2.5 text-sm text-text-body hover:text-brand-red transition-colors duration-200 group"
         >
           <Envelope
             size={15}
             className="text-brand-silver-dark shrink-0 mt-0.5 group-hover:text-brand-red transition-colors duration-200"
           />
-          <span>info@emaar-international.ae</span>
+          <span>{displayEmail}</span>
         </a>
       </li>
 
       {/* Phone — dir=ltr keeps the number left-to-right in Arabic mode */}
       <li>
         <a
-          href="tel:+971501234567"
+          href={`tel:${displayPhone}`}
           className="flex items-start gap-2.5 text-sm text-text-body hover:text-brand-red transition-colors duration-200 group"
           dir="ltr"
         >
@@ -175,7 +186,7 @@ function ContactBlock({
             size={15}
             className="text-brand-silver-dark shrink-0 mt-0.5 group-hover:text-brand-red transition-colors duration-200"
           />
-          <span className="tabular-nums">+971 50 123 4567</span>
+          <span className="tabular-nums">{displayPhone}</span>
         </a>
       </li>
 
@@ -191,7 +202,7 @@ function ContactBlock({
       {/* WhatsApp */}
       <li>
         <a
-          href="https://wa.me/971501234567"
+          href={`https://wa.me/${waNumber}`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-start gap-2.5 text-sm text-text-body hover:text-whatsapp transition-colors duration-200 group"
@@ -281,7 +292,13 @@ function MobileAccordion({
 // Main component
 // ─────────────────────────────────────────────────────────────────────────────
 
-export default function Footer() {
+interface FooterProps {
+  phone?: string;
+  email?: string;
+  whatsappNumber?: string;
+}
+
+export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
 
@@ -382,7 +399,7 @@ export default function Footer() {
           {/* ── Column 4: Contact ─────────────────────────────────────── */}
           <div>
             <ColHeader>{l('Contact', 'التواصل')}</ColHeader>
-            <ContactBlock language={language} isRTL={isRTL} />
+            <ContactBlock language={language} isRTL={isRTL} phone={phone} email={email} whatsappNumber={whatsappNumber} />
           </div>
         </div>
 
@@ -458,7 +475,7 @@ export default function Footer() {
 
           {/* Contact accordion */}
           <MobileAccordion title={l('Contact', 'التواصل')} isRTL={isRTL}>
-            <ContactBlock language={language} isRTL={isRTL} />
+            <ContactBlock language={language} isRTL={isRTL} phone={phone} email={email} whatsappNumber={whatsappNumber} />
           </MobileAccordion>
         </div>
 

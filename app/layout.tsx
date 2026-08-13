@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import MotionProvider from "@/components/MotionProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { getSiteSettings } from "@/lib/sanity/fetch";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -19,21 +20,28 @@ export const metadata: Metadata = {
   keywords: "uPVC windows, aluminum doors, UAE, Dubai, premium windows, curtain walls",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Fetch once at layout level — propagated to Header and Footer as props
+  const settings = await getSiteSettings();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${cairo.variable} antialiased`}>
         <MotionProvider>
           <LanguageProvider>
-            <Header />
+            <Header whatsappNumber={settings?.whatsappNumber} />
             <main className="min-h-screen">
               {children}
             </main>
-            <Footer />
+            <Footer
+              phone={settings?.phone}
+              email={settings?.email}
+              whatsappNumber={settings?.whatsappNumber}
+            />
           </LanguageProvider>
         </MotionProvider>
       </body>

@@ -99,6 +99,33 @@ export const siteSettings = defineType({
         defineField({ name: 'youtube', title: 'YouTube', type: 'url' }),
       ],
     }),
+    // ── Contact page extras ────────────────────────────────────────────────
+    defineField({
+      name: 'mapEmbedUrl',
+      title: 'Google Maps Embed URL',
+      type: 'string',
+      description: 'Full Google Maps embed src URL — used on the contact page iframe',
+    }),
+    defineField({
+      name: 'officeLocations',
+      title: 'Office Locations',
+      type: 'array',
+      description: 'Branch offices displayed on the contact page',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({ name: 'name',         title: 'Office Name',    type: 'localizedString' }),
+            defineField({ name: 'address',      title: 'Address',        type: 'localizedString' }),
+            defineField({ name: 'phone',        title: 'Phone',          type: 'string' }),
+            defineField({ name: 'workingHours', title: 'Working Hours',  type: 'localizedString' }),
+          ],
+          preview: {
+            select: { title: 'name.en' },
+          },
+        },
+      ],
+    }),
   ],
   preview: {
     select: { title: 'email' },

@@ -16,6 +16,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/careers/ — CareersPageClient (client, assembles page + CTA), CareersHero, CareersCulture, CareersJobList (filter + accordion), CareersJobCard, types.ts (DisplayJob interface)
 - components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage
 - components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
+- components/contact/ — ContactPageClient (client, assembles page), ContactHero, ContactForm (form state + /api/contact submit), ContactInfo (phone/email/address/hours strip), ContactOffices (office cards, CMS + static fallback), ContactMap (iframe or placeholder)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
 - components/ui/ — shared primitives (Breadcrumbs removed — never add back)
 - components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown, Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8)
@@ -28,7 +29,8 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - lib/hooks/useHorizontalAutoscroll.ts — carousel auto-scroll hook
 - lib/hooks/useTechDocuments.ts — normalises CMS/static tech docs to DisplayDocument[], builds category + productType filter options
 - lib/sanity/client.ts — publicClient, writeClient, sanityFetch<T>()
-- lib/sanity/fetch.ts — typed fetcher functions: getProjects(), getProjectBySlug(), getProducts(), getProductBySlug(slug, category), getTechDocuments(), getFaqs(), getJobPostings()
+- lib/sanity/fetch.ts — typed fetcher functions: getProjects(), getProjectBySlug(), getProducts(), getProductBySlug(slug, category), getTechDocuments(), getFaqs(), getJobPostings(); getSiteSettings() is also called in app/layout.tsx for global header/footer wiring
+- lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? }, whatsappNumber?) — optional second arg overrides WHATSAPP_NUMBER constant with CMS value
 - lib/sanity/queries.ts — typed GROQ query strings
 - lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, SanityProductDetail, TechDocument, JobPosting, LocalizedString
 - contexts/LanguageContext.tsx — useLanguage() → { language, isRTL } · useTranslation() → (en, ar) => string
@@ -143,7 +145,7 @@ const projects = await sanityFetch<SanityProject[]>(projectsQuery)
 
 ### Static fallback pattern
 When Sanity DB is empty, pages fall back to `lib/data/*.ts` static content automatically.
-Only these files are affected by Sanity: `products.ts` (products array), `projects.ts`, `faq.ts` (faqs array), `tech.ts` (techDocument downloads), `careers.ts` (jobs array).
+Only these files are affected by Sanity: `products.ts` (products array), `projects.ts`, `faq.ts` (faqs array), `tech.ts` (techDocument downloads), `careers.ts` (jobs array), `contact.ts` (phone/email/address/hours/offices).
 UI strings in those files (hero titles, features, CTAs) always stay static — never replace them with Sanity calls.
 
 ### GROQ queries (lib/sanity/queries.ts)
@@ -155,6 +157,7 @@ UI strings in those files (hero titles, features, CTAs) always stay static — n
 - `techDocumentsQuery` — all tech documents ordered by `order` asc; includes resolved file URL and previewImage
 - `jobPostingsQuery` — all job postings ordered by `_createdAt` desc; full fields including responsibilities[], benefits[]
 - `solutionSettingsQuery` — siteSettings phone + whatsappNumber (for solutions contact info)
+- `siteSettingsQuery` — now includes `mapEmbedUrl` and `officeLocations[]` (name, address, phone, workingHours)
 
 ## Known gotchas
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits
