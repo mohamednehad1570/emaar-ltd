@@ -16,7 +16,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
 - components/ui/ — shared primitives (Breadcrumbs removed — never add back)
-- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown
+- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown, Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8)
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
 - lib/data/nav.ts — header dropdown items (DropdownItem interface, bilingual en/ar + href)
@@ -27,7 +27,8 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - lib/sanity/client.ts — publicClient, writeClient, sanityFetch<T>()
 - lib/sanity/queries.ts — typed GROQ query strings
 - lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, LocalizedString
-- contexts/LanguageContext.tsx — useLanguage() → { language, isRTL }
+- contexts/LanguageContext.tsx — useLanguage() → { language, isRTL } · useTranslation() → (en, ar) => string
+- lib/types.ts — shared display types: DisplayProject, ProjectPreview (re-exports Project, ProductSpec, ProductDetail from data layer)
 - studio/ — Sanity Studio (Node 22 required — always `nvm use 22` before `npm run dev`)
 - studio/schemaTypes/ — 7 document schemas + 2 shared object types
 
@@ -58,8 +59,9 @@ RTL: reversed
 - Tailwind semantic tokens only — bg-brand-red not bg-[#E74C3C]
 - 150-line file limit — extract sub-components when approaching limit
 - Phosphor Icons only (@phosphor-icons/react)
-- Bilingual: every string needs { en: '...', ar: '...' }
+- Bilingual: every string needs { en: '...', ar: '...' }; in client components use `useTranslation()` from LanguageContext instead of inlining `(en, ar) => language === 'en' ? en : ar`
 - RTL: useLanguage() → isRTL, use rtl: Tailwind prefix for directional overrides
+- Page-width wrapper: use `<Container>` from `@/components/layout/Container` — never repeat max-w-7xl + padding inline
 
 ## Colors (hard rules — no lookup needed)
 - Page bg: bg-off-white (#F5F4F0)
