@@ -36,7 +36,7 @@
 
   /* ── Component Radius Tokens ── */
   --radius-button: 0px;  /* buttons, inputs, badges, filter chips, tags — fully sharp */
-  --radius-card:   2px;  /* cards — minimal, industrial precision */
+  --radius-card:   8px;  /* cards — approachable precision */
   --radius-image:  0px;  /* images in tiles / grids */
   --radius-modal:  4px;  /* modals, dropdowns — slight softening */
 
@@ -133,7 +133,7 @@
 
   /* ── Border Radius Scale ── */
   /* --radius (bare) = Tailwind default 4px → rounded utility → modals/dropdowns */
-  --radius-sm:   2px;    /* cards → rounded-sm; matches --radius-card */
+  --radius-sm:   8px;    /* cards → rounded-sm; matches --radius-card */
   --radius-md:   8px;
   --radius-lg:   12px;
   --radius-xl:   16px;
@@ -224,7 +224,7 @@ a:hover { color: #E74C3C; }
 /* ── Premium Card ── */
 .card-premium {
   background: white;
-  border-radius: 2px; /* --radius-card: sharp with 2px minimum */
+  border-radius: 8px; /* --radius-card */
   border: 1px solid #E4E2DC; /* border-border-light at rest */
   padding: 2rem;
   transition: all 0.3s ease;

@@ -62,7 +62,7 @@ export default function SolutionsSection() {
 
             <div className={`absolute inset-0 p-8 flex flex-col justify-between ${isRTL ? 'items-end' : 'items-start'}`}>
               {/* Residential badge — brand-red tint; rounded-none per --radius-button badge rule */}
-              <span className="px-3 py-1.5 rounded-none text-xs font-bold uppercase tracking-[0.14em] bg-brand-red/20 border border-brand-red/50 text-brand-red">
+              <span className="px-3 py-2 rounded-none text-[11px] font-bold uppercase tracking-[0.22em] bg-brand-red/20 border border-brand-red/50 text-brand-red">
                 {residential.hero.subtitle}
               </span>
 
@@ -106,7 +106,7 @@ export default function SolutionsSection() {
 
             <div className={`absolute inset-0 p-8 flex flex-col justify-between ${isRTL ? 'items-end' : 'items-start'}`}>
               {/* Commercial badge — brand-silver tint; rounded-none per badge rule */}
-              <span className="px-3 py-1.5 rounded-none text-xs font-bold uppercase tracking-[0.14em] bg-brand-silver/20 border border-brand-silver/50 text-brand-silver">
+              <span className="px-3 py-2 rounded-none text-[11px] font-bold uppercase tracking-[0.22em] bg-brand-silver/20 border border-brand-silver/50 text-brand-silver">
                 {commercial.hero.subtitle}
               </span>
 

@@ -133,7 +133,7 @@ export default function ProjectDetailPage({ project }: Props) {
           whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
-          <p className={`text-xs font-semibold uppercase tracking-[0.25em] text-ink-muted mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <p className={`text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-muted mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
             {ui.gallery}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -159,7 +159,7 @@ export default function ProjectDetailPage({ project }: Props) {
 
       {/* ── CTA strip ────────────────────────────────────────────────────── */}
       <div className="bg-ink-heading py-20 px-8 text-center">
-        <p className="text-white/70 text-xs font-semibold uppercase tracking-[0.25em] mb-4">{ui.startLabel}</p>
+        <p className="text-white/70 text-[11px] font-semibold uppercase tracking-[0.22em] mb-4">{ui.startLabel}</p>
         <h2 className="text-3xl md:text-4xl font-bold font-cairo text-white mb-8">{ui.startHeading}</h2>
         <a
           href={getWhatsAppURL({ page: 'project-detail', projectName: project.title.en })}

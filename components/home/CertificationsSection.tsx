@@ -32,7 +32,7 @@ export default function CertificationsSection() {
         {/* ── Trust band label ──────────────────────────────────────── */}
         {/* Styled like Footer column headers — uppercase, wide tracking, muted */}
         <motion.p
-          className="text-[11px] font-bold uppercase tracking-[0.18em] text-text-muted text-center mb-8"
+          className="text-[11px] font-bold uppercase tracking-[0.22em] text-text-muted text-center mb-8"
           variants={fadeUp}
           initial={shouldReduce ? {} : "hidden"}
           whileInView={shouldReduce ? undefined : "visible"}

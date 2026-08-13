@@ -130,7 +130,7 @@ export default function ContactPage() {
           {/* Divider */}
           <div className={`flex items-center gap-4 mb-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className="h-px flex-1 bg-border-light" aria-hidden="true" />
-            <span className="text-xs font-semibold uppercase tracking-[0.22em] text-text-muted select-none">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-muted select-none">
               {language === 'en' ? 'Or Send a Brief' : 'أو أرسل ملخصاً'}
             </span>
             <div className="h-px flex-1 bg-border-light" aria-hidden="true" />

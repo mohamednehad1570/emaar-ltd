@@ -49,7 +49,7 @@ export default function Header() {
             aria-label={aria} aria-pressed={language === lang}
             whileHover={r ? undefined : { scale: 1.05 }}
             transition={{ duration: 0.15, ease: EASE }}
-            className={cn('px-1.5 text-xs',
+            className={cn('px-2 text-xs',
               language === lang
                 ? 'font-bold text-text-heading'
                 : 'font-normal text-text-muted hover:text-text-body')}
@@ -71,11 +71,17 @@ export default function Header() {
         }}
         transition={{ duration: 0.4, ease: EASE }}
         className="fixed top-0 left-0 right-0 z-50 border-b"
-        style={r ? { backgroundColor: scrolled ? 'rgba(255,255,255,0.92)' : '#fff' } : undefined}
+        style={{
+          WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'blur(0px)',
+          ...(r ? {
+            backgroundColor: scrolled ? 'rgba(255,255,255,0.92)' : '#fff',
+            backdropFilter: scrolled ? 'blur(16px)' : 'blur(0px)',
+          } : {}),
+        }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            className="h-[52px] lg:h-14"
+            className="h-[48px] lg:h-14"
             style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center' }}
           >
 

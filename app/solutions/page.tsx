@@ -67,7 +67,7 @@ export default function SolutionsPage() {
             initial={shouldReduce ? {} : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-block px-3 py-1 bg-brand-red text-white text-xs font-semibold uppercase tracking-widest mb-6"
+            className="inline-block px-3 py-1 bg-brand-red text-white text-[11px] font-semibold uppercase tracking-[0.22em] mb-6"
           >
             {t.eyebrow}
           </motion.span>

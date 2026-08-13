@@ -37,7 +37,7 @@ function SectionDivider({ label }: { label: string }) {
     /* border-y on a white bg gives a hairline above and below the label row */
     <div className="flex items-center gap-6 px-8 md:px-24 py-5 bg-white border-y border-border-light">
       <div className="h-px flex-1 bg-border-light" aria-hidden="true" />
-      <span className="text-xs font-semibold uppercase tracking-[0.25em] text-text-muted select-none">
+      <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-text-muted select-none">
         {label}
       </span>
       <div className="h-px flex-1 bg-border-light" aria-hidden="true" />

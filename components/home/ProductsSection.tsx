@@ -100,7 +100,7 @@ export default function ProductsSection() {
           whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-brand-red mb-3">
+          <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-red mb-3">
             {language === 'en' ? 'Product Range' : 'نطاق المنتجات'}
           </p>
           <h2

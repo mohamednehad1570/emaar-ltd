@@ -132,7 +132,7 @@ export default function ProductsPage() {
         initial={shouldReduce ? {} : "hidden"}
         animate="visible"
       >
-        <span className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-red mb-4 block">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-red mb-4 block">
           {t.eyebrow}
         </span>
         <h1 className="text-5xl md:text-6xl font-bold font-cairo text-brand-dark mb-5">{t.title}</h1>

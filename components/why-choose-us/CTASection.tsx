@@ -33,7 +33,7 @@ export default function CTASection() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg shadow-warm-xl transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-none bg-white hover:bg-cream text-brand-red font-semibold text-lg transition-colors"
               style={{ color: 'var(--color-brand-red)' }}
             >
               {t.cta.button}

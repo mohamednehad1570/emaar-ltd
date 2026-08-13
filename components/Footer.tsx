@@ -101,7 +101,7 @@ const SOCIAL = [
  */
 function ColHeader({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-silver-dark mb-5 select-none">
+    <h3 className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-silver-dark mb-5 select-none">
       {children}
     </h3>
   );
@@ -476,7 +476,7 @@ export default function Footer() {
           </p>
 
           {/* Badge strip — purely decorative, no links */}
-          <div className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.14em] text-brand-silver-dark select-none">
+          <div className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-silver-dark select-none">
             <span>UAE</span>
             <span className="w-px h-3 bg-border-medium" aria-hidden="true" />
             <span>Est. {year}</span>

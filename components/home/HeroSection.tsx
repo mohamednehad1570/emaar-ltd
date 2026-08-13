@@ -217,7 +217,7 @@ export default function HeroSection() {
             sits in the visual centre of the remaining viewport, not the
             geometric centre of the full h-screen section.
           */}
-          <div className="pt-20">
+          <div className="pt-24">
             <motion.div
               className={`max-w-xl sm:max-w-2xl lg:max-w-3xl ${isRTL ? 'mr-0 ml-auto lg:ml-0' : ''}`}
               variants={staggerContainer}
@@ -229,10 +229,10 @@ export default function HeroSection() {
               {/* ── Overline pill ───────────────────────────────────────
                    Glass morphism: white/10 bg + backdrop-blur + white/20
                    border. Red dot signals brand presence.               */}
-              <motion.div variants={fadeUp} className="mb-5 lg:mb-7">
+              <motion.div variants={fadeUp} className="mb-6 lg:mb-7">
                 <span className="
                   inline-flex items-center gap-2
-                    px-4 py-1.5 rounded-none
+                    px-4 py-2 rounded-none
                   border border-white/20
                   text-[11px] sm:text-xs font-semibold uppercase tracking-[0.22em]
                   text-white/70
@@ -258,7 +258,7 @@ export default function HeroSection() {
                 className="
                   text-[2.75rem] sm:text-6xl lg:text-[4.5rem] xl:text-[5rem]
                   font-extrabold leading-[0.90] tracking-tight text-white text-balance
-                  mb-5 lg:mb-6
+                  mb-6
                 "
               >
                 {language === 'en' ? (
@@ -283,7 +283,7 @@ export default function HeroSection() {
                    variant. origin-left in LTR, origin-right in RTL.    */}
               <motion.div
                 variants={scaleLine}
-                className={`w-14 h-0.5 bg-brand-red mb-5 lg:mb-6 ${
+                className={`w-14 h-0.5 bg-brand-red mb-6 ${
                   isRTL ? 'origin-right' : 'origin-left'
                 }`}
               />
@@ -295,7 +295,7 @@ export default function HeroSection() {
                 variants={fadeUp}
                 className="
                   text-base sm:text-lg text-white/58 font-light leading-relaxed
-                  max-w-lg mb-8 lg:mb-10
+                  max-w-lg mb-8 lg:mb-12
                 "
               >
                 {l(
@@ -309,7 +309,7 @@ export default function HeroSection() {
                    Secondary: ghost pill — glass bg, subtle border.      */}
               <motion.div
                 variants={fadeUp}
-                className="flex flex-col sm:flex-row items-start gap-3 mb-10 lg:mb-12"
+                className="flex flex-col sm:flex-row items-start gap-3 mb-12"
               >
                 {/* Primary — solid red */}
                 <motion.div
@@ -322,7 +322,7 @@ export default function HeroSection() {
                     rel="noopener noreferrer"
                     className="
                       inline-flex items-center gap-2
-                      px-7 py-3.5 rounded-none
+                      px-8 py-4 rounded-none
                       text-sm font-bold text-white
                       bg-brand-red hover:bg-brand-red-dark
                       shadow-[0_4px_15px_rgba(231,76,60,0.20)]
