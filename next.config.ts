@@ -22,12 +22,14 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source:      '/products/upvc/:slug((?!windows|doors|doors-and-windows|staircases|stained-glass|sandblast|hebeschibe).*)',
+        // $-anchor prevents "doors" prefix from matching "doors-and-windows"
+        source:      '/products/upvc/:slug((?!(?:windows|doors|doors-and-windows|staircases|stained-glass|sandblast|hebeschibe)$)[^/]+)',
         destination: '/products/upvc',
         permanent:   true,
       },
       {
-        source:      '/products/aluminum/:slug((?!windows|doors|doors-and-windows|staircases|skylights|stained-glass|sandblast).*)',
+        // $-anchor prevents "doors" prefix from matching "doors-and-windows"
+        source:      '/products/aluminum/:slug((?!(?:windows|doors|doors-and-windows|staircases|skylights|stained-glass|sandblast)$)[^/]+)',
         destination: '/products/aluminum',
         permanent:   true,
       },
