@@ -1,0 +1,128 @@
+# Emaar project image rename log
+# Generated: 2026-08-20T14:18:54.035Z
+
+[buildings]
+  100_1807.JPG                             → project-buildings-01.jpg
+  100_2221.JPG                             → project-buildings-02.jpg
+  100_2244.JPG                             → project-buildings-03.jpg
+  100_2344.JPG                             → project-buildings-04.jpg
+  100_3317.JPG                             → project-buildings-05.jpg
+  100_3322.JPG                             → project-buildings-06.jpg
+  100_3333.JPG                             → project-buildings-07.jpg
+  100_3341.JPG                             → project-buildings-08.jpg
+  100_3440.JPG                             → project-buildings-09.jpg
+  100_3441.JPG                             → project-buildings-10.jpg
+  2a77de6ce9185138a64599bda1515d76.jpg     → project-buildings-11.jpg
+  6a9540379c500fcdcafcfa607c222259.jpg     → project-buildings-12.jpg
+  6bc277faaece81b4c14b9e9419e93f9b.jpg     → project-buildings-13.jpg
+  CIMG0105.JPG                             → project-buildings-14.jpg
+  CIMG0107.JPG                             → project-buildings-15.jpg
+  CIMG0370.JPG                             → project-buildings-16.jpg
+  CIMG0383.JPG                             → project-buildings-17.jpg
+  CIMG0386.JPG                             → project-buildings-18.jpg
+  CIMG0389.JPG                             → project-buildings-19.jpg
+  CIMG0392.JPG                             → project-buildings-20.jpg
+  CIMG0395.JPG                             → project-buildings-21.jpg
+  CIMG0397.JPG                             → project-buildings-22.jpg
+  CIMG0413.JPG                             → project-buildings-23.jpg
+  CIMG0418.JPG                             → project-buildings-24.jpg
+  CIMG0423.JPG                             → project-buildings-25.jpg
+  CIMG0435.JPG                             → project-buildings-26.jpg
+  CIMG0448.JPG                             → project-buildings-27.jpg
+  CIMG0457.JPG                             → project-buildings-28.jpg
+  CIMG0466.JPG                             → project-buildings-29.jpg
+  CIMG0469.JPG                             → project-buildings-30.jpg
+  CIMG0481.JPG                             → project-buildings-31.jpg
+  DSCN0112.JPG                             → project-buildings-32.jpg
+  DSCN0483.JPG                             → project-buildings-33.jpg
+  DSCN0493.JPG                             → project-buildings-34.jpg
+  DSCN0498.JPG                             → project-buildings-35.jpg
+  DSCN0528.JPG                             → project-buildings-36.jpg
+  DSCN0547.JPG                             → project-buildings-37.jpg
+  DSCN0562.JPG                             → project-buildings-38.jpg
+  DSCN0589.JPG                             → project-buildings-39.jpg
+  IMG-20180327-WA0040.jpg                  → project-buildings-40.jpg
+  IMG-20180327-WA0041.jpg                  → project-buildings-41.jpg
+  IMG-20180327-WA0042.jpg                  → project-buildings-42.jpg
+  IMG-20180327-WA0043.jpg                  → project-buildings-43.jpg
+  IMG-20180327-WA0044.jpg                  → project-buildings-44.jpg
+  IMG-20180327-WA0045.jpg                  → project-buildings-45.jpg
+  IMG-20180327-WA0046.jpg                  → project-buildings-46.jpg
+  IMG-20180327-WA0047.jpg                  → project-buildings-47.jpg
+  IMG-20180327-WA0048.jpg                  → project-buildings-48.jpg
+  IMG-20180327-WA0049.jpg                  → project-buildings-49.jpg
+  IMG-20180617-WA0005.jpg                  → project-buildings-50.jpg
+  IMG-20180617-WA0010.jpg                  → project-buildings-51.jpg
+  IMG_0123.JPG                             → project-buildings-52.jpg
+  IMG_0133.JPG                             → project-buildings-53.jpg
+  IMG_0137.JPG                             → project-buildings-54.jpg
+  IMG_0143.JPG                             → project-buildings-55.jpg
+  b0afcdbd4225a4c79ec1d93b49ce5545.jpg     → project-buildings-56.jpg
+  cdb9ff2c52783e2e437e81dce5cedf24.jpg     → project-buildings-57.jpg
+[villas]
+  26f7b60f-afe5-4c0a-9242-974759e32e2e.jpg → project-villas-01.jpg
+  5c28c21d-3b66-4a6e-a776-03798a5eddef.jpg → project-villas-02.jpg
+  91b5383a-f55e-4b60-8266-8f3f60a76585.jpg → project-villas-03.jpg
+  ChatGPT Image Aug 1, 2026, 08_54_08 AM.png → project-villas-04.png
+  ChatGPT Image Aug 1, 2026, 08_58_02 AM.png → project-villas-05.png
+  ChatGPT Image Aug 1, 2026, 09_08_56 AM.png → project-villas-06.png
+  ChatGPT Image Aug 1, 2026, 09_13_06 AM.png → project-villas-07.png
+  ChatGPT Image Aug 1, 2026, 09_13_31 AM.png → project-villas-08.png
+  ChatGPT Image Aug 1, 2026, 10_46_08 AM.png → project-villas-09.png
+  ChatGPT Image Aug 1, 2026, 10_58_21 AM.png → project-villas-10.png
+  ChatGPT Image Aug 1, 2026, 11_29_39 AM.png → project-villas-11.png
+  ChatGPT Image Aug 1, 2026, 11_38_57 AM.png → project-villas-12.png
+  IMG_1571.JPG                             → project-villas-13.jpg
+  WhatsApp Image 2023-02-06 at 10.46.55 AM (1).jpeg → project-villas-14.jpeg
+  WhatsApp Image 2023-12-29 at 8.35.11 AM (2).jpeg → project-villas-15.jpeg
+  WhatsApp Image 2024-01-17 at 3.35.42 PM (1).jpeg → project-villas-16.jpeg
+  WhatsApp Image 2024-08-12 at 1.16.06 PM.jpeg → project-villas-17.jpeg
+  WhatsApp Image 2024-08-13 at 3.18.54 PM.jpeg → project-villas-18.jpeg
+  WhatsApp Image 2024-08-27 at 11.44.57 AM.jpeg → project-villas-19.jpeg
+  WhatsApp Image 2024-09-17 at 12.24.14 PM.jpeg → project-villas-20.jpeg
+  WhatsApp Image 2025-01-13 at 9.34.53 AM.jpeg → project-villas-21.jpeg
+  WhatsApp Image 2025-02-13 at 3.33.56 PM.jpeg → project-villas-22.jpeg
+  WhatsApp Image 2025-02-14 at 7.23.25 PM.jpeg → project-villas-23.jpeg
+  WhatsApp Image 2025-02-21 at 3.54.54 PM (1).jpeg → project-villas-24.jpeg
+  WhatsApp Image 2025-04-15 at 2.02.40 PM.jpeg → project-villas-25.jpeg
+  WhatsApp Image 2025-04-22 at 4.48.31 PM (1).jpeg → project-villas-26.jpeg
+  WhatsApp Image 2025-05-01 at 5.02.51 PM.jpeg → project-villas-27.jpeg
+  WhatsApp Image 2025-05-11 at 5.28.14 PM (1).jpeg → project-villas-28.jpeg
+  WhatsApp Image 2025-05-11 at 5.28.16 PM.jpeg → project-villas-29.jpeg
+  WhatsApp Image 2025-05-14 at 4.23.49 PM (1).jpeg → project-villas-30.jpeg
+  WhatsApp Image 2025-05-14 at 4.23.50 PM.jpeg → project-villas-31.jpeg
+  WhatsApp Image 2025-06-19 at 4.07.25 PM.jpeg → project-villas-32.jpeg
+  WhatsApp Image 2025-08-23 at 4.42.53 PM.jpeg → project-villas-33.jpeg
+  WhatsApp Image 2025-09-15 at 8.15.40 PM.jpeg → project-villas-34.jpeg
+  WhatsApp Image 2025-09-28 at 10.58.33 PM.jpeg → project-villas-35.jpeg
+  WhatsApp Image 2025-10-07 at 6.27.39 PM.jpeg → project-villas-36.jpeg
+  WhatsApp Image 2025-12-13 at 3.01.58 AM.jpeg → project-villas-37.jpeg
+  WhatsApp Image 2025-12-15 at 2.08.42 AM.jpeg → project-villas-38.jpeg
+  WhatsApp Image 2025-12-15 at 2.08.44 AM (1).jpeg → project-villas-39.jpeg
+  WhatsApp Image 2025-12-18 at 2.04.00 PM.jpeg → project-villas-40.jpeg
+  WhatsApp Image 2025-12-23 at 7.10.10 PM (1).jpeg → project-villas-41.jpeg
+  WhatsApp Image 2025-12-23 at 7.10.13 PM.jpeg → project-villas-42.jpeg
+  WhatsApp Image 2025-12-30 at 11.17.58 AM (1).jpeg → project-villas-43.jpeg
+  WhatsApp Image 2025-12-30 at 11.17.58 AM.jpeg → project-villas-44.jpeg
+  WhatsApp Image 2026-01-07 at 11.26.34 AM.jpeg → project-villas-45.jpeg
+  WhatsApp Image 2026-01-07 at 11.26.38 AM (1).jpeg → project-villas-46.jpeg
+  WhatsApp Image 2026-01-10 at 1.46.41 PM (1).jpeg → project-villas-47.jpeg
+  WhatsApp Image 2026-01-10 at 1.46.47 PM.jpeg → project-villas-48.jpeg
+  WhatsApp Image 2026-01-13 at 5.43.51 PM.jpeg → project-villas-49.jpeg
+  WhatsApp Image 2026-01-15 at 8.50.11 AM.jpeg → project-villas-50.jpeg
+  WhatsApp Image 2026-01-27 at 6.40.14 PM.jpeg → project-villas-51.jpeg
+  WhatsApp Image 2026-01-27 at 6.40.18 PM.jpeg → project-villas-52.jpeg
+  WhatsApp Image 2026-02-02 at 4.08.40 PM (2).jpeg → project-villas-53.jpeg
+  WhatsApp Image 2026-02-04 at 2.54.06 PM (1).jpeg → project-villas-54.jpeg
+  WhatsApp Image 2026-02-07 at 8.50.07 AM.jpeg → project-villas-55.jpeg
+  WhatsApp Image 2026-02-26 at 9.49.08 PM.jpeg → project-villas-56.jpeg
+  WhatsApp Image 2026-03-14 at 11.10.02 AM.jpeg → project-villas-57.jpeg
+  WhatsApp Image 2026-03-15 at 11.18.24 AM.jpeg → project-villas-58.jpeg
+  WhatsApp Image 2026-04-11 at 7.52.07 PM.jpeg → project-villas-59.jpeg
+  WhatsApp Image 2026-04-21 at 8.37.26 PM.jpeg → project-villas-60.jpeg
+  WhatsApp Image 2026-04-22 at 8.09.00 PM.jpeg → project-villas-61.jpeg
+  WhatsApp Image 2026-04-25 at 9.33.40 AM (1).jpeg → project-villas-62.jpeg
+  WhatsApp Image 2026-04-25 at 9.36.08 AM (2).jpeg → project-villas-63.jpeg
+  WhatsApp Image 2026-07-23 at 8.04.53 PM (2).jpeg → project-villas-64.jpeg
+  WhatsApp Image 2026-07-28 at 12.56.43 PM (4).jpeg → project-villas-65.jpeg
+  WhatsApp Image 2026-07-28 at 12.56.45 PM.jpeg → project-villas-66.jpeg
