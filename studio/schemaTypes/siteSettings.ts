@@ -126,6 +126,64 @@ export const siteSettings = defineType({
         },
       ],
     }),
+
+    // ── Warranty ───────────────────────────────────────────────────────────
+    // Controls the WarrantyStrip component rendered on product pages.
+    // showWarrantyBadge: false hides the strip entirely until client confirms terms.
+    defineField({
+      name:  'showWarrantyBadge',
+      title: 'Show Warranty Badge',
+      type:  'boolean',
+      description: 'Enables the warranty strip on product pages. Off by default until client approves the wording.',
+      initialValue: false,
+    }),
+
+    defineField({
+      name:  'warranty',
+      title: 'Warranty Details',
+      type:  'object',
+      description: 'Shown in the WarrantyStrip component when showWarrantyBadge is enabled',
+      fields: [
+        // Coverage years — displayed as pipe-separated points in the strip
+        defineField({ name: 'upvcYears',         title: 'uPVC Coverage (years)',         type: 'number', initialValue: 25 }),
+        defineField({ name: 'glassYears',        title: 'Glass Coverage (years)',        type: 'number', initialValue: 10 }),
+        defineField({ name: 'accessoriesYears',  title: 'Accessories Coverage (years)',  type: 'number', initialValue:  1 }),
+        defineField({ name: 'maintenanceYears',  title: 'Maintenance Coverage (years)',  type: 'number', initialValue:  1 }),
+
+        // Legal jurisdiction — required for UAE compliance
+        defineField({
+          name: 'governingLaw',
+          title: 'Governing Law',
+          type: 'object',
+          fields: [
+            defineField({ name: 'en', title: 'English', type: 'string', initialValue: 'UAE Law'           }),
+            defineField({ name: 'ar', title: 'Arabic',  type: 'string', initialValue: 'القانون الإماراتي' }),
+          ],
+        }),
+
+        // Excluded products — fly-screens and roller shutters per standard UAE warranty
+        defineField({
+          name: 'exclusions',
+          title: 'Exclusions',
+          type: 'object',
+          fields: [
+            defineField({ name: 'en', title: 'English', type: 'text', rows: 2, initialValue: 'Fly-screens and roller shutters are not covered' }),
+            defineField({ name: 'ar', title: 'Arabic',  type: 'text', rows: 2, initialValue: 'لا يشمل الضمان شبكات الذباب والستائر الدوارة'   }),
+          ],
+        }),
+
+        // Collapsible footnote shown below the warranty terms
+        defineField({
+          name: 'footnote',
+          title: 'Footnote',
+          type: 'object',
+          fields: [
+            defineField({ name: 'en', title: 'English', type: 'text', rows: 2, initialValue: 'Warranty is subject to standard terms and conditions'     }),
+            defineField({ name: 'ar', title: 'Arabic',  type: 'text', rows: 2, initialValue: 'الضمان خاضع للشروط والأحكام القياسية' }),
+          ],
+        }),
+      ],
+    }),
   ],
   preview: {
     select: { title: 'email' },
