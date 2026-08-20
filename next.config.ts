@@ -16,19 +16,19 @@ const nextConfig: NextConfig = {
   },
 
   // ── Legacy product URL redirects ─────────────────────────────────────────
-  // Old 3-level URLs (/products/{material}/{slug}) redirect permanently to
-  // doors-and-windows as the most common catch-all. Visitors who bookmarked
-  // a specific old URL still land on a valid page rather than a 404.
+  // Old 3-level URLs (/products/{material}/{legacy-slug}) redirect to the
+  // material page. The negative-lookahead excludes valid L3 category slugs so
+  // they are NOT caught and reach their own Next.js route handler.
   async redirects() {
     return [
       {
-        source:      '/products/upvc/:slug',
-        destination: '/products/upvc/doors-and-windows/:slug',
-        permanent:   true, // 308 — signals search engines to update their index
+        source:      '/products/upvc/:slug((?!windows|doors|doors-and-windows|staircases|stained-glass|sandblast|hebeschibe).*)',
+        destination: '/products/upvc',
+        permanent:   true,
       },
       {
-        source:      '/products/aluminum/:slug',
-        destination: '/products/aluminum/doors-and-windows/:slug',
+        source:      '/products/aluminum/:slug((?!windows|doors|doors-and-windows|staircases|skylights|stained-glass|sandblast).*)',
+        destination: '/products/aluminum',
         permanent:   true,
       },
     ];
