@@ -67,7 +67,6 @@ const COLUMNS: Column[] = [
       { en: 'All Products',     ar: 'جميع المنتجات',   href: '/products'          },
       { en: 'uPVC Systems',     ar: 'أنظمة UPVC',      href: '/products/upvc'     },
       { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum' },
-      { en: 'Solutions',        ar: 'الحلول',           href: '/solutions'         },
     ],
   },
   {

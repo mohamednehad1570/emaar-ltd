@@ -9,6 +9,5 @@ export { whyChooseUsData } from './whyChooseUs';
 export { faqData, faqCategoryIcons } from './faq';
 export { contactData } from './contact';
 export { upvcData, aluminumData } from './products';
-export { residentialData, commercialData } from './solutions';
 export { careersData } from './careers';
 export { techData } from './tech';

@@ -5,14 +5,18 @@ Next.js 16 (Turbopack) + TypeScript + Tailwind v4 + Framer Motion +
 Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 
 ## File structure
+- scripts/rename-products.mjs — image rename helper; dry-run by default (`node scripts/rename-products.mjs`), writes renames with `--apply`; logs to scripts/rename-log.txt
+- scripts/rename-projects.mjs — project image rename helper; same dry-run/--apply pattern; logs to scripts/rename-projects-log.txt
+- public/products/ — pre-created folder tree: upvc/{windows,doors,doors-and-windows,staircases,stained-glass,sandblast,hebeschibe} + aluminum/{windows,doors,doors-and-windows,staircases,skylights,stained-glass,sandblast}; each leaf has a .gitkeep so Git tracks empty folders before images are dropped in
+- public/projects/buildings/ — project images for building type (project-buildings-NN.ext)
+- public/projects/villas/ — project images for villa type (project-villas-NN.ext)
 - app/ — App Router routes
 - app/api/contact/route.ts — contact form POST handler (Resend + rate limiting, 3 req/10 min per IP)
 - app/api/revalidate/route.ts — Sanity ISR webhook endpoint
-- components/home/ — HeroSection, StatsSection, ProductsSection, ProjectsSection, SolutionsSection, WhyChooseUsSection, CTASection, CertificationsSection, TestimonialsSection
+- components/home/ — HeroSection, StatsSection, ProductsSection, ProjectsSection, WhyChooseUsSection, CTASection, CertificationsSection, TestimonialsSection
 - components/MotionProvider.tsx — wraps app in MotionConfig reducedMotion="user" (prefers-reduced-motion handled globally here — no per-component useReducedMotion needed)
 - components/products/ — ProductShowcase, ProductMaterialPage (L2 category tiles), ProductCategoryPage (L3 grid), ProductFilterSidebar (shared controlled sidebar, lockedMaterial/lockedCategory props), ProductGrid (shared grid, DisplayProduct interface), WarrantyStrip (horizontal strip, hidden when showWarrantyBadge=false), ProductDetailPage, ProductDetailRelated, ProductDetailHero, ProductDetailSpecs
 - components/technical/ — TechnicalPageClient (client), TechFilters, TechDocumentGrid, TechDocumentCard (exports DisplayDocument interface)
-- components/solutions/ — SolutionsPageClient (client, /solutions index), ResidentialContent, CommercialContent, SolutionTypePage, SolutionProductsSection, SolutionProjectsSection
 - components/careers/ — CareersPageClient (client, assembles page + CTA), CareersHero, CareersCulture, CareersJobList (filter + accordion), CareersJobCard, types.ts (DisplayJob interface)
 - components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage
 - components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
@@ -47,16 +51,17 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 / · /about · /products · /products/upvc · /products/aluminum
 /products/upvc/[category] · /products/aluminum/[category]
 /products/upvc/[category]/[slug] · /products/aluminum/[category]/[slug]
-/solutions · /solutions/residential · /solutions/commercial
 /projects · /projects/[id] · /technical · /contact
 Footer only: /about · /why-choose-us · /faq · /careers
+
+Note: Solutions tab deleted — /solutions, /solutions/residential, /solutions/commercial pages removed entirely.
 
 ## Product taxonomy
 uPVC categories: windows · doors · doors-and-windows · staircases · stained-glass · sandblast · hebeschibe
 Aluminum categories: windows · doors · doors-and-windows · staircases · skylights · stained-glass · sandblast
 
 ## Header nav order
-LTR: Home · Products▾ · Solutions▾ · Projects · Technical · About▾ · Contact
+LTR: Home · Products▾ · Projects · Technical · About▾ · Contact
 RTL: reversed
 
 ## Routing rules
@@ -132,6 +137,14 @@ RTL: reversed
 Object types (shared): `localizedString`, `localizedText`
 Document types: `product`, `project`, `teamMember`, `faq`, `jobPosting`, `certificate`, `siteSettings`, `techDocument`
 
+#### product schema (5 tabs)
+- **Identity** — title (localizedString), slug, material (upvc|aluminum), category (subcategory slug, validated against material), badge
+- **Details** — description, features[] ({en,ar} pairs), mainImage, inStock
+- **Specifications** — specs object (dimensions required; soundReduction, thermalInsulation, securityRating, specTags[] optional)
+- **Gallery** — gallery[] images
+- **Relations** — relatedProducts[] references, seo object (metaTitle, metaDescription)
+- `material` = upvc|aluminum (replaces old `category` field that held the material value); `category` now means the subcategory slug
+
 ### Fetching data in server components
 ```typescript
 import { sanityFetch } from '@/lib/sanity/client'
@@ -164,9 +177,10 @@ UI strings in those files (hero titles, features, CTAs) always stay static — n
 - `techDocumentsQuery` — all tech documents ordered by `order` asc; includes resolved file URL and previewImage
 - `jobPostingsQuery` — all job postings ordered by `_createdAt` desc; full fields including responsibilities[], benefits[]
 - `solutionSettingsQuery` — siteSettings phone + whatsappNumber (for solutions contact info)
-- `siteSettingsQuery` — now includes `mapEmbedUrl` and `officeLocations[]` (name, address, phone, workingHours)
+- `siteSettingsQuery` — now includes `mapEmbedUrl`, `officeLocations[]` (name, address, phone, workingHours), `showWarrantyBadge`, and `warranty` object (upvcYears, glassYears, accessoriesYears, maintenanceYears, governingLaw, exclusions, footnote)
 
 ## Known gotchas
+- Sanity product schema break: the old schema used `category` to mean material (upvc/aluminum); the new schema uses `material` for that and `category` for the subcategory slug (e.g. "windows"). Any Sanity migration script must account for this field rename.
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits
   white text. Fix: style={{ color: 'var(--color-brand-dark)' }} on
   light-bg buttons inside dark sections

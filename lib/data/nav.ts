@@ -22,14 +22,7 @@ export const NAV: NavItem[] = [
       { en: 'All Products', ar: 'جميع المنتجات',   href: '/products', dividerBefore: true },
     ],
   },
-  {
-    en: 'Solutions', ar: 'الحلول', href: '',
-    dropdown: [
-      { en: 'Residential', ar: 'السكنية',  href: '/solutions/residential' },
-      { en: 'Commercial',  ar: 'التجارية', href: '/solutions/commercial'  },
-    ],
-  },
-  { en: 'Projects',  ar: 'المشاريع',  href: '/projects'  },
+{ en: 'Projects',  ar: 'المشاريع',  href: '/projects'  },
   { en: 'Technical', ar: 'المواصفات', href: '/technical' },
   {
     en: 'About', ar: 'من نحن', href: '',

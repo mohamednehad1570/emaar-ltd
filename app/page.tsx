@@ -6,7 +6,7 @@
  * strings when the CMS returns null or empty data.
  *
  * Section order:
- *   Hero → Stats + Certs → Products → Solutions → Projects → Why → Testimonials → CTA
+ *   Hero → Stats + Certs → Products → Projects → Why → Testimonials → CTA
  */
 
 import { getSiteSettings } from '@/lib/sanity/fetch';
@@ -14,7 +14,6 @@ import HeroSection           from '@/components/home/HeroSection';
 import StatsSection          from '@/components/home/StatsSection';
 import CertificationsSection from '@/components/home/CertificationsSection';
 import ProductsSection       from '@/components/home/ProductsSection';
-import SolutionsSection      from '@/components/home/SolutionsSection';
 import ProjectsSection       from '@/components/home/ProjectsSection';
 import WhyChooseUsSection    from '@/components/home/WhyChooseUsSection';
 import TestimonialsSection   from '@/components/home/TestimonialsSection';
@@ -42,9 +41,6 @@ export default async function HomePage() {
 
       <SectionDivider en="Our Products" ar="منتجاتنا" />
       <ProductsSection />
-
-      <SectionDivider en="Built For You" ar="صُمِّم لك" />
-      <SolutionsSection />
 
       <SectionDivider en="Our Projects" ar="مشاريعنا" />
       <ProjectsSection />
