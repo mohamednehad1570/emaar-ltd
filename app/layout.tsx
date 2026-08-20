@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import MotionProvider from "@/components/MotionProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import LanguageTransition from "@/components/layout/LanguageTransition";
 import { getSiteSettings } from "@/lib/sanity/fetch";
 
 const cairo = Cairo({
@@ -34,9 +35,9 @@ export default async function RootLayout({
         <MotionProvider>
           <LanguageProvider>
             <Header whatsappNumber={settings?.whatsappNumber} />
-            <main className="min-h-screen">
+            <LanguageTransition>
               {children}
-            </main>
+            </LanguageTransition>
             <Footer
               phone={settings?.phone}
               email={settings?.email}

@@ -27,7 +27,7 @@ interface HeaderProps {
 }
 
 export default function Header({ whatsappNumber }: HeaderProps) {
-  const { language, toggleLanguage, isRTL } = useLanguage();
+  const { language, toggleLanguage, isRTL, pendingLanguage } = useLanguage();
   const pathname = usePathname();
   const r = useReducedMotion();
   const { scrollY } = useScroll();
@@ -44,25 +44,30 @@ export default function Header({ whatsappNumber }: HeaderProps) {
   // CMS number overrides the hardcoded constant when configured
   const wa = getWhatsAppURL({ page: 'home' }, whatsappNumber);
 
-  const LangToggle = () => (
-    <div className="flex items-center">
-      {LANGS.map(({ lang, label, aria }, i) => (
-        <React.Fragment key={lang}>
-          {i > 0 && <span className="text-dim text-xs select-none px-0.5" aria-hidden="true">|</span>}
-          <motion.button
-            onClick={language !== lang ? toggleLanguage : undefined}
-            aria-label={aria} aria-pressed={language === lang}
-            whileHover={r ? undefined : { scale: 1.05 }}
-            transition={{ duration: 0.15, ease: EASE }}
-            className={cn('px-2 text-xs',
-              language === lang
-                ? 'font-bold text-text-heading'
-                : 'font-normal text-text-muted hover:text-text-body')}
-          >{label}</motion.button>
-        </React.Fragment>
-      ))}
-    </div>
-  );
+  const LangToggle = () => {
+    // Use pendingLanguage during the 150 ms crossfade so the toggle
+    // shows the incoming language as active before the content settles.
+    const displayLang = pendingLanguage ?? language;
+    return (
+      <div className="flex items-center">
+        {LANGS.map(({ lang, label, aria }, i) => (
+          <React.Fragment key={lang}>
+            {i > 0 && <span className="text-dim text-xs select-none px-0.5" aria-hidden="true">|</span>}
+            <motion.button
+              onClick={displayLang !== lang ? toggleLanguage : undefined}
+              aria-label={aria} aria-pressed={displayLang === lang}
+              whileHover={r ? undefined : { scale: 1.05 }}
+              transition={{ duration: 0.15, ease: EASE }}
+              className={cn('px-2 text-xs',
+                displayLang === lang
+                  ? 'font-bold text-text-heading'
+                  : 'font-normal text-text-muted hover:text-text-body')}
+            >{label}</motion.button>
+          </React.Fragment>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <>
