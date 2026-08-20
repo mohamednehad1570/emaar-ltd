@@ -10,7 +10,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - app/api/revalidate/route.ts — Sanity ISR webhook endpoint
 - components/home/ — HeroSection, StatsSection, ProductsSection, ProjectsSection, SolutionsSection, WhyChooseUsSection, CTASection, CertificationsSection, TestimonialsSection
 - components/MotionProvider.tsx — wraps app in MotionConfig reducedMotion="user" (prefers-reduced-motion handled globally here — no per-component useReducedMotion needed)
-- components/products/ — ProductShowcase, ProductMaterialPage, ProductDetailPage, ProductDetailRelated, ProductDetailHero, ProductDetailSpecs
+- components/products/ — ProductShowcase, ProductMaterialPage (L2 category tiles), ProductCategoryPage (L3 grid), ProductFilterSidebar (shared controlled sidebar, lockedMaterial/lockedCategory props), ProductGrid (shared grid, DisplayProduct interface), WarrantyStrip (horizontal strip, hidden when showWarrantyBadge=false), ProductDetailPage, ProductDetailRelated, ProductDetailHero, ProductDetailSpecs
 - components/technical/ — TechnicalPageClient (client), TechFilters, TechDocumentGrid, TechDocumentCard (exports DisplayDocument interface)
 - components/solutions/ — SolutionsPageClient (client, /solutions index), ResidentialContent, CommercialContent, SolutionTypePage, SolutionProductsSection, SolutionProjectsSection
 - components/careers/ — CareersPageClient (client, assembles page + CTA), CareersHero, CareersCulture, CareersJobList (filter + accordion), CareersJobCard, types.ts (DisplayJob interface)
@@ -23,7 +23,8 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
 - lib/data/nav.ts — header dropdown items (DropdownItem interface, bilingual en/ar + href)
-- lib/data/productDetails.ts — extended per-product data: specs, gallery images, related slugs (bilingual title/description in products.ts)
+- lib/data/products.ts — PRIMARY: upvcCategories / aluminumCategories (ProductCategory[]) with nested ProductItem[]. COMPAT: upvcData / aluminumData flat exports retained during 4-level routing transition. upvcProducts / aluminumProducts are flattened arrays for search/sitemap.
+- lib/data/productDetails.ts — extended per-product data: specs, gallery images, related slugs; category field added to ProductDetail interface
 - lib/data/*.ts — bilingual data { en: {...}, ar: {...} } — static fallback only for CMS-managed content
 - lib/cn.ts, lib/motion.ts, lib/iconMap.ts
 - lib/hooks/useHorizontalAutoscroll.ts — carousel auto-scroll hook
@@ -44,18 +45,24 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 
 ## Sitemap
 / · /about · /products · /products/upvc · /products/aluminum
-/products/upvc/[product] · /products/aluminum/[product]
+/products/upvc/[category] · /products/aluminum/[category]
+/products/upvc/[category]/[slug] · /products/aluminum/[category]/[slug]
 /solutions · /solutions/residential · /solutions/commercial
 /projects · /projects/[id] · /technical · /contact
 Footer only: /about · /why-choose-us · /faq · /careers
+
+## Product taxonomy
+uPVC categories: windows · doors · doors-and-windows · staircases · stained-glass · sandblast · hebeschibe
+Aluminum categories: windows · doors · doors-and-windows · staircases · skylights · stained-glass · sandblast
 
 ## Header nav order
 LTR: Home · Products▾ · Solutions▾ · Projects · Technical · About▾ · Contact
 RTL: reversed
 
 ## Routing rules
-- Product URLs always /products/{material}/{slug}
-- material = upvc or aluminum — never flat /products/{slug}
+- Product URLs are 4-level: /products/{material}/{category}/{slug}
+- material = upvc | aluminum — never flat /products/{slug}
+- Old 3-level URLs /products/{material}/{slug} redirect 308 to /products/{material}/doors-and-windows/{slug}
 - No breadcrumbs — removed, never add back
 - /projects/[id] accepts both numeric IDs (static fallback) and string slugs (Sanity); page handler tries Sanity slug first, then falls back to static data
 
