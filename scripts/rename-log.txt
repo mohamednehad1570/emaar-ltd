@@ -1,376 +1,378 @@
 # Emaar product image rename log
-# Generated: 2026-08-20T14:18:53.972Z
+# Generated: 2026-08-21T07:50:20.779Z
 
+[upvc/doors]
+  upvc-doors-windows-12.jpg                → upvc-door-01.jpg
+  upvc-doors-windows-19.jpg                → upvc-door-02.jpg
+  upvc-doors-windows-25.jpg                → upvc-door-03.jpg
+  upvc-doors-windows-26.jpg                → upvc-door-04.jpg
+  upvc-doors-windows-40.jpeg               → upvc-door-05.jpeg
+  upvc-doors-windows-41.jpeg               → upvc-door-06.jpeg
+  upvc-doors-windows-48.jpeg               → upvc-door-07.jpeg
+  upvc-doors-windows-57.jpeg               → upvc-door-08.jpeg
+  upvc-doors-windows-66.jpeg               → upvc-door-09.jpeg
+  upvc-doors-windows-69.jpeg               → upvc-door-10.jpeg
+  upvc-doors-windows-72.jpeg               → upvc-door-11.jpeg
+  upvc-doors-windows-73.jpeg               → upvc-door-12.jpeg
+  upvc-doors-windows-87.jpeg               → upvc-door-13.jpeg
+  upvc-doors-windows-88.jpeg               → upvc-door-14.jpeg
+  upvc-doors-windows-91.jpeg               → upvc-door-15.jpeg
+  upvc-doors-windows-98.jpeg               → upvc-door-16.jpeg
 [upvc/doors-and-windows]
-  1.jpg                                    → upvc-doors-windows-01.jpg
-  100_0263.JPG                             → upvc-doors-windows-02.jpg
-  100_2001.JPG                             → upvc-doors-windows-03.jpg
-  20240207_111720.jpg                      → upvc-doors-windows-04.jpg
-  A4.1.jpg                                 → upvc-doors-windows-05.jpg
-  CIMG0217.JPG                             → upvc-doors-windows-06.jpg
-  DSCN0119.JPG                             → upvc-doors-windows-07.jpg
-  DSCN0208.JPG                             → upvc-doors-windows-08.jpg
-  IMG-20170108-WA0015.jpg                  → upvc-doors-windows-09.jpg
-  IMG-20170109-WA0012.jpg                  → upvc-doors-windows-10.jpg
-  IMG-20171115-WA0013.jpg                  → upvc-doors-windows-11.jpg
-  IMG-20180513-WA0004-copy copy.jpg        → upvc-doors-windows-12.jpg
-  IMG-20180513-WA0007 copy.jpg             → upvc-doors-windows-13.jpg
-  IMG-20180513-WA0026 new new.jpg          → upvc-doors-windows-14.jpg
-  IMG-20180513-WA0026.jpg                  → upvc-doors-windows-15.jpg
-  IMG-20180513-WA0033.jpg                  → upvc-doors-windows-16.jpg
-  IMG-20180513-WA0034.jpg                  → upvc-doors-windows-17.jpg
-  IMG-20180513-WA0043.jpg                  → upvc-doors-windows-18.jpg
-  IMG-20180513-WA0057.jpg                  → upvc-doors-windows-19.jpg
-  IMG-20180513-WA0059.jpg                  → upvc-doors-windows-20.jpg
-  IMG-20200622-WA0005.jpg                  → upvc-doors-windows-21.jpg
-  IMG-20200701-WA0004.jpg                  → upvc-doors-windows-22.jpg
-  IMG-20200703-WA0001.jpg                  → upvc-doors-windows-23.jpg
-  IMG-20200817-WA0045.jpg                  → upvc-doors-windows-24.jpg
-  IMG-20201019-WA0000.jpg                  → upvc-doors-windows-25.jpg
-  IMG-20201019-WA0002.jpg                  → upvc-doors-windows-26.jpg
-  IMG-20201019-WA0011.jpg                  → upvc-doors-windows-27.jpg
-  IMG_0040.JPG                             → upvc-doors-windows-28.jpg
-  IMG_0072.JPG                             → upvc-doors-windows-29.jpg
-  IMG_1530.JPG                             → upvc-doors-windows-30.jpg
-  WhatsApp Image 2021-04-24 at 7.59.24 AM.jpeg → upvc-doors-windows-31.jpeg
-  WhatsApp Image 2021-04-25 at 11.00.44 PM.jpeg → upvc-doors-windows-32.jpeg
-  WhatsApp Image 2021-06-13 at 10.03.23 AM (2).jpeg → upvc-doors-windows-33.jpeg
-  WhatsApp Image 2021-06-13 at 10.03.24 AM (2).jpeg → upvc-doors-windows-34.jpeg
-  WhatsApp Image 2021-06-13 at 10.03.25 AM (1).jpeg → upvc-doors-windows-35.jpeg
-  WhatsApp Image 2021-06-13 at 9.11.42 AM (1).jpeg → upvc-doors-windows-36.jpeg
-  WhatsApp Image 2021-06-13 at 9.11.43 AM (1).jpeg → upvc-doors-windows-37.jpeg
-  WhatsApp Image 2022-03-21 at 12.32.22 AM.jpeg → upvc-doors-windows-38.jpeg
-  WhatsApp Image 2022-03-21 at 12.32.41 AM.jpeg → upvc-doors-windows-39.jpeg
-  WhatsApp Image 2022-05-26 at 1.12.24 PM (1).jpeg → upvc-doors-windows-40.jpeg
-  WhatsApp Image 2022-05-26 at 1.12.24 PM.jpeg → upvc-doors-windows-41.jpeg
-  WhatsApp Image 2022-06-05 at 8.29.07 PM (1).jpeg → upvc-doors-windows-42.jpeg
-  WhatsApp Image 2022-07-17 at 8.45.24 AM (1).jpeg → upvc-doors-windows-43.jpeg
-  WhatsApp Image 2022-10-18 at 3.44.54 PM.jpeg → upvc-doors-windows-44.jpeg
-  WhatsApp Image 2022-11-13 at 4.03.25 PM.jpeg → upvc-doors-windows-45.jpeg
-  WhatsApp Image 2022-11-15 at 4.56.47 PM (1).jpeg → upvc-doors-windows-46.jpeg
-  WhatsApp Image 2022-11-15 at 4.56.47 PM (2).jpeg → upvc-doors-windows-47.jpeg
-  WhatsApp Image 2022-11-15 at 4.56.47 PM (3).jpeg → upvc-doors-windows-48.jpeg
-  WhatsApp Image 2022-12-20 at 8.10.45 AM (1).jpeg → upvc-doors-windows-49.jpeg
-  WhatsApp Image 2023-03-12 at 9.05.40 PM (2).jpeg → upvc-doors-windows-50.jpeg
-  WhatsApp Image 2023-04-26 at 2.46.10 PM (2).jpeg → upvc-doors-windows-51.jpeg
-  WhatsApp Image 2023-05-06 at 3.39.13 AM (1).jpeg → upvc-doors-windows-52.jpeg
-  WhatsApp Image 2023-05-09 at 6.51.29 AM.jpeg → upvc-doors-windows-53.jpeg
-  WhatsApp Image 2023-05-14 at 11.20.17 PM (1).jpeg → upvc-doors-windows-54.jpeg
-  WhatsApp Image 2023-06-25 at 3.38.59 PM (1).jpeg → upvc-doors-windows-55.jpeg
-  WhatsApp Image 2024-01-29 at 2.41.00 PM (1).jpeg → upvc-doors-windows-56.jpeg
-  WhatsApp Image 2024-08-12 at 1.17.23 PM (1).jpeg → upvc-doors-windows-57.jpeg
-  WhatsApp Image 2025-01-06 at 11.25.36 PM.jpeg → upvc-doors-windows-58.jpeg
-  WhatsApp Image 2025-01-06 at 11.25.38 PM (1).jpeg → upvc-doors-windows-59.jpeg
-  WhatsApp Image 2025-01-21 at 3.55.27 PM (2).jpeg → upvc-doors-windows-60.jpeg
-  WhatsApp Image 2025-02-11 at 10.10.29 AM.jpeg → upvc-doors-windows-61.jpeg
-  WhatsApp Image 2025-03-04 at 3.24.21 PM (1).jpeg → upvc-doors-windows-62.jpeg
-  WhatsApp Image 2025-03-04 at 3.24.21 PM.jpeg → upvc-doors-windows-63.jpeg
-  WhatsApp Image 2025-04-07 at 1.35.44 PM (1).jpeg → upvc-doors-windows-64.jpeg
-  WhatsApp Image 2025-04-19 at 4.15.46 PM (1).jpeg → upvc-doors-windows-65.jpeg
-  WhatsApp Image 2025-04-24 at 7.22.33 PM (1).jpeg → upvc-doors-windows-66.jpeg
-  WhatsApp Image 2025-04-24 at 7.22.33 PM.jpeg → upvc-doors-windows-67.jpeg
-  WhatsApp Image 2025-04-24 at 9.23.46 AM (1).jpeg → upvc-doors-windows-68.jpeg
-  WhatsApp Image 2025-04-24 at 9.23.47 AM (1).jpeg → upvc-doors-windows-69.jpeg
-  WhatsApp Image 2025-04-24 at 9.23.47 AM.jpeg → upvc-doors-windows-70.jpeg
-  WhatsApp Image 2025-06-04 at 8.39.55 AM (1).jpeg → upvc-doors-windows-71.jpeg
-  WhatsApp Image 2025-08-25 at 3.45.47 PM (1).jpeg → upvc-doors-windows-72.jpeg
-  WhatsApp Image 2025-09-11 at 4.06.53 PM (1).jpeg → upvc-doors-windows-73.jpeg
-  WhatsApp Image 2025-09-11 at 4.06.56 PM (1).jpeg → upvc-doors-windows-74.jpeg
-  WhatsApp Image 2025-09-15 at 8.15.38 PM.jpeg → upvc-doors-windows-75.jpeg
-  WhatsApp Image 2025-09-28 at 10.58.35 PM (1).jpeg → upvc-doors-windows-76.jpeg
-  WhatsApp Image 2025-09-28 at 11.00.00 PM.jpeg → upvc-doors-windows-77.jpeg
-  WhatsApp Image 2025-10-10 at 12.14.35 PM (1).jpeg → upvc-doors-windows-78.jpeg
-  WhatsApp Image 2025-10-24 at 8.30.56 AM.jpeg → upvc-doors-windows-79.jpeg
-  WhatsApp Image 2025-11-04 at 8.51.24 PM (2).jpeg → upvc-doors-windows-80.jpeg
-  WhatsApp Image 2025-11-21 at 6.09.11 PM.jpeg → upvc-doors-windows-81.jpeg
-  WhatsApp Image 2026-01-07 at 2.59.43 PM.jpeg → upvc-doors-windows-82.jpeg
-  WhatsApp Image 2026-01-08 at 9.23.10 AM.jpeg → upvc-doors-windows-83.jpeg
-  WhatsApp Image 2026-01-15 at 8.50.22 AM (1).jpeg → upvc-doors-windows-84.jpeg
-  WhatsApp Image 2026-01-31 at 8.41.03 PM.jpeg → upvc-doors-windows-85.jpeg
-  WhatsApp Image 2026-02-02 at 4.44.46 PM.jpeg → upvc-doors-windows-86.jpeg
-  WhatsApp Image 2026-02-13 at 7.32.53 PM (1).jpeg → upvc-doors-windows-87.jpeg
-  WhatsApp Image 2026-02-19 at 6.12.19 PM.jpeg → upvc-doors-windows-88.jpeg
-  WhatsApp Image 2026-02-21 at 5.37.33 PM.jpeg → upvc-doors-windows-89.jpeg
-  WhatsApp Image 2026-03-05 at 7.36.17 AM.jpeg → upvc-doors-windows-90.jpeg
-  WhatsApp Image 2026-03-15 at 9.47.07 PM (1).jpeg → upvc-doors-windows-91.jpeg
-  WhatsApp Image 2026-04-06 at 7.43.47 PM.jpeg → upvc-doors-windows-92.jpeg
-  WhatsApp Image 2026-04-29 at 10.14.20 PM.jpeg → upvc-doors-windows-93.jpeg
-  WhatsApp Image 2026-04-29 at 2.06.45 PM.jpeg → upvc-doors-windows-94.jpeg
-  WhatsApp Image 2026-05-08 at 7.33.46 AM.jpeg → upvc-doors-windows-95.jpeg
-  WhatsApp Image 2026-07-28 at 12.56.43 PM (1).jpeg → upvc-doors-windows-96.jpeg
-  aebab1ea-cb98-48d4-822a-75df1fb22859.jpeg → upvc-doors-windows-97.jpeg
-  b8c8ca18-ab9b-4b70-a2ba-52f77459c403.jpeg → upvc-doors-windows-98.jpeg
+  upvc-doors-windows-09.jpg                → upvc-doors-windows-01.jpg
+  upvc-doors-windows-10.jpg                → upvc-doors-windows-02.jpg
+  upvc-doors-windows-11.jpg                → upvc-doors-windows-03.jpg
+  upvc-doors-windows-13.jpg                → upvc-doors-windows-04.jpg
+  upvc-doors-windows-14.jpg                → upvc-doors-windows-05.jpg
+  upvc-doors-windows-15.jpg                → upvc-doors-windows-06.jpg
+  upvc-doors-windows-16.jpg                → upvc-doors-windows-07.jpg
+  upvc-doors-windows-17.jpg                → upvc-doors-windows-08.jpg
+  upvc-doors-windows-18.jpg                → upvc-doors-windows-09.jpg
+  upvc-doors-windows-20.jpg                → upvc-doors-windows-10.jpg
+  upvc-doors-windows-21.jpg                → upvc-doors-windows-11.jpg
+  upvc-doors-windows-22.jpg                → upvc-doors-windows-12.jpg
+  upvc-doors-windows-23.jpg                → upvc-doors-windows-13.jpg
+  upvc-doors-windows-24.jpg                → upvc-doors-windows-14.jpg
+  upvc-doors-windows-27.jpg                → upvc-doors-windows-15.jpg
+  upvc-doors-windows-30.jpg                → upvc-doors-windows-16.jpg
+  upvc-doors-windows-31.jpeg               → upvc-doors-windows-17.jpeg
+  upvc-doors-windows-32.jpeg               → upvc-doors-windows-18.jpeg
+  upvc-doors-windows-33.jpeg               → upvc-doors-windows-19.jpeg
+  upvc-doors-windows-34.jpeg               → upvc-doors-windows-20.jpeg
+  upvc-doors-windows-35.jpeg               → upvc-doors-windows-21.jpeg
+  upvc-doors-windows-36.jpeg               → upvc-doors-windows-22.jpeg
+  upvc-doors-windows-37.jpeg               → upvc-doors-windows-23.jpeg
+  upvc-doors-windows-38.jpeg               → upvc-doors-windows-24.jpeg
+  upvc-doors-windows-39.jpeg               → upvc-doors-windows-25.jpeg
+  upvc-doors-windows-42.jpeg               → upvc-doors-windows-26.jpeg
+  upvc-doors-windows-43.jpeg               → upvc-doors-windows-27.jpeg
+  upvc-doors-windows-44.jpeg               → upvc-doors-windows-28.jpeg
+  upvc-doors-windows-45.jpeg               → upvc-doors-windows-29.jpeg
+  upvc-doors-windows-46.jpeg               → upvc-doors-windows-30.jpeg
+  upvc-doors-windows-47.jpeg               → upvc-doors-windows-31.jpeg
+  upvc-doors-windows-49.jpeg               → upvc-doors-windows-32.jpeg
+  upvc-doors-windows-50.jpeg               → upvc-doors-windows-33.jpeg
+  upvc-doors-windows-51.jpeg               → upvc-doors-windows-34.jpeg
+  upvc-doors-windows-52.jpeg               → upvc-doors-windows-35.jpeg
+  upvc-doors-windows-53.jpeg               → upvc-doors-windows-36.jpeg
+  upvc-doors-windows-55.jpeg               → upvc-doors-windows-37.jpeg
+  upvc-doors-windows-56.jpeg               → upvc-doors-windows-38.jpeg
+  upvc-doors-windows-58.jpeg               → upvc-doors-windows-39.jpeg
+  upvc-doors-windows-60.jpeg               → upvc-doors-windows-40.jpeg
+  upvc-doors-windows-62.jpeg               → upvc-doors-windows-41.jpeg
+  upvc-doors-windows-63.jpeg               → upvc-doors-windows-42.jpeg
+  upvc-doors-windows-64.jpeg               → upvc-doors-windows-43.jpeg
+  upvc-doors-windows-65.jpeg               → upvc-doors-windows-44.jpeg
+  upvc-doors-windows-67.jpeg               → upvc-doors-windows-45.jpeg
+  upvc-doors-windows-68.jpeg               → upvc-doors-windows-46.jpeg
+  upvc-doors-windows-70.jpeg               → upvc-doors-windows-47.jpeg
+  upvc-doors-windows-74.jpeg               → upvc-doors-windows-48.jpeg
+  upvc-doors-windows-75.jpeg               → upvc-doors-windows-49.jpeg
+  upvc-doors-windows-76.jpeg               → upvc-doors-windows-50.jpeg
+  upvc-doors-windows-81.jpeg               → upvc-doors-windows-51.jpeg
+  upvc-doors-windows-92.jpeg               → upvc-doors-windows-52.jpeg
 [upvc/hebeschibe]
-  1.png                                    → upvc-hebeschibe-01.png
-  2.png                                    → upvc-hebeschibe-02.png
-  3.jpg                                    → upvc-hebeschibe-03.jpg
-  4.jpg                                    → upvc-hebeschibe-04.jpg
-  5.jpg                                    → upvc-hebeschibe-05.jpg
-  6.jpg                                    → upvc-hebeschibe-06.jpg
+  upvc-hebeschibe-01.png                   → upvc-hebeschibe-01.png
+  upvc-hebeschibe-02.png                   → upvc-hebeschibe-02.png
+  upvc-hebeschibe-03.jpg                   → upvc-hebeschibe-03.jpg
+  upvc-hebeschibe-04.jpg                   → upvc-hebeschibe-04.jpg
+  upvc-hebeschibe-05.jpg                   → upvc-hebeschibe-05.jpg
+  upvc-hebeschibe-06.jpg                   → upvc-hebeschibe-06.jpg
 [upvc/sandblast]
-  8fad33ac-919b-47dc-ae79-cd3b59235000.jpg → upvc-sandblast-01.jpg
-  IMG-20200411-WA0048.jpg                  → upvc-sandblast-02.jpg
-  IMG-20200412-WA0016.jpg                  → upvc-sandblast-03.jpg
-  IMG-20200412-WA0019.jpg                  → upvc-sandblast-04.jpg
-  IMG-20200412-WA0021.jpg                  → upvc-sandblast-05.jpg
-  IMG-20200412-WA0028.jpg                  → upvc-sandblast-06.jpg
-  IMG-20200519-WA0029.jpg                  → upvc-sandblast-07.jpg
-  IMG-20201217-WA0000.jpg                  → upvc-sandblast-08.jpg
-  WhatsApp Image 2021-06-13 at 10.03.25 AM.jpeg → upvc-sandblast-09.jpeg
-  WhatsApp Image 2021-06-13 at 10.03.27 AM (2).jpeg → upvc-sandblast-10.jpeg
-  WhatsApp Image 2021-06-13 at 9.11.36 AM (1).jpeg → upvc-sandblast-11.jpeg
-  WhatsApp Image 2022-06-05 at 8.29.07 PM.jpeg → upvc-sandblast-12.jpeg
-  WhatsApp Image 2022-06-14 at 8.19.22 AM (1).jpeg → upvc-sandblast-13.jpeg
-  WhatsApp Image 2022-08-21 at 2.43.19 PM (1).jpeg → upvc-sandblast-14.jpeg
-  WhatsApp Image 2022-10-04 at 8.43.51 PM (1).jpeg → upvc-sandblast-15.jpeg
-  WhatsApp Image 2022-10-06 at 4.56.42 PM.jpeg → upvc-sandblast-16.jpeg
-  WhatsApp Image 2022-11-10 at 8.45.40 PM (1).jpeg → upvc-sandblast-17.jpeg
-  WhatsApp Image 2022-11-24 at 1.42.31 PM.jpeg → upvc-sandblast-18.jpeg
-  WhatsApp Image 2022-11-29 at 1.12.15 PM (1).jpeg → upvc-sandblast-19.jpeg
-  WhatsApp Image 2022-11-29 at 1.12.15 PM.jpeg → upvc-sandblast-20.jpeg
-  WhatsApp Image 2023-03-12 at 9.05.36 PM.jpeg → upvc-sandblast-21.jpeg
-  WhatsApp Image 2023-03-12 at 9.05.38 PM.jpeg → upvc-sandblast-22.jpeg
-  WhatsApp Image 2023-05-05 at 1.46.54 PM.jpeg → upvc-sandblast-23.jpeg
-  WhatsApp Image 2023-10-10 at 10.36.55 AM.jpeg → upvc-sandblast-24.jpeg
-  WhatsApp Image 2024-08-12 at 1.15.54 PM (1).jpeg → upvc-sandblast-25.jpeg
-  WhatsApp Image 2024-08-27 at 11.15.04 AM (1).jpeg → upvc-sandblast-26.jpeg
-  WhatsApp Image 2024-12-31 at 1.38.09 PM.jpeg → upvc-sandblast-27.jpeg
-  WhatsApp Image 2025-01-13 at 11.00.28 AM.jpeg → upvc-sandblast-28.jpeg
-  WhatsApp Image 2025-11-04 at 8.50.59 PM.jpeg → upvc-sandblast-29.jpeg
-  WhatsApp Image 2025-12-18 at 2.04.03 PM (1).jpeg → upvc-sandblast-30.jpeg
-  WhatsApp Image 2026-01-07 at 11.22.51 AM.jpeg → upvc-sandblast-31.jpeg
-  WhatsApp Image 2026-03-11 at 8.12.07 PM (1).jpeg → upvc-sandblast-32.jpeg
+  upvc-sandblast-01.jpg                    → upvc-sandblast-01.jpg
+  upvc-sandblast-02.jpg                    → upvc-sandblast-02.jpg
+  upvc-sandblast-03.jpg                    → upvc-sandblast-03.jpg
+  upvc-sandblast-04.jpg                    → upvc-sandblast-04.jpg
+  upvc-sandblast-05.jpg                    → upvc-sandblast-05.jpg
+  upvc-sandblast-06.jpg                    → upvc-sandblast-06.jpg
+  upvc-sandblast-07.jpg                    → upvc-sandblast-07.jpg
+  upvc-sandblast-08.jpg                    → upvc-sandblast-08.jpg
+  upvc-sandblast-09.jpeg                   → upvc-sandblast-09.jpeg
+  upvc-sandblast-10.jpeg                   → upvc-sandblast-10.jpeg
+  upvc-sandblast-11.jpeg                   → upvc-sandblast-11.jpeg
+  upvc-sandblast-12.jpeg                   → upvc-sandblast-12.jpeg
+  upvc-sandblast-13.jpeg                   → upvc-sandblast-13.jpeg
+  upvc-sandblast-14.jpeg                   → upvc-sandblast-14.jpeg
+  upvc-sandblast-15.jpeg                   → upvc-sandblast-15.jpeg
+  upvc-sandblast-16.jpeg                   → upvc-sandblast-16.jpeg
+  upvc-sandblast-17.jpeg                   → upvc-sandblast-17.jpeg
+  upvc-sandblast-18.jpeg                   → upvc-sandblast-18.jpeg
+  upvc-sandblast-19.jpeg                   → upvc-sandblast-19.jpeg
+  upvc-sandblast-20.jpeg                   → upvc-sandblast-20.jpeg
+  upvc-sandblast-21.jpeg                   → upvc-sandblast-21.jpeg
+  upvc-sandblast-22.jpeg                   → upvc-sandblast-22.jpeg
+  upvc-sandblast-23.jpeg                   → upvc-sandblast-23.jpeg
+  upvc-sandblast-24.jpeg                   → upvc-sandblast-24.jpeg
+  upvc-sandblast-25.jpeg                   → upvc-sandblast-25.jpeg
+  upvc-sandblast-26.jpeg                   → upvc-sandblast-26.jpeg
+  upvc-sandblast-27.jpeg                   → upvc-sandblast-27.jpeg
+  upvc-sandblast-28.jpeg                   → upvc-sandblast-28.jpeg
+  upvc-sandblast-29.jpeg                   → upvc-sandblast-29.jpeg
+  upvc-sandblast-30.jpeg                   → upvc-sandblast-30.jpeg
+  upvc-sandblast-31.jpeg                   → upvc-sandblast-31.jpeg
+  upvc-sandblast-32.jpeg                   → upvc-sandblast-32.jpeg
 [upvc/stained-glass]
-  0.jpg                                    → upvc-stained-glass-01.jpg
-  0b8a284b52893a6d963ebede7b3753b0.jpg     → upvc-stained-glass-02.jpg
-  100_0669.JPG                             → upvc-stained-glass-03.jpg
-  100_2539.JPG                             → upvc-stained-glass-04.jpg
-  100_2822.JPG                             → upvc-stained-glass-05.jpg
-  170827richter.jpg                        → upvc-stained-glass-06.jpg
-  20.jpg                                   → upvc-stained-glass-07.jpg
-  40.jpg                                   → upvc-stained-glass-08.jpg
-  5.jpg                                    → upvc-stained-glass-09.jpg
-  CIMG0118.JPG                             → upvc-stained-glass-10.jpg
-  CIMG0133.JPG                             → upvc-stained-glass-11.jpg
-  CIMG2469.JPG                             → upvc-stained-glass-12.jpg
-  CIMG2475.JPG                             → upvc-stained-glass-13.jpg
-  CIMG3228.JPG                             → upvc-stained-glass-14.jpg
-  D122.JPG                                 → upvc-stained-glass-15.jpg
-  D211.JPG                                 → upvc-stained-glass-16.jpg
-  DSCF1441.JPG                             → upvc-stained-glass-17.jpg
-  DSCN0266.JPG                             → upvc-stained-glass-18.jpg
-  DSCN0269.JPG                             → upvc-stained-glass-19.jpg
-  DSCN0291.JPG                             → upvc-stained-glass-20.jpg
-  DSCN1099.JPG                             → upvc-stained-glass-21.jpg
-  DSCN1101.JPG                             → upvc-stained-glass-22.jpg
-  DSCN1105.JPG                             → upvc-stained-glass-23.jpg
-  DSCN1107.JPG                             → upvc-stained-glass-24.jpg
-  DSCN1120.JPG                             → upvc-stained-glass-25.jpg
-  DSCN1123.JPG                             → upvc-stained-glass-26.jpg
-  DSCN1137.JPG                             → upvc-stained-glass-27.jpg
-  DSCN1142.JPG                             → upvc-stained-glass-28.jpg
-  DSCN1159.JPG                             → upvc-stained-glass-29.jpg
-  IMG-20170109-WA0018.jpg                  → upvc-stained-glass-30.jpg
-  IMG-20170109-WA0024.jpg                  → upvc-stained-glass-31.jpg
-  IMG-20170109-WA0026.jpg                  → upvc-stained-glass-32.jpg
-  IMG-20170210-WA0005.jpg                  → upvc-stained-glass-33.jpg
-  IMG-20170210-WA0008.jpg                  → upvc-stained-glass-34.jpg
-  IMG-20170401-WA0023.jpg                  → upvc-stained-glass-35.jpg
-  IMG-20170727-WA0001.jpg                  → upvc-stained-glass-36.jpg
-  IMG-20170727-WA0002.jpg                  → upvc-stained-glass-37.jpg
-  IMG-20170727-WA0007.jpg                  → upvc-stained-glass-38.jpg
-  IMG-20170727-WA0011.jpg                  → upvc-stained-glass-39.jpg
-  IMG-20171115-WA0015.jpg                  → upvc-stained-glass-40.jpg
-  IMG-20171115-WA0023.jpg                  → upvc-stained-glass-41.jpg
-  IMG-20180513-WA0006.jpg                  → upvc-stained-glass-42.jpg
-  IMG-20190622-WA0021.jpg                  → upvc-stained-glass-43.jpg
-  IMG-20190622-WA0022.jpg                  → upvc-stained-glass-44.jpg
-  IMG-20190622-WA0047.jpg                  → upvc-stained-glass-45.jpg
-  IMG-20190720-WA0011.jpg                  → upvc-stained-glass-46.jpg
-  IMG-20190804-WA0010.jpg                  → upvc-stained-glass-47.jpg
-  IMG-20190828-WA0026.jpg                  → upvc-stained-glass-48.jpg
-  IMG-20190828-WA0028.jpg                  → upvc-stained-glass-49.jpg
-  IMG-20190828-WA0031.jpg                  → upvc-stained-glass-50.jpg
-  IMG_20180326_090631.jpg                  → upvc-stained-glass-51.jpg
-  IMG_20180326_090735.jpg                  → upvc-stained-glass-52.jpg
-  IMG_20180326_090805.jpg                  → upvc-stained-glass-53.jpg
-  IMG_20180326_101618.jpg                  → upvc-stained-glass-54.jpg
-  WhatsApp Image 2021-08-26 at 9.01.07 AM.jpeg → upvc-stained-glass-55.jpeg
-  WhatsApp Image 2021-12-14 at 1.58.12 PM (1).jpeg → upvc-stained-glass-56.jpeg
-  WhatsApp Image 2021-12-14 at 1.58.12 PM.jpeg → upvc-stained-glass-57.jpeg
-  WhatsApp Image 2022-03-13 at 7.37.53 PM.jpeg → upvc-stained-glass-58.jpeg
-  WhatsApp Image 2022-04-08 at 1.31.12 PM (1).jpeg → upvc-stained-glass-59.jpeg
-  WhatsApp Image 2022-08-17 at 8.38.38 AM (6).jpeg → upvc-stained-glass-60.jpeg
-  WhatsApp Image 2022-08-17 at 8.38.38 AM (7).jpeg → upvc-stained-glass-61.jpeg
-  WhatsApp Image 2022-08-17 at 8.39.24 AM (2).jpeg → upvc-stained-glass-62.jpeg
-  WhatsApp Image 2022-08-17 at 8.39.24 AM (3).jpeg → upvc-stained-glass-63.jpeg
-  WhatsApp Image 2022-09-04 at 2.31.05 PM.jpeg → upvc-stained-glass-64.jpeg
-  WhatsApp Image 2022-09-05 at 9.53.42 AM.jpeg → upvc-stained-glass-65.jpeg
-  WhatsApp Image 2022-12-11 at 3.07.37 PM (1).jpeg → upvc-stained-glass-66.jpeg
-  WhatsApp Image 2022-12-22 at 12.41.09 PM (1).jpeg → upvc-stained-glass-67.jpeg
-  WhatsApp Image 2022-12-22 at 12.41.10 PM.jpeg → upvc-stained-glass-68.jpeg
-  WhatsApp Image 2023-09-19 at 4.28.42 PM (1).jpeg → upvc-stained-glass-69.jpeg
-  WhatsApp Image 2025-02-11 at 10.41.44 AM.jpeg → upvc-stained-glass-70.jpeg
-  WhatsApp Image 2025-06-02 at 2.47.12 PM.jpeg → upvc-stained-glass-71.jpeg
-  WhatsApp Image 2025-12-10 at 2.53.25 PM.jpeg → upvc-stained-glass-72.jpeg
-  WhatsApp Image 2025-12-10 at 3.25.32 PM.jpeg → upvc-stained-glass-73.jpeg
-  WhatsApp Image 2025-12-10 at 3.25.33 PM (1).jpeg → upvc-stained-glass-74.jpeg
-  WhatsApp Image 2025-12-13 at 3.02.17 AM.jpeg → upvc-stained-glass-75.jpeg
-  WhatsApp Image 2026-01-16 at 8.07.47 PM.jpeg → upvc-stained-glass-76.jpeg
-  WhatsApp Image 2026-01-16 at 8.07.54 PM.jpeg → upvc-stained-glass-77.jpeg
-  WhatsApp Image 2026-04-07 at 8.06.56 PM.jpeg → upvc-stained-glass-78.jpeg
+  upvc-stained-glass-01.jpg                → upvc-stained-glass-01.jpg
+  upvc-stained-glass-02.jpg                → upvc-stained-glass-02.jpg
+  upvc-stained-glass-03.jpg                → upvc-stained-glass-03.jpg
+  upvc-stained-glass-04.jpg                → upvc-stained-glass-04.jpg
+  upvc-stained-glass-05.jpg                → upvc-stained-glass-05.jpg
+  upvc-stained-glass-06.jpg                → upvc-stained-glass-06.jpg
+  upvc-stained-glass-07.jpg                → upvc-stained-glass-07.jpg
+  upvc-stained-glass-08.jpg                → upvc-stained-glass-08.jpg
+  upvc-stained-glass-09.jpg                → upvc-stained-glass-09.jpg
+  upvc-stained-glass-10.jpg                → upvc-stained-glass-10.jpg
+  upvc-stained-glass-11.jpg                → upvc-stained-glass-11.jpg
+  upvc-stained-glass-12.jpg                → upvc-stained-glass-12.jpg
+  upvc-stained-glass-13.jpg                → upvc-stained-glass-13.jpg
+  upvc-stained-glass-14.jpg                → upvc-stained-glass-14.jpg
+  upvc-stained-glass-15.jpg                → upvc-stained-glass-15.jpg
+  upvc-stained-glass-16.jpg                → upvc-stained-glass-16.jpg
+  upvc-stained-glass-17.jpg                → upvc-stained-glass-17.jpg
+  upvc-stained-glass-18.jpg                → upvc-stained-glass-18.jpg
+  upvc-stained-glass-19.jpg                → upvc-stained-glass-19.jpg
+  upvc-stained-glass-20.jpg                → upvc-stained-glass-20.jpg
+  upvc-stained-glass-21.jpg                → upvc-stained-glass-21.jpg
+  upvc-stained-glass-22.jpg                → upvc-stained-glass-22.jpg
+  upvc-stained-glass-23.jpg                → upvc-stained-glass-23.jpg
+  upvc-stained-glass-24.jpg                → upvc-stained-glass-24.jpg
+  upvc-stained-glass-25.jpg                → upvc-stained-glass-25.jpg
+  upvc-stained-glass-26.jpg                → upvc-stained-glass-26.jpg
+  upvc-stained-glass-27.jpg                → upvc-stained-glass-27.jpg
+  upvc-stained-glass-28.jpg                → upvc-stained-glass-28.jpg
+  upvc-stained-glass-29.jpg                → upvc-stained-glass-29.jpg
+  upvc-stained-glass-30.jpg                → upvc-stained-glass-30.jpg
+  upvc-stained-glass-31.jpg                → upvc-stained-glass-31.jpg
+  upvc-stained-glass-32.jpg                → upvc-stained-glass-32.jpg
+  upvc-stained-glass-33.jpg                → upvc-stained-glass-33.jpg
+  upvc-stained-glass-34.jpg                → upvc-stained-glass-34.jpg
+  upvc-stained-glass-35.jpg                → upvc-stained-glass-35.jpg
+  upvc-stained-glass-36.jpg                → upvc-stained-glass-36.jpg
+  upvc-stained-glass-37.jpg                → upvc-stained-glass-37.jpg
+  upvc-stained-glass-38.jpg                → upvc-stained-glass-38.jpg
+  upvc-stained-glass-39.jpg                → upvc-stained-glass-39.jpg
+  upvc-stained-glass-40.jpg                → upvc-stained-glass-40.jpg
+  upvc-stained-glass-41.jpg                → upvc-stained-glass-41.jpg
+  upvc-stained-glass-42.jpg                → upvc-stained-glass-42.jpg
+  upvc-stained-glass-43.jpg                → upvc-stained-glass-43.jpg
+  upvc-stained-glass-44.jpg                → upvc-stained-glass-44.jpg
+  upvc-stained-glass-45.jpg                → upvc-stained-glass-45.jpg
+  upvc-stained-glass-46.jpg                → upvc-stained-glass-46.jpg
+  upvc-stained-glass-47.jpg                → upvc-stained-glass-47.jpg
+  upvc-stained-glass-48.jpg                → upvc-stained-glass-48.jpg
+  upvc-stained-glass-49.jpg                → upvc-stained-glass-49.jpg
+  upvc-stained-glass-50.jpg                → upvc-stained-glass-50.jpg
+  upvc-stained-glass-51.jpg                → upvc-stained-glass-51.jpg
+  upvc-stained-glass-52.jpg                → upvc-stained-glass-52.jpg
+  upvc-stained-glass-53.jpg                → upvc-stained-glass-53.jpg
+  upvc-stained-glass-54.jpg                → upvc-stained-glass-54.jpg
+  upvc-stained-glass-55.jpeg               → upvc-stained-glass-55.jpeg
+  upvc-stained-glass-56.jpeg               → upvc-stained-glass-56.jpeg
+  upvc-stained-glass-57.jpeg               → upvc-stained-glass-57.jpeg
+  upvc-stained-glass-58.jpeg               → upvc-stained-glass-58.jpeg
+  upvc-stained-glass-59.jpeg               → upvc-stained-glass-59.jpeg
+  upvc-stained-glass-60.jpeg               → upvc-stained-glass-60.jpeg
+  upvc-stained-glass-61.jpeg               → upvc-stained-glass-61.jpeg
+  upvc-stained-glass-62.jpeg               → upvc-stained-glass-62.jpeg
+  upvc-stained-glass-63.jpeg               → upvc-stained-glass-63.jpeg
+  upvc-stained-glass-64.jpeg               → upvc-stained-glass-64.jpeg
+  upvc-stained-glass-65.jpeg               → upvc-stained-glass-65.jpeg
+  upvc-stained-glass-66.jpeg               → upvc-stained-glass-66.jpeg
+  upvc-stained-glass-67.jpeg               → upvc-stained-glass-67.jpeg
+  upvc-stained-glass-68.jpeg               → upvc-stained-glass-68.jpeg
+  upvc-stained-glass-69.jpeg               → upvc-stained-glass-69.jpeg
+  upvc-stained-glass-70.jpeg               → upvc-stained-glass-70.jpeg
+  upvc-stained-glass-71.jpeg               → upvc-stained-glass-71.jpeg
+  upvc-stained-glass-72.jpeg               → upvc-stained-glass-72.jpeg
+  upvc-stained-glass-73.jpeg               → upvc-stained-glass-73.jpeg
+  upvc-stained-glass-74.jpeg               → upvc-stained-glass-74.jpeg
+  upvc-stained-glass-75.jpeg               → upvc-stained-glass-75.jpeg
+  upvc-stained-glass-76.jpeg               → upvc-stained-glass-76.jpeg
+  upvc-stained-glass-77.jpeg               → upvc-stained-glass-77.jpeg
+  upvc-stained-glass-78.jpeg               → upvc-stained-glass-78.jpeg
 [upvc/staircases]
-  20240207_110357.jpg                      → upvc-staircase-01.jpg
-  WhatsApp Image 2022-12-12 at 10.38.58 AM (1).jpeg → upvc-staircase-02.jpeg
-  WhatsApp Image 2022-12-28 at 2.25.21 PM (1).jpeg → upvc-staircase-03.jpeg
-  WhatsApp Image 2023-05-14 at 11.20.19 PM (1).jpeg → upvc-staircase-04.jpeg
-  WhatsApp Image 2023-06-06 at 7.22.54 PM.jpeg → upvc-staircase-05.jpeg
-  WhatsApp Image 2025-06-04 at 8.39.54 AM (1).jpeg → upvc-staircase-06.jpeg
-  WhatsApp Image 2025-06-10 at 9.35.27 AM.jpeg → upvc-staircase-07.jpeg
-  WhatsApp Image 2025-11-02 at 6.26.44 PM.jpeg → upvc-staircase-08.jpeg
-  WhatsApp Image 2025-12-23 at 7.10.01 PM.jpeg → upvc-staircase-09.jpeg
-  WhatsApp Image 2025-12-28 at 12.59.45 PM.jpeg → upvc-staircase-10.jpeg
-  WhatsApp Image 2026-02-26 at 9.49.05 PM (1).jpeg → upvc-staircase-11.jpeg
-  WhatsApp Image 2026-04-25 at 9.33.56 AM (1).jpeg → upvc-staircase-12.jpeg
-  WhatsApp Image 2026-04-29 at 10.15.28 PM.jpeg → upvc-staircase-13.jpeg
+  upvc-staircase-01.jpg                    → upvc-staircase-01.jpg
+  upvc-staircase-02.jpeg                   → upvc-staircase-02.jpeg
+  upvc-staircase-03.jpeg                   → upvc-staircase-03.jpeg
+  upvc-staircase-04.jpeg                   → upvc-staircase-04.jpeg
+  upvc-staircase-05.jpeg                   → upvc-staircase-05.jpeg
+  upvc-staircase-06.jpeg                   → upvc-staircase-06.jpeg
+  upvc-staircase-07.jpeg                   → upvc-staircase-07.jpeg
+  upvc-staircase-08.jpeg                   → upvc-staircase-08.jpeg
+  upvc-staircase-09.jpeg                   → upvc-staircase-09.jpeg
+  upvc-staircase-10.jpeg                   → upvc-staircase-10.jpeg
+  upvc-staircase-11.jpeg                   → upvc-staircase-11.jpeg
+  upvc-staircase-12.jpeg                   → upvc-staircase-12.jpeg
+  upvc-staircase-13.jpeg                   → upvc-staircase-13.jpeg
+[upvc/windows]
+  upvc-doors-windows-01.jpg                → upvc-window-01.jpg
+  upvc-doors-windows-02.jpg                → upvc-window-02.jpg
+  upvc-doors-windows-03.jpg                → upvc-window-03.jpg
+  upvc-doors-windows-04.jpg                → upvc-window-04.jpg
+  upvc-doors-windows-05.jpg                → upvc-window-05.jpg
+  upvc-doors-windows-06.jpg                → upvc-window-06.jpg
+  upvc-doors-windows-07.jpg                → upvc-window-07.jpg
+  upvc-doors-windows-08.jpg                → upvc-window-08.jpg
+  upvc-doors-windows-28.jpg                → upvc-window-09.jpg
+  upvc-doors-windows-29.jpg                → upvc-window-10.jpg
+  upvc-doors-windows-54.jpeg               → upvc-window-11.jpeg
+  upvc-doors-windows-59.jpeg               → upvc-window-12.jpeg
+  upvc-doors-windows-61.jpeg               → upvc-window-13.jpeg
+  upvc-doors-windows-71.jpeg               → upvc-window-14.jpeg
+  upvc-doors-windows-77.jpeg               → upvc-window-15.jpeg
+  upvc-doors-windows-78.jpeg               → upvc-window-16.jpeg
+  upvc-doors-windows-79.jpeg               → upvc-window-17.jpeg
+  upvc-doors-windows-80.jpeg               → upvc-window-18.jpeg
+  upvc-doors-windows-82.jpeg               → upvc-window-19.jpeg
+  upvc-doors-windows-83.jpeg               → upvc-window-20.jpeg
+  upvc-doors-windows-84.jpeg               → upvc-window-21.jpeg
+  upvc-doors-windows-85.jpeg               → upvc-window-22.jpeg
+  upvc-doors-windows-86.jpeg               → upvc-window-23.jpeg
+  upvc-doors-windows-89.jpeg               → upvc-window-24.jpeg
+  upvc-doors-windows-90.jpeg               → upvc-window-25.jpeg
+  upvc-doors-windows-93.jpeg               → upvc-window-26.jpeg
+  upvc-doors-windows-94.jpeg               → upvc-window-27.jpeg
+  upvc-doors-windows-95.jpeg               → upvc-window-28.jpeg
+  upvc-doors-windows-96.jpeg               → upvc-window-29.jpeg
+  upvc-doors-windows-97.jpeg               → upvc-window-30.jpeg
 [aluminum/doors-and-windows]
-  1.jpeg                                   → al-doors-windows-01.jpeg
-  B18.1.jpg                                → al-doors-windows-02.jpg
-  B6.1.jpg                                 → al-doors-windows-03.jpg
-  WhatsApp Image 2025-01-21 at 5.28.01 AM (1).jpeg → al-doors-windows-04.jpeg
-  WhatsApp Image 2026-03-11 at 8.56.40 PM (1).jpeg → al-doors-windows-05.jpeg
-  WhatsApp Image 2026-04-25 at 9.33.39 AM (1).jpeg → al-doors-windows-06.jpeg
-  WhatsApp Image 2026-07-23 at 8.04.52 PM (1).jpeg → al-doors-windows-07.jpeg
-  WhatsApp Image 2026-07-23 at 8.04.53 PM (1).jpeg → al-doors-windows-08.jpeg
+  al-doors-windows-01.jpeg                 → al-doors-windows-01.jpeg
+  al-doors-windows-02.jpg                  → al-doors-windows-02.jpg
+  al-doors-windows-03.jpg                  → al-doors-windows-03.jpg
+  al-doors-windows-04.jpeg                 → al-doors-windows-04.jpeg
+  al-doors-windows-05.jpeg                 → al-doors-windows-05.jpeg
+  al-doors-windows-06.jpeg                 → al-doors-windows-06.jpeg
+  al-doors-windows-07.jpeg                 → al-doors-windows-07.jpeg
+  al-doors-windows-08.jpeg                 → al-doors-windows-08.jpeg
 [aluminum/sandblast]
-  8fad33ac-919b-47dc-ae79-cd3b59235000.jpg → al-sandblast-01.jpg
-  IMG-20200411-WA0048.jpg                  → al-sandblast-02.jpg
-  IMG-20200412-WA0016.jpg                  → al-sandblast-03.jpg
-  IMG-20200412-WA0019.jpg                  → al-sandblast-04.jpg
-  IMG-20200412-WA0021.jpg                  → al-sandblast-05.jpg
-  IMG-20200412-WA0028.jpg                  → al-sandblast-06.jpg
-  IMG-20200519-WA0029.jpg                  → al-sandblast-07.jpg
-  IMG-20201217-WA0000.jpg                  → al-sandblast-08.jpg
-  WhatsApp Image 2021-06-13 at 10.03.25 AM.jpeg → al-sandblast-09.jpeg
-  WhatsApp Image 2021-06-13 at 10.03.27 AM (2).jpeg → al-sandblast-10.jpeg
-  WhatsApp Image 2021-06-13 at 9.11.36 AM (1).jpeg → al-sandblast-11.jpeg
-  WhatsApp Image 2022-06-05 at 8.29.07 PM.jpeg → al-sandblast-12.jpeg
-  WhatsApp Image 2022-06-14 at 8.19.22 AM (1).jpeg → al-sandblast-13.jpeg
-  WhatsApp Image 2022-08-21 at 2.43.19 PM (1).jpeg → al-sandblast-14.jpeg
-  WhatsApp Image 2022-10-04 at 8.43.51 PM (1).jpeg → al-sandblast-15.jpeg
-  WhatsApp Image 2022-10-06 at 4.56.42 PM.jpeg → al-sandblast-16.jpeg
-  WhatsApp Image 2022-11-10 at 8.45.40 PM (1).jpeg → al-sandblast-17.jpeg
-  WhatsApp Image 2022-11-24 at 1.42.31 PM.jpeg → al-sandblast-18.jpeg
-  WhatsApp Image 2022-11-29 at 1.12.15 PM (1).jpeg → al-sandblast-19.jpeg
-  WhatsApp Image 2022-11-29 at 1.12.15 PM.jpeg → al-sandblast-20.jpeg
-  WhatsApp Image 2023-03-12 at 9.05.36 PM.jpeg → al-sandblast-21.jpeg
-  WhatsApp Image 2023-03-12 at 9.05.38 PM.jpeg → al-sandblast-22.jpeg
-  WhatsApp Image 2023-05-05 at 1.46.54 PM.jpeg → al-sandblast-23.jpeg
-  WhatsApp Image 2023-10-10 at 10.36.55 AM.jpeg → al-sandblast-24.jpeg
-  WhatsApp Image 2024-08-12 at 1.15.54 PM (1).jpeg → al-sandblast-25.jpeg
-  WhatsApp Image 2024-08-27 at 11.15.04 AM (1).jpeg → al-sandblast-26.jpeg
-  WhatsApp Image 2024-12-31 at 1.38.09 PM.jpeg → al-sandblast-27.jpeg
-  WhatsApp Image 2025-01-13 at 11.00.28 AM.jpeg → al-sandblast-28.jpeg
-  WhatsApp Image 2025-11-04 at 8.50.59 PM.jpeg → al-sandblast-29.jpeg
-  WhatsApp Image 2025-12-18 at 2.04.03 PM (1).jpeg → al-sandblast-30.jpeg
-  WhatsApp Image 2026-01-07 at 11.22.51 AM.jpeg → al-sandblast-31.jpeg
-  WhatsApp Image 2026-03-11 at 8.12.07 PM (1).jpeg → al-sandblast-32.jpeg
+  al-sandblast-01.jpg                      → al-sandblast-01.jpg
+  al-sandblast-02.jpg                      → al-sandblast-02.jpg
+  al-sandblast-03.jpg                      → al-sandblast-03.jpg
+  al-sandblast-04.jpg                      → al-sandblast-04.jpg
+  al-sandblast-05.jpg                      → al-sandblast-05.jpg
+  al-sandblast-06.jpg                      → al-sandblast-06.jpg
+  al-sandblast-07.jpg                      → al-sandblast-07.jpg
+  al-sandblast-08.jpg                      → al-sandblast-08.jpg
+  al-sandblast-09.jpeg                     → al-sandblast-09.jpeg
+  al-sandblast-10.jpeg                     → al-sandblast-10.jpeg
+  al-sandblast-11.jpeg                     → al-sandblast-11.jpeg
+  al-sandblast-12.jpeg                     → al-sandblast-12.jpeg
+  al-sandblast-13.jpeg                     → al-sandblast-13.jpeg
+  al-sandblast-14.jpeg                     → al-sandblast-14.jpeg
+  al-sandblast-15.jpeg                     → al-sandblast-15.jpeg
+  al-sandblast-16.jpeg                     → al-sandblast-16.jpeg
+  al-sandblast-17.jpeg                     → al-sandblast-17.jpeg
+  al-sandblast-18.jpeg                     → al-sandblast-18.jpeg
+  al-sandblast-19.jpeg                     → al-sandblast-19.jpeg
+  al-sandblast-20.jpeg                     → al-sandblast-20.jpeg
+  al-sandblast-21.jpeg                     → al-sandblast-21.jpeg
+  al-sandblast-22.jpeg                     → al-sandblast-22.jpeg
+  al-sandblast-23.jpeg                     → al-sandblast-23.jpeg
+  al-sandblast-24.jpeg                     → al-sandblast-24.jpeg
+  al-sandblast-25.jpeg                     → al-sandblast-25.jpeg
+  al-sandblast-26.jpeg                     → al-sandblast-26.jpeg
+  al-sandblast-27.jpeg                     → al-sandblast-27.jpeg
+  al-sandblast-28.jpeg                     → al-sandblast-28.jpeg
+  al-sandblast-29.jpeg                     → al-sandblast-29.jpeg
+  al-sandblast-30.jpeg                     → al-sandblast-30.jpeg
+  al-sandblast-31.jpeg                     → al-sandblast-31.jpeg
+  al-sandblast-32.jpeg                     → al-sandblast-32.jpeg
 [aluminum/skylights]
-  1.jpg                                    → al-skylight-01.jpg
-  2.jpg                                    → al-skylight-02.jpg
-  3.jpeg                                   → al-skylight-03.jpeg
-  4.jpg                                    → al-skylight-04.jpg
-  5.jpg                                    → al-skylight-05.jpg
-  School-Skylight.jpg                      → al-skylight-06.jpg
-  WhatsApp Image 2022-11-29 at 1.12.11 PM (1).jpeg → al-skylight-07.jpeg
-  WhatsApp Image 2022-11-29 at 1.12.12 PM (1).jpeg → al-skylight-08.jpeg
-  WhatsApp Image 2026-03-26 at 8.08.39 PM.jpeg → al-skylight-09.jpeg
-  WhatsApp Image 2026-03-26 at 8.08.40 PM (1).jpeg → al-skylight-10.jpeg
-  WhatsApp Image 2026-03-26 at 8.08.40 PM.jpeg → al-skylight-11.jpeg
-  s01.jpg                                  → al-skylight-12.jpg
+  al-skylight-01.jpg                       → al-skylight-01.jpg
+  al-skylight-02.jpg                       → al-skylight-02.jpg
+  al-skylight-03.jpeg                      → al-skylight-03.jpeg
+  al-skylight-04.jpg                       → al-skylight-04.jpg
+  al-skylight-05.jpg                       → al-skylight-05.jpg
+  al-skylight-06.jpg                       → al-skylight-06.jpg
+  al-skylight-07.jpeg                      → al-skylight-07.jpeg
+  al-skylight-08.jpeg                      → al-skylight-08.jpeg
+  al-skylight-09.jpeg                      → al-skylight-09.jpeg
+  al-skylight-10.jpeg                      → al-skylight-10.jpeg
+  al-skylight-11.jpeg                      → al-skylight-11.jpeg
+  al-skylight-12.jpg                       → al-skylight-12.jpg
 [aluminum/stained-glass]
-  0.jpg                                    → al-stained-glass-01.jpg
-  0b8a284b52893a6d963ebede7b3753b0.jpg     → al-stained-glass-02.jpg
-  100_0669.JPG                             → al-stained-glass-03.jpg
-  100_2539.JPG                             → al-stained-glass-04.jpg
-  100_2822.JPG                             → al-stained-glass-05.jpg
-  170827richter.jpg                        → al-stained-glass-06.jpg
-  20.jpg                                   → al-stained-glass-07.jpg
-  40.jpg                                   → al-stained-glass-08.jpg
-  5.jpg                                    → al-stained-glass-09.jpg
-  CIMG0118.JPG                             → al-stained-glass-10.jpg
-  CIMG0133.JPG                             → al-stained-glass-11.jpg
-  CIMG2469.JPG                             → al-stained-glass-12.jpg
-  CIMG2475.JPG                             → al-stained-glass-13.jpg
-  CIMG3228.JPG                             → al-stained-glass-14.jpg
-  D122.JPG                                 → al-stained-glass-15.jpg
-  D211.JPG                                 → al-stained-glass-16.jpg
-  DSCF1441.JPG                             → al-stained-glass-17.jpg
-  DSCN0266.JPG                             → al-stained-glass-18.jpg
-  DSCN0269.JPG                             → al-stained-glass-19.jpg
-  DSCN0291.JPG                             → al-stained-glass-20.jpg
-  DSCN1099.JPG                             → al-stained-glass-21.jpg
-  DSCN1101.JPG                             → al-stained-glass-22.jpg
-  DSCN1105.JPG                             → al-stained-glass-23.jpg
-  DSCN1107.JPG                             → al-stained-glass-24.jpg
-  DSCN1120.JPG                             → al-stained-glass-25.jpg
-  DSCN1123.JPG                             → al-stained-glass-26.jpg
-  DSCN1137.JPG                             → al-stained-glass-27.jpg
-  DSCN1142.JPG                             → al-stained-glass-28.jpg
-  DSCN1159.JPG                             → al-stained-glass-29.jpg
-  IMG-20170109-WA0018.jpg                  → al-stained-glass-30.jpg
-  IMG-20170109-WA0024.jpg                  → al-stained-glass-31.jpg
-  IMG-20170109-WA0026.jpg                  → al-stained-glass-32.jpg
-  IMG-20170210-WA0005.jpg                  → al-stained-glass-33.jpg
-  IMG-20170210-WA0008.jpg                  → al-stained-glass-34.jpg
-  IMG-20170401-WA0023.jpg                  → al-stained-glass-35.jpg
-  IMG-20170727-WA0001.jpg                  → al-stained-glass-36.jpg
-  IMG-20170727-WA0002.jpg                  → al-stained-glass-37.jpg
-  IMG-20170727-WA0007.jpg                  → al-stained-glass-38.jpg
-  IMG-20170727-WA0011.jpg                  → al-stained-glass-39.jpg
-  IMG-20171115-WA0015.jpg                  → al-stained-glass-40.jpg
-  IMG-20171115-WA0023.jpg                  → al-stained-glass-41.jpg
-  IMG-20180513-WA0006.jpg                  → al-stained-glass-42.jpg
-  IMG-20190622-WA0021.jpg                  → al-stained-glass-43.jpg
-  IMG-20190622-WA0022.jpg                  → al-stained-glass-44.jpg
-  IMG-20190622-WA0047.jpg                  → al-stained-glass-45.jpg
-  IMG-20190720-WA0011.jpg                  → al-stained-glass-46.jpg
-  IMG-20190804-WA0010.jpg                  → al-stained-glass-47.jpg
-  IMG-20190828-WA0026.jpg                  → al-stained-glass-48.jpg
-  IMG-20190828-WA0028.jpg                  → al-stained-glass-49.jpg
-  IMG-20190828-WA0031.jpg                  → al-stained-glass-50.jpg
-  IMG_20180326_090631.jpg                  → al-stained-glass-51.jpg
-  IMG_20180326_090735.jpg                  → al-stained-glass-52.jpg
-  IMG_20180326_090805.jpg                  → al-stained-glass-53.jpg
-  IMG_20180326_101618.jpg                  → al-stained-glass-54.jpg
-  WhatsApp Image 2021-08-26 at 9.01.07 AM.jpeg → al-stained-glass-55.jpeg
-  WhatsApp Image 2021-12-14 at 1.58.12 PM (1).jpeg → al-stained-glass-56.jpeg
-  WhatsApp Image 2021-12-14 at 1.58.12 PM.jpeg → al-stained-glass-57.jpeg
-  WhatsApp Image 2022-03-13 at 7.37.53 PM.jpeg → al-stained-glass-58.jpeg
-  WhatsApp Image 2022-04-08 at 1.31.12 PM (1).jpeg → al-stained-glass-59.jpeg
-  WhatsApp Image 2022-08-17 at 8.38.38 AM (6).jpeg → al-stained-glass-60.jpeg
-  WhatsApp Image 2022-08-17 at 8.38.38 AM (7).jpeg → al-stained-glass-61.jpeg
-  WhatsApp Image 2022-08-17 at 8.39.24 AM (2).jpeg → al-stained-glass-62.jpeg
-  WhatsApp Image 2022-08-17 at 8.39.24 AM (3).jpeg → al-stained-glass-63.jpeg
-  WhatsApp Image 2022-09-04 at 2.31.05 PM.jpeg → al-stained-glass-64.jpeg
-  WhatsApp Image 2022-09-05 at 9.53.42 AM.jpeg → al-stained-glass-65.jpeg
-  WhatsApp Image 2022-12-11 at 3.07.37 PM (1).jpeg → al-stained-glass-66.jpeg
-  WhatsApp Image 2022-12-22 at 12.41.09 PM (1).jpeg → al-stained-glass-67.jpeg
-  WhatsApp Image 2022-12-22 at 12.41.10 PM.jpeg → al-stained-glass-68.jpeg
-  WhatsApp Image 2023-09-19 at 4.28.42 PM (1).jpeg → al-stained-glass-69.jpeg
-  WhatsApp Image 2025-02-11 at 10.41.44 AM.jpeg → al-stained-glass-70.jpeg
-  WhatsApp Image 2025-06-02 at 2.47.12 PM.jpeg → al-stained-glass-71.jpeg
-  WhatsApp Image 2025-12-10 at 2.53.25 PM.jpeg → al-stained-glass-72.jpeg
-  WhatsApp Image 2025-12-10 at 3.25.32 PM.jpeg → al-stained-glass-73.jpeg
-  WhatsApp Image 2025-12-10 at 3.25.33 PM (1).jpeg → al-stained-glass-74.jpeg
-  WhatsApp Image 2025-12-13 at 3.02.17 AM.jpeg → al-stained-glass-75.jpeg
-  WhatsApp Image 2026-01-16 at 8.07.47 PM.jpeg → al-stained-glass-76.jpeg
-  WhatsApp Image 2026-01-16 at 8.07.54 PM.jpeg → al-stained-glass-77.jpeg
-  WhatsApp Image 2026-04-07 at 8.06.56 PM.jpeg → al-stained-glass-78.jpeg
+  al-stained-glass-01.jpg                  → al-stained-glass-01.jpg
+  al-stained-glass-02.jpg                  → al-stained-glass-02.jpg
+  al-stained-glass-03.jpg                  → al-stained-glass-03.jpg
+  al-stained-glass-04.jpg                  → al-stained-glass-04.jpg
+  al-stained-glass-05.jpg                  → al-stained-glass-05.jpg
+  al-stained-glass-06.jpg                  → al-stained-glass-06.jpg
+  al-stained-glass-07.jpg                  → al-stained-glass-07.jpg
+  al-stained-glass-08.jpg                  → al-stained-glass-08.jpg
+  al-stained-glass-09.jpg                  → al-stained-glass-09.jpg
+  al-stained-glass-10.jpg                  → al-stained-glass-10.jpg
+  al-stained-glass-11.jpg                  → al-stained-glass-11.jpg
+  al-stained-glass-12.jpg                  → al-stained-glass-12.jpg
+  al-stained-glass-13.jpg                  → al-stained-glass-13.jpg
+  al-stained-glass-14.jpg                  → al-stained-glass-14.jpg
+  al-stained-glass-15.jpg                  → al-stained-glass-15.jpg
+  al-stained-glass-16.jpg                  → al-stained-glass-16.jpg
+  al-stained-glass-17.jpg                  → al-stained-glass-17.jpg
+  al-stained-glass-18.jpg                  → al-stained-glass-18.jpg
+  al-stained-glass-19.jpg                  → al-stained-glass-19.jpg
+  al-stained-glass-20.jpg                  → al-stained-glass-20.jpg
+  al-stained-glass-21.jpg                  → al-stained-glass-21.jpg
+  al-stained-glass-22.jpg                  → al-stained-glass-22.jpg
+  al-stained-glass-23.jpg                  → al-stained-glass-23.jpg
+  al-stained-glass-24.jpg                  → al-stained-glass-24.jpg
+  al-stained-glass-25.jpg                  → al-stained-glass-25.jpg
+  al-stained-glass-26.jpg                  → al-stained-glass-26.jpg
+  al-stained-glass-27.jpg                  → al-stained-glass-27.jpg
+  al-stained-glass-28.jpg                  → al-stained-glass-28.jpg
+  al-stained-glass-29.jpg                  → al-stained-glass-29.jpg
+  al-stained-glass-30.jpg                  → al-stained-glass-30.jpg
+  al-stained-glass-31.jpg                  → al-stained-glass-31.jpg
+  al-stained-glass-32.jpg                  → al-stained-glass-32.jpg
+  al-stained-glass-33.jpg                  → al-stained-glass-33.jpg
+  al-stained-glass-34.jpg                  → al-stained-glass-34.jpg
+  al-stained-glass-35.jpg                  → al-stained-glass-35.jpg
+  al-stained-glass-36.jpg                  → al-stained-glass-36.jpg
+  al-stained-glass-37.jpg                  → al-stained-glass-37.jpg
+  al-stained-glass-38.jpg                  → al-stained-glass-38.jpg
+  al-stained-glass-39.jpg                  → al-stained-glass-39.jpg
+  al-stained-glass-40.jpg                  → al-stained-glass-40.jpg
+  al-stained-glass-41.jpg                  → al-stained-glass-41.jpg
+  al-stained-glass-42.jpg                  → al-stained-glass-42.jpg
+  al-stained-glass-43.jpg                  → al-stained-glass-43.jpg
+  al-stained-glass-44.jpg                  → al-stained-glass-44.jpg
+  al-stained-glass-45.jpg                  → al-stained-glass-45.jpg
+  al-stained-glass-46.jpg                  → al-stained-glass-46.jpg
+  al-stained-glass-47.jpg                  → al-stained-glass-47.jpg
+  al-stained-glass-48.jpg                  → al-stained-glass-48.jpg
+  al-stained-glass-49.jpg                  → al-stained-glass-49.jpg
+  al-stained-glass-50.jpg                  → al-stained-glass-50.jpg
+  al-stained-glass-51.jpg                  → al-stained-glass-51.jpg
+  al-stained-glass-52.jpg                  → al-stained-glass-52.jpg
+  al-stained-glass-53.jpg                  → al-stained-glass-53.jpg
+  al-stained-glass-54.jpg                  → al-stained-glass-54.jpg
+  al-stained-glass-55.jpeg                 → al-stained-glass-55.jpeg
+  al-stained-glass-56.jpeg                 → al-stained-glass-56.jpeg
+  al-stained-glass-57.jpeg                 → al-stained-glass-57.jpeg
+  al-stained-glass-58.jpeg                 → al-stained-glass-58.jpeg
+  al-stained-glass-59.jpeg                 → al-stained-glass-59.jpeg
+  al-stained-glass-60.jpeg                 → al-stained-glass-60.jpeg
+  al-stained-glass-61.jpeg                 → al-stained-glass-61.jpeg
+  al-stained-glass-62.jpeg                 → al-stained-glass-62.jpeg
+  al-stained-glass-63.jpeg                 → al-stained-glass-63.jpeg
+  al-stained-glass-64.jpeg                 → al-stained-glass-64.jpeg
+  al-stained-glass-65.jpeg                 → al-stained-glass-65.jpeg
+  al-stained-glass-66.jpeg                 → al-stained-glass-66.jpeg
+  al-stained-glass-67.jpeg                 → al-stained-glass-67.jpeg
+  al-stained-glass-68.jpeg                 → al-stained-glass-68.jpeg
+  al-stained-glass-69.jpeg                 → al-stained-glass-69.jpeg
+  al-stained-glass-70.jpeg                 → al-stained-glass-70.jpeg
+  al-stained-glass-71.jpeg                 → al-stained-glass-71.jpeg
+  al-stained-glass-72.jpeg                 → al-stained-glass-72.jpeg
+  al-stained-glass-73.jpeg                 → al-stained-glass-73.jpeg
+  al-stained-glass-74.jpeg                 → al-stained-glass-74.jpeg
+  al-stained-glass-75.jpeg                 → al-stained-glass-75.jpeg
+  al-stained-glass-76.jpeg                 → al-stained-glass-76.jpeg
+  al-stained-glass-77.jpeg                 → al-stained-glass-77.jpeg
+  al-stained-glass-78.jpeg                 → al-stained-glass-78.jpeg
 [aluminum/staircases]
-  0082e1e7-e46e-4fad-b475-41aa3aef5302.jpg → al-staircase-01.jpg
-  WhatsApp Image 2025-04-03 at 3.52.29 PM (2).jpeg → al-staircase-02.jpeg
-  WhatsApp Image 2026-01-07 at 11.26.41 AM.jpeg → al-staircase-03.jpeg
-  WhatsApp Image 2026-01-27 at 6.40.19 PM.jpeg → al-staircase-04.jpeg
-  WhatsApp Image 2026-03-31 at 9.02.16 AM.jpeg → al-staircase-05.jpeg
-  WhatsApp Image 2026-07-23 at 8.04.54 PM.jpeg → al-staircase-06.jpeg
+  al-staircase-01.jpg                      → al-staircase-01.jpg
+  al-staircase-02.jpeg                     → al-staircase-02.jpeg
+  al-staircase-03.jpeg                     → al-staircase-03.jpeg
+  al-staircase-04.jpeg                     → al-staircase-04.jpeg
+  al-staircase-05.jpeg                     → al-staircase-05.jpeg
+  al-staircase-06.jpeg                     → al-staircase-06.jpeg

@@ -23,12 +23,12 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/contact/ — ContactPageClient (client, assembles page), ContactHero, ContactForm (form state + /api/contact submit), ContactInfo (phone/email/address/hours strip), ContactOffices (office cards, CMS + static fallback), ContactMap (iframe or placeholder)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
 - components/ui/ — shared primitives (Breadcrumbs removed — never add back)
-- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown, Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8)
+- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown, Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
 - lib/data/nav.ts — header dropdown items (DropdownItem interface, bilingual en/ar + href)
 - lib/data/products.ts — PRIMARY: upvcCategories / aluminumCategories (ProductCategory[]) with nested ProductItem[]. COMPAT: upvcData / aluminumData flat exports retained during 4-level routing transition. upvcProducts / aluminumProducts are flattened arrays for search/sitemap.
-- lib/data/productDetails.ts — extended per-product data: specs, gallery images, related slugs; category field added to ProductDetail interface
+- lib/data/productDetails.ts — 20 entries keyed by taxonomy slugs (11 uPVC, 9 aluminum). ProductDetail interface: { slug, productId, material, category, specs, gallery[], relatedSlugs[] }. gallery and relatedSlugs are intentionally empty — Sanity is authoritative. Existence check productDetails[slug] in L4 route handlers guards 404 when Sanity is empty. casement-window and tilt-turn-window appear in both materials; one entry per slug suffices because the check is existence-only and getProductBySlug(slug, material) is material-aware.
 - lib/data/*.ts — bilingual data { en: {...}, ar: {...} } — static fallback only for CMS-managed content
 - lib/cn.ts, lib/motion.ts, lib/iconMap.ts
 - lib/hooks/useHorizontalAutoscroll.ts — carousel auto-scroll hook
@@ -38,7 +38,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? }, whatsappNumber?) — optional second arg overrides WHATSAPP_NUMBER constant with CMS value
 - lib/sanity/queries.ts — typed GROQ query strings
 - lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, SanityProductDetail, TechDocument, JobPosting, LocalizedString
-- contexts/LanguageContext.tsx — useLanguage() → { language, isRTL } · useTranslation() → (en, ar) => string
+- contexts/LanguageContext.tsx — useLanguage() → { language, isRTL, toggleLanguage, setLanguage, isTransitioning, pendingLanguage } · useTranslation() → (en, ar) => string · isTransitioning=true for 150ms during crossfade; pendingLanguage shows incoming language in LangToggle before commit
 - lib/types.ts — shared display types: DisplayProject, ProjectPreview (re-exports Project, ProductSpec, ProductDetail from data layer)
 - studio/ — Sanity Studio (Node 22 required — always `nvm use 22` before `npm run dev`)
 - studio/schemaTypes/ — 8 document schemas + 2 shared object types
@@ -67,7 +67,7 @@ RTL: reversed
 ## Routing rules
 - Product URLs are 4-level: /products/{material}/{category}/{slug}
 - material = upvc | aluminum — never flat /products/{slug}
-- Old 3-level URLs /products/{material}/{slug} redirect 308 to /products/{material}/doors-and-windows/{slug}
+- Old 3-level URLs /products/{material}/{slug} redirect 308 to /products/{material} (the material landing page). next.config.ts uses a negative-lookahead regex to exclude valid L3 category slugs from the redirect — without it, category pages like /products/upvc/sandblast would themselves 308.
 - No breadcrumbs — removed, never add back
 - /projects/[id] accepts both numeric IDs (static fallback) and string slugs (Sanity); page handler tries Sanity slug first, then falls back to static data
 
@@ -186,9 +186,11 @@ UI strings in those files (hero titles, features, CTAs) always stay static — n
   light-bg buttons inside dark sections
 - Numerals in RTL: force dir="ltr" on number elements so digits stay left-to-right
 - Framer Motion owns all animations — no CSS transitions on animated elements
-- prefers-reduced-motion: MotionProvider handles this globally via reducedMotion="user" — no per-component useReducedMotion() needed
+- prefers-reduced-motion: MotionProvider handles this globally via reducedMotion="user" — no per-component useReducedMotion() needed. Exception: LanguageTransition.tsx calls useReducedMotion() explicitly because the crossfade is triggered by user action (not scroll/mount) and must be skippable independently of MotionConfig
 - revalidateTag in Next.js 16 requires two arguments: revalidateTag('sanity', 'default') — one-arg form is a type error
 - contact API (app/api/contact/route.ts) uses Resend; RESEND_API_KEY must be set in Vercel env vars
+- next.config.ts redirect pattern: use `$`-anchored non-capturing group + `[^/]+` — `:slug((?!(?:cat1|cat2|...)$)[^/]+)` — the `$` prevents prefix collision (e.g. "doors" without it matches the start of "doors-and-windows"); `[^/]+` restricts to single path segments. Always list ALL valid category slugs in both uPVC and aluminum lookaheads; a missing slug causes that category page to 308 to the material landing page
+- productDetails slug collision: casement-window and tilt-turn-window exist in both materials; only one productDetails entry is needed per slug because the L4 page only checks existence (`productDetails[slug]`) and Sanity's `getProductBySlug(slug, 'upvc'|'aluminum')` handles material-aware rendering
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev
