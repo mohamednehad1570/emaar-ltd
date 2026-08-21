@@ -1,6 +1,6 @@
 import { getJobPostings } from '@/lib/sanity/fetch'
 import CareersPageClient from '@/components/careers/CareersPageClient'
-import { careersData } from '@/lib/data/careers'
+import { careersData } from '@/lib/data/uiStrings'
 
 export const revalidate = 3600
 

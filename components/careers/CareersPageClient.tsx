@@ -11,7 +11,7 @@ import CareersCulture from './CareersCulture'
 import CareersJobList from './CareersJobList'
 import type { DisplayJob } from './types'
 import type { JobPosting } from '@/lib/sanity/types'
-import { careersData, type CareersJob } from '@/lib/data/careers'
+import { careersData, type CareersJob } from '@/lib/data/uiStrings'
 
 interface Props {
   jobPostings: JobPosting[]

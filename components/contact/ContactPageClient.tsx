@@ -12,7 +12,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import Container from '@/components/layout/Container';
 import type { SiteSettings } from '@/lib/sanity/types';
-import { contactData } from '@/lib/data/contact';
+import { contactData } from '@/lib/data/uiStrings';
 import ContactHero from './ContactHero';
 import ContactForm from './ContactForm';
 import ContactInfo from './ContactInfo';

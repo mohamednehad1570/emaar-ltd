@@ -14,7 +14,29 @@
 import React from 'react';
 import { X } from '@phosphor-icons/react';
 import { cn } from '@/lib/cn';
-import { upvcCategories, aluminumCategories } from '@/lib/data/products';
+
+// ── Category options — static taxonomy; survives deletion of lib/data/products.ts ──
+
+const CATEGORY_OPTIONS: Record<'upvc' | 'aluminum', Array<{ value: string; label: { en: string; ar: string } }>> = {
+  upvc: [
+    { value: 'windows',           label: { en: 'Windows',         ar: 'نوافذ'          } },
+    { value: 'doors',             label: { en: 'Doors',           ar: 'أبواب'          } },
+    { value: 'doors-and-windows', label: { en: 'Doors & Windows', ar: 'أبواب ونوافذ'   } },
+    { value: 'staircases',        label: { en: 'Staircases',      ar: 'سلالم'          } },
+    { value: 'stained-glass',     label: { en: 'Stained Glass',   ar: 'زجاج ملون'      } },
+    { value: 'sandblast',         label: { en: 'Sandblast',       ar: 'سندبلاست'       } },
+    { value: 'hebeschibe',        label: { en: 'Hebeschibe',      ar: 'هيبيشيبه'       } },
+  ],
+  aluminum: [
+    { value: 'windows',           label: { en: 'Windows',         ar: 'نوافذ'          } },
+    { value: 'doors',             label: { en: 'Doors',           ar: 'أبواب'          } },
+    { value: 'doors-and-windows', label: { en: 'Doors & Windows', ar: 'أبواب ونوافذ'   } },
+    { value: 'staircases',        label: { en: 'Staircases',      ar: 'سلالم'          } },
+    { value: 'skylights',         label: { en: 'Skylights',       ar: 'مناور'          } },
+    { value: 'stained-glass',     label: { en: 'Stained Glass',   ar: 'زجاج ملون'      } },
+    { value: 'sandblast',         label: { en: 'Sandblast',       ar: 'سندبلاست'       } },
+  ],
+}
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -62,11 +84,9 @@ export default function ProductFilterSidebar({ filters, onChange, lockedMaterial
 
   // Category options depend on the active material selection
   const activeMaterial = lockedMaterial ?? filters.material
-  const categoryOptions = activeMaterial === 'upvc'
-    ? upvcCategories.map((c) => ({ value: c.slug, label: c.label[language] }))
-    : activeMaterial === 'aluminum'
-      ? aluminumCategories.map((c) => ({ value: c.slug, label: c.label[language] }))
-      : []
+  const categoryOptions = (activeMaterial === 'upvc' || activeMaterial === 'aluminum')
+    ? CATEGORY_OPTIONS[activeMaterial].map((c) => ({ value: c.value, label: c.label[language] }))
+    : []
 
   function toggleCategory(slug: string) {
     const next = filters.categories.includes(slug)

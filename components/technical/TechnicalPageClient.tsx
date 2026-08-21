@@ -8,7 +8,7 @@ import { getWhatsAppURL } from '@/lib/whatsapp';
 import { fadeUp, viewportOnce } from '@/lib/motion';
 import { useTechDocuments } from '@/lib/hooks/useTechDocuments';
 import type { TechDocument } from '@/lib/sanity/types';
-import type { TechContent } from '@/lib/data/tech';
+import type { TechContent } from '@/lib/data/uiStrings';
 import TechFilters from './TechFilters';
 import TechDocumentGrid from './TechDocumentGrid';
 import type { DisplayDocument } from './TechDocumentCard';

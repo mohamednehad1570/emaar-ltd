@@ -19,17 +19,35 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { upvcCategories, aluminumCategories } from '@/lib/data/products';
-import type { ProductCategory } from '@/lib/data/products';
 import { cn } from '@/lib/cn';
 import Container from '@/components/layout/Container';
+import type { SanityProductTile } from '@/lib/sanity/types';
+
+// ── Category label map — taxonomy order matches CLAUDE.md Product taxonomy ────
+
+const CATEGORY_LABELS: Record<string, { en: string; ar: string }> = {
+  windows:             { en: 'Windows',         ar: 'نوافذ'         },
+  doors:               { en: 'Doors',           ar: 'أبواب'         },
+  'doors-and-windows': { en: 'Doors & Windows', ar: 'أبواب ونوافذ'  },
+  staircases:          { en: 'Staircases',      ar: 'سلالم'         },
+  'stained-glass':     { en: 'Stained Glass',   ar: 'زجاج ملون'     },
+  sandblast:           { en: 'Sandblast',       ar: 'سندبلاست'      },
+  hebeschibe:          { en: 'Hebeschibe',      ar: 'هيبيشيبه'      },
+  skylights:           { en: 'Skylights',       ar: 'مناور'         },
+}
+
+// Canonical category order per material — tiles appear in this sequence
+const CATEGORY_ORDER: Record<'upvc' | 'aluminum', string[]> = {
+  upvc:     ['windows','doors','doors-and-windows','staircases','stained-glass','sandblast','hebeschibe'],
+  aluminum: ['windows','doors','doors-and-windows','staircases','skylights','stained-glass','sandblast'],
+}
 
 // ── Bilingual page headings ───────────────────────────────────────────────────
 
 const PAGE_COPY = {
   upvc: {
-    en: { eyebrow: 'uPVC Systems', title: 'Select a Category', subtitle: 'German-engineered profiles for every opening.' },
-    ar: { eyebrow: 'أنظمة uPVC',  title: 'اختر فئة',          subtitle: 'قطاعات ذات هندسة ألمانية لكل فتحة.' },
+    en: { eyebrow: 'uPVC Systems',      title: 'Select a Category', subtitle: 'German-engineered profiles for every opening.' },
+    ar: { eyebrow: 'أنظمة uPVC',        title: 'اختر فئة',          subtitle: 'قطاعات ذات هندسة ألمانية لكل فتحة.' },
   },
   aluminum: {
     en: { eyebrow: 'Aluminium Systems', title: 'Select a Category', subtitle: 'Structural-grade aluminium for commercial and residential scale.' },
@@ -39,26 +57,38 @@ const PAGE_COPY = {
 
 // ── Tile sub-component ────────────────────────────────────────────────────────
 
+interface TileData {
+  slug:         string;
+  label:        { en: string; ar: string };
+  coverImage?:  string;
+  productCount: number;
+}
+
 interface TileProps {
-  category:  ProductCategory;
+  tile:      TileData;
   material:  'upvc' | 'aluminum';
   isRTL:     boolean;
   language:  'en' | 'ar';
 }
 
-function CategoryTile({ category, material, isRTL, language }: TileProps) {
-  const href = `/products/${material}/${category.slug}`;
+function CategoryTile({ tile, material, isRTL, language }: TileProps) {
+  const href  = `/products/${material}/${tile.slug}`;
+  const label = tile.label[language];
 
   return (
-    <Link href={href} className="group relative block h-[48vw] max-h-[400px] min-h-[220px] overflow-hidden" aria-label={category.label[language]}>
+    <Link href={href} className="group relative block h-[48vw] max-h-[400px] min-h-[220px] overflow-hidden" aria-label={label}>
       {/* ── Background image ─────────────────────────────────────────────── */}
-      <Image
-        src={category.image}
-        alt={category.label[language]}
-        fill
-        sizes="(min-width: 768px) 50vw, 100vw"
-        className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-      />
+      {tile.coverImage && (
+        <Image
+          src={tile.coverImage}
+          alt={label}
+          fill
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+        />
+      )}
+      {/* Fallback solid colour when Sanity has no image yet */}
+      {!tile.coverImage && <div className="absolute inset-0 bg-brand-dark" />}
 
       {/* ── Dark overlay — overlay darkens on hover for readability ─────── */}
       <div className="absolute inset-0 bg-brand-dark/65 group-hover:bg-brand-dark/80 transition-colors duration-400" />
@@ -69,12 +99,12 @@ function CategoryTile({ category, material, isRTL, language }: TileProps) {
         {/* 2px red accent line — editorial brand signature */}
         <div className="h-0.5 w-10 bg-brand-red mb-4" />
         <h2 className="text-2xl md:text-3xl font-bold font-cairo text-white leading-tight mb-4">
-          {category.label[language]}
+          {label}
         </h2>
         {/* Animate the arrow in on hover — nudges right (or left in RTL) */}
         <span className={cn('flex items-center gap-2 text-white/80 text-sm font-semibold transition-transform duration-300', isRTL ? 'flex-row-reverse group-hover:-translate-x-1' : 'group-hover:translate-x-1')}>
-          <span>{category.products.length}</span>
-          <span>{language === 'en' ? (category.products.length === 1 ? 'product' : 'products') : 'منتج'}</span>
+          <span dir="ltr">{tile.productCount}</span>
+          <span>{language === 'en' ? (tile.productCount === 1 ? 'product' : 'products') : 'منتج'}</span>
           {/* Arrow rotates 180° in RTL — points toward reading direction */}
           <ArrowRight className={cn('w-4 h-4', isRTL ? 'rotate-180' : '')} />
         </span>
@@ -86,13 +116,33 @@ function CategoryTile({ category, material, isRTL, language }: TileProps) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 interface Props {
-  material: 'upvc' | 'aluminum';
+  material:      'upvc' | 'aluminum';
+  sanityProducts: SanityProductTile[];
 }
 
-export default function ProductMaterialPage({ material }: Props) {
+export default function ProductMaterialPage({ material, sanityProducts }: Props) {
   const { language, isRTL } = useLanguage();
-  const categories = material === 'upvc' ? upvcCategories : aluminumCategories;
   const copy = PAGE_COPY[material][language];
+
+  // Group Sanity products by category, then derive ordered tile list
+  const categoryMap = new Map<string, SanityProductTile[]>();
+  for (const p of sanityProducts) {
+    const arr = categoryMap.get(p.category) ?? [];
+    arr.push(p);
+    categoryMap.set(p.category, arr);
+  }
+
+  const tiles: TileData[] = CATEGORY_ORDER[material]
+    .filter((slug) => categoryMap.has(slug))
+    .map((slug) => {
+      const products = categoryMap.get(slug)!;
+      return {
+        slug,
+        label:        CATEGORY_LABELS[slug] ?? { en: slug, ar: slug },
+        coverImage:   products[0]?.mainImage,
+        productCount: products.length,
+      };
+    });
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -111,8 +161,8 @@ export default function ProductMaterialPage({ material }: Props) {
       {/* ── Category tile grid ───────────────────────────────────────────── */}
       {/* 2-column for md+; odd last tile spans full width for clean alignment */}
       <div className="grid grid-cols-1 md:grid-cols-2">
-        {categories.map((cat) => (
-          <CategoryTile key={cat.slug} category={cat} material={material} isRTL={isRTL} language={language} />
+        {tiles.map((tile) => (
+          <CategoryTile key={tile.slug} tile={tile} material={material} isRTL={isRTL} language={language} />
         ))}
       </div>
 

@@ -1,5 +1,5 @@
 import { getSiteSettings } from '@/lib/sanity/fetch';
-import { contactData } from '@/lib/data/contact';
+import { contactData } from '@/lib/data/uiStrings';
 import ContactPageClient from '@/components/contact/ContactPageClient';
 
 export const revalidate = 3600;

@@ -4,7 +4,7 @@ import { MapPin, Phone, Clock } from '@phosphor-icons/react';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import Container from '@/components/layout/Container';
 import type { SiteSettings } from '@/lib/sanity/types';
-import { contactData } from '@/lib/data/contact';
+import { contactData } from '@/lib/data/uiStrings';
 
 interface NormalizedOffice {
   name: string;

@@ -5,7 +5,7 @@ import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { Phone, CheckCircle as CheckCircle2, WarningCircle as AlertCircle } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { servicesData } from '@/lib/data/services';
+import { servicesData } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 

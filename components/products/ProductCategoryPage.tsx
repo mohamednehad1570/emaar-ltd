@@ -12,50 +12,59 @@
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { upvcCategories, aluminumCategories } from '@/lib/data/products';
-import type { ProductItem } from '@/lib/data/products';
+import type { SanityProductTile } from '@/lib/sanity/types';
 import Container from '@/components/layout/Container';
 import ProductFilterSidebar, { type FilterState } from './ProductFilterSidebar';
 import ProductGrid, { type DisplayProduct } from './ProductGrid';
 
+// ── Category label fallback — needed when Sanity category doesn't match map ──
+
+const CATEGORY_LABELS: Record<string, { en: string; ar: string }> = {
+  windows:             { en: 'Windows',         ar: 'نوافذ'        },
+  doors:               { en: 'Doors',           ar: 'أبواب'        },
+  'doors-and-windows': { en: 'Doors & Windows', ar: 'أبواب ونوافذ' },
+  staircases:          { en: 'Staircases',      ar: 'سلالم'        },
+  'stained-glass':     { en: 'Stained Glass',   ar: 'زجاج ملون'    },
+  sandblast:           { en: 'Sandblast',       ar: 'سندبلاست'     },
+  hebeschibe:          { en: 'Hebeschibe',      ar: 'هيبيشيبه'     },
+  skylights:           { en: 'Skylights',       ar: 'مناور'        },
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-/** Normalises ProductItem to DisplayProduct for the current language */
-function toDisplay(item: ProductItem, language: 'en' | 'ar'): DisplayProduct {
+function toDisplay(p: SanityProductTile, language: 'en' | 'ar'): DisplayProduct {
   return {
-    id:          item.id,
-    slug:        item.slug,
-    material:    item.material,
-    category:    item.category,
-    title:       item.title[language],
-    description: item.description[language],
-    image:       item.image,
-    badge:       item.badge,
+    id:          p._id,
+    slug:        p.slug,
+    material:    p.material,
+    category:    p.category,
+    title:       p.title[language] ?? p.title.en,
+    description: p.description?.[language] ?? p.description?.en ?? '',
+    image:       p.mainImage ?? '',
+    badge:       p.badge,
   };
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface Props {
-  material: 'upvc' | 'aluminum';
-  category: string;
+  material:       'upvc' | 'aluminum';
+  category:       string;
+  sanityProducts: SanityProductTile[];
 }
 
 // ── Bilingual strings ─────────────────────────────────────────────────────────
 
 const labels = {
-  products:     { en: 'products',    ar: 'منتج'          },
+  products:     { en: 'products',                        ar: 'منتج'                 },
   noResults:    { en: 'No products match your filters.', ar: 'لا توجد منتجات تطابق الفلاتر.' },
-  clearFilters: { en: 'Clear filters', ar: 'مسح الفلاتر' },
+  clearFilters: { en: 'Clear filters',                   ar: 'مسح الفلاتر'          },
 } as const;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function ProductCategoryPage({ material, category }: Props) {
+export default function ProductCategoryPage({ material, category, sanityProducts }: Props) {
   const { language, isRTL } = useLanguage();
-
-  const allCategories = material === 'upvc' ? upvcCategories : aluminumCategories;
-  const cat = allCategories.find((c) => c.slug === category);
 
   // Sidebar filter state — specTags interactive; material & category are locked
   const [filters, setFilters] = useState<FilterState>({
@@ -64,26 +73,20 @@ export default function ProductCategoryPage({ material, category }: Props) {
     specTags:   [],
   });
 
-  // Category label in current language — fallback to slug if not found
-  const categoryLabel = cat?.label[language] ?? category;
-
-  // All products in this category from static data
-  const categoryProducts: ProductItem[] = cat?.products ?? [];
+  // Category label in current language — fallback to slug if not in label map
+  const categoryLabel = CATEGORY_LABELS[category]?.[language] ?? category;
 
   // Apply spec-tag filter only — material and category are locked by route
-  // specTags filter is advisory: products without a specTags field pass through
   const displayProducts = useMemo<DisplayProduct[]>(() => {
     const filtered = filters.specTags.length === 0
-      ? categoryProducts
-      : categoryProducts.filter((p) => {
-          // Static products don't carry specTags — they pass through unfiltered
-          // so the filter only narrows when Sanity products with specTags are used
-          const tags = (p as ProductItem & { specTags?: string[] }).specTags;
-          if (!tags) return true;
-          return filters.specTags.every((t) => tags.includes(t));
+      ? sanityProducts
+      : sanityProducts.filter((p) => {
+          // specTags filter is advisory — products without specTags pass through
+          if (!p.specTags?.length) return true;
+          return filters.specTags.every((t) => p.specTags!.includes(t));
         });
     return filtered.map((p) => toDisplay(p, language));
-  }, [filters.specTags, categoryProducts, language]);
+  }, [filters.specTags, sanityProducts, language]);
 
   // Sidebar on reading-start side (left LTR, right RTL)
   const sidebarOrder = isRTL ? 'order-2' : 'order-1';

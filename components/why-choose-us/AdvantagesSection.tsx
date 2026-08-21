@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { CheckCircle as CheckCircle2 } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { whyChooseUsData } from '@/lib/data/whyChooseUs';
+import { whyChooseUsData } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp } from '@/lib/motion';
 

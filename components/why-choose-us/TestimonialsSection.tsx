@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { Quotes as Quote, Star } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { whyChooseUsData } from '@/lib/data/whyChooseUs';
+import { whyChooseUsData } from '@/lib/data/uiStrings';
 import { staggerContainer, fadeUp } from '@/lib/motion';
 
 export default function TestimonialsSection() {

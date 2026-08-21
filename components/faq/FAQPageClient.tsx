@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle, WhatsappLogo } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { faqData, faqCategoryIcons } from '@/lib/data/faq';
+import { faqData, faqCategoryIcons } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
 import { fadeUp, viewportOnce } from '@/lib/motion';
 import type { SanityFaq } from '@/lib/sanity/types';
-import type { FAQItem } from '@/lib/data/faq';
+import type { FAQItem } from '@/lib/data/uiStrings';
 
 interface Props {
   sanityFaqs?: SanityFaq[];

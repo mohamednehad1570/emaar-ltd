@@ -6,7 +6,7 @@ import { ArrowRight, Medal as Award } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { aboutData } from '@/lib/data/about';
+import { aboutData } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';

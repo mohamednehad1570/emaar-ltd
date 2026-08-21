@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { whyChooseUsData } from '@/lib/data/whyChooseUs';
+import { whyChooseUsData } from '@/lib/data/uiStrings';
 import { fadeUp, viewportOnce } from '@/lib/motion';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 

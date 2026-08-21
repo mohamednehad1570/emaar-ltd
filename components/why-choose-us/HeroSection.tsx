@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { whyChooseUsData } from '@/lib/data/whyChooseUs';
+import { whyChooseUsData } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
 
 export default function HeroSection() {

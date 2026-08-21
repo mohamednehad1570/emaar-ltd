@@ -87,6 +87,8 @@ export interface SanityProject {
   materialsUsed: string[]
   year: number
   location: LocalizedString
+  // coverImage is images[0].asset->url — pre-resolved for card thumbnails
+  coverImage?: string
   images: string[]
   stats: Array<{ label: LocalizedString; value: string }>
   description?: LocalizedString
@@ -153,6 +155,59 @@ export interface TechDocument {
   previewImage?: string
   fileSize?: string
   featured?: boolean
+}
+
+// ── Batch 2 product tile — matches productsByMaterialQuery and productsByCategoryQuery ──
+
+export interface SanityProductTile {
+  _id: string
+  slug: string
+  material: 'upvc' | 'aluminum'
+  category: string
+  title: LocalizedString
+  description?: LocalizedText
+  mainImage?: string
+  badge?: string
+  specTags?: string[]
+}
+
+// ── Batch 2 product full detail — matches productBySlugQuery ───────────────
+
+export interface SanityProductFull {
+  _id: string
+  slug: string
+  material: 'upvc' | 'aluminum'
+  category: string
+  title: LocalizedString
+  description?: LocalizedText
+  mainImage?: string
+  gallery?: string[]
+  badge?: string
+  specTags?: string[]
+  features?: Array<{ icon: string; label: LocalizedString; value: LocalizedString }>
+  applications?: LocalizedText
+  specs?: {
+    dimensions?: string
+    thermalValue?: string
+    acousticRating?: string
+    glassThickness?: string
+    colorOptions?: string
+  }
+  technicalSheet?: string
+  relatedProducts?: Array<{
+    _id: string
+    slug: string
+    title: LocalizedString
+    mainImage?: string
+    category: string
+    material: 'upvc' | 'aluminum'
+  }>
+  seo?: {
+    titleEn?: string
+    titleAr?: string
+    descriptionEn?: string
+    descriptionAr?: string
+  }
 }
 
 // ── Batch 3 types ──────────────────────────────────────────────────────────

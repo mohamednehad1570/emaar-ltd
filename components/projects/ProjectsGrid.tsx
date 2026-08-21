@@ -5,7 +5,6 @@ import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSearchParams } from 'next/navigation';
 import ProjectCard from './ProjectCard';
-import { projectsData } from '@/lib/data/projects';
 import type { SanityProject } from '@/lib/sanity/types';
 import type { DisplayProject } from '@/lib/types';
 
@@ -34,28 +33,18 @@ export default function ProjectsGrid({ projects = [] }: Props) {
     if (materialParam) setMaterialFilter(materialParam);
   }, [searchParams]);
 
-  // Normalise Sanity or static projects into a flat display shape
-  const displayProjects: DisplayProject[] = projects.length > 0
-    ? projects.map(p => ({
-        id: p.slug,
-        title: p.title[language] ?? p.title.en,
-        category: typeLabels[p.type]?.[language] ?? p.type,
-        location: p.location?.[language] ?? p.location?.en ?? '',
-        image: p.images[0] ?? '',
-        year: String(p.year),
-        type: p.type,
-        material: p.materialsUsed[0] ?? '',
-      }))
-    : projectsData.map(p => ({
-        id: p.id,
-        title: p.title[language],
-        category: p.category[language],
-        location: p.location[language],
-        image: p.image,
-        year: p.year,
-        type: p.type,
-        material: p.material,
-      }));
+  // Normalise Sanity projects into the flat DisplayProject shape
+  const displayProjects: DisplayProject[] = projects.map((p) => ({
+    id:       p.slug,
+    title:    p.title[language] ?? p.title.en,
+    category: typeLabels[p.type]?.[language] ?? p.type,
+    location: p.location?.[language] ?? p.location?.en ?? '',
+    // coverImage is images[0].asset->url pre-resolved by the GROQ query
+    image:    p.coverImage ?? p.images[0] ?? '',
+    year:     String(p.year),
+    type:     p.type,
+    material: p.materialsUsed[0] ?? '',
+  }));
 
   const sectors = [
     { id: 'all', label: { en: 'All Sectors', ar: 'جميع القطاعات' } },

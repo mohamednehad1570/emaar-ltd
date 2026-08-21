@@ -91,7 +91,7 @@ export const projectsQuery = groq`*[_type == "project"] | order(year desc){
   title, description,
   "coverImage": images[0].asset->url,
   "images": images[].asset->url,
-  "projectType": type, materialsUsed, location, year,
+  type, materialsUsed, location, year,
   client, scope
 }`
 
@@ -106,7 +106,7 @@ export const projectBySlugQuery = groq`*[_type == "project" && slug.current == $
   title, description,
   "coverImage": images[0].asset->url,
   "images": images[].asset->url,
-  "projectType": type, materialsUsed, location, year,
+  type, materialsUsed, location, year,
   client, scope,
   stats[]{ label, value }
 }`

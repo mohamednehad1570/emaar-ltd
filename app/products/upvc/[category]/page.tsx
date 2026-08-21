@@ -1,26 +1,49 @@
 import { notFound } from 'next/navigation';
+import { sanityFetch } from '@/lib/sanity/client';
+import { productsByCategoryQuery } from '@/lib/sanity/queries';
+import type { SanityProductTile } from '@/lib/sanity/types';
 import ProductCategoryPage from '@/components/products/ProductCategoryPage';
-import { upvcCategories } from '@/lib/data/products';
 
 export const revalidate = 3600;
 
 type Params = Promise<{ category: string }>;
 
-// Statically generates one page per uPVC category so the build succeeds without network
+// ── Category taxonomy — hardcoded so generateStaticParams works without network ──
+
+const UPVC_CATEGORIES = ['windows','doors','doors-and-windows','staircases','stained-glass','sandblast','hebeschibe'] as const;
+
+const CATEGORY_LABELS: Record<string, string> = {
+  windows:             'Windows',
+  doors:               'Doors',
+  'doors-and-windows': 'Doors & Windows',
+  staircases:          'Staircases',
+  'stained-glass':     'Stained Glass',
+  sandblast:           'Sandblast',
+  hebeschibe:          'Hebeschibe',
+}
+
+// Statically generates one page per uPVC category — build succeeds without network
 export function generateStaticParams() {
-  return upvcCategories.map((c) => ({ category: c.slug }));
+  return UPVC_CATEGORIES.map((category) => ({ category }));
 }
 
 export async function generateMetadata({ params }: { params: Params }) {
   const { category } = await params;
-  const cat = upvcCategories.find((c) => c.slug === category);
-  if (!cat) return {};
-  return { title: `${cat.label.en} — uPVC | Emaar International` };
+  const label = CATEGORY_LABELS[category];
+  if (!label) return {};
+  return { title: `${label} — uPVC | Emaar International` };
 }
 
 export default async function Page({ params }: { params: Params }) {
   const { category } = await params;
+
   // Guard against unknown category slugs entered directly in the URL
-  if (!upvcCategories.some((c) => c.slug === category)) notFound();
-  return <ProductCategoryPage material="upvc" category={category} />;
+  if (!(UPVC_CATEGORIES as readonly string[]).includes(category)) notFound();
+
+  let products: SanityProductTile[] = [];
+  try {
+    products = await sanityFetch<SanityProductTile[]>(productsByCategoryQuery, { material: 'upvc', category });
+  } catch {}
+
+  return <ProductCategoryPage material="upvc" category={category} sanityProducts={products} />;
 }

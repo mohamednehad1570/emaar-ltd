@@ -6,6 +6,9 @@ import {
   testimonialsQuery,
   awardsQuery,
   clientLogosQuery,
+  allProductsQuery,
+  productsByMaterialQuery,
+  productsByCategoryQuery,
   productBySlugQuery,
   techDocumentsQuery,
   jobPostingsQuery,
@@ -17,6 +20,8 @@ import type {
   Testimonial,
   Award,
   ClientLogo,
+  SanityProductTile,
+  SanityProductFull,
   SanityProductDetail,
   TechDocument,
   JobPosting,
@@ -72,12 +77,48 @@ export async function getClientLogos(): Promise<ClientLogo[]> {
 
 // ── Batch 2 fetchers ───────────────────────────────────────────────────────
 
+export async function getAllProducts(): Promise<SanityProductTile[]> {
+  try {
+    return await sanityFetch<SanityProductTile[]>(allProductsQuery)
+  } catch {
+    return []
+  }
+}
+
+export async function getProductsByMaterial(material: 'upvc' | 'aluminum'): Promise<SanityProductTile[]> {
+  try {
+    return await sanityFetch<SanityProductTile[]>(productsByMaterialQuery, { material })
+  } catch {
+    return []
+  }
+}
+
+export async function getProductsByCategory(material: 'upvc' | 'aluminum', category: string): Promise<SanityProductTile[]> {
+  try {
+    return await sanityFetch<SanityProductTile[]>(productsByCategoryQuery, { material, category })
+  } catch {
+    return []
+  }
+}
+
+// getProductDetail replaces getProductBySlug — no category param needed since
+// productBySlugQuery filters by slug only (casement-window exists in both materials
+// and the display layer handles disambiguation via product.material field)
+export async function getProductDetail(slug: string): Promise<SanityProductFull | null> {
+  try {
+    return await sanityFetch<SanityProductFull>(productBySlugQuery, { slug })
+  } catch {
+    return null
+  }
+}
+
+// Kept for backward compatibility with code written before Batch 2
 export async function getProductBySlug(
   slug: string,
-  category: string,
+  _category: string,
 ): Promise<SanityProductDetail | null> {
   try {
-    return await sanityFetch<SanityProductDetail>(productBySlugQuery, { slug, category })
+    return await sanityFetch<SanityProductDetail>(productBySlugQuery, { slug })
   } catch {
     return null
   }

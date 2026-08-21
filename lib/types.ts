@@ -4,12 +4,6 @@
  * Import from here — never redefine locally in component files.
  */
 
-// Re-export the canonical bilingual project shape from the data layer.
-export type { Project } from './data/projects';
-
-// Re-export product detail types from the data layer.
-export type { ProductSpec, ProductDetail } from './data/productDetails';
-
 /**
  * Language-resolved (display-ready) project used by ProjectCard and
  * ProjectsGrid after Sanity/static data is flattened to the active language.

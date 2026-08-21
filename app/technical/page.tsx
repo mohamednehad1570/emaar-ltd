@@ -1,6 +1,6 @@
 import { getTechDocuments } from '@/lib/sanity/fetch';
 import TechnicalPageClient from '@/components/technical/TechnicalPageClient';
-import { techData } from '@/lib/data/tech';
+import { techData } from '@/lib/data/uiStrings';
 
 export const revalidate = 3600;
 
