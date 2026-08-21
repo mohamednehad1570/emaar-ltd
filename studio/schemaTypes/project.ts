@@ -24,8 +24,9 @@ export const project = defineType({
       type: 'string',
       options: {
         list: [
-          { title: 'Residential', value: 'residential' },
-          { title: 'Commercial', value: 'commercial' },
+          { title: 'Villas', value: 'villas' },
+          { title: 'Buildings', value: 'buildings' },
+          { title: 'High-Rise / Towers', value: 'towers' },
         ],
       },
       validation: (rule) => rule.required(),

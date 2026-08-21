@@ -13,9 +13,9 @@ import type { SanityProject } from '@/lib/sanity/types';
 interface Props { project: SanityProject }
 
 const typeLabels: Record<string, { en: string; ar: string }> = {
-  residential: { en: 'Residential', ar: 'سكني' },
-  commercial: { en: 'Commercial', ar: 'تجاري' },
-  hospitality: { en: 'Hospitality', ar: 'ضيافة' },
+  villas:    { en: 'Villas',             ar: 'فلل'   },
+  buildings: { en: 'Buildings',          ar: 'مباني' },
+  towers:    { en: 'High-Rise / Towers', ar: 'أبراج' },
 };
 
 export default function ProjectDetailPage({ project }: Props) {

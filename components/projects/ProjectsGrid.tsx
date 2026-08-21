@@ -9,9 +9,9 @@ import type { SanityProject } from '@/lib/sanity/types';
 import type { DisplayProject } from '@/lib/types';
 
 const typeLabels: Record<string, { en: string; ar: string }> = {
-  residential: { en: 'Residential', ar: 'سكني' },
-  commercial: { en: 'Commercial', ar: 'تجاري' },
-  hospitality: { en: 'Hospitality', ar: 'ضيافة' },
+  villas:    { en: 'Villas',              ar: 'فلل'   },
+  buildings: { en: 'Buildings',           ar: 'مباني' },
+  towers:    { en: 'High-Rise / Towers',  ar: 'أبراج' },
 };
 
 interface Props {
@@ -47,10 +47,10 @@ export default function ProjectsGrid({ projects = [] }: Props) {
   }));
 
   const sectors = [
-    { id: 'all', label: { en: 'All Sectors', ar: 'جميع القطاعات' } },
-    { id: 'residential', label: { en: 'Residential', ar: 'سكني' } },
-    { id: 'commercial', label: { en: 'Commercial', ar: 'تجاري' } },
-    { id: 'hospitality', label: { en: 'Hospitality', ar: 'ضيافة' } },
+    { id: 'all',       label: { en: 'All Types',          ar: 'جميع الأنواع' } },
+    { id: 'villas',    label: { en: 'Villas',              ar: 'فلل'          } },
+    { id: 'buildings', label: { en: 'Buildings',           ar: 'مباني'        } },
+    { id: 'towers',    label: { en: 'High-Rise / Towers',  ar: 'أبراج'        } },
   ];
 
   const materials = [
@@ -91,7 +91,7 @@ export default function ProjectsGrid({ projects = [] }: Props) {
           <div className="space-y-6">
             <div className="flex flex-wrap justify-center gap-3">
               <span className="w-full text-xs font-bold text-ink-muted uppercase tracking-widest mb-2">
-                {language === 'en' ? 'Filter by Sector' : 'تصفية حسب القطاع'}
+                {language === 'en' ? 'Filter by Type' : 'تصفية حسب النوع'}
               </span>
               {sectors.map((cat) => (
                 <button
