@@ -1,128 +1,133 @@
 import { defineField, defineType } from 'sanity'
 
 export const siteSettings = defineType({
-  name: 'siteSettings',
+  name:  'siteSettings',
   title: 'Site Settings',
-  type: 'document',
+  type:  'document',
+
+  groups: [
+    { name: 'hero',     title: 'Hero',    default: true },
+    { name: 'company',  title: 'Company'               },
+    { name: 'contact',  title: 'Contact'               },
+    { name: 'warranty', title: 'Warranty'              },
+  ],
+
   fields: [
     // ── Hero content ───────────────────────────────────────────────────────
     defineField({
-      name: 'heroTagline',
-      title: 'Hero Tagline',
-      type: 'localizedString',
+      name:        'heroTagline',
+      title:       'Hero Tagline',
+      type:        'localizedString',
+      group:       'hero',
       description: 'Short overline in the hero — e.g. "German-Engineered Fenestration"',
     }),
     defineField({
-      name: 'heroSubtitle',
-      title: 'Hero Subtitle',
-      type: 'localizedString',
+      name:        'heroSubtitle',
+      title:       'Hero Subtitle',
+      type:        'localizedString',
+      group:       'hero',
       description: 'Body text below the hero headline',
     }),
     defineField({
-      name: 'heroCTAPrimary',
-      title: 'Hero Primary CTA Label',
-      type: 'localizedString',
+      name:        'heroCTAPrimary',
+      title:       'Hero Primary CTA Label',
+      type:        'localizedString',
+      group:       'hero',
       description: 'Label for the WhatsApp/quote button — e.g. "Request a Quote"',
     }),
     defineField({
-      name: 'heroCTASecondary',
-      title: 'Hero Secondary CTA Label',
-      type: 'localizedString',
+      name:        'heroCTASecondary',
+      title:       'Hero Secondary CTA Label',
+      type:        'localizedString',
+      group:       'hero',
       description: 'Label for the explore button — e.g. "Explore Products"',
     }),
+
     // ── Company identity ───────────────────────────────────────────────────
     defineField({
-      name: 'companyBio',
-      title: 'Company Bio',
-      type: 'localizedText',
+      name:        'companyBio',
+      title:       'Company Bio',
+      type:        'localizedText',
+      group:       'company',
       description: 'Main about paragraph shown on the About page intro',
     }),
     defineField({
-      name: 'foundedYear',
-      title: 'Founded Year',
-      type: 'number',
+      name:        'foundedYear',
+      title:       'Founded Year',
+      type:        'number',
+      group:       'company',
       description: 'Year the company was founded — e.g. 2004',
-      validation: (rule) => rule.min(1900).max(2100).integer(),
+      validation:  (rule) => rule.min(1900).max(2100).integer(),
     }),
+
     // ── Key statistics ─────────────────────────────────────────────────────
     defineField({
-      name: 'stats',
-      title: 'Key Statistics',
-      type: 'array',
+      name:        'stats',
+      title:       'Key Statistics',
+      type:        'array',
+      group:       'company',
       description: 'Displayed on the homepage stats bar and About hero',
       of: [
         {
           type: 'object',
           fields: [
-            defineField({ name: 'label', title: 'Label', type: 'localizedString' }),
-            defineField({ name: 'value', title: 'Value', type: 'string', description: 'e.g. "500+"' }),
-            defineField({ name: 'icon', title: 'Icon Name', type: 'string', description: 'Phosphor icon name — e.g. "Buildings"' }),
+            defineField({ name: 'label', title: 'Label',     type: 'localizedString' }),
+            defineField({ name: 'value', title: 'Value',     type: 'string', description: 'e.g. "500+"'           }),
+            defineField({ name: 'icon',  title: 'Icon Name', type: 'string', description: 'Phosphor icon name — e.g. "Buildings"' }),
           ],
         },
       ],
     }),
+
     // ── Contact ────────────────────────────────────────────────────────────
+    defineField({ name: 'phone', title: 'Phone', type: 'string', group: 'contact' }),
+    defineField({ name: 'email', title: 'Email', type: 'string', group: 'contact' }),
     defineField({
-      name: 'phone',
-      title: 'Phone',
-      type: 'string',
-    }),
-    defineField({
-      name: 'email',
-      title: 'Email',
-      type: 'string',
-    }),
-    defineField({
-      name: 'whatsappNumber',
-      title: 'WhatsApp Number',
-      type: 'string',
+      name:        'whatsappNumber',
+      title:       'WhatsApp Number',
+      type:        'string',
+      group:       'contact',
       description: 'Include country code, digits only — e.g. 201012345678',
     }),
+    defineField({ name: 'address',      title: 'Address',       type: 'localizedString', group: 'contact' }),
+    defineField({ name: 'workingHours', title: 'Working Hours', type: 'localizedString', group: 'contact' }),
     defineField({
-      name: 'address',
-      title: 'Address',
-      type: 'localizedString',
-    }),
-    defineField({
-      name: 'workingHours',
-      title: 'Working Hours',
-      type: 'localizedString',
-    }),
-    defineField({
-      name: 'socialLinks',
+      name:  'socialLinks',
       title: 'Social Links',
-      type: 'object',
+      type:  'object',
+      group: 'contact',
       fields: [
         defineField({ name: 'instagram', title: 'Instagram', type: 'url' }),
-        defineField({ name: 'facebook', title: 'Facebook', type: 'url' }),
-        defineField({ name: 'linkedin', title: 'LinkedIn', type: 'url' }),
-        defineField({ name: 'youtube', title: 'YouTube', type: 'url' }),
+        defineField({ name: 'facebook',  title: 'Facebook',  type: 'url' }),
+        defineField({ name: 'linkedin',  title: 'LinkedIn',  type: 'url' }),
+        defineField({ name: 'youtube',   title: 'YouTube',   type: 'url' }),
       ],
     }),
+
     // ── Contact page extras ────────────────────────────────────────────────
     defineField({
-      name: 'mapEmbedUrl',
-      title: 'Google Maps Embed URL',
-      type: 'string',
+      name:        'mapEmbedUrl',
+      title:       'Google Maps Embed URL',
+      type:        'string',
+      group:       'contact',
       description: 'Full Google Maps embed src URL — used on the contact page iframe',
     }),
     defineField({
-      name: 'officeLocations',
-      title: 'Office Locations',
-      type: 'array',
+      name:        'officeLocations',
+      title:       'Office Locations',
+      type:        'array',
+      group:       'contact',
       description: 'Branch offices displayed on the contact page',
       of: [
         {
           type: 'object',
           fields: [
-            defineField({ name: 'name',         title: 'Office Name',    type: 'localizedString' }),
-            defineField({ name: 'address',      title: 'Address',        type: 'localizedString' }),
-            defineField({ name: 'phone',        title: 'Phone',          type: 'string' }),
-            defineField({ name: 'workingHours', title: 'Working Hours',  type: 'localizedString' }),
+            defineField({ name: 'name',         title: 'Office Name',   type: 'localizedString' }),
+            defineField({ name: 'address',      title: 'Address',       type: 'localizedString' }),
+            defineField({ name: 'phone',        title: 'Phone',         type: 'string'          }),
+            defineField({ name: 'workingHours', title: 'Working Hours', type: 'localizedString' }),
           ],
-          preview: {
-            select: { title: 'name.en' },
-          },
+          preview: { select: { title: 'name.en' } },
         },
       ],
     }),
@@ -131,30 +136,31 @@ export const siteSettings = defineType({
     // Controls the WarrantyStrip component rendered on product pages.
     // showWarrantyBadge: false hides the strip entirely until client confirms terms.
     defineField({
-      name:  'showWarrantyBadge',
-      title: 'Show Warranty Badge',
-      type:  'boolean',
-      description: 'Enables the warranty strip on product pages. Off by default until client approves the wording.',
+      name:         'showWarrantyBadge',
+      title:        'Show Warranty Badge',
+      type:         'boolean',
+      group:        'warranty',
+      description:  'Enables the warranty strip on product pages. Off by default until client approves the wording.',
       initialValue: false,
     }),
-
     defineField({
-      name:  'warranty',
-      title: 'Warranty Details',
-      type:  'object',
+      name:        'warranty',
+      title:       'Warranty Details',
+      type:        'object',
+      group:       'warranty',
       description: 'Shown in the WarrantyStrip component when showWarrantyBadge is enabled',
       fields: [
         // Coverage years — displayed as pipe-separated points in the strip
-        defineField({ name: 'upvcYears',         title: 'uPVC Coverage (years)',         type: 'number', initialValue: 25 }),
-        defineField({ name: 'glassYears',        title: 'Glass Coverage (years)',        type: 'number', initialValue: 10 }),
-        defineField({ name: 'accessoriesYears',  title: 'Accessories Coverage (years)',  type: 'number', initialValue:  1 }),
-        defineField({ name: 'maintenanceYears',  title: 'Maintenance Coverage (years)',  type: 'number', initialValue:  1 }),
+        defineField({ name: 'upvcYears',        title: 'uPVC Coverage (years)',        type: 'number', initialValue: 25 }),
+        defineField({ name: 'glassYears',       title: 'Glass Coverage (years)',       type: 'number', initialValue: 10 }),
+        defineField({ name: 'accessoriesYears', title: 'Accessories Coverage (years)', type: 'number', initialValue:  1 }),
+        defineField({ name: 'maintenanceYears', title: 'Maintenance Coverage (years)', type: 'number', initialValue:  1 }),
 
         // Legal jurisdiction — required for UAE compliance
         defineField({
-          name: 'governingLaw',
+          name:  'governingLaw',
           title: 'Governing Law',
-          type: 'object',
+          type:  'object',
           fields: [
             defineField({ name: 'en', title: 'English', type: 'string', initialValue: 'UAE Law'           }),
             defineField({ name: 'ar', title: 'Arabic',  type: 'string', initialValue: 'القانون الإماراتي' }),
@@ -163,30 +169,31 @@ export const siteSettings = defineType({
 
         // Excluded products — fly-screens and roller shutters per standard UAE warranty
         defineField({
-          name: 'exclusions',
+          name:  'exclusions',
           title: 'Exclusions',
-          type: 'object',
+          type:  'object',
           fields: [
-            defineField({ name: 'en', title: 'English', type: 'text', rows: 2, initialValue: 'Fly-screens and roller shutters are not covered' }),
-            defineField({ name: 'ar', title: 'Arabic',  type: 'text', rows: 2, initialValue: 'لا يشمل الضمان شبكات الذباب والستائر الدوارة'   }),
+            defineField({ name: 'en', title: 'English', type: 'text', rows: 2, initialValue: 'Fly-screens and roller shutters are not covered'       }),
+            defineField({ name: 'ar', title: 'Arabic',  type: 'text', rows: 2, initialValue: 'لا يشمل الضمان شبكات الذباب والستائر الدوارة'          }),
           ],
         }),
 
         // Collapsible footnote shown below the warranty terms
         defineField({
-          name: 'footnote',
+          name:  'footnote',
           title: 'Footnote',
-          type: 'object',
+          type:  'object',
           fields: [
-            defineField({ name: 'en', title: 'English', type: 'text', rows: 2, initialValue: 'Warranty is subject to standard terms and conditions'     }),
-            defineField({ name: 'ar', title: 'Arabic',  type: 'text', rows: 2, initialValue: 'الضمان خاضع للشروط والأحكام القياسية' }),
+            defineField({ name: 'en', title: 'English', type: 'text', rows: 2, initialValue: 'Warranty is subject to standard terms and conditions'  }),
+            defineField({ name: 'ar', title: 'Arabic',  type: 'text', rows: 2, initialValue: 'الضمان خاضع للشروط والأحكام القياسية'                 }),
           ],
         }),
       ],
     }),
   ],
+
   preview: {
-    select: { title: 'email' },
+    select:  { title: 'email' },
     prepare: () => ({ title: 'Site Settings' }),
   },
 })
