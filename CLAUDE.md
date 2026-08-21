@@ -26,20 +26,19 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown, Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
+- lib/data/index.ts — barrel export; now only re-exports nav.ts (NAV, isActive, DropdownItem)
 - lib/data/nav.ts — header dropdown items (DropdownItem interface, bilingual en/ar + href)
-- lib/data/products.ts — PRIMARY: upvcCategories / aluminumCategories (ProductCategory[]) with nested ProductItem[]. COMPAT: upvcData / aluminumData flat exports retained during 4-level routing transition. upvcProducts / aluminumProducts are flattened arrays for search/sitemap.
-- lib/data/productDetails.ts — 20 entries keyed by taxonomy slugs (11 uPVC, 9 aluminum). ProductDetail interface: { slug, productId, material, category, specs, gallery[], relatedSlugs[] }. gallery and relatedSlugs are intentionally empty — Sanity is authoritative. Existence check productDetails[slug] in L4 route handlers guards 404 when Sanity is empty. casement-window and tilt-turn-window appear in both materials; one entry per slug suffices because the check is existence-only and getProductBySlug(slug, material) is material-aware.
-- lib/data/*.ts — bilingual data { en: {...}, ar: {...} } — static fallback only for CMS-managed content
+- lib/data/uiStrings.ts — re-export barrel for all static UI copy; components import from here, never from individual copy files directly. Re-exports: whyChooseUsData, servicesData, careersData/CareersJob/CareersContent, techData/TechContent/DownloadFile, contactData, aboutData, faqData/faqCategoryIcons/FAQItem
+- lib/data/whyChooseUs.ts · services.ts · careers.ts · tech.ts · contact.ts · about.ts · faq.ts — bilingual { en, ar } static UI copy and CMS fallback data; accessed only through uiStrings.ts — never import these directly
 - lib/cn.ts, lib/motion.ts, lib/iconMap.ts
 - lib/hooks/useHorizontalAutoscroll.ts — carousel auto-scroll hook
 - lib/hooks/useTechDocuments.ts — normalises CMS/static tech docs to DisplayDocument[], builds category + productType filter options
 - lib/sanity/client.ts — publicClient, writeClient, sanityFetch<T>()
 - lib/sanity/fetch.ts — typed fetcher functions: getProjects(), getProjectBySlug(), getProducts(), getProductBySlug(slug, category), getTechDocuments(), getFaqs(), getJobPostings(); getSiteSettings() is also called in app/layout.tsx for global header/footer wiring
-- lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? }, whatsappNumber?) — optional second arg overrides WHATSAPP_NUMBER constant with CMS value
 - lib/sanity/queries.ts — typed GROQ query strings
-- lib/sanity/types.ts — SanityProject, SanityProduct, SanityFaq, SanityProductDetail, TechDocument, JobPosting, LocalizedString
+- lib/sanity/types.ts — LocalizedString, LocalizedText, SanityImage, SiteSettings, SanityProject, SanityProductTile (list view), SanityProductFull (detail view with gallery/features/relatedProducts), SanityFaq, TechDocument, JobPosting
 - contexts/LanguageContext.tsx — useLanguage() → { language, isRTL, toggleLanguage, setLanguage, isTransitioning, pendingLanguage } · useTranslation() → (en, ar) => string · isTransitioning=true for 150ms during crossfade; pendingLanguage shows incoming language in LangToggle before commit
-- lib/types.ts — shared display types: DisplayProject, ProjectPreview (re-exports Project, ProductSpec, ProductDetail from data layer)
+- lib/types.ts — shared display types: DisplayProject (language-resolved for ProjectCard/ProjectsGrid), ProjectPreview (bilingual minimal subset for homepage)
 - studio/ — Sanity Studio (Node 22 required — always `nvm use 22` before `npm run dev`)
 - studio/schemaTypes/ — 8 document schemas + 2 shared object types
 
@@ -146,12 +145,17 @@ Document types: `product`, `project`, `teamMember`, `faq`, `jobPosting`, `certif
 - `material` = upvc|aluminum (replaces old `category` field that held the material value); `category` now means the subcategory slug
 
 ### Fetching data in server components
+Prefer typed fetcher functions from `lib/sanity/fetch.ts` — they handle query + type together:
+```typescript
+import { getProjects } from '@/lib/sanity/fetch'
+const projects = await getProjects()
+```
+Use raw `sanityFetch` only for one-off queries not covered by fetch.ts:
 ```typescript
 import { sanityFetch } from '@/lib/sanity/client'
-import { projectsQuery } from '@/lib/sanity/queries'
-import type { SanityProject } from '@/lib/sanity/types'
-
-const projects = await sanityFetch<SanityProject[]>(projectsQuery)
+import { someQuery } from '@/lib/sanity/queries'
+import type { SomeType } from '@/lib/sanity/types'
+const data = await sanityFetch<SomeType>(someQuery, { vars })
 ```
 - Always use `sanityFetch` (not `publicClient.fetch` directly) — it injects `next: { tags: ['sanity'] }`
 - Add `export const revalidate = 3600` at the top of every page that calls `sanityFetch`
@@ -164,9 +168,15 @@ const projects = await sanityFetch<SanityProject[]>(projectsQuery)
 - Configure the webhook in the Sanity dashboard → `https://<domain>/api/revalidate?secret=<value>`
 
 ### Static fallback pattern
-When Sanity DB is empty, pages fall back to `lib/data/*.ts` static content automatically.
-Only these files are affected by Sanity: `products.ts` (products array), `projects.ts`, `faq.ts` (faqs array), `tech.ts` (techDocument downloads), `careers.ts` (jobs array), `contact.ts` (phone/email/address/hours/offices).
-UI strings in those files (hero titles, features, CTAs) always stay static — never replace them with Sanity calls.
+`lib/data/products.ts`, `productDetails.ts`, and `projects.ts` are **deleted** — Sanity is sole authority for products and projects. L4 product routes 404 via `UPVC_CATEGORIES`/`ALUMINUM_CATEGORIES` Set check + `if (!product) notFound()`.
+
+These files still provide static fallbacks when Sanity returns empty:
+- `faq.ts` — 24 static FAQ entries
+- `tech.ts` — static tech document list
+- `careers.ts` — 6 static job postings
+- `contact.ts` — phone/email/address/hours/offices
+
+All are accessed only through `uiStrings.ts`. UI strings (hero titles, features, CTAs) always stay static — never replace them with Sanity calls.
 
 ### GROQ queries (lib/sanity/queries.ts)
 - `projectsQuery` — all projects ordered by year desc
@@ -190,7 +200,7 @@ UI strings in those files (hero titles, features, CTAs) always stay static — n
 - revalidateTag in Next.js 16 requires two arguments: revalidateTag('sanity', 'default') — one-arg form is a type error
 - contact API (app/api/contact/route.ts) uses Resend; RESEND_API_KEY must be set in Vercel env vars
 - next.config.ts redirect pattern: use `$`-anchored non-capturing group + `[^/]+` — `:slug((?!(?:cat1|cat2|...)$)[^/]+)` — the `$` prevents prefix collision (e.g. "doors" without it matches the start of "doors-and-windows"); `[^/]+` restricts to single path segments. Always list ALL valid category slugs in both uPVC and aluminum lookaheads; a missing slug causes that category page to 308 to the material landing page
-- productDetails slug collision: casement-window and tilt-turn-window exist in both materials; only one productDetails entry is needed per slug because the L4 page only checks existence (`productDetails[slug]`) and Sanity's `getProductBySlug(slug, 'upvc'|'aluminum')` handles material-aware rendering
+- L4 product 404 guard: `productDetails.ts` is deleted. L4 routes now use a hardcoded `UPVC_CATEGORIES`/`ALUMINUM_CATEGORIES` Set to reject unknown category segments, then `if (!product) notFound()` after the Sanity fetch — no separate slug registry needed
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev
