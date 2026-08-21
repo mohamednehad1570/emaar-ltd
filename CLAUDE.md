@@ -10,6 +10,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - public/products/ — pre-created folder tree: upvc/{windows,doors,doors-and-windows,staircases,stained-glass,sandblast,hebeschibe} + aluminum/{windows,doors,doors-and-windows,staircases,skylights,stained-glass,sandblast}; each leaf has a .gitkeep so Git tracks empty folders before images are dropped in
 - public/projects/buildings/ — project images for building type (project-buildings-NN.ext)
 - public/projects/villas/ — project images for villa type (project-villas-NN.ext)
+- public/projects/towers/ — project images for high-rise tower type (project-towers-NN.ext)
 - app/ — App Router routes
 - app/api/contact/route.ts — contact form POST handler (Resend + rate limiting, 3 req/10 min per IP)
 - app/api/revalidate/route.ts — Sanity ISR webhook endpoint
@@ -137,12 +138,13 @@ Object types (shared): `localizedString`, `localizedText`
 Document types: `product`, `project`, `teamMember`, `faq`, `jobPosting`, `certificate`, `siteSettings`, `techDocument`
 
 #### product schema (5 tabs)
-- **Identity** — title (localizedString), slug, material (upvc|aluminum), category (subcategory slug, validated against material), badge
-- **Details** — description, features[] ({en,ar} pairs), mainImage, inStock
-- **Specifications** — specs object (dimensions required; soundReduction, thermalInsulation, securityRating, specTags[] optional)
-- **Gallery** — gallery[] images
-- **Relations** — relatedProducts[] references, seo object (metaTitle, metaDescription)
+- **Identity** — title (localizedString, en+ar required), slug (auto from title.en), material (upvc|aluminum, radio), category (subcategory slug, validated against material), mainImage (image, hotspot, **required**), badge
+- **Details** — description (localizedText, en+ar required), features[] ({en,ar} object pairs, min 1), applications[] (plain string array, not localised)
+- **Specifications** — specs object (dimensions required; thermalValue, acousticRating, glassThickness, colorOptions[] optional); specTags[] chips from fixed list (double-glazed, triple-glazed, thermal-insulated, acoustic-insulated, uv-resistant)
+- **Gallery & Docs** — gallery[] images (hotspot on each), technicalSheet (PDF file), cadFile (DWG/DXF file)
+- **Relations** — relatedProducts[] references, seo object (titleEn, titleAr, descriptionEn, descriptionAr)
 - `material` = upvc|aluminum (replaces old `category` field that held the material value); `category` now means the subcategory slug
+- No `inStock` field — do not add it
 
 ### Fetching data in server components
 Prefer typed fetcher functions from `lib/sanity/fetch.ts` — they handle query + type together:
@@ -201,6 +203,8 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 - contact API (app/api/contact/route.ts) uses Resend; RESEND_API_KEY must be set in Vercel env vars
 - next.config.ts redirect pattern: use `$`-anchored non-capturing group + `[^/]+` — `:slug((?!(?:cat1|cat2|...)$)[^/]+)` — the `$` prevents prefix collision (e.g. "doors" without it matches the start of "doors-and-windows"); `[^/]+` restricts to single path segments. Always list ALL valid category slugs in both uPVC and aluminum lookaheads; a missing slug causes that category page to 308 to the material landing page
 - L4 product 404 guard: `productDetails.ts` is deleted. L4 routes now use a hardcoded `UPVC_CATEGORIES`/`ALUMINUM_CATEGORIES` Set to reject unknown category segments, then `if (!product) notFound()` after the Sanity fetch — no separate slug registry needed
+- Project `type` field values: `villas | buildings | towers` — old values (residential/commercial/hospitality) are gone. Filter IDs in ProjectsGrid and typeLabels in ProjectDetailPage must match these exact strings. Arabic: فلل / مباني / أبراج
+- Ghost buttons on dark/image overlays: use `hover:bg-brand-red hover:border-brand-red hover:text-white` — NOT `hover:bg-white hover:text-brand-dark`. White fill on a dark overlay is invisible and wastes the hover state; brand-red is the correct CTA fill everywhere
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev
