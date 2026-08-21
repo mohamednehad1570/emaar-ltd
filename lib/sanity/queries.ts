@@ -73,7 +73,10 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
   title, description,
   "mainImage": mainImage.asset->url,
   "gallery": gallery[].asset->url,
-  badge, specTags, features, applications,
+  badge, specTags,
+  // features are flat {en, ar} objects — explicit projection avoids returning internal _key/_type
+  "features": features[]{ en, ar },
+  applications,
   specs{ dimensions, thermalValue, acousticRating, glassThickness, colorOptions },
   "technicalSheet": technicalSheet.asset->url,
   "relatedProducts": relatedProducts[]->{

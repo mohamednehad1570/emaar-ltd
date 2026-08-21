@@ -14,7 +14,8 @@ import ProductDetailRelated from './ProductDetailRelated';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-interface FeatureItem { icon: string; title: string; description: string }
+// icon and description are absent from the Sanity feature schema — both optional
+interface FeatureItem { icon?: string; title: string; description?: string }
 
 interface Props { product: SanityProductFull }
 
@@ -35,13 +36,15 @@ export default function ProductDetailPage({ product }: Props) {
     { label: language === 'en' ? 'Thermal Value'   : 'القيمة الحرارية',  value: product.specs?.thermalValue  },
     { label: language === 'en' ? 'Acoustic Rating' : 'التقييم الصوتي',  value: product.specs?.acousticRating },
     { label: language === 'en' ? 'Glass Thickness' : 'سماكة الزجاج',    value: product.specs?.glassThickness },
-    { label: language === 'en' ? 'Colour Options'  : 'خيارات الألوان',   value: product.specs?.colorOptions  },
-  ].filter((e): e is { label: string; value: string } => Boolean(e.value));
+    // colorOptions is string[] in Sanity — join so it renders as a single spec row
+    { label: language === 'en' ? 'Colour Options'  : 'خيارات الألوان',   value: Array.isArray(product.specs?.colorOptions) ? (product.specs!.colorOptions as string[]).join(', ') : product.specs?.colorOptions },
+  ].filter((e): e is { label: string; value: string } => typeof e.value === 'string' && e.value.length > 0);
 
-  const features: FeatureItem[] = (product.features ?? []).map((f) => ({
+  // Sanity features shape: { en: string, ar: string } — no label/value wrapper
+  const features: FeatureItem[] = (product.features ?? []).map((f: any) => ({
     icon:        f.icon,
-    title:       f.label[language] ?? f.label.en,
-    description: f.value[language] ?? f.value.en,
+    title:       f[language] ?? f.en,
+    description: f.description?.[language] ?? f.description?.en ?? '',
   }));
 
   const materialLabel = product.material === 'upvc'
@@ -75,7 +78,7 @@ export default function ProductDetailPage({ product }: Props) {
             <div className="h-0.5 w-12 bg-brand-red mb-10" />
             <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportOnce} className="grid md:grid-cols-3 gap-6">
               {features.map((feature, idx) => {
-                const Icon = resolveIcon(feature.icon);
+                const Icon = resolveIcon(feature.icon ?? '');
                 return (
                   <motion.div key={idx} variants={fadeUp} className="bg-white border border-border-light hover:border-silver-material transition-colors p-6">
                     <div className={`flex items-center gap-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>

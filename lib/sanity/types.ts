@@ -184,14 +184,16 @@ export interface SanityProductFull {
   gallery?: string[]
   badge?: string
   specTags?: string[]
-  features?: Array<{ icon: string; label: LocalizedString; value: LocalizedString }>
-  applications?: LocalizedText
+  // features are flat {en, ar} bilingual objects — no icon/label/value wrapper
+  features?: Array<{ en: string; ar: string }>
+  // applications is a plain string array in Sanity — not localised
+  applications?: string[]
   specs?: {
     dimensions?: string
     thermalValue?: string
     acousticRating?: string
     glassThickness?: string
-    colorOptions?: string
+    colorOptions?: string[]
   }
   technicalSheet?: string
   relatedProducts?: Array<{
