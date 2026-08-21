@@ -30,7 +30,10 @@ const ALUMINUM_FALLBACK_PARAMS = [
 export async function generateStaticParams() {
   try {
     const all = await sanityFetch<SanityProductTile[]>(allProductsQuery);
-    const aluminum = all.filter((p) => p.material === 'aluminum');
+    // Guard against legacy documents where categoryAluminum may be stored as a localizedString object
+    const aluminum = all.filter(
+      (p) => p.material === 'aluminum' && typeof p.category === 'string' && p.category.length > 0,
+    );
     if (aluminum.length > 0) return aluminum.map((p) => ({ category: p.category, slug: p.slug }));
   } catch {}
   return ALUMINUM_FALLBACK_PARAMS;

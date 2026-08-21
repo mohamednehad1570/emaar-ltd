@@ -107,21 +107,60 @@ export const product = defineType({
       validation: (rule) => rule.required(),
     }),
 
+    // Two separate fields instead of one with a dynamic list — avoids p.map runtime
+    // error in Sanity v6 where options.list as a function is not supported in radio layout
     defineField({
-      name:        'category',
+      name:        'categoryUpvc',
       title:       'Category',
       type:        'string',
       group:       'identity',
-      description: 'Select a material above first — options update automatically',
-      // Hidden until material is chosen so the editor can't pick an invalid combination
-      hidden: ({ document }: any) => !document?.material,
+      description: 'Select the uPVC product category',
+      // Shown only when material = upvc; aluminum field appears otherwise
+      hidden: ({ document }: any) => document?.material !== 'upvc',
       options: {
-        // Filters to material-specific list so invalid combinations are never presented
-        list: ({ document }: any) =>
-          document?.material === 'upvc'     ? UPVC_CATEGORIES :
-          document?.material === 'aluminum' ? ALUMINUM_CATEGORIES : [],
+        list: [
+          { title: 'Windows',         value: 'windows'           },
+          { title: 'Doors',           value: 'doors'             },
+          { title: 'Doors & Windows', value: 'doors-and-windows' },
+          { title: 'Staircases',      value: 'staircases'        },
+          { title: 'Stained Glass',   value: 'stained-glass'     },
+          { title: 'Sandblast',       value: 'sandblast'         },
+          { title: 'Hebeschibe',      value: 'hebeschibe'        },
+        ],
+        layout: 'radio',
       },
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.custom((value, context) => {
+        const doc = context.document as any
+        if (doc?.material === 'upvc' && !value) return 'Category is required for uPVC products'
+        return true
+      }),
+    }),
+
+    defineField({
+      name:        'categoryAluminum',
+      title:       'Category',
+      type:        'string',
+      group:       'identity',
+      description: 'Select the aluminum product category',
+      // Shown only when material = aluminum; uPVC field appears otherwise
+      hidden: ({ document }: any) => document?.material !== 'aluminum',
+      options: {
+        list: [
+          { title: 'Windows',         value: 'windows'           },
+          { title: 'Doors',           value: 'doors'             },
+          { title: 'Doors & Windows', value: 'doors-and-windows' },
+          { title: 'Staircases',      value: 'staircases'        },
+          { title: 'Skylights',       value: 'skylights'         },
+          { title: 'Stained Glass',   value: 'stained-glass'     },
+          { title: 'Sandblast',       value: 'sandblast'         },
+        ],
+        layout: 'radio',
+      },
+      validation: (rule) => rule.custom((value, context) => {
+        const doc = context.document as any
+        if (doc?.material === 'aluminum' && !value) return 'Category is required for aluminum products'
+        return true
+      }),
     }),
 
     defineField({
@@ -279,14 +318,16 @@ export const product = defineType({
 
   preview: {
     select: {
-      title:    'title.en',
-      subtitle: 'category',
-      media:    'mainImage',
+      title:             'title.en',
+      // coalesce not available in preview.select — use both and pick in prepare()
+      categoryUpvc:      'categoryUpvc',
+      categoryAluminum:  'categoryAluminum',
+      media:             'mainImage',
     },
-    prepare({ title, subtitle, media }) {
+    prepare({ title, categoryUpvc, categoryAluminum, media }) {
       return {
         title:    title ?? '(untitled)',
-        subtitle: subtitle ?? '',
+        subtitle: categoryUpvc ?? categoryAluminum ?? '',
         media,
       }
     },

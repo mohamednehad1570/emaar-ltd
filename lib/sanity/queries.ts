@@ -34,8 +34,11 @@ export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
 // ─── PRODUCTS ───────────────────────────────────────────────────────────────
 
 // All products flat — for unified catalog L1 and site-wide search
+// category projected via coalesce — schema stores upvc/aluminum in separate fields
+// to avoid Sanity v6 p.map error with dynamic options.list functions
 export const allProductsQuery = groq`*[_type == "product"] | order(_createdAt asc){
-  _id, "slug": slug.current, material, category,
+  _id, "slug": slug.current, material,
+  "category": coalesce(categoryUpvc, categoryAluminum),
   title, description,
   "mainImage": mainImage.asset->url,
   badge, specTags,
@@ -44,15 +47,18 @@ export const allProductsQuery = groq`*[_type == "product"] | order(_createdAt as
 
 // Products by material — drives L2 material landing page with per-category counts
 export const productsByMaterialQuery = groq`*[_type == "product" && material == $material] | order(_createdAt asc){
-  _id, "slug": slug.current, material, category,
+  _id, "slug": slug.current, material,
+  "category": coalesce(categoryUpvc, categoryAluminum),
   title, description,
   "mainImage": mainImage.asset->url,
   badge, specTags
 }`
 
 // Products by material + category — drives L3 category grid with sidebar filters
-export const productsByCategoryQuery = groq`*[_type == "product" && material == $material && category == $category] | order(_createdAt asc){
-  _id, "slug": slug.current, material, category,
+// Filter checks both storage fields; projected category uses coalesce for a clean string
+export const productsByCategoryQuery = groq`*[_type == "product" && material == $material && (categoryUpvc == $category || categoryAluminum == $category)] | order(_createdAt asc){
+  _id, "slug": slug.current, material,
+  "category": coalesce(categoryUpvc, categoryAluminum),
   title, description,
   "mainImage": mainImage.asset->url,
   badge, specTags,
@@ -62,7 +68,8 @@ export const productsByCategoryQuery = groq`*[_type == "product" && material == 
 // Single product by slug — L4 detail page; no material filter because casement-window
 // and tilt-turn-window exist in both materials and the display layer handles disambiguation
 export const productBySlugQuery = groq`*[_type == "product" && slug.current == $slug][0]{
-  _id, "slug": slug.current, material, category,
+  _id, "slug": slug.current, material,
+  "category": coalesce(categoryUpvc, categoryAluminum),
   title, description,
   "mainImage": mainImage.asset->url,
   "gallery": gallery[].asset->url,
@@ -71,7 +78,9 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
   "technicalSheet": technicalSheet.asset->url,
   "relatedProducts": relatedProducts[]->{
     _id, "slug": slug.current, title,
-    "mainImage": mainImage.asset->url, category, material
+    "mainImage": mainImage.asset->url,
+    "category": coalesce(categoryUpvc, categoryAluminum),
+    material
   },
   // SEO sub-fields are titleEn/titleAr/descriptionEn/descriptionAr in the schema —
   // distinct names prevent collision with the product's own title/description fields

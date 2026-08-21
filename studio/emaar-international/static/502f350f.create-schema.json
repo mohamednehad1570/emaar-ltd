@@ -1,0 +1,1480 @@
+[
+  {
+    "fields": [
+      {
+        "name": "en",
+        "type": "string",
+        "title": "English"
+      },
+      {
+        "name": "ar",
+        "type": "string",
+        "title": "Arabic"
+      }
+    ],
+    "name": "localizedString",
+    "type": "object"
+  },
+  {
+    "fields": [
+      {
+        "name": "en",
+        "type": "text",
+        "title": "English"
+      },
+      {
+        "name": "ar",
+        "type": "text",
+        "title": "Arabic"
+      }
+    ],
+    "name": "localizedText",
+    "type": "object"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "custom"
+              }
+            ]
+          }
+        ],
+        "description": "Product name — fill both English and Arabic before publishing",
+        "name": "title",
+        "type": "localizedString"
+      },
+      {
+        "options": {
+          "source": "title.en",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Auto-generated from the English title — do not edit after first publish",
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "uPVC",
+              "value": "upvc"
+            },
+            {
+              "title": "Aluminum",
+              "value": "aluminum"
+            }
+          ],
+          "layout": "radio"
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "upvc",
+                  "aluminum"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Select material first — this controls which category options appear",
+        "name": "material",
+        "type": "string"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Select a material above first — options update automatically",
+        "hidden": "conditional",
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Primary product photo shown on category page cards — required",
+        "name": "mainImage",
+        "type": "image"
+      },
+      {
+        "description": "Optional pill shown on product cards — e.g. \"New\", \"Best Seller\"",
+        "name": "badge",
+        "type": "string",
+        "title": "Badge Label"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "custom"
+              }
+            ]
+          }
+        ],
+        "name": "description",
+        "type": "localizedText"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1
+              }
+            ],
+            "message": "Add at least one feature"
+          }
+        ],
+        "description": "Key selling points shown as bullet points on the product detail page — add at least one",
+        "of": [
+          {
+            "fields": [
+              {
+                "validation": [
+                  {
+                    "level": "error",
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ]
+                  }
+                ],
+                "name": "en",
+                "type": "string",
+                "title": "English"
+              },
+              {
+                "validation": [
+                  {
+                    "level": "error",
+                    "rules": [
+                      {
+                        "flag": "presence",
+                        "constraint": "required"
+                      }
+                    ]
+                  }
+                ],
+                "name": "ar",
+                "type": "string",
+                "title": "Arabic"
+              }
+            ],
+            "type": "object",
+            "name": "feature"
+          }
+        ],
+        "name": "features",
+        "type": "array"
+      },
+      {
+        "description": "Usage contexts — e.g. \"Residential villas\", \"Commercial towers\"",
+        "of": [
+          {
+            "type": "string"
+          }
+        ],
+        "name": "applications",
+        "type": "array"
+      },
+      {
+        "fields": [
+          {
+            "validation": [
+              {
+                "level": "error",
+                "rules": [
+                  {
+                    "flag": "presence",
+                    "constraint": "required"
+                  }
+                ]
+              }
+            ],
+            "description": "e.g. Custom — up to 2400×2400 mm",
+            "name": "dimensions",
+            "type": "string"
+          },
+          {
+            "description": "e.g. 1.1 W/m²K",
+            "name": "thermalValue",
+            "type": "string"
+          },
+          {
+            "description": "e.g. Rw 42 dB",
+            "name": "acousticRating",
+            "type": "string"
+          },
+          {
+            "description": "e.g. 6+12+6 mm",
+            "name": "glassThickness",
+            "type": "string"
+          },
+          {
+            "description": "One entry per available colour or finish",
+            "of": [
+              {
+                "type": "string"
+              }
+            ],
+            "name": "colorOptions",
+            "type": "array"
+          }
+        ],
+        "name": "specs",
+        "type": "object",
+        "title": "Specifications"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Double Glazed",
+              "value": "double-glazed"
+            },
+            {
+              "title": "Triple Glazed",
+              "value": "triple-glazed"
+            },
+            {
+              "title": "Thermal Insulated",
+              "value": "thermal-insulated"
+            },
+            {
+              "title": "Acoustic Insulated",
+              "value": "acoustic-insulated"
+            },
+            {
+              "title": "UV Resistant",
+              "value": "uv-resistant"
+            }
+          ],
+          "layout": "grid"
+        },
+        "description": "Check all that apply — these drive the filter checkboxes on the website",
+        "of": [
+          {
+            "type": "string"
+          }
+        ],
+        "name": "specTags",
+        "type": "array"
+      },
+      {
+        "description": "Additional product photos shown in the detail page gallery — optional",
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "type": "image"
+          }
+        ],
+        "name": "gallery",
+        "type": "array"
+      },
+      {
+        "options": {
+          "accept": ".pdf"
+        },
+        "description": "PDF datasheet — shown as a download link on the product page",
+        "name": "technicalSheet",
+        "type": "file"
+      },
+      {
+        "description": "DWG or DXF file — shown in the Technical Documents section",
+        "name": "cadFile",
+        "type": "file",
+        "title": "CAD File"
+      },
+      {
+        "of": [
+          {
+            "to": [
+              {
+                "type": "product"
+              }
+            ],
+            "type": "reference",
+            "title": "Reference to product"
+          }
+        ],
+        "name": "relatedProducts",
+        "type": "array"
+      },
+      {
+        "description": "Leave blank to inherit defaults from siteSettings",
+        "fields": [
+          {
+            "name": "titleEn",
+            "type": "string",
+            "title": "Page Title (EN)"
+          },
+          {
+            "name": "titleAr",
+            "type": "string",
+            "title": "Page Title (AR)"
+          },
+          {
+            "rows": 3,
+            "name": "descriptionEn",
+            "type": "text",
+            "title": "Meta Description (EN)"
+          },
+          {
+            "rows": 3,
+            "name": "descriptionAr",
+            "type": "text",
+            "title": "Meta Description (AR)"
+          }
+        ],
+        "name": "seo",
+        "type": "object",
+        "title": "SEO Overrides"
+      }
+    ],
+    "name": "product",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "title",
+        "type": "localizedString"
+      },
+      {
+        "options": {
+          "source": "title.en",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "custom"
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Villas",
+              "value": "villas"
+            },
+            {
+              "title": "Buildings",
+              "value": "buildings"
+            },
+            {
+              "title": "High-Rise / Towers",
+              "value": "towers"
+            }
+          ]
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "villas",
+                  "buildings",
+                  "towers"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "description": "Villas = residential villa projects | Buildings = commercial or industrial | Towers = high-rise",
+        "name": "type",
+        "type": "string"
+      },
+      {
+        "description": "Check all materials used in this project",
+        "of": [
+          {
+            "options": {
+              "list": [
+                {
+                  "title": "uPVC",
+                  "value": "upvc"
+                },
+                {
+                  "title": "Aluminum",
+                  "value": "aluminum"
+                }
+              ]
+            },
+            "type": "string"
+          }
+        ],
+        "name": "materialsUsed",
+        "type": "array"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 2000
+              },
+              {
+                "flag": "max",
+                "constraint": 2100
+              }
+            ]
+          }
+        ],
+        "name": "year",
+        "type": "number"
+      },
+      {
+        "description": "City and country — e.g. Dubai, UAE",
+        "name": "location",
+        "type": "localizedString"
+      },
+      {
+        "description": "First image is used as the cover card on the projects page — upload best photo first",
+        "of": [
+          {
+            "options": {
+              "hotspot": true
+            },
+            "type": "image"
+          }
+        ],
+        "name": "images",
+        "type": "array"
+      },
+      {
+        "name": "description",
+        "type": "localizedText"
+      },
+      {
+        "name": "client",
+        "type": "localizedString"
+      },
+      {
+        "name": "scope",
+        "type": "localizedString",
+        "title": "Scope of Work"
+      },
+      {
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "label",
+                "type": "localizedString"
+              },
+              {
+                "name": "value",
+                "type": "string"
+              }
+            ],
+            "type": "object",
+            "name": "stat"
+          }
+        ],
+        "name": "stats",
+        "type": "array"
+      }
+    ],
+    "name": "project",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "name",
+        "type": "localizedString"
+      },
+      {
+        "name": "role",
+        "type": "localizedString"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "photo",
+        "type": "image"
+      },
+      {
+        "name": "bio",
+        "type": "localizedText"
+      }
+    ],
+    "name": "teamMember",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "question",
+        "type": "localizedString"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "answer",
+        "type": "localizedText"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Products",
+              "value": "products"
+            },
+            {
+              "title": "Services",
+              "value": "services"
+            },
+            {
+              "title": "Technical",
+              "value": "technical"
+            },
+            {
+              "title": "Ordering",
+              "value": "ordering"
+            },
+            {
+              "title": "Installation",
+              "value": "installation"
+            },
+            {
+              "title": "Maintenance",
+              "value": "maintenance"
+            }
+          ]
+        },
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "initialValue": false,
+        "name": "popular",
+        "type": "boolean",
+        "title": "Mark as Popular"
+      }
+    ],
+    "name": "faq",
+    "type": "document",
+    "title": "FAQ"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "title",
+        "type": "localizedString",
+        "title": "Job Title"
+      },
+      {
+        "name": "department",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Full-Time",
+              "value": "full-time"
+            },
+            {
+              "title": "Part-Time",
+              "value": "part-time"
+            }
+          ]
+        },
+        "name": "type",
+        "type": "string",
+        "title": "Employment Type"
+      },
+      {
+        "name": "location",
+        "type": "localizedString"
+      },
+      {
+        "name": "experience",
+        "type": "string",
+        "title": "Experience Required"
+      },
+      {
+        "name": "salary",
+        "type": "string"
+      },
+      {
+        "name": "description",
+        "type": "localizedText"
+      },
+      {
+        "name": "requirements",
+        "type": "localizedText"
+      },
+      {
+        "of": [
+          {
+            "type": "localizedString"
+          }
+        ],
+        "name": "responsibilities",
+        "type": "array"
+      },
+      {
+        "of": [
+          {
+            "type": "localizedString"
+          }
+        ],
+        "name": "benefits",
+        "type": "array"
+      }
+    ],
+    "name": "jobPosting",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "image",
+        "type": "image"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 2000
+              },
+              {
+                "flag": "max",
+                "constraint": 2100
+              }
+            ]
+          }
+        ],
+        "name": "year",
+        "type": "number"
+      },
+      {
+        "description": "Organisation that issued the certificate",
+        "name": "issuedBy",
+        "type": "localizedString"
+      },
+      {
+        "name": "description",
+        "type": "text"
+      }
+    ],
+    "name": "certificate",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "description": "Short overline in the hero — e.g. \"German-Engineered Fenestration\"",
+        "name": "heroTagline",
+        "type": "localizedString"
+      },
+      {
+        "description": "Body text below the hero headline",
+        "name": "heroSubtitle",
+        "type": "localizedString"
+      },
+      {
+        "description": "Label for the WhatsApp/quote button — e.g. \"Request a Quote\"",
+        "name": "heroCTAPrimary",
+        "type": "localizedString",
+        "title": "Hero Primary CTA Label"
+      },
+      {
+        "description": "Label for the explore button — e.g. \"Explore Products\"",
+        "name": "heroCTASecondary",
+        "type": "localizedString",
+        "title": "Hero Secondary CTA Label"
+      },
+      {
+        "description": "Main about paragraph shown on the About page intro",
+        "name": "companyBio",
+        "type": "localizedText"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "min",
+                "constraint": 1900
+              },
+              {
+                "flag": "max",
+                "constraint": 2100
+              }
+            ]
+          }
+        ],
+        "description": "Year the company was founded — e.g. 2004",
+        "name": "foundedYear",
+        "type": "number"
+      },
+      {
+        "description": "Displayed on the homepage stats bar and About hero",
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "label",
+                "type": "localizedString"
+              },
+              {
+                "description": "e.g. \"500+\"",
+                "name": "value",
+                "type": "string"
+              },
+              {
+                "description": "Phosphor icon name — e.g. \"Buildings\"",
+                "name": "icon",
+                "type": "string",
+                "title": "Icon Name"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "stats",
+        "type": "array",
+        "title": "Key Statistics"
+      },
+      {
+        "name": "phone",
+        "type": "string"
+      },
+      {
+        "name": "email",
+        "type": "string"
+      },
+      {
+        "description": "Include country code, digits only — e.g. 201012345678",
+        "name": "whatsappNumber",
+        "type": "string",
+        "title": "WhatsApp Number"
+      },
+      {
+        "name": "address",
+        "type": "localizedString"
+      },
+      {
+        "name": "workingHours",
+        "type": "localizedString"
+      },
+      {
+        "fields": [
+          {
+            "validation": [
+              {
+                "level": "error",
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "name": "instagram",
+            "type": "url"
+          },
+          {
+            "validation": [
+              {
+                "level": "error",
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "name": "facebook",
+            "type": "url"
+          },
+          {
+            "validation": [
+              {
+                "level": "error",
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "name": "linkedin",
+            "type": "url",
+            "title": "LinkedIn"
+          },
+          {
+            "validation": [
+              {
+                "level": "error",
+                "rules": [
+                  {
+                    "flag": "uri",
+                    "constraint": {
+                      "options": {
+                        "scheme": [
+                          "/^http$/",
+                          "/^https$/"
+                        ],
+                        "allowRelative": false,
+                        "relativeOnly": false,
+                        "allowCredentials": false
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "name": "youtube",
+            "type": "url",
+            "title": "YouTube"
+          }
+        ],
+        "name": "socialLinks",
+        "type": "object"
+      },
+      {
+        "description": "Full Google Maps embed src URL — used on the contact page iframe",
+        "name": "mapEmbedUrl",
+        "type": "string",
+        "title": "Google Maps Embed URL"
+      },
+      {
+        "description": "Branch offices displayed on the contact page",
+        "of": [
+          {
+            "fields": [
+              {
+                "name": "name",
+                "type": "localizedString",
+                "title": "Office Name"
+              },
+              {
+                "name": "address",
+                "type": "localizedString"
+              },
+              {
+                "name": "phone",
+                "type": "string"
+              },
+              {
+                "name": "workingHours",
+                "type": "localizedString"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "name": "officeLocations",
+        "type": "array"
+      },
+      {
+        "initialValue": false,
+        "description": "Enables the warranty strip on product pages. Off by default until client approves the wording.",
+        "name": "showWarrantyBadge",
+        "type": "boolean"
+      },
+      {
+        "description": "Shown in the WarrantyStrip component when showWarrantyBadge is enabled",
+        "fields": [
+          {
+            "initialValue": 25,
+            "name": "upvcYears",
+            "type": "number",
+            "title": "uPVC Coverage (years)"
+          },
+          {
+            "initialValue": 10,
+            "name": "glassYears",
+            "type": "number",
+            "title": "Glass Coverage (years)"
+          },
+          {
+            "initialValue": 1,
+            "name": "accessoriesYears",
+            "type": "number",
+            "title": "Accessories Coverage (years)"
+          },
+          {
+            "initialValue": 1,
+            "name": "maintenanceYears",
+            "type": "number",
+            "title": "Maintenance Coverage (years)"
+          },
+          {
+            "fields": [
+              {
+                "initialValue": "UAE Law",
+                "name": "en",
+                "type": "string",
+                "title": "English"
+              },
+              {
+                "initialValue": "القانون الإماراتي",
+                "name": "ar",
+                "type": "string",
+                "title": "Arabic"
+              }
+            ],
+            "name": "governingLaw",
+            "type": "object"
+          },
+          {
+            "fields": [
+              {
+                "rows": 2,
+                "initialValue": "Fly-screens and roller shutters are not covered",
+                "name": "en",
+                "type": "text",
+                "title": "English"
+              },
+              {
+                "rows": 2,
+                "initialValue": "لا يشمل الضمان شبكات الذباب والستائر الدوارة",
+                "name": "ar",
+                "type": "text",
+                "title": "Arabic"
+              }
+            ],
+            "name": "exclusions",
+            "type": "object"
+          },
+          {
+            "fields": [
+              {
+                "rows": 2,
+                "initialValue": "Warranty is subject to standard terms and conditions",
+                "name": "en",
+                "type": "text",
+                "title": "English"
+              },
+              {
+                "rows": 2,
+                "initialValue": "الضمان خاضع للشروط والأحكام القياسية",
+                "name": "ar",
+                "type": "text",
+                "title": "Arabic"
+              }
+            ],
+            "name": "footnote",
+            "type": "object"
+          }
+        ],
+        "name": "warranty",
+        "type": "object",
+        "title": "Warranty Details"
+      }
+    ],
+    "name": "siteSettings",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "quote",
+        "type": "localizedText"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "directorName",
+        "type": "localizedString"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "companyName",
+        "type": "localizedString"
+      },
+      {
+        "name": "projectName",
+        "type": "localizedString",
+        "title": "Project Name (optional)"
+      },
+      {
+        "name": "order",
+        "type": "number",
+        "title": "Display Order"
+      }
+    ],
+    "name": "testimonial",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "name",
+        "type": "localizedString",
+        "title": "Award Name"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "issuedBy",
+        "type": "localizedString"
+      },
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              },
+              {
+                "flag": "min",
+                "constraint": 1900
+              },
+              {
+                "flag": "max",
+                "constraint": 2100
+              }
+            ]
+          }
+        ],
+        "name": "year",
+        "type": "number"
+      },
+      {
+        "name": "order",
+        "type": "number",
+        "title": "Display Order"
+      }
+    ],
+    "name": "award",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "companyName",
+        "type": "localizedString"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Upload SVG or PNG with transparent background",
+        "name": "logo",
+        "type": "image"
+      },
+      {
+        "name": "order",
+        "type": "number",
+        "title": "Display Order"
+      }
+    ],
+    "name": "clientLogo",
+    "type": "document"
+  },
+  {
+    "fields": [
+      {
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "name",
+        "type": "localizedString",
+        "title": "Document Name"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "Product Specifications",
+              "value": "Product Specifications"
+            },
+            {
+              "title": "CAD Files",
+              "value": "CAD Files"
+            },
+            {
+              "title": "Installation Guides",
+              "value": "Installation Guides"
+            },
+            {
+              "title": "Maintenance Manuals",
+              "value": "Maintenance Manuals"
+            },
+            {
+              "title": "Brochures & Catalogs",
+              "value": "Brochures & Catalogs"
+            },
+            {
+              "title": "Certifications",
+              "value": "Certifications"
+            }
+          ]
+        },
+        "validation": [
+          {
+            "level": "error",
+            "rules": [
+              {
+                "flag": "valid",
+                "constraint": [
+                  "Product Specifications",
+                  "CAD Files",
+                  "Installation Guides",
+                  "Maintenance Manuals",
+                  "Brochures & Catalogs",
+                  "Certifications"
+                ]
+              },
+              {
+                "flag": "presence",
+                "constraint": "required"
+              }
+            ]
+          }
+        ],
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "options": {
+          "list": [
+            "PDF",
+            "DWG",
+            "DXF",
+            "XLSX",
+            "ZIP"
+          ]
+        },
+        "name": "format",
+        "type": "string",
+        "title": "File Format"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "All Products",
+              "value": "All Products"
+            },
+            {
+              "title": "uPVC Systems",
+              "value": "uPVC Systems"
+            },
+            {
+              "title": "Aluminum Systems",
+              "value": "Aluminum Systems"
+            },
+            {
+              "title": "Hardware & Accessories",
+              "value": "Hardware & Accessories"
+            },
+            {
+              "title": "Glass & Glazing",
+              "value": "Glass & Glazing"
+            }
+          ]
+        },
+        "name": "productType",
+        "type": "string",
+        "title": "Product Type Filter"
+      },
+      {
+        "description": "Upload the actual document file",
+        "name": "file",
+        "type": "file"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "description": "Thumbnail shown in the document grid",
+        "name": "previewImage",
+        "type": "image"
+      },
+      {
+        "description": "e.g. \"2.4 MB\" — enter manually",
+        "name": "fileSize",
+        "type": "string",
+        "title": "File Size (display only)"
+      },
+      {
+        "initialValue": false,
+        "description": "Show this document prominently",
+        "name": "featured",
+        "type": "boolean"
+      },
+      {
+        "name": "order",
+        "type": "number",
+        "title": "Display Order"
+      }
+    ],
+    "name": "techDocument",
+    "type": "document",
+    "title": "Technical Document"
+  }
+]

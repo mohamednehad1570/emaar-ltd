@@ -193,6 +193,7 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 
 ## Known gotchas
 - Sanity product schema break: the old schema used `category` to mean material (upvc/aluminum); the new schema uses `material` for that and `category` for the subcategory slug (e.g. "windows"). Any Sanity migration script must account for this field rename.
+- Product category fields: the schema stores category in TWO separate fields — `categoryUpvc` (uPVC products) and `categoryAluminum` (aluminum products) — instead of a single `category` field. This avoids a Sanity v6 runtime error (`p.map is not a function`) caused by passing a function to `options.list` with `layout: 'radio'`. All GROQ queries project these as `"category": coalesce(categoryUpvc, categoryAluminum)` so the rest of the codebase reads a unified `category` string. The `productsByCategoryQuery` filter uses `(categoryUpvc == $category || categoryAluminum == $category)`. Never add a dynamic function to `options.list` in a radio field.
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits
   white text. Fix: style={{ color: 'var(--color-brand-dark)' }} on
   light-bg buttons inside dark sections

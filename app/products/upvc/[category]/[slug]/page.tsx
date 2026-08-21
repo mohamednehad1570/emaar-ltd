@@ -31,7 +31,11 @@ const UPVC_FALLBACK_PARAMS = [
 export async function generateStaticParams() {
   try {
     const all = await sanityFetch<SanityProductTile[]>(allProductsQuery);
-    const upvc = all.filter((p) => p.material === 'upvc');
+    // Guard against legacy documents where categoryUpvc may be stored as a localizedString
+    // object instead of a plain string — skip them and fall back to static params
+    const upvc = all.filter(
+      (p) => p.material === 'upvc' && typeof p.category === 'string' && p.category.length > 0,
+    );
     if (upvc.length > 0) return upvc.map((p) => ({ category: p.category, slug: p.slug }));
   } catch {}
   return UPVC_FALLBACK_PARAMS;
