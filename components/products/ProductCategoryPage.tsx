@@ -133,6 +133,7 @@ export default function ProductCategoryPage({ material, category, sanityProducts
               emptyMessage={labels.noResults[language]}
               emptyCtaLabel={labels.clearFilters[language]}
               isRTL={isRTL}
+              language={language}
             />
           </div>
 

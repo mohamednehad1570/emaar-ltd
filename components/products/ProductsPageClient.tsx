@@ -5,10 +5,7 @@
  *
  * Client shell for the /products index page.
  * Top: editorial two-card material navigation (original design preserved).
- * Below: full product catalog with ProductFilterSidebar + ProductGrid.
- *
- * Receives pre-fetched Sanity products from the server page so this client
- * component never needs to call fetch itself.
+ * Below: full product catalog with ProductFilterBar (horizontal) + full-width ProductGrid.
  */
 
 import React, { useState, useMemo } from 'react';
@@ -20,7 +17,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
 import type { SanityProductTile } from '@/lib/sanity/types';
-import ProductFilterSidebar, { type FilterState } from './ProductFilterSidebar';
+import { type FilterState } from './ProductFilterSidebar';
+import ProductFilterBar, { type SortOrder } from './ProductFilterBar';
 import ProductGrid, { type DisplayProduct } from './ProductGrid';
 
 // ── Editorial card data ────────────────────────────────────────────────────────
@@ -38,8 +36,8 @@ const EDITORIAL = {
     eyebrow: 'أنظمتنا', title: 'اختر المادة',
     subtitle: 'أنظمة نوافذ وأبواب عالمية المستوى مصممة لمناخ الخليج ومعايير العمارة فيه.',
     cards: [
-      { title: 'أنظمة uPVC',      desc: 'قطاعات حرارية موفرة للطاقة. هندسة ألمانية. صيانة صفرية.',                   cta: 'استكشف uPVC',      href: '/products/upvc',     image: 'https://images.unsplash.com/photo-1542385412-42e58a804825?w=1200&q=80', alt: 'نظام نوافذ uPVC' },
-      { title: 'أنظمة الألومنيوم', desc: 'واجهات هيكلية وستائرية. مصممة للأبراج والمشاريع التجارية.',               cta: 'استكشف الألومنيوم', href: '/products/aluminum', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80', alt: 'واجهة ألومنيوم تجارية' },
+      { title: 'أنظمة uPVC',       desc: 'قطاعات حرارية موفرة للطاقة. هندسة ألمانية. صيانة صفرية.',             cta: 'استكشف uPVC',      href: '/products/upvc',     image: 'https://images.unsplash.com/photo-1542385412-42e58a804825?w=1200&q=80', alt: 'نظام نوافذ uPVC' },
+      { title: 'أنظمة الألومنيوم', desc: 'واجهات هيكلية وستائرية. مصممة للأبراج والمشاريع التجارية.',           cta: 'استكشف الألومنيوم', href: '/products/aluminum', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80', alt: 'واجهة ألومنيوم تجارية' },
     ],
   },
 } as const;
@@ -62,12 +60,14 @@ export default function ProductsPageClient({ products }: Props) {
   const ct = CATALOG[language];
 
   const [filters, setFilters] = useState<FilterState>({ material: null, categories: [], specTags: [] });
+  const [sort, setSort] = useState<SortOrder>('relevance');
 
   const displayProducts = useMemo<DisplayProduct[]>(() => {
     return products
       .filter((p) => {
         const matOk = filters.material === null || p.material === filters.material;
         const catOk = filters.categories.length === 0 || filters.categories.includes(p.category);
+        // specTags advisory: products without specTags pass through regardless
         const tagOk = filters.specTags.length === 0 || !p.specTags?.length
           ? true
           : filters.specTags.every((tag) => p.specTags!.includes(tag));
@@ -82,12 +82,13 @@ export default function ProductsPageClient({ products }: Props) {
         description: p.description?.[language] ?? p.description?.en ?? '',
         image:       p.mainImage ?? '',
         badge:       p.badge,
-      }));
-  }, [products, filters, language]);
-
-  // Sidebar on reading-start side (left LTR, right RTL)
-  const sidebarOrder = isRTL ? 'order-2' : 'order-1';
-  const gridOrder    = isRTL ? 'order-1' : 'order-2';
+      }))
+      .sort((a, b) => {
+        if (sort === 'az') return a.title.localeCompare(b.title);
+        if (sort === 'za') return b.title.localeCompare(a.title);
+        return 0; // relevance = original insertion order from Sanity
+      });
+  }, [products, filters, language, sort]);
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -121,7 +122,7 @@ export default function ProductsPageClient({ products }: Props) {
               <div className="h-0.5 w-12 bg-brand-red mb-6" />
               <h2 className="text-4xl md:text-5xl font-bold font-cairo text-white mb-4">{card.title}</h2>
               <p className="text-white/70 text-base mb-8 max-w-xs">{card.desc}</p>
-              {/* hover:bg-brand-red matches the design system CTA colour — white fill was too close to bg on light-theme overlays */}
+              {/* hover:bg-brand-red — white fill was too close to bg on dark overlays */}
               <Link href={card.href} className={`px-8 py-4 font-bold bg-white hover:bg-brand-red hover:text-white transition-all duration-200 inline-flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`} style={{ color: 'var(--color-brand-dark)' }}>
                 <span>{card.cta}</span>
                 {/* Arrow rotates 180° in RTL — pointing toward reading-end edge */}
@@ -136,17 +137,26 @@ export default function ProductsPageClient({ products }: Props) {
       {products.length > 0 && (
         <div className="bg-off-white border-t border-border-light">
           <Container className="py-12">
-            <h2 className={`text-2xl md:text-3xl font-bold font-cairo text-ink-heading mb-8 ${isRTL ? 'text-right' : ''}`}>
+            <h2 className={`text-2xl md:text-3xl font-bold font-cairo text-ink-heading mb-6 ${isRTL ? 'text-right' : ''}`}>
               {ct.heading}
             </h2>
-            <div className="flex gap-10 items-start">
-              <div className={`w-56 shrink-0 ${sidebarOrder}`}>
-                <ProductFilterSidebar filters={filters} onChange={setFilters} isRTL={isRTL} language={language} />
-              </div>
-              <div className={`flex-1 min-w-0 ${gridOrder}`}>
-                <ProductGrid products={displayProducts} isLoading={false} emptyMessage={ct.noResults} emptyCtaLabel={ct.clear} isRTL={isRTL} />
-              </div>
-            </div>
+            <ProductFilterBar
+              filters={filters}
+              onChange={setFilters}
+              sort={sort}
+              onSortChange={setSort}
+              filteredCount={displayProducts.length}
+              isRTL={isRTL}
+              language={language}
+            />
+            <ProductGrid
+              products={displayProducts}
+              isLoading={false}
+              emptyMessage={ct.noResults}
+              emptyCtaLabel={ct.clear}
+              isRTL={isRTL}
+              language={language}
+            />
           </Container>
         </div>
       )}
