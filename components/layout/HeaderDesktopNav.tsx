@@ -9,6 +9,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { NAV, isActive } from '@/lib/data/nav';
 import { cn } from '@/lib/cn';
 import HeaderDropdown from './HeaderDropdown';
+import HeaderMegaMenu from './HeaderMegaMenu';
 
 const underlineVariants = {
   rest:    { scaleX: 0 },
@@ -31,7 +32,8 @@ export default function HeaderDesktopNav() {
   }, []);
 
   const scheduleClose = useCallback(() => {
-    closeTimeout.current = setTimeout(() => setOpenDrop(null), 100);
+    // 120ms — long enough for mouse to transit from nav label into the mega panel without closing
+    closeTimeout.current = setTimeout(() => setOpenDrop(null), 120);
   }, []);
 
   const cancelClose = useCallback(() => {
@@ -128,9 +130,9 @@ export default function HeaderDesktopNav() {
                 />
               )}
 
-              {/* Compact dropdown */}
+              {/* Compact dropdown — Products uses HeaderMegaMenu at nav level instead */}
               <AnimatePresence>
-                {isOpen && item.dropdown && (
+                {isOpen && item.dropdown && item.en !== 'Products' && (
                   <HeaderDropdown
                     key={item.en + '-drop'}
                     items={item.dropdown}
@@ -145,6 +147,13 @@ export default function HeaderDesktopNav() {
           );
         })}
       </div>
+
+      {/* ── Products mega menu — fixed positioning; rendered at nav level not inside the loop */}
+      <AnimatePresence>
+        {openDrop === 'Products' && (
+          <HeaderMegaMenu onEnter={cancelClose} onLeave={scheduleClose} />
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
