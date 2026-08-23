@@ -58,9 +58,9 @@ export default function Header({ whatsappNumber }: HeaderProps) {
               aria-label={aria} aria-pressed={displayLang === lang}
               whileHover={r ? undefined : { scale: 1.05 }}
               transition={{ duration: 0.15, ease: EASE }}
-              className={cn('px-2 text-xs',
+              className={cn('px-1.5 text-xs',
                 displayLang === lang
-                  ? 'font-bold text-text-heading'
+                  ? 'font-bold text-brand-dark'
                   : 'font-normal text-text-muted hover:text-text-body')}
             >{label}</motion.button>
           </React.Fragment>

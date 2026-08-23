@@ -23,6 +23,7 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
             initial={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
+            whileHover={shouldReduce ? undefined : { scale: 1.01, transition: { duration: 0.3 } }}
             transition={{ duration: 0.5 }}
             className="group relative"
         >

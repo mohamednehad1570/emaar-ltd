@@ -11,12 +11,12 @@ import { cn } from '@/lib/cn';
 import HeaderDropdown from './HeaderDropdown';
 import HeaderMegaMenu from './HeaderMegaMenu';
 
+const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
+// 'active' = full opacity (current page); 'hover' = 50% so they stay visually distinct
 const underlineVariants = {
-  rest:    { scaleX: 0 },
-  hovered: {
-    scaleX: 1,
-    transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  },
+  rest:   { scaleX: 0, opacity: 0 },
+  hover:  { scaleX: 1, opacity: 0.5, transition: { duration: 0.2, ease: EASE } },
+  active: { scaleX: 1, opacity: 1,   transition: { duration: 0.2, ease: EASE } },
 };
 
 export default function HeaderDesktopNav() {
@@ -51,14 +51,14 @@ export default function HeaderDesktopNav() {
         {NAV.map((item) => {
           const active  = isActive(pathname, item.href, item.dropdown);
           const isOpen  = openDrop === item.en;
-          const variant = active || isOpen ? 'hovered' : 'rest';
+          const variant = active || isOpen ? 'active' : 'rest';
 
           return (
             <motion.div
               key={item.en}
               className="relative h-full flex items-center"
               initial="rest"
-              whileHover={shouldReduceMotion ? undefined : 'hovered'}
+              whileHover={shouldReduceMotion ? undefined : 'hover'}
               animate={shouldReduceMotion ? undefined : variant}
               onMouseEnter={() =>
                 item.dropdown

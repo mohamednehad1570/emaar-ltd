@@ -74,7 +74,11 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
             <div className="w-7 h-7 bg-brand-dark flex items-center justify-center">
               <Image src="/logo.svg" alt="" aria-hidden="true" width={28} height={28} className="w-4 h-4 object-contain brightness-0 invert" />
             </div>
-            <span className="font-bold text-sm text-brand-dark">{language === 'en' ? 'EMAAR' : 'إعمار'}</span>
+            {/* inline-grid keeps layout stable when EN↔AR text widths differ */}
+            <span className="font-bold text-sm text-brand-dark inline-grid justify-items-start">
+              <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>EMAAR</span>
+              <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>إعمار</span>
+            </span>
           </Link>
           <div className="flex items-center gap-1">
             {/* Lang toggle mirrors header bar — active = bold heading, inactive = muted */}
@@ -88,9 +92,9 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
                     aria-pressed={displayLang === lang}
                     // min-w/h-[44px] meets WCAG 2.5.5 AA touch-target minimum
                     className={cn(
-                      'px-2 text-xs min-w-[44px] min-h-[44px] flex items-center justify-center',
+                      'px-1.5 text-xs min-w-[44px] min-h-[44px] flex items-center justify-center',
                       displayLang === lang
-                        ? 'font-bold text-text-heading'
+                        ? 'font-bold text-brand-dark'
                         : 'font-normal text-text-muted hover:text-text-body',
                     )}
                   >{label}</button>

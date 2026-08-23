@@ -35,6 +35,7 @@ import {
 import Image from 'next/image';
 import Link  from 'next/link';
 import { useLanguage, useTranslation } from '../contexts/LanguageContext';
+import { cn } from '@/lib/cn';
 import Container from './layout/Container';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -114,9 +115,11 @@ function ColHeader({ children }: { children: React.ReactNode }) {
 function LinksList({
   links,
   language,
+  isRTL,
 }: {
   links: FooterLink[];
   language: 'en' | 'ar';
+  isRTL: boolean;
 }) {
   return (
     <ul className="space-y-3">
@@ -124,7 +127,11 @@ function LinksList({
         <li key={link.href + link.en}>
           <Link
             href={link.href}
-            className="text-sm text-text-body hover:text-brand-red transition-colors duration-200"
+            className={cn(
+              'text-sm text-text-body hover:text-brand-dark transition-all duration-150',
+              // slide 2px toward reading-end on hover
+              isRTL ? 'hover:-translate-x-0.5' : 'hover:translate-x-0.5',
+            )}
           >
             {link[language]}
           </Link>
@@ -386,13 +393,13 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
           {/* ── Column 2: Products ────────────────────────────────────── */}
           <div>
             <ColHeader>{l('Products', 'المنتجات')}</ColHeader>
-            <LinksList links={COLUMNS[0].links} language={language} />
+            <LinksList links={COLUMNS[0].links} language={language} isRTL={isRTL} />
           </div>
 
           {/* ── Column 3: Company ─────────────────────────────────────── */}
           <div>
             <ColHeader>{l('Company', 'الشركة')}</ColHeader>
-            <LinksList links={COLUMNS[1].links} language={language} />
+            <LinksList links={COLUMNS[1].links} language={language} isRTL={isRTL} />
           </div>
 
           {/* ── Column 4: Contact ─────────────────────────────────────── */}
@@ -464,12 +471,12 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
 
           {/* Products accordion */}
           <MobileAccordion title={l('Products', 'المنتجات')} isRTL={isRTL}>
-            <LinksList links={COLUMNS[0].links} language={language} />
+            <LinksList links={COLUMNS[0].links} language={language} isRTL={isRTL} />
           </MobileAccordion>
 
           {/* Company accordion */}
           <MobileAccordion title={l('Company', 'الشركة')} isRTL={isRTL}>
-            <LinksList links={COLUMNS[1].links} language={language} />
+            <LinksList links={COLUMNS[1].links} language={language} isRTL={isRTL} />
           </MobileAccordion>
 
           {/* Contact accordion */}
