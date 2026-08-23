@@ -129,7 +129,7 @@ export function CheckOption({ label, checked, onChange }: {
   label: string; checked: boolean; onChange: () => void;
 }) {
   return (
-    <label className="flex items-center gap-2.5 px-3 py-2 cursor-pointer hover:bg-off-white">
+    <label onClick={onChange} className="flex items-center gap-2.5 px-3 py-2 cursor-pointer hover:bg-off-white">
       {/* Custom checkbox square — radius 0px matches button token */}
       <span className={cn(
         'flex-shrink-0 w-4 h-4 border transition-colors duration-100 flex items-center justify-center',

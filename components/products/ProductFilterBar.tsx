@@ -13,7 +13,6 @@
 
 import React, { useState, useCallback } from 'react';
 import { X } from '@phosphor-icons/react';
-import { cn } from '@/lib/cn';
 import { type FilterState } from './ProductFilterSidebar';
 import ProductFilterDropdown, { RadioOption, CheckOption } from './ProductFilterDropdown';
 
@@ -115,8 +114,8 @@ export default function ProductFilterBar({ filters, onChange, sort, onSortChange
     <div className="space-y-3 mb-6">
 
       {/* ── Row 1: filter pills + count + sort ────────────────────────── */}
-      {/* flex-row-reverse in RTL: Material pill lands on reading-start (right) edge */}
-      <div className={cn('flex items-center gap-2 flex-wrap', isRTL && 'flex-row-reverse')}>
+      {/* No flex-row-reverse — parent dir="rtl" already makes flex RTL-aware */}
+      <div className="flex items-center gap-2 flex-wrap">
 
         <ProductFilterDropdown label={t('material')} isOpen={open === 'material'} isActive={filters.material !== null} onToggle={() => toggle('material')} onClose={close} isRTL={isRTL}>
           <RadioOption label={t('all')}      isSelected={!filters.material}                 onClick={() => setMaterial(null)} />
@@ -136,9 +135,8 @@ export default function ProductFilterBar({ filters, onChange, sort, onSortChange
           ))}
         </ProductFilterDropdown>
 
-        {/* Count + Sort pushed to reading-end edge via margin */}
-        {/* In flex-row-reverse (RTL), mr-auto pushes toward the left (reading end) */}
-        <div className={cn('flex items-center gap-3', isRTL ? 'mr-auto' : 'ml-auto')}>
+        {/* ms-auto = margin-inline-start: auto; pushes to inline-end in both LTR and RTL */}
+        <div className="flex items-center gap-3 ms-auto">
           {/* dir=ltr preserves digit order when parent container is RTL */}
           <span className="text-sm text-text-muted font-medium" dir="ltr">
             {filteredCount} {t('products')}
@@ -154,7 +152,7 @@ export default function ProductFilterBar({ filters, onChange, sort, onSortChange
 
       {/* ── Row 2: active chips (only when filters are applied) ─────────── */}
       {chips.length > 0 && (
-        <div className={cn('flex items-center gap-2 flex-wrap', isRTL && 'flex-row-reverse')}>
+        <div className="flex items-center gap-2 flex-wrap">
           {chips.map((chip) => (
             <span key={chip.key} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cream border border-border-light text-text-body text-xs">
               {chip.label}
