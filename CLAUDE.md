@@ -211,3 +211,22 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev
+
+## Current State — Aug 23 2026
+
+### Completed this session
+- Mega menu: components/layout/HeaderMegaMenu.tsx — two columns, bilingual, RTL, mouse-bridge
+- Mobile overlay: rewritten with LangToggle in top bar, WhatsApp+Quote bottom bar
+- MobileNavList: extracted to components/layout/MobileNavList.tsx
+- Horizontal filter bar: ProductFilterBar.tsx + ProductFilterDropdown.tsx
+- ProductCard.tsx: extracted with Material·Category metadata chip
+
+### Known filter bugs (fix next session — Prompt 3b)
+- Category and Specifications checkboxes not selectable — handler not wired
+- Sort pill positioned incorrectly — use ms-auto on count+sort group
+- Arabic filter bar layout wrong — use ms-auto not flex-row-reverse
+
+### Pending prompts
+- Prompt 3b: Fix filter bar bugs (checkbox selection, RTL layout, sort position)
+- Prompt 4: Project detail editorial layout redesign
+- Prompt 5: Product detail two-column layout + image gallery + sticky CTA
