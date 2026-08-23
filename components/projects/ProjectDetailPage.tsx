@@ -33,11 +33,11 @@ export default function ProjectDetailPage({ project }: Props) {
   const gallery = project.images.slice(1)
 
   const stats = [
-    { label: ui.location, value: project.location?.[language] ?? project.location?.en ?? '', Icon: MapPin },
-    { label: ui.year, value: project.year != null ? String(project.year) : '', Icon: CalendarBlank },
-    { label: ui.material, value: materialLabel, Icon: Cube },
-    { label: ui.client, value: project.client?.[language] ?? '', Icon: Briefcase },
-  ];
+    { label: ui.location, value: project.location?.[language] ?? project.location?.en ?? '', Icon: MapPin        },
+    { label: ui.year,     value: project.year != null ? String(project.year) : null,          Icon: CalendarBlank },
+    { label: ui.material, value: materialLabel,                                                Icon: Cube          },
+    { label: ui.client,   value: project.client?.[language] ?? '',                            Icon: Briefcase     },
+  ].filter(s => s.value != null && s.value !== '');
 
   return (
     <div className="min-h-screen bg-off-white pt-[52px]" dir={isRTL ? 'rtl' : 'ltr'}>

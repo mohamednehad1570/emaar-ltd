@@ -85,7 +85,7 @@ export interface SanityProject {
   title: LocalizedString
   type: string
   materialsUsed: string[]
-  year: number
+  year: number | null
   location: LocalizedString
   // coverImage is images[0].asset->url — pre-resolved for card thumbnails
   coverImage?: string
