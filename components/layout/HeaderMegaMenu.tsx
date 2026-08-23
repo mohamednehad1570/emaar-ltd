@@ -16,34 +16,35 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/cn';
 
 const UPVC_LINKS = [
-  { label: 'Windows',         href: '/products/upvc/windows'           },
-  { label: 'Doors',           href: '/products/upvc/doors'             },
-  { label: 'Doors & Windows', href: '/products/upvc/doors-and-windows' },
-  { label: 'Staircases',      href: '/products/upvc/staircases'        },
-  { label: 'Stained Glass',   href: '/products/upvc/stained-glass'     },
-  { label: 'Sandblast',       href: '/products/upvc/sandblast'         },
-  { label: 'Hebeschibe',      href: '/products/upvc/hebeschibe'        },
+  { en: 'Windows',         ar: 'نوافذ',           href: '/products/upvc/windows'           },
+  { en: 'Doors',           ar: 'أبواب',           href: '/products/upvc/doors'             },
+  { en: 'Doors & Windows', ar: 'أبواب ونوافذ',    href: '/products/upvc/doors-and-windows' },
+  { en: 'Staircases',      ar: 'درابزين',         href: '/products/upvc/staircases'        },
+  { en: 'Stained Glass',   ar: 'زجاج ملون',       href: '/products/upvc/stained-glass'     },
+  { en: 'Sandblast',       ar: 'زجاج مسند',       href: '/products/upvc/sandblast'         },
+  { en: 'Hebeschibe',      ar: 'نظام رفع وإزاحة', href: '/products/upvc/hebeschibe'        },
 ];
 const ALUMINUM_LINKS = [
-  { label: 'Windows',         href: '/products/aluminum/windows'           },
-  { label: 'Doors',           href: '/products/aluminum/doors'             },
-  { label: 'Doors & Windows', href: '/products/aluminum/doors-and-windows' },
-  { label: 'Staircases',      href: '/products/aluminum/staircases'        },
-  { label: 'Skylights',       href: '/products/aluminum/skylights'         },
-  { label: 'Stained Glass',   href: '/products/aluminum/stained-glass'     },
-  { label: 'Sandblast',       href: '/products/aluminum/sandblast'         },
+  { en: 'Windows',         ar: 'نوافذ',           href: '/products/aluminum/windows'           },
+  { en: 'Doors',           ar: 'أبواب',           href: '/products/aluminum/doors'             },
+  { en: 'Doors & Windows', ar: 'أبواب ونوافذ',    href: '/products/aluminum/doors-and-windows' },
+  { en: 'Staircases',      ar: 'درابزين',         href: '/products/aluminum/staircases'        },
+  { en: 'Skylights',       ar: 'فتحات سقفية',     href: '/products/aluminum/skylights'         },
+  { en: 'Stained Glass',   ar: 'زجاج ملون',       href: '/products/aluminum/stained-glass'     },
+  { en: 'Sandblast',       ar: 'زجاج مسند',       href: '/products/aluminum/sandblast'         },
 ];
 
 interface ColumnProps {
   material: string;
   title:    string;
-  links:    { label: string; href: string }[];
+  links:    { en: string; ar: string; href: string }[];
   viewAll:  { label: string; href: string };
   pathname: string;
   isRTL:    boolean;
+  language: 'en' | 'ar';
 }
 
-function MegaMenuColumn({ material, title, links, viewAll, pathname, isRTL }: ColumnProps) {
+function MegaMenuColumn({ material, title, links, viewAll, pathname, isRTL, language }: ColumnProps) {
   return (
     <div className={isRTL ? 'text-right' : 'text-left'}>
       {/* ── Column header ─────────────────────────────────────── */}
@@ -54,7 +55,7 @@ function MegaMenuColumn({ material, title, links, viewAll, pathname, isRTL }: Co
 
       {/* ── Category links ──────────────────────────────────────── */}
       <ul className="space-y-0.5">
-        {links.map(({ label, href }) => {
+        {links.map(({ en, ar, href }) => {
           const active = pathname.startsWith(href);
           return (
             <li key={href}>
@@ -69,7 +70,7 @@ function MegaMenuColumn({ material, title, links, viewAll, pathname, isRTL }: Co
                     : 'text-text-body hover:text-brand-red',
                 )}
               >
-                {label}
+                {language === 'en' ? en : ar}
               </Link>
             </li>
           );
@@ -130,6 +131,7 @@ export default function HeaderMegaMenu({ onEnter, onLeave }: Props) {
             viewAll={{ label: language === 'en' ? 'View all uPVC' : 'عرض كل uPVC', href: '/products/upvc' }}
             pathname={pathname}
             isRTL={isRTL}
+            language={language}
           />
           <MegaMenuColumn
             material={language === 'en' ? 'Material' : 'المادة'}
@@ -138,6 +140,7 @@ export default function HeaderMegaMenu({ onEnter, onLeave }: Props) {
             viewAll={{ label: language === 'en' ? 'View all Aluminium' : 'عرض كل الألومنيوم', href: '/products/aluminum' }}
             pathname={pathname}
             isRTL={isRTL}
+            language={language}
           />
         </div>
       </div>

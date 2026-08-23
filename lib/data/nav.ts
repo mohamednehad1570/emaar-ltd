@@ -17,7 +17,7 @@ export const NAV: NavItem[] = [
   {
     en: 'Products', ar: 'المنتجات', href: '',
     dropdown: [
-      { en: 'uPVC',         ar: 'UPVC',           href: '/products/upvc'     },
+      { en: 'uPVC',         ar: 'uPVC',            href: '/products/upvc'     },
       { en: 'Aluminum',     ar: 'الألومنيوم',      href: '/products/aluminum' },
       { en: 'All Products', ar: 'جميع المنتجات',   href: '/products', dividerBefore: true },
     ],

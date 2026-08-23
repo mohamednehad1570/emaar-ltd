@@ -24,7 +24,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/contact/ — ContactPageClient (client, assembles page), ContactHero, ContactForm (form state + /api/contact submit), ContactInfo (phone/email/address/hours strip), ContactOffices (office cards, CMS + static fallback), ContactMap (iframe or placeholder)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
 - components/ui/ — shared primitives (Breadcrumbs removed — never add back)
-- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown, Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
+- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay, HeaderDropdown, HeaderMegaMenu (full-width fixed mega menu for Products; uses MobileNavList is separate), MobileNavList (scrollable nav accordion extracted from HeaderMobileOverlay to keep that file under 150 lines), Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
 - lib/data/index.ts — barrel export; now only re-exports nav.ts (NAV, isActive, DropdownItem)
