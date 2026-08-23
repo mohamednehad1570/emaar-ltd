@@ -67,8 +67,12 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
                         <div className={`flex items-center gap-2 text-dim text-sm mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             <MapPin className="w-4 h-4 text-brand-red" />
                             <span>{project.location}</span>
-                            <span className="mx-2 text-text-muted">•</span>
-                            <span>{project.year}</span>
+                            {project.year && (
+                                <>
+                                    <span className="mx-2 text-text-muted">•</span>
+                                    <span>{project.year}</span>
+                                </>
+                            )}
                         </div>
 
                         {/* opacity+translate reveal — CSS cannot transition height:auto */}

@@ -41,7 +41,7 @@ export default function ProjectsGrid({ projects = [] }: Props) {
     location: p.location?.[language] ?? p.location?.en ?? '',
     // coverImage is images[0].asset->url pre-resolved by the GROQ query
     image:    p.coverImage ?? p.images[0] ?? '',
-    year:     String(p.year),
+    year:     p.year != null ? String(p.year) : '',
     type:     p.type,
     material: p.materialsUsed[0] ?? '',
   }));
@@ -98,7 +98,7 @@ export default function ProjectsGrid({ projects = [] }: Props) {
                   key={cat.id}
                   onClick={() => setSectorFilter(cat.id)}
                   className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-colors duration-150 ${sectorFilter === cat.id
-                    ? 'bg-ink-heading text-white'
+                    ? 'bg-brand-dark text-white'
                     : 'bg-surface-white text-ink-body hover:bg-surface-cream border border-border-light'
                   }`}
                 >
@@ -116,7 +116,7 @@ export default function ProjectsGrid({ projects = [] }: Props) {
                   key={mat.id}
                   onClick={() => setMaterialFilter(mat.id)}
                   className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-colors duration-150 ${materialFilter === mat.id
-                    ? 'bg-brand-red text-white'
+                    ? 'bg-brand-dark text-white'
                     : 'bg-surface-white text-ink-body hover:bg-surface-cream border border-border-light'
                   }`}
                 >

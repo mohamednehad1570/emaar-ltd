@@ -122,7 +122,7 @@ export default function ProductsPageClient({ products }: Props) {
               <h2 className="text-4xl md:text-5xl font-bold font-cairo text-white mb-4">{card.title}</h2>
               <p className="text-white/70 text-base mb-8 max-w-xs">{card.desc}</p>
               {/* hover:bg-brand-red matches the design system CTA colour — white fill was too close to bg on light-theme overlays */}
-              <Link href={card.href} className={`inline-flex items-center gap-2 px-6 py-3 border border-white text-white text-sm font-bold uppercase tracking-wide hover:bg-brand-red hover:border-brand-red hover:text-white transition-colors duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Link href={card.href} className={`px-8 py-4 font-bold bg-white text-brand-dark hover:bg-brand-red hover:text-white transition-all duration-200 flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <span>{card.cta}</span>
                 {/* Arrow rotates 180° in RTL — pointing toward reading-end edge */}
                 <ArrowRight className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
