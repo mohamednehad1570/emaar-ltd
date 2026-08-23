@@ -3,21 +3,33 @@
 /**
  * components/products/ProductCategoryPage.tsx
  *
- * L3 category page — sidebar with locked material+category, spec-tag filters,
- * and the product grid on the opposite side.
- *
- * Sidebar is on the left in LTR and on the right in RTL (reading-start edge)
- * so the filter panel always leads the eye before the product content.
+ * L3 category page — material + category locked by URL, so only the
+ * Specifications filter pill is shown. Sort and product count appear on
+ * the same horizontal row. Grid is full-width (no sidebar).
  */
 
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { SanityProductTile } from '@/lib/sanity/types';
 import Container from '@/components/layout/Container';
-import ProductFilterSidebar, { type FilterState } from './ProductFilterSidebar';
+import ProductFilterDropdown, { CheckOption, RadioOption } from './ProductFilterDropdown';
 import ProductGrid, { type DisplayProduct } from './ProductGrid';
 
-// ── Category label fallback — needed when Sanity category doesn't match map ──
+type SortOrder = 'relevance' | 'az' | 'za';
+
+const SPECS = [
+  { value: 'double-glazed',      en: 'Double Glazed',      ar: 'زجاج مزدوج'                 },
+  { value: 'triple-glazed',      en: 'Triple Glazed',      ar: 'زجاج ثلاثي'                 },
+  { value: 'thermal-insulated',  en: 'Thermal Insulated',  ar: 'عازل حراري'                 },
+  { value: 'acoustic-insulated', en: 'Acoustic Insulated', ar: 'عازل صوتي'                  },
+  { value: 'uv-resistant',       en: 'UV Resistant',       ar: 'مقاوم للأشعة فوق البنفسجية' },
+] as const;
+
+const SORTS: Array<{ value: SortOrder; en: string; ar: string }> = [
+  { value: 'relevance', en: 'Relevance', ar: 'الأهمية'   },
+  { value: 'az',        en: 'Name A–Z',  ar: 'الاسم أ–ي' },
+  { value: 'za',        en: 'Name Z–A',  ar: 'الاسم ي–أ' },
+];
 
 const CATEGORY_LABELS: Record<string, { en: string; ar: string }> = {
   windows:             { en: 'Windows',         ar: 'نوافذ'        },
@@ -28,9 +40,15 @@ const CATEGORY_LABELS: Record<string, { en: string; ar: string }> = {
   sandblast:           { en: 'Sandblast',       ar: 'سندبلاست'     },
   hebeschibe:          { en: 'Hebeschibe',      ar: 'هيبيشيبه'     },
   skylights:           { en: 'Skylights',       ar: 'مناور'        },
-}
+};
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+const L = {
+  specs:        { en: 'Specifications',                  ar: 'المواصفات'                     },
+  sort:         { en: 'Sort',                            ar: 'ترتيب'                          },
+  products:     { en: 'products',                        ar: 'منتج'                           },
+  noResults:    { en: 'No products match your filters.', ar: 'لا توجد منتجات تطابق الفلاتر.' },
+  clearFilters: { en: 'Clear filters',                   ar: 'مسح الفلاتر'                    },
+} as const;
 
 function toDisplay(p: SanityProductTile, language: 'en' | 'ar'): DisplayProduct {
   return {
@@ -45,99 +63,97 @@ function toDisplay(p: SanityProductTile, language: 'en' | 'ar'): DisplayProduct 
   };
 }
 
-// ── Types ─────────────────────────────────────────────────────────────────────
-
 interface Props {
-  material:       'upvc' | 'aluminum';
+  material:       'upvc' | 'aluminum'; // passed by page route — used for type consistency
   category:       string;
   sanityProducts: SanityProductTile[];
 }
 
-// ── Bilingual strings ─────────────────────────────────────────────────────────
-
-const labels = {
-  products:     { en: 'products',                        ar: 'منتج'                 },
-  noResults:    { en: 'No products match your filters.', ar: 'لا توجد منتجات تطابق الفلاتر.' },
-  clearFilters: { en: 'Clear filters',                   ar: 'مسح الفلاتر'          },
-} as const;
-
-// ── Component ─────────────────────────────────────────────────────────────────
-
-export default function ProductCategoryPage({ material, category, sanityProducts }: Props) {
+export default function ProductCategoryPage({ category, sanityProducts }: Props) {
   const { language, isRTL } = useLanguage();
+  const [specTags, setSpecTags] = useState<string[]>([]);
+  const [sort, setSort]         = useState<SortOrder>('relevance');
+  const [panel, setPanel]       = useState<'specs' | 'sort' | null>(null);
 
-  // Sidebar filter state — specTags interactive; material & category are locked
-  const [filters, setFilters] = useState<FilterState>({
-    material:   material,
-    categories: [category],
-    specTags:   [],
-  });
-
-  // Category label in current language — fallback to slug if not in label map
   const categoryLabel = CATEGORY_LABELS[category]?.[language] ?? category;
+  const tr = (k: keyof typeof L) => L[k][language];
 
-  // Apply spec-tag filter only — material and category are locked by route
+  const toggleSpec = (v: string) =>
+    setSpecTags((prev) => prev.includes(v) ? prev.filter((s) => s !== v) : [...prev, v]);
+
   const displayProducts = useMemo<DisplayProduct[]>(() => {
-    const filtered = filters.specTags.length === 0
+    const filtered = specTags.length === 0
       ? sanityProducts
       : sanityProducts.filter((p) => {
-          // specTags filter is advisory — products without specTags pass through
           if (!p.specTags?.length) return true;
-          return filters.specTags.every((t) => p.specTags!.includes(t));
+          return specTags.every((tag) => p.specTags!.includes(tag));
         });
-    return filtered.map((p) => toDisplay(p, language));
-  }, [filters.specTags, sanityProducts, language]);
+    const mapped = filtered.map((p) => toDisplay(p, language));
+    if (sort === 'az') return [...mapped].sort((a, b) => a.title.localeCompare(b.title));
+    if (sort === 'za') return [...mapped].sort((a, b) => b.title.localeCompare(a.title));
+    return mapped;
+  }, [specTags, sort, sanityProducts, language]);
 
-  // Sidebar on reading-start side (left LTR, right RTL)
-  const sidebarOrder = isRTL ? 'order-2' : 'order-1';
-  const gridOrder    = isRTL ? 'order-1' : 'order-2';
+  const activeSortLabel = SORTS.find((o) => o.value === sort)?.[language] ?? tr('sort');
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
 
-      {/* ── Page heading ─────────────────────────────────────────────────── */}
+      {/* ── Page heading ─────────────────────────────────────────────── */}
       <div className="bg-white border-b border-border-light">
         <Container className="py-10">
           <h1 className="text-3xl md:text-4xl font-bold font-cairo text-ink-heading text-wrap-balance">
             {categoryLabel}
           </h1>
-          {/* Product count — dir=ltr preserves digit order in RTL context */}
-          <p className="mt-2 text-sm text-ink-muted" dir="ltr">
-            <span className="tabular-nums">{displayProducts.length}</span>
-            {' '}{labels.products[language]}
-          </p>
         </Container>
       </div>
 
-      {/* ── Sidebar + grid layout ────────────────────────────────────────── */}
+      {/* ── Filter row + full-width grid ────────────────────────────── */}
       <Container className="py-12">
-        <div className="flex gap-10 items-start">
 
-          {/* ── Filter sidebar ────────────────────────────────────────────── */}
-          <div className={`w-56 shrink-0 ${sidebarOrder}`}>
-            <ProductFilterSidebar
-              filters={filters}
-              onChange={setFilters}
-              lockedMaterial={material}
-              lockedCategory={category}
+        {/* Specs + Sort — material & category are implicit from the URL */}
+        <div className="flex items-center gap-2 flex-wrap mb-6">
+          <ProductFilterDropdown
+            label={tr('specs')}
+            isOpen={panel === 'specs'}
+            isActive={specTags.length > 0}
+            activeCount={specTags.length > 0 ? specTags.length : undefined}
+            onToggle={() => setPanel((p) => p === 'specs' ? null : 'specs')}
+            onClose={() => setPanel(null)}
+            isRTL={isRTL}
+          >
+            {SPECS.map((s) => (
+              <CheckOption key={s.value} label={s[language]} checked={specTags.includes(s.value)} onChange={() => toggleSpec(s.value)} />
+            ))}
+          </ProductFilterDropdown>
+
+          <div className="flex items-center gap-3 ms-auto">
+            <span className="text-sm text-text-muted font-medium" dir="ltr">
+              {displayProducts.length} {tr('products')}
+            </span>
+            <ProductFilterDropdown
+              label={`${tr('sort')}: ${activeSortLabel}`}
+              isOpen={panel === 'sort'}
+              isActive={sort !== 'relevance'}
+              onToggle={() => setPanel((p) => p === 'sort' ? null : 'sort')}
+              onClose={() => setPanel(null)}
               isRTL={isRTL}
-              language={language}
-            />
+            >
+              {SORTS.map((o) => (
+                <RadioOption key={o.value} label={o[language]} isSelected={sort === o.value} onClick={() => { setSort(o.value); setPanel(null); }} />
+              ))}
+            </ProductFilterDropdown>
           </div>
-
-          {/* ── Product grid ──────────────────────────────────────────────── */}
-          <div className={`flex-1 min-w-0 ${gridOrder}`}>
-            <ProductGrid
-              products={displayProducts}
-              isLoading={false}
-              emptyMessage={labels.noResults[language]}
-              emptyCtaLabel={labels.clearFilters[language]}
-              isRTL={isRTL}
-              language={language}
-            />
-          </div>
-
         </div>
+
+        <ProductGrid
+          products={displayProducts}
+          isLoading={false}
+          emptyMessage={tr('noResults')}
+          emptyCtaLabel={tr('clearFilters')}
+          isRTL={isRTL}
+          language={language}
+        />
       </Container>
 
     </div>

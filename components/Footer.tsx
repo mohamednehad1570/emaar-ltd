@@ -128,8 +128,8 @@ function LinksList({
           <Link
             href={link.href}
             className={cn(
-              'text-sm text-text-body hover:text-brand-dark transition-all duration-150',
-              // slide 2px toward reading-end on hover
+              // text-muted ensures no active-state leakage — footer links are never red
+              'text-sm text-text-muted hover:text-brand-dark transition-all duration-150',
               isRTL ? 'hover:-translate-x-0.5' : 'hover:translate-x-0.5',
             )}
           >

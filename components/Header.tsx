@@ -147,15 +147,16 @@ export default function Header({ whatsappNumber }: HeaderProps) {
                 </motion.div>
               </div>
               {/* Mobile only */}
-              <div className="flex lg:hidden items-center gap-1">
+              <div className="flex lg:hidden items-center gap-2">
                 <LangToggle />
                 <a href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
                   className="flex items-center justify-center">
                   <WhatsappLogo size={20} weight="fill" className="text-whatsapp" />
                 </a>
+                {/* -mr-2 pulls the touch target to the edge so the icon aligns with the container */}
                 <button onClick={() => setOpen(v => !v)} aria-label={open ? 'Close menu' : 'Open menu'}
                   aria-expanded={open} aria-controls="mobile-nav"
-                  className="flex flex-col items-center justify-center gap-[5px] w-10 h-10">
+                  className="flex flex-col items-center justify-center gap-[5px] w-10 h-10 -mr-2">
                   <motion.span animate={r ? undefined : { rotate: open ? 45 : 0, y: open ? 6 : 0 }}
                     transition={SPRING} style={{ height: '1.5px' }}
                     className="block w-6 bg-brand-dark origin-center" />

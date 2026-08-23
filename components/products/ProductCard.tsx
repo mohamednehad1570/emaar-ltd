@@ -92,8 +92,8 @@ export default function ProductCard({ product, isRTL, language }: Props) {
         <p className="text-sm text-ink-body leading-relaxed line-clamp-2">
           {product.description}
         </p>
-        {/* Accent underline grows on hover from reading-start edge */}
-        <div className={cn('mt-4 h-0.5 w-8 bg-brand-red transition-all duration-300 group-hover:w-12', isRTL ? 'mr-auto' : 'ml-0')} />
+        {/* Static red accent line — stays fixed width; card lift/border/title handle hover feedback */}
+        <div className={cn('mt-4 h-0.5 w-8 bg-brand-red', isRTL ? 'mr-auto' : 'ml-0')} />
       </div>
 
     </Link>
