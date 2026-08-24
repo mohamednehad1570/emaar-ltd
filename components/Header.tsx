@@ -147,7 +147,7 @@ export default function Header({ whatsappNumber }: HeaderProps) {
                 </motion.div>
               </div>
               {/* Mobile only */}
-              <div className="flex lg:hidden items-center gap-2">
+              <div className="flex lg:hidden items-center gap-2 ms-auto">
                 <LangToggle />
                 <a href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
                   className="flex items-center justify-center">
