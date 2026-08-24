@@ -189,7 +189,7 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 - `techDocumentsQuery` — all tech documents ordered by `order` asc; includes resolved file URL and previewImage
 - `jobPostingsQuery` — all job postings ordered by `_createdAt` desc; full fields including responsibilities[], benefits[]
 - `solutionSettingsQuery` — siteSettings phone + whatsappNumber (for solutions contact info)
-- `siteSettingsQuery` — now includes `mapEmbedUrl`, `officeLocations[]` (name, address, phone, workingHours), `showWarrantyBadge`, and `warranty` object (upvcYears, glassYears, accessoriesYears, maintenanceYears, governingLaw, exclusions, footnote)
+- `siteSettingsQuery` — includes `companyNameEn`, `companyNameAr`, `"logoUrl": logo.asset->url` (branding), `mapEmbedUrl`, `officeLocations[]` (name, address, phone, workingHours), `showWarrantyBadge`, and `warranty` object (upvcYears, glassYears, accessoriesYears, maintenanceYears, governingLaw, exclusions, footnote)
 
 ## Known gotchas
 - Sanity product schema break: the old schema used `category` to mean material (upvc/aluminum); the new schema uses `material` for that and `category` for the subcategory slug (e.g. "windows"). Any Sanity migration script must account for this field rename.
@@ -212,21 +212,18 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev
 
-## Current State — Aug 23 2026
+## Current State — Aug 24 2026
 
-### Completed this session
+### Completed (all committed, on dev)
 - Mega menu: components/layout/HeaderMegaMenu.tsx — two columns, bilingual, RTL, mouse-bridge
 - Mobile overlay: rewritten with LangToggle in top bar, WhatsApp+Quote bottom bar
 - MobileNavList: extracted to components/layout/MobileNavList.tsx
-- Horizontal filter bar: ProductFilterBar.tsx + ProductFilterDropdown.tsx
+- Horizontal filter bar: ProductFilterBar.tsx + ProductFilterDropdown.tsx — checkbox selection, RTL layout, sort position all fixed
 - ProductCard.tsx: extracted with Material·Category metadata chip
-
-### Known filter bugs (fix next session — Prompt 3b)
-- Category and Specifications checkboxes not selectable — handler not wired
-- Sort pill positioned incorrectly — use ms-auto on count+sort group
-- Arabic filter bar layout wrong — use ms-auto not flex-row-reverse
+- Project detail: two-column editorial layout in ProjectDetailPage (feat: f1f426a)
+- Header mobile: burger-only on mobile (lang toggle + WhatsApp hidden from mobile bar)
+- Unified Button component: components/ui/Button.tsx — all inline CTAs replaced site-wide (including MaintenanceSection.tsx)
+- CMS branding: companyNameEn, companyNameAr, logo fields in siteSettings — schema deployed, queries updated, Header renders CMS values with hardcoded EMAAR/إعمار fallbacks
 
 ### Pending prompts
-- Prompt 3b: Fix filter bar bugs (checkbox selection, RTL layout, sort position)
-- Prompt 4: Project detail editorial layout redesign
 - Prompt 5: Product detail two-column layout + image gallery + sticky CTA
