@@ -97,7 +97,7 @@ export default function ProductCategoryPage({ category, sanityProducts }: Props)
   const activeSortLabel = SORTS.find((o) => o.value === sort)?.[language] ?? tr('sort');
 
   return (
-    <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-off-white pt-20" dir={isRTL ? 'rtl' : 'ltr'}>
 
       {/* ── Page heading ─────────────────────────────────────────────── */}
       <div className="bg-white border-b border-border-light">
