@@ -1,140 +1,119 @@
 'use client';
 
+import { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
-import Image from 'next/image';
+import { ArrowLeft, ArrowRight, CheckCircle } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
-import { getWhatsAppURL } from '@/lib/whatsapp';
 import type { SanityProductFull } from '@/lib/sanity/types';
-import ProductDetailHero from './ProductDetailHero';
-import ProductDetailSpecs from './ProductDetailSpecs';
+import ProductImagePanel from './ProductImagePanel';
+import ProductInfoPanel from './ProductInfoPanel';
 import ProductDetailRelated from './ProductDetailRelated';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
-
-// icon and description are absent from the Sanity feature schema — both optional
-interface FeatureItem { icon?: string; title: string; description?: string }
 
 interface Props { product: SanityProductFull }
 
-// ── Component ─────────────────────────────────────────────────────────────────
+// Category slug → bilingual display label for the back-link
+const CATEGORY_LABELS: Record<string, { en: string; ar: string }> = {
+  'windows':           { en: 'Windows',         ar: 'نوافذ'         },
+  'doors':             { en: 'Doors',            ar: 'أبواب'         },
+  'doors-and-windows': { en: 'Doors & Windows', ar: 'أبواب ونوافذ'  },
+  'staircases':        { en: 'Staircases',       ar: 'درج'           },
+  'stained-glass':     { en: 'Stained Glass',    ar: 'زجاج ملون'    },
+  'sandblast':         { en: 'Sandblast',        ar: 'رمل مصفوف'    },
+  'hebeschibe':        { en: 'Hebeschibe',        ar: 'هيبيشيبة'     },
+  'skylights':         { en: 'Skylights',         ar: 'نافذة علوية'  },
+};
 
 export default function ProductDetailPage({ product }: Props) {
   const { language, isRTL } = useLanguage();
 
-  const heroImage    = product.mainImage ?? product.gallery?.[0] ?? '';
-  const heroTitle    = product.title[language] ?? product.title.en;
-  const heroDesc     = product.description?.[language] ?? product.description?.en ?? '';
-  const gallery      = product.gallery ?? [];
+  // Main image first, gallery after — selectedImage drives the left panel
+  const images = [
+    ...(product.mainImage ? [product.mainImage] : []),
+    ...(product.gallery ?? []),
+  ];
+  const [selectedImage, setSelectedImage] = useState(images[0] ?? '');
+
+  const catLabels    = CATEGORY_LABELS[product.category] ?? { en: product.category, ar: product.category };
+  const categoryName = catLabels[language];
+  const backHref     = `/products/${product.material}/${product.category}`;
+  const backLabel    = language === 'en' ? `${categoryName} Products` : `منتجات ${categoryName}`;
+
+  // features are flat {en, ar} bilingual strings in Sanity — no icon/description field
+  const features     = (product.features ?? []).map(f => f[language] ?? f.en);
   const relatedProds = product.relatedProducts ?? [];
 
-  // Type predicate narrows value to string — ProductDetailSpecs requires non-optional value
-  const specEntries = [
-    { label: language === 'en' ? 'Dimensions'      : 'الأبعاد',          value: product.specs?.dimensions    },
-    { label: language === 'en' ? 'Thermal Value'   : 'القيمة الحرارية',  value: product.specs?.thermalValue  },
-    { label: language === 'en' ? 'Acoustic Rating' : 'التقييم الصوتي',  value: product.specs?.acousticRating },
-    { label: language === 'en' ? 'Glass Thickness' : 'سماكة الزجاج',    value: product.specs?.glassThickness },
-    // colorOptions is string[] in Sanity — join so it renders as a single spec row
-    { label: language === 'en' ? 'Colour Options'  : 'خيارات الألوان',   value: Array.isArray(product.specs?.colorOptions) ? (product.specs!.colorOptions as string[]).join(', ') : product.specs?.colorOptions },
-  ].filter((e): e is { label: string; value: string } => typeof e.value === 'string' && e.value.length > 0);
-
-  // Sanity features shape: { en: string, ar: string } — no label/value wrapper
-  const features: FeatureItem[] = (product.features ?? []).map((f: any) => ({
-    icon:        f.icon,
-    title:       f[language] ?? f.en,
-    description: f.description?.[language] ?? f.description?.en ?? '',
-  }));
-
-  const materialLabel = product.material === 'upvc'
-    ? (language === 'en' ? 'uPVC System' : 'نظام UPVC')
-    : (language === 'en' ? 'Aluminum System' : 'نظام الألومنيوم');
-
-  // Back link goes to the material landing — user can navigate from there to the category
-  const backHref  = `/products/${product.material}`;
-  const backLabel = language === 'en'
-    ? `All ${product.material === 'upvc' ? 'uPVC' : 'Aluminum'} Products`
-    : product.material === 'upvc' ? 'جميع منتجات UPVC' : 'جميع منتجات الألومنيوم';
-
   return (
-    <div className="min-h-screen bg-off-white pt-[52px]" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="min-h-screen bg-off-white pt-24 pb-20" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
 
-      <ProductDetailHero
-        heroImage={heroImage} title={heroTitle} description={heroDesc}
-        materialLabel={materialLabel} category={product.category}
-        backHref={backHref} backLabel={backLabel} isRTL={isRTL}
-      />
+        {/* Back nav — inline link, not a CTA button */}
+        <Link
+          href={backHref}
+          className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-brand-dark transition-colors duration-200 mb-8"
+        >
+          {/* Icon direction flips with dir="rtl" flex ordering */}
+          {isRTL ? <ArrowRight className="w-4 h-4" /> : <ArrowLeft className="w-4 h-4" />}
+          {backLabel}
+        </Link>
 
-      <ProductDetailSpecs specs={specEntries} isRTL={isRTL} language={language} />
-
-      {/* ── Features ─────────────────────────────────────────────── */}
-      {features.length > 0 && (
-        <section className="py-16 px-6">
-          <div className="max-w-7xl mx-auto">
-            <h2 className={`text-2xl md:text-3xl font-bold text-brand-dark mb-3 ${isRTL ? 'text-right' : ''}`}>
-              {language === 'en' ? 'Key Features' : 'المميزات الرئيسية'}
-            </h2>
-            <div className="h-0.5 w-12 bg-brand-red mb-10" />
-            <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportOnce} className="grid md:grid-cols-3 gap-6">
-              {features.map((feature, idx) => {
-                const Icon = resolveIcon(feature.icon ?? '');
-                return (
-                  <motion.div key={idx} variants={fadeUp} className="bg-white border border-border-light hover:border-silver-material transition-colors p-6">
-                    <div className={`flex items-center gap-3 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                      <div className="w-8 h-8 bg-brand-red flex items-center justify-center shrink-0">
-                        <Icon className="w-4 h-4 text-white" aria-hidden="true" />
-                      </div>
-                      <h3 className="font-bold text-brand-dark">{feature.title}</h3>
-                    </div>
-                    <p className={`text-sm text-ink-body leading-relaxed ${isRTL ? 'text-right' : ''}`}>{feature.description}</p>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </div>
-        </section>
-      )}
-
-      {/* ── Gallery ──────────────────────────────────────────────── */}
-      {gallery.length > 0 && (
-        <section className="py-16 px-6 bg-white">
-          <div className="max-w-7xl mx-auto">
-            <h2 className={`text-2xl md:text-3xl font-bold text-brand-dark mb-3 ${isRTL ? 'text-right' : ''}`}>
-              {language === 'en' ? 'Gallery' : 'المعرض'}
-            </h2>
-            <div className="h-0.5 w-12 bg-brand-red mb-10" />
-            <div className="grid grid-cols-3 gap-4">
-              {gallery.map((src, idx) => (
-                <div key={idx} className="aspect-[4/3] relative overflow-hidden">
-                  <Image src={src} alt={`${heroTitle} ${idx + 1}`} fill className="object-cover hover:scale-105 transition-transform duration-500" sizes="(min-width: 768px) 33vw, 100vw" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      <ProductDetailRelated relatedProducts={relatedProds} language={language} isRTL={isRTL} />
-
-      {/* ── CTA ──────────────────────────────────────────────────── */}
-      <section className="py-16 px-6 bg-brand-red text-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">{language === 'en' ? 'Ready to Get Started?' : 'مستعد للبدء؟'}</h2>
-          <p className="text-white/85 mb-8">{language === 'en' ? 'Contact our team for a custom quote tailored to your project requirements.' : 'تواصل مع فريقنا للحصول على عرض سعر مخصص لمتطلبات مشروعك.'}</p>
-          <motion.a
-            href={getWhatsAppURL({ page: 'product-detail', productName: product.title.en })}
-            target="_blank" rel="noopener noreferrer"
-            whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-            className={`inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-cream text-brand-red font-bold text-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
-            style={{ color: 'var(--color-brand-red)' }}
-          >
-            {language === 'en' ? 'Request Quote' : 'طلب عرض سعر'}
-            <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
-          </motion.a>
+        {/* Two-column grid: image 55% | info flex */}
+        <div className="md:grid md:grid-cols-[55%_1fr] md:gap-12 items-start">
+          <ProductImagePanel
+            images={images}
+            selectedImage={selectedImage}
+            onSelect={setSelectedImage}
+            alt={product.title[language] ?? product.title.en}
+          />
+          <ProductInfoPanel
+            product={product}
+            language={language}
+            isRTL={isRTL}
+          />
         </div>
-      </section>
 
+        {/* Features — below the two-column grid, separated by a full-width rule */}
+        {features.length > 0 && (
+          <section className="mt-20 pt-12 border-t border-border-light">
+            <p className="text-xs uppercase tracking-[0.25em] text-text-muted mb-8">
+              {language === 'en' ? 'Key Features' : 'المميزات الرئيسية'}
+            </p>
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={viewportOnce}
+              className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            >
+              {features.map((text, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={fadeUp}
+                  className="bg-white p-6 rounded-sm border border-border-light"
+                  style={{ boxShadow: '0 1px 3px rgba(45,41,38,0.06)' }}
+                >
+                  {/* Default icon — Sanity features carry no icon field */}
+                  <CheckCircle className="w-6 h-6 text-text-muted mb-3" weight="light" />
+                  <p className="text-sm font-bold text-brand-dark">{text}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </section>
+        )}
+
+      </div>
+
+      {/* Related products — outside the constrained container so bg-white extends full-width */}
+      {relatedProds.length > 0 && (
+        <div className="mt-20 pt-12 border-t border-border-light">
+          <ProductDetailRelated
+            relatedProducts={relatedProds}
+            language={language}
+            isRTL={isRTL}
+          />
+        </div>
+      )}
     </div>
   );
 }
