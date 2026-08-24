@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/cn';
+import { staggerContainer, fadeIn, slideInLeft, slideInRight, viewportOnce } from '@/lib/motion';
 import type { SanityProject } from '@/lib/sanity/types';
 import ProjectImagePanel from './ProjectImagePanel';
 import ProjectInfoPanel from './ProjectInfoPanel';
@@ -49,19 +50,33 @@ export default function ProjectDetailPage({ project }: Props) {
 
         {/* Two-column grid */}
         <div className="md:grid md:grid-cols-[55%_1fr] md:gap-12 items-start">
-          <ProjectImagePanel
-            images={project.images}
-            selectedImage={selectedImage}
-            onSelect={setSelectedImage}
-            alt={altBase}
-          />
-          <ProjectInfoPanel
-            project={project}
-            language={language}
-            isRTL={isRTL}
-            materialLabel={materialLabel}
-            categoryLabel={categoryLabel}
-          />
+          <motion.div
+            variants={shouldReduce ? {} : slideInLeft}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+          >
+            <ProjectImagePanel
+              images={project.images}
+              selectedImage={selectedImage}
+              onSelect={setSelectedImage}
+              alt={altBase}
+            />
+          </motion.div>
+          <motion.div
+            variants={shouldReduce ? {} : slideInRight}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+          >
+            <ProjectInfoPanel
+              project={project}
+              language={language}
+              isRTL={isRTL}
+              materialLabel={materialLabel}
+              categoryLabel={categoryLabel}
+            />
+          </motion.div>
         </div>
 
         {/* Gallery section */}
@@ -70,10 +85,17 @@ export default function ProjectDetailPage({ project }: Props) {
             <p className="text-xs uppercase tracking-[0.25em] text-text-muted mb-6">
               {ui.gallery}
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-3 gap-4"
+              variants={shouldReduce ? {} : staggerContainer}
+              initial={shouldReduce ? {} : 'hidden'}
+              whileInView={shouldReduce ? undefined : 'visible'}
+              viewport={shouldReduce ? undefined : viewportOnce}
+            >
               {project.images.map((src, idx) => (
-                <div
+                <motion.div
                   key={idx}
+                  variants={shouldReduce ? {} : fadeIn}
                   className="relative aspect-[4/3] overflow-hidden rounded-sm border border-border-light group"
                 >
                   <Image
@@ -86,9 +108,9 @@ export default function ProjectDetailPage({ project }: Props) {
                       !shouldReduce && 'group-hover:scale-105 transition-transform duration-500'
                     )}
                   />
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         )}
 

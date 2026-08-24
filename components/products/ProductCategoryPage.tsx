@@ -9,7 +9,9 @@
  */
 
 import React, { useState, useMemo } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { fadeUp, viewportOnce } from '@/lib/motion';
 import type { SanityProductTile } from '@/lib/sanity/types';
 import Container from '@/components/layout/Container';
 import ProductFilterDropdown, { CheckOption, RadioOption } from './ProductFilterDropdown';
@@ -71,6 +73,7 @@ interface Props {
 
 export default function ProductCategoryPage({ category, sanityProducts }: Props) {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const [specTags, setSpecTags] = useState<string[]>([]);
   const [sort, setSort]         = useState<SortOrder>('relevance');
   const [panel, setPanel]       = useState<'specs' | 'sort' | null>(null);
@@ -102,9 +105,15 @@ export default function ProductCategoryPage({ category, sanityProducts }: Props)
       {/* ── Page heading ─────────────────────────────────────────────── */}
       <div className="bg-white border-b border-border-light">
         <Container className="py-10">
-          <h1 className="text-3xl md:text-4xl font-bold font-cairo text-ink-heading text-wrap-balance">
+          <motion.h1
+            className="text-3xl md:text-4xl font-bold font-cairo text-ink-heading text-wrap-balance"
+            variants={fadeUp}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+          >
             {categoryLabel}
-          </h1>
+          </motion.h1>
         </Container>
       </div>
 
@@ -112,7 +121,13 @@ export default function ProductCategoryPage({ category, sanityProducts }: Props)
       <Container className="py-12">
 
         {/* Specs + Sort — material & category are implicit from the URL */}
-        <div className="flex items-center gap-2 flex-wrap mb-6">
+        <motion.div
+          className="flex items-center gap-2 flex-wrap mb-6"
+          variants={fadeUp}
+          initial={shouldReduce ? {} : 'hidden'}
+          whileInView={shouldReduce ? undefined : 'visible'}
+          viewport={shouldReduce ? undefined : viewportOnce}
+        >
           <ProductFilterDropdown
             label={tr('specs')}
             isOpen={panel === 'specs'}
@@ -144,7 +159,7 @@ export default function ProductCategoryPage({ category, sanityProducts }: Props)
               ))}
             </ProductFilterDropdown>
           </div>
-        </div>
+        </motion.div>
 
         <ProductGrid
           products={displayProducts}

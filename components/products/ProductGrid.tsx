@@ -14,8 +14,10 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Package, ArrowRight } from '@phosphor-icons/react';
 import { cn } from '@/lib/cn';
+import { staggerContainerSlow, fadeUp, viewportOnce } from '@/lib/motion';
 import ProductCard from './ProductCard';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -64,6 +66,7 @@ function SkeletonCard() {
 export default function ProductGrid({
   products, isLoading, emptyMessage, emptyCtaLabel = 'Browse All', isRTL, language = 'en',
 }: Props) {
+  const shouldReduce = useReducedMotion();
 
   if (isLoading) {
     return (
@@ -95,10 +98,18 @@ export default function ProductGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <motion.div
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      variants={staggerContainerSlow}
+      initial={shouldReduce ? {} : 'hidden'}
+      whileInView={shouldReduce ? undefined : 'visible'}
+      viewport={shouldReduce ? undefined : viewportOnce}
+    >
       {products.map((p) => (
-        <ProductCard key={p.id} product={p} isRTL={isRTL} language={language} />
+        <motion.div key={p.id} variants={shouldReduce ? {} : fadeUp}>
+          <ProductCard product={p} isRTL={isRTL} language={language} />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }

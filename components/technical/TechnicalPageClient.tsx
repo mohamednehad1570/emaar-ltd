@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useMemo } from 'react'; // useMemo retained for filteredDocuments
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { FileText, Archive } from '@phosphor-icons/react';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
-import { fadeUp, viewportOnce } from '@/lib/motion';
+import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 import { useTechDocuments } from '@/lib/hooks/useTechDocuments';
 import type { TechDocument } from '@/lib/sanity/types';
 import type { TechContent } from '@/lib/data/uiStrings';
@@ -21,6 +21,7 @@ interface TechnicalPageClientProps {
 
 export default function TechnicalPageClient({ cmsDocs, staticData }: TechnicalPageClientProps) {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const sd = staticData[language];
 
   const [activeCategory, setActiveCategory]       = useState('all');
@@ -73,14 +74,24 @@ export default function TechnicalPageClient({ cmsDocs, staticData }: TechnicalPa
             <p className="text-2xl font-semibold text-brand-red mb-4">{sd.hero.subtitle}</p>
             <p className="text-lg text-ink-body max-w-3xl mx-auto">{sd.hero.description}</p>
           </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-4 gap-6"
+            variants={shouldReduce ? {} : staggerContainer}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+          >
             {sd.stats.map((stat, idx) => (
-              <div key={idx} className="text-center">
+              <motion.div
+                key={idx}
+                variants={shouldReduce ? {} : fadeUp}
+                className="text-center"
+              >
                 <div className="text-4xl md:text-5xl font-bold text-brand-red mb-2">{stat.number}</div>
                 <div className="text-ink-body font-medium">{stat.label}</div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 

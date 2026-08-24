@@ -69,6 +69,18 @@ export function slideIn(isRTL: boolean): Variants {
   };
 }
 
+/** Slide in from left — for the left column of two-column detail layouts */
+export const slideInLeft: Variants = {
+  hidden:  { opacity: 0, x: -32 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+};
+
+/** Slide in from right — for the right column of two-column detail layouts */
+export const slideInRight: Variants = {
+  hidden:  { opacity: 0, x: 32 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+};
+
 /** Slide in for alternating timeline items (left / right sides) */
 export function slideInAlt(fromLeft: boolean): Variants {
   return {

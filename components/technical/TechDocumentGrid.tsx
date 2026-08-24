@@ -1,6 +1,8 @@
 'use client';
 
+import { motion, useReducedMotion } from 'framer-motion';
 import { FileText } from '@phosphor-icons/react';
+import { staggerContainerSlow, fadeUp, viewportOnce } from '@/lib/motion';
 import TechDocumentCard from './TechDocumentCard';
 import type { DisplayDocument } from './TechDocumentCard';
 
@@ -19,6 +21,7 @@ export default function TechDocumentGrid({
   documents, viewMode, language, downloadingIds,
   unavailableId, onDownload, noResultsLabel,
 }: TechDocumentGridProps) {
+  const shouldReduce = useReducedMotion();
   if (documents.length === 0) {
     return (
       <div className="text-center py-20">
@@ -30,29 +33,45 @@ export default function TechDocumentGrid({
 
   if (viewMode === 'list') {
     return (
-      <div className="space-y-4">
+      <motion.div
+        className="space-y-4"
+        variants={shouldReduce ? {} : staggerContainerSlow}
+        initial={shouldReduce ? {} : 'hidden'}
+        whileInView={shouldReduce ? undefined : 'visible'}
+        viewport={shouldReduce ? undefined : viewportOnce}
+      >
         {documents.map((doc, idx) => (
-          <TechDocumentCard
-            key={doc.id} doc={doc} viewMode="list" language={language} idx={idx}
-            isDownloading={!!downloadingIds[doc.id]}
-            unavailable={unavailableId === doc.id}
-            onDownload={onDownload}
-          />
+          <motion.div key={doc.id} variants={shouldReduce ? {} : fadeUp}>
+            <TechDocumentCard
+              doc={doc} viewMode="list" language={language} idx={idx}
+              isDownloading={!!downloadingIds[doc.id]}
+              unavailable={unavailableId === doc.id}
+              onDownload={onDownload}
+            />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <motion.div
+      className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+      variants={shouldReduce ? {} : staggerContainerSlow}
+      initial={shouldReduce ? {} : 'hidden'}
+      whileInView={shouldReduce ? undefined : 'visible'}
+      viewport={shouldReduce ? undefined : viewportOnce}
+    >
       {documents.map((doc, idx) => (
-        <TechDocumentCard
-          key={doc.id} doc={doc} viewMode="grid" language={language} idx={idx}
-          isDownloading={!!downloadingIds[doc.id]}
-          unavailable={unavailableId === doc.id}
-          onDownload={onDownload}
-        />
+        <motion.div key={doc.id} variants={shouldReduce ? {} : fadeUp}>
+          <TechDocumentCard
+            doc={doc} viewMode="grid" language={language} idx={idx}
+            isDownloading={!!downloadingIds[doc.id]}
+            unavailable={unavailableId === doc.id}
+            onDownload={onDownload}
+          />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }

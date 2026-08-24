@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSearchParams } from 'next/navigation';
+import { fadeUp, viewportOnce } from '@/lib/motion';
 import ProjectCard from './ProjectCard';
 import type { SanityProject } from '@/lib/sanity/types';
 import type { DisplayProject } from '@/lib/types';
@@ -71,9 +72,10 @@ export default function ProjectsGrid({ projects = [] }: Props) {
 
         <div className="text-center mb-16">
           <motion.div
-            initial={shouldReduce ? {} : { opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            variants={fadeUp}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
           >
             <h1
               className="font-extrabold text-ink-heading mb-6 tracking-[-0.02em] leading-[0.95] text-balance"
@@ -88,7 +90,13 @@ export default function ProjectsGrid({ projects = [] }: Props) {
             </p>
           </motion.div>
 
-          <div className="space-y-6">
+          <motion.div
+            className="space-y-6"
+            variants={fadeUp}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+          >
             <div className="flex flex-wrap justify-center gap-3">
               <span className="w-full text-xs font-bold text-ink-muted uppercase tracking-widest mb-2">
                 {language === 'en' ? 'Filter by Type' : 'تصفية حسب النوع'}
@@ -124,7 +132,7 @@ export default function ProjectsGrid({ projects = [] }: Props) {
                 </button>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
 
         <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

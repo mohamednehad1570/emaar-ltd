@@ -6,6 +6,7 @@ import { motion , useReducedMotion } from 'framer-motion';
 import { MapPin, ArrowsOut as Expand, ArrowRight } from '@phosphor-icons/react';
 import Image from 'next/image';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { fadeUp, viewportOnce } from '@/lib/motion';
 import type { DisplayProject } from '@/lib/types';
 
 interface ProjectCardProps {
@@ -20,11 +21,12 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
     return (
         <motion.div
             layout
-            initial={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={shouldReduce ? {} : { opacity: 0, scale: 0.9 }}
+            variants={fadeUp}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+            exit={shouldReduce ? {} : { opacity: 0, scale: 0.9, transition: { duration: 0.25 } }}
             whileHover={shouldReduce ? undefined : { scale: 1.01, transition: { duration: 0.3 } }}
-            transition={{ duration: 0.5 }}
             className="group relative"
         >
             {/* Link wraps the entire tile — nested <a> inside removed to keep valid HTML */}
@@ -44,10 +46,9 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-brand-dark/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
 
                 <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
+                    {/* Content within the card fades up after card itself — no delay needed since parent cascades */}
                     <motion.div
-                        initial={{ y: 20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.1 }}
+                        variants={fadeUp}
                     >
                         <div className={`flex items-start justify-between mb-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                             {/* badge: rounded-none per --radius-button */}

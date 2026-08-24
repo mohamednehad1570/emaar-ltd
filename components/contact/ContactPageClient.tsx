@@ -8,8 +8,10 @@
  * regardless of CMS state.
  */
 
+import { motion, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
+import { fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
 import type { SiteSettings } from '@/lib/sanity/types';
 import { contactData } from '@/lib/data/uiStrings';
@@ -26,6 +28,7 @@ interface Props {
 
 export default function ContactPageClient({ settings, staticData }: Props) {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const t = staticData[language];
 
   // ── CMS → static fallback merging ─────────────────────────────────────────
@@ -46,6 +49,12 @@ export default function ContactPageClient({ settings, staticData }: Props) {
       {/* ── Form + contact info strip ─────────────────────────── */}
       <section className="pb-20">
         <Container className="max-w-xl">
+          <motion.div
+            variants={fadeUp}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+          >
           <ContactForm whatsappHref={whatsappHref} phone={phone} />
           <ContactInfo
             phone={phone}
@@ -53,6 +62,7 @@ export default function ContactPageClient({ settings, staticData }: Props) {
             address={address}
             workingHours={workingHours}
           />
+          </motion.div>
         </Container>
       </section>
 

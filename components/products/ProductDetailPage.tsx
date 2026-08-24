@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, CheckCircle } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
+import { staggerContainer, fadeUp, slideInLeft, slideInRight, viewportOnce } from '@/lib/motion';
 import type { SanityProductFull } from '@/lib/sanity/types';
 import ProductImagePanel from './ProductImagePanel';
 import ProductInfoPanel from './ProductInfoPanel';
@@ -27,6 +27,7 @@ const CATEGORY_LABELS: Record<string, { en: string; ar: string }> = {
 
 export default function ProductDetailPage({ product }: Props) {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
 
   // Main image first, gallery after — selectedImage drives the left panel
   const images = [
@@ -60,17 +61,31 @@ export default function ProductDetailPage({ product }: Props) {
 
         {/* Two-column grid: image 55% | info flex */}
         <div className="md:grid md:grid-cols-[55%_1fr] md:gap-12 items-start">
-          <ProductImagePanel
-            images={images}
-            selectedImage={selectedImage}
-            onSelect={setSelectedImage}
-            alt={product.title[language] ?? product.title.en}
-          />
-          <ProductInfoPanel
-            product={product}
-            language={language}
-            isRTL={isRTL}
-          />
+          <motion.div
+            variants={shouldReduce ? {} : slideInLeft}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+          >
+            <ProductImagePanel
+              images={images}
+              selectedImage={selectedImage}
+              onSelect={setSelectedImage}
+              alt={product.title[language] ?? product.title.en}
+            />
+          </motion.div>
+          <motion.div
+            variants={shouldReduce ? {} : slideInRight}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
+          >
+            <ProductInfoPanel
+              product={product}
+              language={language}
+              isRTL={isRTL}
+            />
+          </motion.div>
         </div>
 
         {/* Features — below the two-column grid, separated by a full-width rule */}
@@ -80,16 +95,16 @@ export default function ProductDetailPage({ product }: Props) {
               {language === 'en' ? 'Key Features' : 'المميزات الرئيسية'}
             </p>
             <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={viewportOnce}
+              variants={shouldReduce ? {} : staggerContainer}
+              initial={shouldReduce ? {} : 'hidden'}
+              whileInView={shouldReduce ? undefined : 'visible'}
+              viewport={shouldReduce ? undefined : viewportOnce}
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
               {features.map((text, idx) => (
                 <motion.div
                   key={idx}
-                  variants={fadeUp}
+                  variants={shouldReduce ? {} : fadeUp}
                   className="bg-white p-6 rounded-sm border border-border-light"
                   style={{ boxShadow: '0 1px 3px rgba(45,41,38,0.06)' }}
                 >

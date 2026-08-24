@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Briefcase } from '@phosphor-icons/react'
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext'
 import { fadeUp, viewportOnce } from '@/lib/motion'
@@ -27,6 +27,7 @@ interface Props {
 export default function CareersJobList({ jobs, filters, applyEmail }: Props) {
   const { isRTL } = useLanguage()
   const t = useTranslation()
+  const shouldReduce = useReducedMotion()
   const [activeFilter, setActiveFilter] = useState('all')
   const [expandedId, setExpandedId] = useState<string | number | null>(null)
 
@@ -81,9 +82,11 @@ export default function CareersJobList({ jobs, filters, applyEmail }: Props) {
           {filteredJobs.map((job, idx) => (
             <motion.div
               key={job.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.08 }}
+              variants={fadeUp}
+              initial={shouldReduce ? {} : 'hidden'}
+              whileInView={shouldReduce ? undefined : 'visible'}
+              viewport={shouldReduce ? undefined : viewportOnce}
+              custom={idx}
             >
               <CareersJobCard
                 job={job}

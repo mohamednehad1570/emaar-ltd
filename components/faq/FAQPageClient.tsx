@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle, WhatsappLogo } from '@phosphor-icons/react';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { faqData, faqCategoryIcons } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
-import { fadeUp, viewportOnce } from '@/lib/motion';
+import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 import type { SanityFaq } from '@/lib/sanity/types';
 import type { FAQItem } from '@/lib/data/uiStrings';
 
@@ -15,9 +15,9 @@ interface Props {
   sanityFaqs?: SanityFaq[];
 }
 
-// MotionProvider in app/layout.tsx handles prefers-reduced-motion globally
 export default function FAQPageClient({ sanityFaqs = [] }: Props) {
   const { language, isRTL } = useLanguage();
+  const shouldReduce = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -63,9 +63,10 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
       <section className="relative pt-32 pb-20 px-6 overflow-hidden bg-surface-white">
         <div className="max-w-5xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            variants={fadeUp}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="text-center mb-12"
           >
             <h1 className="font-extrabold text-ink-heading mb-4 tracking-[-0.02em] leading-[0.95]"
@@ -77,9 +78,10 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            variants={fadeUp}
+            initial={shouldReduce ? {} : 'hidden'}
+            whileInView={shouldReduce ? undefined : 'visible'}
+            viewport={shouldReduce ? undefined : viewportOnce}
             className="relative max-w-2xl mx-auto"
           >
             <Search className={`absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted`} />
@@ -179,13 +181,20 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
               <p className="text-lg text-ink-muted">{t.search.noResults}</p>
             </motion.div>
           ) : (
-            <div className="space-y-4">
+            <motion.div
+              className="space-y-4"
+              variants={shouldReduce ? {} : staggerContainer}
+              initial={shouldReduce ? {} : 'hidden'}
+              whileInView={shouldReduce ? undefined : 'visible'}
+              viewport={shouldReduce ? undefined : viewportOnce}
+            >
               {filteredFAQs.map((faq, idx) => {
                 const isExpanded = expandedId === idx;
                 const Icon = getCategoryIcon(faq.category);
                 return (
-                  <div
+                  <motion.div
                     key={idx}
+                    variants={shouldReduce ? {} : fadeUp}
                     className="bg-surface-white overflow-hidden border border-border-light"
                   >
                     <button
@@ -224,10 +233,10 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
           )}
         </div>
       </section>
