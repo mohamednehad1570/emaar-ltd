@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'; // useMemo retained for filteredDocuments
 import { motion } from 'framer-motion';
 import { FileText, Archive } from '@phosphor-icons/react';
+import Button from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import { fadeUp, viewportOnce } from '@/lib/motion';
@@ -117,12 +118,14 @@ export default function TechnicalPageClient({ cmsDocs, staticData }: TechnicalPa
             <FileText className="w-16 h-16 mx-auto mb-6 text-silver-material" />
             <h2 className="text-4xl font-bold mb-4">{sd.cta.title}</h2>
             <p className="text-xl text-white/70 mb-8">{sd.cta.description}</p>
-            <motion.a href={getWhatsAppURL({ page: 'technical' })} target="_blank" rel="noopener noreferrer"
-              whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-              className="inline-block px-8 py-4 bg-white hover:bg-cream font-semibold text-lg transition-colors"
-              style={{ color: 'var(--color-brand-red)' }}>
+            {/* ghost on dark section bg */}
+            <Button
+              variant="ghost" size="lg"
+              href={getWhatsAppURL({ page: 'technical' })}
+              target="_blank" rel="noopener noreferrer"
+            >
               {sd.cta.button}
-            </motion.a>
+            </Button>
           </motion.div>
         </div>
       </section>

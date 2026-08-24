@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { Phone, CheckCircle as CheckCircle2, WarningCircle as AlertCircle } from '@phosphor-icons/react';
-import Link from 'next/link';
+import Button from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { servicesData } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
@@ -50,11 +50,9 @@ export default function MaintenanceSection() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/contact">
-                    <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full px-6 py-3 bg-brand-red hover:bg-brand-red-dark text-white font-semibold transition-colors">
-                      {language === 'en' ? 'Request a Quote' : 'طلب عرض سعر'}
-                    </motion.button>
-                  </Link>
+                  <Button variant="primary" size="md" href="/contact" className="w-full">
+                    {language === 'en' ? 'Request a Quote' : 'طلب عرض سعر'}
+                  </Button>
                 </div>
               </motion.div>
             );
@@ -83,12 +81,9 @@ export default function MaintenanceSection() {
           </div>
           <div className="text-center">
             <p className={`text-lg font-bold mb-4 ${isRTL ? 'rtl' : ''}`}>{t.maintenance.emergency.contact}</p>
-            <a href="tel:+971501234567">
-              <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className={`inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-cream text-brand-red font-bold text-base shadow-warm-md transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Phone className="w-5 h-5" aria-hidden="true" />
-                {language === 'en' ? 'Call Now' : 'اتصل الآن'}
-              </motion.button>
-            </a>
+            <Button variant="ghost" size="lg" href="tel:+971501234567" icon={<Phone className="w-5 h-5" aria-hidden="true" />}>
+              {language === 'en' ? 'Call Now' : 'اتصل الآن'}
+            </Button>
           </div>
         </motion.div>
       </div>

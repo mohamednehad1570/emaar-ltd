@@ -40,10 +40,10 @@ import {
 } from 'framer-motion';
 import { ArrowRight, ArrowDown } from '@phosphor-icons/react';
 import Image from 'next/image';
-import Link  from 'next/link';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import Container from '@/components/layout/Container';
 import { getWhatsAppURL } from '@/lib/whatsapp';
+import Button from '@/components/ui/Button';
 import type { LocalizedString } from '@/lib/sanity/types';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -328,57 +328,26 @@ export default function HeroSection({
                 className="flex flex-col sm:flex-row items-start gap-3 mb-12"
               >
                 {/* Primary — solid red; heroCTAPrimary from CMS overrides label if provided */}
-                <motion.div
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.97 }}
+                <Button
+                  variant="primary" size="lg"
+                  href={getWhatsAppURL({ page: 'home' })}
+                  target="_blank" rel="noopener noreferrer"
+                  icon={<ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />}
                 >
-                  <a
-                    href={getWhatsAppURL({ page: 'home' })}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="
-                      inline-flex items-center gap-2
-                      px-8 py-4 rounded-none
-                      text-sm font-bold text-white
-                      bg-brand-red hover:bg-brand-red-dark
-                      shadow-[0_4px_15px_rgba(231,76,60,0.20)]
-                      hover:shadow-[0_8px_32px_rgba(231,76,60,0.40)]
-                      transition-all duration-200
-                    "
-                  >
-                    {heroCTAPrimary
-                      ? (isRTL ? heroCTAPrimary.ar : heroCTAPrimary.en)
-                      : l('Request a Quote', 'اطلب عرض سعر')}
-                    <ArrowRight
-                      size={16}
-                      weight="bold"
-                      className={isRTL ? 'rotate-180' : ''}
-                    />
-                  </a>
-                </motion.div>
+                  {heroCTAPrimary
+                    ? (isRTL ? heroCTAPrimary.ar : heroCTAPrimary.en)
+                    : l('Request a Quote', 'اطلب عرض سعر')}
+                </Button>
 
                 {/* Secondary — ghost; heroCTASecondary from CMS overrides label if provided */}
-                <motion.div
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.97 }}
+                <Button
+                  variant="ghost" size="lg"
+                  href="/products/upvc"
                 >
-                  <Link
-                    href="/products/upvc"
-                    className="
-                      inline-flex items-center gap-2
-                      px-7 py-3.5 rounded-none
-                      text-sm font-semibold text-white
-                      bg-white/10 hover:bg-white/[0.17]
-                      border border-white/25 hover:border-white/45
-                      backdrop-blur-sm
-                      transition-all duration-200
-                    "
-                  >
-                    {heroCTASecondary
-                      ? (isRTL ? heroCTASecondary.ar : heroCTASecondary.en)
-                      : l('Explore Products', 'استكشف المنتجات')}
-                  </Link>
-                </motion.div>
+                  {heroCTASecondary
+                    ? (isRTL ? heroCTASecondary.ar : heroCTASecondary.en)
+                    : l('Explore Products', 'استكشف المنتجات')}
+                </Button>
               </motion.div>
 
               {/* ── Trust stats strip ───────────────────────────────────

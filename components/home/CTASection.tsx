@@ -20,6 +20,7 @@ import { motion , useReducedMotion } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL, WhatsAppContext } from '@/lib/whatsapp';
+import Button from '@/components/ui/Button';
 
 interface CTASectionProps {
   whatsappContext?: WhatsAppContext;
@@ -88,35 +89,15 @@ export default function CTASection({ whatsappContext }: CTASectionProps) {
             {t.subtitle}
           </p>
 
-          {/* Primary CTA — scale via Framer Motion; bg + shadow transition together */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-            className="inline-block"
+          {/* Primary CTA */}
+          <Button
+            variant="primary" size="lg"
+            href={whatsappHref}
+            target="_blank" rel="noopener noreferrer"
+            icon={<ArrowRight size={20} weight="bold" className={isRTL ? 'rotate-180' : ''} />}
           >
-            <a
-              href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                inline-flex items-center gap-3
-                px-10 py-5 rounded-none
-                bg-brand-red hover:bg-brand-red-dark
-                text-white font-bold text-base
-                shadow-[0_4px_20px_rgba(231,76,60,0.30)]
-                hover:shadow-[0_8px_36px_rgba(231,76,60,0.45)]
-                [transition:background-color_200ms,box-shadow_200ms]
-              "
-            >
-              {t.button}
-              <ArrowRight
-                size={20}
-                weight="bold"
-                className={isRTL ? 'rotate-180' : ''}
-              />
-            </a>
-          </motion.div>
+            {t.button}
+          </Button>
         </motion.div>
       </div>
     </section>

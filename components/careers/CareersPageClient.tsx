@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Users } from '@phosphor-icons/react'
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext'
+import Button from '@/components/ui/Button'
 import { fadeUp, viewportOnce } from '@/lib/motion'
 import Container from '@/components/layout/Container'
 import CareersHero from './CareersHero'
@@ -105,16 +106,10 @@ export default function CareersPageClient({ jobPostings, staticData }: Props) {
             <Users className="w-16 h-16 mx-auto mb-6 text-silver-flat" />
             <h2 className="text-4xl font-bold mb-4">{td.cta.title}</h2>
             <p className="text-xl text-white/70 mb-8">{td.cta.description}</p>
-            <a href={`mailto:${td.application.email}`}>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
-                className="px-8 py-4 bg-white hover:bg-surface-cream text-brand-red font-semibold text-lg transition-colors"
-              >
-                {t(td.cta.button, td.cta.button)}
-              </motion.button>
-            </a>
+            {/* ghost variant on dark section bg-brand-dark */}
+            <Button variant="ghost" size="lg" href={`mailto:${td.application.email}`}>
+              {t(td.cta.button, td.cta.button)}
+            </Button>
           </motion.div>
         </Container>
       </section>

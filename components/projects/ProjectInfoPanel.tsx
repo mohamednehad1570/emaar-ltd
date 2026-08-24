@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { MapPin, CalendarBlank, Cube, Briefcase, ArrowRight } from '@phosphor-icons/react';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import type { SanityProject } from '@/lib/sanity/types';
+import Button from '@/components/ui/Button';
 
 type Language = 'en' | 'ar';
 
@@ -77,22 +77,22 @@ export default function ProjectInfoPanel({ project, language, isRTL, materialLab
 
       {/* CTA buttons */}
       <div className="flex flex-col gap-3">
-        <a
+        <Button
+          variant="primary" size="md"
           href={getWhatsAppURL({ page: 'project-detail', projectName: project.title.en })}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full py-3.5 px-6 bg-brand-red hover:bg-brand-red-dark text-white font-bold text-sm transition-colors duration-200 rounded-sm"
+          target="_blank" rel="noopener noreferrer"
+          icon={<ArrowRight className={`w-4 h-4${isRTL ? ' rotate-180' : ''}`} />}
+          className="w-full"
         >
-          <span>{ui.requestQuote}</span>
-          <ArrowRight className={`w-4 h-4${isRTL ? ' rotate-180' : ''}`} />
-        </a>
-        <Link
+          {ui.requestQuote}
+        </Button>
+        <Button
+          variant="outline" size="md"
           href="/contact"
-          className="flex items-center justify-center gap-2 w-full py-3.5 px-6 border border-border-medium hover:border-brand-dark text-brand-dark font-bold text-sm transition-colors duration-200 rounded-sm"
+          className="w-full"
         >
-          <span>{ui.contactUs}</span>
-          <ArrowRight className={`w-4 h-4${isRTL ? ' rotate-180' : ''}`} />
-        </Link>
+          {ui.contactUs}
+        </Button>
       </div>
     </div>
   );

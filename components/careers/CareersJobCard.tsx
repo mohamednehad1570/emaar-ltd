@@ -11,6 +11,7 @@ import {
   Buildings as Building2,
 } from '@phosphor-icons/react'
 import { useTranslation } from '@/contexts/LanguageContext'
+import Button from '@/components/ui/Button'
 import type { DisplayJob } from './types'
 
 interface Props {
@@ -98,14 +99,9 @@ export default function CareersJobCard({ job, isExpanded, isRTL, onToggle, onApp
                 </div>
               </div>
               <div className="mt-8">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onApply}
-                  className="w-full px-8 py-4 bg-brand-red text-white font-bold text-lg hover:bg-brand-red-deep transition-colors"
-                >
+                <Button variant="primary" size="lg" onClick={onApply} className="w-full">
                   {t('Apply Now', 'تقدم الآن')}
-                </motion.button>
+                </Button>
               </div>
             </div>
           </motion.div>

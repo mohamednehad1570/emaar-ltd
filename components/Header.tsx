@@ -14,6 +14,7 @@ import { getWhatsAppURL } from '@/lib/whatsapp';
 import { cn } from '@/lib/cn';
 import HeaderDesktopNav from '@/components/layout/HeaderDesktopNav';
 import HeaderMobileOverlay from '@/components/layout/HeaderMobileOverlay';
+import Button from '@/components/ui/Button';
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1];
 const SPRING = { type: 'spring' as const, stiffness: 300, damping: 25 };
@@ -127,24 +128,22 @@ export default function Header({ whatsappNumber }: HeaderProps) {
                   className="flex items-center justify-center">
                   <WhatsappLogo size={20} weight="fill" className="text-whatsapp" />
                 </motion.a>
-                <motion.div
-                  whileHover={r ? undefined : { scale: 1.03, boxShadow: '0 8px 32px rgba(231,76,60,0.40)' }}
-                  whileTap={r ? undefined : { scale: 0.97 }}
-                  transition={{ duration: 0.2, ease: EASE }}
-                  className="shadow-warm-red">
-                  <Link href="/contact"
-                    className="inline-flex items-center gap-1.5 px-4 h-9 bg-brand-red hover:bg-brand-red-dark text-white text-[13px] font-bold transition-colors">
-                    <span className="inline-grid justify-items-center">
-                      <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
-                        Request Quote
-                      </span>
-                      <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>
-                        اطلب عرضاً
-                      </span>
+                <Button
+                  variant="primary" size="sm"
+                  href="/contact"
+                  icon={<ArrowRight size={13} weight="bold" />}
+                >
+                  {/* inline-grid stacks both lang strings at the same size so
+                      the header width stays stable on EN↔AR toggle */}
+                  <span className="inline-grid justify-items-center">
+                    <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
+                      Request Quote
                     </span>
-                    <ArrowRight size={13} weight="bold" />
-                  </Link>
-                </motion.div>
+                    <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>
+                      اطلب عرضاً
+                    </span>
+                  </span>
+                </Button>
               </div>
               {/* Mobile only */}
               <div className="flex lg:hidden items-center ms-auto">

@@ -11,6 +11,7 @@ import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
 import type { TeamMember, LocalizedText } from '@/lib/sanity/types';
+import Button from '@/components/ui/Button';
 
 interface AboutPageClientProps {
   companyBio?: LocalizedText
@@ -127,16 +128,13 @@ export default function AboutPageClient({
             </div>
 
             <div className={`mt-10 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <Link href="/why-choose-us">
-                <motion.span
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-brand-red hover:bg-brand-red-dark text-white font-bold transition-colors cursor-pointer"
-                >
-                  {t.story.cta}
-                  <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
-                </motion.span>
-              </Link>
+              <Button
+                variant="primary" size="lg"
+                href="/why-choose-us"
+                icon={<ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />}
+              >
+                {t.story.cta}
+              </Button>
             </div>
           </motion.div>
         </div>
@@ -488,26 +486,17 @@ export default function AboutPageClient({
             </h2>
             <p className="text-lg text-white/85 mb-8 max-w-2xl mx-auto">{t.cta.description}</p>
             <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
-              <Link href="/why-choose-us">
-                <motion.span
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-cream text-brand-red font-bold text-lg cursor-pointer transition-colors"
-                  style={{ boxShadow: '0 4px 20px rgba(45,41,38,0.15)' }}
-                >
-                  {t.cta.button}
-                  <ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />
-                </motion.span>
-              </Link>
-              <Link href="/projects">
-                <motion.span
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 bg-white/12 border border-white/30 text-white font-bold text-lg hover:bg-white/20 transition-colors cursor-pointer"
-                >
-                  {t.cta.secondary}
-                </motion.span>
-              </Link>
+              {/* On red background: ghost gives glass/white text, closest spec-valid variant */}
+              <Button
+                variant="ghost" size="lg"
+                href="/why-choose-us"
+                icon={<ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />}
+              >
+                {t.cta.button}
+              </Button>
+              <Button variant="ghost" size="lg" href="/projects">
+                {t.cta.secondary}
+              </Button>
             </div>
           </motion.div>
         </div>

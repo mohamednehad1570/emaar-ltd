@@ -17,6 +17,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import { cn } from '@/lib/cn';
 import MobileNavList from './MobileNavList';
+import Button from '@/components/ui/Button';
 
 // Ease curve for the drawer slide — aggressive start, abrupt landing feel
 const EASE_DRAWER: [number, number, number, number] = [0.32, 0.72, 0, 1];
@@ -122,31 +123,24 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
           transition={{ delay: r ? 0 : 0.4, duration: 0.3 }}
           className="shrink-0 px-5 pb-6 pt-4 border-t border-border-light bg-off-white flex gap-3"
         >
-          {/* WhatsApp — bg-whatsapp token only, never a raw hex */}
-          <a
+          <Button
+            variant="primary" size="md"
             href={wa}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 flex-1 py-3.5 font-bold text-white bg-whatsapp hover:bg-whatsapp-dark transition-colors duration-200 min-h-[52px]"
+            target="_blank" rel="noopener noreferrer"
+            className="flex-1"
           >
             <WhatsappLogo size={20} weight="fill" />
             <span>{language === 'en' ? 'WhatsApp' : 'واتساب'}</span>
-          </a>
-          {/* Request Quote — brand-red CTA */}
-          <Link
+          </Button>
+          <Button
+            variant="outline" size="md"
             href="/contact"
             onClick={onClose}
-            className={cn(
-              'flex items-center justify-center gap-2 flex-1 py-3.5 font-bold text-white',
-              'bg-brand-red hover:bg-brand-red-dark transition-colors duration-200 min-h-[52px]',
-              // flex-row-reverse keeps arrow on reading-end side in RTL
-              isRTL && 'flex-row-reverse',
-            )}
+            icon={<ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />}
+            className="flex-1"
           >
-            <span>{language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}</span>
-            {/* Arrow rotates 180° in RTL — points toward reading-end edge */}
-            <ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />
-          </Link>
+            {language === 'en' ? 'Request Quote' : 'اطلب عرضاً'}
+          </Button>
         </motion.div>
 
       </motion.nav>

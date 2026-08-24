@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle, WhatsappLogo } from '@phosphor-icons/react';
-import Link from 'next/link';
+import Button from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { faqData, faqCategoryIcons } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
@@ -245,18 +245,24 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
             <h2 className="text-3xl font-bold mb-4">{t.cta.title}</h2>
             <p className="text-lg text-white/70 mb-8">{t.cta.description}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
-                <button className="inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-surface-cream text-brand-red font-semibold text-base transition-colors">
-                  {t.cta.button}
-                  <MessageCircle className="w-5 h-5" />
-                </button>
-              </Link>
-              <a href="https://wa.me/971501234567" target="_blank" rel="noopener noreferrer">
-                <button className="inline-flex items-center gap-2 px-8 py-4 bg-[#25D366] text-white font-semibold text-base hover:opacity-90 transition-opacity">
-                  <WhatsappLogo size={20} weight="fill" />
-                  {t.cta.whatsapp}
-                </button>
-              </a>
+              {/* ghost on dark bg-ink-heading section */}
+              <Button
+                variant="ghost" size="lg"
+                href="/contact"
+                icon={<MessageCircle className="w-5 h-5" />}
+              >
+                {t.cta.button}
+              </Button>
+              {/* WhatsApp: className overrides ghost base to use the whatsapp token */}
+              <Button
+                variant="ghost" size="lg"
+                href="https://wa.me/971501234567"
+                target="_blank" rel="noopener noreferrer"
+                className="bg-whatsapp hover:bg-whatsapp-dark border-whatsapp/25 hover:border-whatsapp/45"
+              >
+                <WhatsappLogo size={20} weight="fill" />
+                {t.cta.whatsapp}
+              </Button>
             </div>
           </motion.div>
         </div>
