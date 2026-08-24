@@ -19,6 +19,10 @@ export interface SiteSettings {
   heroSubtitle?: LocalizedString
   heroCTAPrimary?: LocalizedString
   heroCTASecondary?: LocalizedString
+  // Branding — editable via Sanity; header/footer fall back to hardcoded values when absent
+  companyNameEn?: string
+  companyNameAr?: string
+  logoUrl?: string
   companyBio?: LocalizedText
   foundedYear?: number
   stats?: Array<{

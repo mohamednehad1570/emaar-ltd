@@ -17,6 +17,7 @@ import { groq } from 'next-sanity'
 // [0] because siteSettings is a singleton — only one document of this type exists
 export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
   heroTagline, heroSubtitle, heroCTAPrimary, heroCTASecondary,
+  companyNameEn, companyNameAr, "logoUrl": logo.asset->url,
   companyBio, foundedYear,
   stats[]{ label, value, icon },
   phone, whatsappNumber, email,

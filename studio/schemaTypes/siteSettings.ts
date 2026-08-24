@@ -60,6 +60,30 @@ export const siteSettings = defineType({
       validation:  (rule) => rule.min(1900).max(2100).integer(),
     }),
 
+    // ── Branding (header + footer) ────────────────────────────────────────
+    defineField({
+      name:        'companyNameEn',
+      title:       'Company Name (English)',
+      type:        'string',
+      group:       'company',
+      description: 'Displayed in header and footer — e.g. "EMAAR"',
+    }),
+    defineField({
+      name:        'companyNameAr',
+      title:       'Company Name (Arabic)',
+      type:        'string',
+      group:       'company',
+      description: 'Displayed in header and footer in Arabic — e.g. "إعمار"',
+    }),
+    defineField({
+      name:        'logo',
+      title:       'Company Logo',
+      type:        'image',
+      group:       'company',
+      description: 'SVG or PNG, min 64×64px. Displayed in header and footer.',
+      options:     { hotspot: false },
+    }),
+
     // ── Key statistics ─────────────────────────────────────────────────────
     defineField({
       name:        'stats',

@@ -25,9 +25,13 @@ const LANGS = [
 
 interface HeaderProps {
   whatsappNumber?: string;
+  // Branding — optional; component falls back to hardcoded values when absent
+  companyNameEn?: string;
+  companyNameAr?: string;
+  logoUrl?: string;
 }
 
-export default function Header({ whatsappNumber }: HeaderProps) {
+export default function Header({ whatsappNumber, companyNameEn, companyNameAr, logoUrl }: HeaderProps) {
   const { language, toggleLanguage, isRTL, pendingLanguage } = useLanguage();
   const pathname = usePathname();
   const r = useReducedMotion();
@@ -99,16 +103,23 @@ export default function Header({ whatsappNumber }: HeaderProps) {
             {/* LEFT — logo always anchored left, never moves */}
             <Link href="/" aria-label="EMAAR International — home"
               className="inline-flex items-center gap-2 flex-shrink-0 group">
-              <div className="w-8 h-8 bg-brand-dark flex items-center justify-center group-hover:opacity-90 transition-opacity">
-                <Image src="/logo.svg" alt="" aria-hidden="true" width={32} height={32}
-                  className="w-5 h-5 object-contain brightness-0 invert" priority />
-              </div>
+              {/* Logo: CMS image when configured, else hardcoded SVG fallback */}
+              {logoUrl ? (
+                <Image src={logoUrl} alt={language === 'en' ? (companyNameEn ?? 'EMAAR') : (companyNameAr ?? 'إعمار')}
+                  width={32} height={32} className="w-8 h-8 object-contain" priority />
+              ) : (
+                <div className="w-8 h-8 bg-brand-dark flex items-center justify-center group-hover:opacity-90 transition-opacity">
+                  <Image src="/logo.svg" alt="" aria-hidden="true" width={32} height={32}
+                    className="w-5 h-5 object-contain brightness-0 invert" priority />
+                </div>
+              )}
+              {/* Company name: CMS values when set, else hardcoded fallbacks */}
               <span className="font-bold text-base tracking-tight text-brand-dark inline-grid justify-items-center">
                 <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
-                  EMAAR
+                  {companyNameEn ?? 'EMAAR'}
                 </span>
                 <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>
-                  إعمار
+                  {companyNameAr ?? 'إعمار'}
                 </span>
               </span>
             </Link>

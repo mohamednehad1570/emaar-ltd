@@ -34,7 +34,12 @@ export default async function RootLayout({
       <body className={`${cairo.variable} antialiased`}>
         <MotionProvider>
           <LanguageProvider>
-            <Header whatsappNumber={settings?.whatsappNumber} />
+            <Header
+              whatsappNumber={settings?.whatsappNumber}
+              companyNameEn={settings?.companyNameEn}
+              companyNameAr={settings?.companyNameAr}
+              logoUrl={settings?.logoUrl}
+            />
             <LanguageTransition>
               {children}
             </LanguageTransition>
