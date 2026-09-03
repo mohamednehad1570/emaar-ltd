@@ -10,7 +10,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+// Image import removed — EmaarLogo owns the logo <Image> internally.
 import { motion, useReducedMotion } from 'framer-motion';
 import { X, ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -18,6 +18,7 @@ import { getWhatsAppURL } from '@/lib/whatsapp';
 import { cn } from '@/lib/cn';
 import MobileNavList from './MobileNavList';
 import Button from '@/components/ui/Button';
+import EmaarLogo from '@/components/ui/EmaarLogo'; // shared logo atom — keeps overlay in sync with Header/Footer
 
 // Ease curve for the drawer slide — aggressive start, abrupt landing feel
 const EASE_DRAWER: [number, number, number, number] = [0.32, 0.72, 0, 1];
@@ -71,15 +72,11 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
 
         {/* ── Top bar: logo + lang toggle + close ─────────────────── */}
         <div className="flex items-center justify-between px-5 h-[52px] border-b border-border-light shrink-0">
-          <Link href="/" onClick={onClose} className="inline-flex items-center gap-2" aria-label="EMAAR International — home">
-            <div className="w-7 h-7 bg-brand-dark flex items-center justify-center">
-              <Image src="/logo.svg" alt="" aria-hidden="true" width={28} height={28} className="w-4 h-4 object-contain brightness-0 invert" />
-            </div>
-            {/* inline-grid keeps layout stable when EN↔AR text widths differ */}
-            <span className="font-bold text-sm text-brand-dark inline-grid justify-items-start">
-              <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>EMAAR</span>
-              <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>إعمار</span>
-            </span>
+          {/* onClick={onClose} dismisses the overlay when the user taps the logo link */}
+          {/* EmaarLogo size=40 matches the footer mark; textSize="md" keeps heading-weight
+              contrast on the off-white overlay background (#1A1A1A text colour) */}
+          <Link href="/" onClick={onClose} className="inline-flex" aria-label="Emaar International Industry LLC — home">
+            <EmaarLogo size={40} showText={true} textSize="md" />
           </Link>
           <div className="flex items-center gap-1">
             {/* Lang toggle mirrors header bar — active = bold heading, inactive = muted */}
