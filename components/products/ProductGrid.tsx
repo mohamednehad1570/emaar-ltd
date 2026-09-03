@@ -26,7 +26,7 @@ import ProductCard from './ProductCard';
 export interface DisplayProduct {
   id:          string;
   slug:        string;
-  material:    'upvc' | 'aluminum';
+  material:    'upvc' | 'aluminum' | 'glass';
   category:    string;
   title:       string;
   description: string;

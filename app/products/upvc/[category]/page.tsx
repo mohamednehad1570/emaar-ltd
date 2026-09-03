@@ -10,15 +10,14 @@ type Params = Promise<{ category: string }>;
 
 // ── Category taxonomy — hardcoded so generateStaticParams works without network ──
 
-const UPVC_CATEGORIES = ['windows','doors','doors-and-windows','staircases','stained-glass','sandblast','hebeschibe'] as const;
+// stained-glass and sandblast moved to /products/glass
+const UPVC_CATEGORIES = ['windows','doors','doors-and-windows','staircases','hebeschibe'] as const;
 
 const CATEGORY_LABELS: Record<string, string> = {
   windows:             'Windows',
   doors:               'Doors',
   'doors-and-windows': 'Doors & Windows',
   staircases:          'Staircases',
-  'stained-glass':     'Stained Glass',
-  sandblast:           'Sandblast',
   hebeschibe:          'Hebeschibe',
 }
 

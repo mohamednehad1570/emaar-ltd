@@ -19,21 +19,29 @@ import type { DisplayProduct } from './ProductGrid';
 
 // ── Label lookup maps ──────────────────────────────────────────────────────────
 
-const MATERIAL_LABELS: Record<'upvc' | 'aluminum', { en: string; ar: string }> = {
+const MATERIAL_LABELS: Record<'upvc' | 'aluminum' | 'glass', { en: string; ar: string }> = {
   upvc:     { en: 'uPVC',      ar: 'uPVC'      },
   // Brand name "uPVC" is kept in Arabic; full Arabic name used for aluminum
   aluminum: { en: 'Aluminium', ar: 'الألومنيوم' },
+  glass:    { en: 'Glass',     ar: 'زجاج'       },
 };
 
 const CATEGORY_LABELS: Record<string, { en: string; ar: string }> = {
-  windows:             { en: 'Windows',         ar: 'نوافذ'          },
-  doors:               { en: 'Doors',           ar: 'أبواب'          },
-  'doors-and-windows': { en: 'Doors & Windows', ar: 'أبواب ونوافذ'   },
-  staircases:          { en: 'Staircases',      ar: 'سلالم'          },
-  'stained-glass':     { en: 'Stained Glass',   ar: 'زجاج ملون'      },
-  sandblast:           { en: 'Sandblast',       ar: 'سندبلاست'       },
-  hebeschibe:          { en: 'Hebeschibe',      ar: 'هيبيشيبه'       },
-  skylights:           { en: 'Skylights',       ar: 'مناور'          },
+  windows:             { en: 'Windows',                        ar: 'نوافذ'              },
+  doors:               { en: 'Doors',                          ar: 'أبواب'              },
+  'doors-and-windows': { en: 'Doors & Windows',                ar: 'أبواب ونوافذ'       },
+  staircases:          { en: 'Staircases',                     ar: 'سلالم'              },
+  'stained-glass':     { en: 'Stained Glass',                  ar: 'زجاج ملون'          },
+  sandblast:           { en: 'Sandblast',                      ar: 'سندبلاست'           },
+  hebeschibe:          { en: 'Hebeschibe',                     ar: 'هيبيشيبه'           },
+  skylights:           { en: 'Skylights',                      ar: 'مناور'              },
+  pergola:             { en: 'Pergola',                        ar: 'برجولا'             },
+  'frameless-doors':   { en: 'Frameless Doors',                ar: 'أبواب بدون إطار'    },
+  'security-system':   { en: 'Security System',                ar: 'نظام أمني'          },
+  handrails:           { en: 'Handrails',                      ar: 'درابزين'            },
+  'acp-panels':        { en: 'ACP Panels',                     ar: 'ألواح ACP'          },
+  'double-glazing':    { en: 'Double Glazing',                 ar: 'زجاج مزدوج'         },
+  'georgian-bar':      { en: 'Georgian Bar & Islamic Design',  ar: 'تصميم جورجي وإسلامي'},
 };
 
 // ── Component ─────────────────────────────────────────────────────────────────

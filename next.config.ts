@@ -22,15 +22,21 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        // $-anchor prevents "doors" prefix from matching "doors-and-windows"
-        source:      '/products/upvc/:slug((?!(?:windows|doors|doors-and-windows|staircases|stained-glass|sandblast|hebeschibe)$)[^/]+)',
+        // stained-glass and sandblast moved to /products/glass — redirect old uPVC URLs
+        source:      '/products/upvc/:slug((?!(?:windows|doors|doors-and-windows|staircases|hebeschibe)$)[^/]+)',
         destination: '/products/upvc',
         permanent:   true,
       },
       {
-        // $-anchor prevents "doors" prefix from matching "doors-and-windows"
-        source:      '/products/aluminum/:slug((?!(?:windows|doors|doors-and-windows|staircases|skylights|stained-glass|sandblast)$)[^/]+)',
+        // stained-glass and sandblast moved to /products/glass — redirect old aluminum URLs
+        source:      '/products/aluminum/:slug((?!(?:windows|doors|doors-and-windows|staircases|skylights|pergola|frameless-doors|security-system|handrails|acp-panels)$)[^/]+)',
         destination: '/products/aluminum',
+        permanent:   true,
+      },
+      {
+        // Guard unknown glass category slugs — redirect to material landing page
+        source:      '/products/glass/:slug((?!(?:double-glazing|stained-glass|sandblast|georgian-bar)$)[^/]+)',
+        destination: '/products/glass',
         permanent:   true,
       },
     ];

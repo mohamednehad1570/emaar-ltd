@@ -26,25 +26,33 @@ import type { SanityProductTile } from '@/lib/sanity/types';
 // ── Category label map — taxonomy order matches CLAUDE.md Product taxonomy ────
 
 const CATEGORY_LABELS: Record<string, { en: string; ar: string }> = {
-  windows:             { en: 'Windows',         ar: 'نوافذ'         },
-  doors:               { en: 'Doors',           ar: 'أبواب'         },
-  'doors-and-windows': { en: 'Doors & Windows', ar: 'أبواب ونوافذ'  },
-  staircases:          { en: 'Staircases',      ar: 'سلالم'         },
-  'stained-glass':     { en: 'Stained Glass',   ar: 'زجاج ملون'     },
-  sandblast:           { en: 'Sandblast',       ar: 'سندبلاست'      },
-  hebeschibe:          { en: 'Hebeschibe',      ar: 'هيبيشيبه'      },
-  skylights:           { en: 'Skylights',       ar: 'مناور'         },
+  windows:             { en: 'Windows',                       ar: 'نوافذ'               },
+  doors:               { en: 'Doors',                         ar: 'أبواب'               },
+  'doors-and-windows': { en: 'Doors & Windows',               ar: 'أبواب ونوافذ'        },
+  staircases:          { en: 'Staircases',                    ar: 'سلالم'               },
+  hebeschibe:          { en: 'Hebeschibe',                    ar: 'هيبيشيبه'            },
+  skylights:           { en: 'Skylights',                     ar: 'مناور'               },
+  pergola:             { en: 'Pergola',                       ar: 'برجولا'              },
+  'frameless-doors':   { en: 'Frameless Doors',               ar: 'أبواب بدون إطار'     },
+  'security-system':   { en: 'Security System',               ar: 'نظام أمني'           },
+  handrails:           { en: 'Handrails',                     ar: 'درابزين'             },
+  'acp-panels':        { en: 'ACP Panels',                    ar: 'ألواح ACP'           },
+  'double-glazing':    { en: 'Double Glazing',                ar: 'زجاج مزدوج'          },
+  'stained-glass':     { en: 'Stained Glass',                 ar: 'زجاج ملون'           },
+  sandblast:           { en: 'Sandblast',                     ar: 'سندبلاست'            },
+  'georgian-bar':      { en: 'Georgian Bar & Islamic Design', ar: 'تصميم جورجي وإسلامي' },
 }
 
 // Canonical category order per material — tiles appear in this sequence
-const CATEGORY_ORDER: Record<'upvc' | 'aluminum', string[]> = {
-  upvc:     ['windows','doors','doors-and-windows','staircases','stained-glass','sandblast','hebeschibe'],
-  aluminum: ['windows','doors','doors-and-windows','staircases','skylights','stained-glass','sandblast'],
+const CATEGORY_ORDER: Record<'upvc' | 'aluminum' | 'glass', string[]> = {
+  upvc:     ['windows','doors','doors-and-windows','staircases','hebeschibe'],
+  aluminum: ['windows','doors','doors-and-windows','staircases','skylights','pergola','frameless-doors','security-system','handrails','acp-panels'],
+  glass:    ['double-glazing','stained-glass','sandblast','georgian-bar'],
 }
 
 // ── Bilingual page headings ───────────────────────────────────────────────────
 
-const PAGE_COPY = {
+const PAGE_COPY: Record<'upvc' | 'aluminum' | 'glass', { en: { eyebrow: string; title: string; subtitle: string }; ar: { eyebrow: string; title: string; subtitle: string } }> = {
   upvc: {
     en: { eyebrow: 'uPVC Systems',      title: 'Select a Category', subtitle: 'German-engineered profiles for every opening.' },
     ar: { eyebrow: 'أنظمة uPVC',        title: 'اختر فئة',          subtitle: 'قطاعات ذات هندسة ألمانية لكل فتحة.' },
@@ -53,7 +61,11 @@ const PAGE_COPY = {
     en: { eyebrow: 'Aluminium Systems', title: 'Select a Category', subtitle: 'Structural-grade aluminium for commercial and residential scale.' },
     ar: { eyebrow: 'أنظمة الألومنيوم',  title: 'اختر فئة',          subtitle: 'ألومنيوم بدرجة هيكلية للمشاريع التجارية والسكنية.' },
   },
-} as const;
+  glass: {
+    en: { eyebrow: 'Glass Systems',     title: 'Select a Category', subtitle: 'Premium glass solutions for architectural and decorative applications.' },
+    ar: { eyebrow: 'أنظمة الزجاج',      title: 'اختر فئة',          subtitle: 'حلول زجاجية راقية للتطبيقات المعمارية والزخرفية.' },
+  },
+};
 
 // ── Tile sub-component ────────────────────────────────────────────────────────
 
@@ -66,7 +78,7 @@ interface TileData {
 
 interface TileProps {
   tile:      TileData;
-  material:  'upvc' | 'aluminum';
+  material:  'upvc' | 'aluminum' | 'glass';
   isRTL:     boolean;
   language:  'en' | 'ar';
 }
@@ -116,7 +128,7 @@ function CategoryTile({ tile, material, isRTL, language }: TileProps) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 interface Props {
-  material:      'upvc' | 'aluminum';
+  material:      'upvc' | 'aluminum' | 'glass';
   sanityProducts: SanityProductTile[];
 }
 

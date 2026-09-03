@@ -17,24 +17,34 @@ import { defineArrayMember, defineField, defineType } from 'sanity'
 
 // ── Taxonomy constants ────────────────────────────────────────────────────────
 
+// stained-glass and sandblast removed — moved to Glass material
 const UPVC_CATEGORIES = [
   { title: 'Windows',         value: 'windows'          },
   { title: 'Doors',           value: 'doors'            },
   { title: 'Doors & Windows', value: 'doors-and-windows'},
   { title: 'Staircases',      value: 'staircases'       },
-  { title: 'Stained Glass',   value: 'stained-glass'    },
-  { title: 'Sandblast',       value: 'sandblast'        },
   { title: 'Hebeschibe',      value: 'hebeschibe'       },
 ]
 
+// stained-glass and sandblast removed — moved to Glass material
 const ALUMINUM_CATEGORIES = [
   { title: 'Windows',         value: 'windows'          },
   { title: 'Doors',           value: 'doors'            },
   { title: 'Doors & Windows', value: 'doors-and-windows'},
   { title: 'Staircases',      value: 'staircases'       },
   { title: 'Skylights',       value: 'skylights'        },
-  { title: 'Stained Glass',   value: 'stained-glass'    },
-  { title: 'Sandblast',       value: 'sandblast'        },
+  { title: 'Pergola',         value: 'pergola'          },
+  { title: 'Frameless Doors', value: 'frameless-doors'  },
+  { title: 'Security System', value: 'security-system'  },
+  { title: 'Handrails',       value: 'handrails'        },
+  { title: 'ACP Panels',      value: 'acp-panels'       },
+]
+
+const GLASS_CATEGORIES = [
+  { title: 'Double Glazing',               value: 'double-glazing'},
+  { title: 'Stained Glass',                value: 'stained-glass' },
+  { title: 'Sandblast',                    value: 'sandblast'     },
+  { title: 'Georgian Bar & Islamic Design', value: 'georgian-bar' },
 ]
 
 const SPEC_TAGS = [
@@ -101,6 +111,7 @@ export const product = defineType({
         list: [
           { title: 'uPVC',     value: 'upvc'     },
           { title: 'Aluminum', value: 'aluminum' },
+          { title: 'Glass',    value: 'glass'    },
         ],
         layout: 'radio',
       },
@@ -115,20 +126,9 @@ export const product = defineType({
       type:        'string',
       group:       'identity',
       description: 'Select the uPVC product category',
-      // Shown only when material = upvc; aluminum field appears otherwise
+      // Shown only when material = upvc; other material fields appear otherwise
       hidden: ({ document }: any) => document?.material !== 'upvc',
-      options: {
-        list: [
-          { title: 'Windows',         value: 'windows'           },
-          { title: 'Doors',           value: 'doors'             },
-          { title: 'Doors & Windows', value: 'doors-and-windows' },
-          { title: 'Staircases',      value: 'staircases'        },
-          { title: 'Stained Glass',   value: 'stained-glass'     },
-          { title: 'Sandblast',       value: 'sandblast'         },
-          { title: 'Hebeschibe',      value: 'hebeschibe'        },
-        ],
-        layout: 'radio',
-      },
+      options: { list: UPVC_CATEGORIES, layout: 'radio' },
       validation: (rule) => rule.custom((value, context) => {
         const doc = context.document as any
         if (doc?.material === 'upvc' && !value) return 'Category is required for uPVC products'
@@ -142,23 +142,28 @@ export const product = defineType({
       type:        'string',
       group:       'identity',
       description: 'Select the aluminum product category',
-      // Shown only when material = aluminum; uPVC field appears otherwise
+      // Shown only when material = aluminum; other material fields appear otherwise
       hidden: ({ document }: any) => document?.material !== 'aluminum',
-      options: {
-        list: [
-          { title: 'Windows',         value: 'windows'           },
-          { title: 'Doors',           value: 'doors'             },
-          { title: 'Doors & Windows', value: 'doors-and-windows' },
-          { title: 'Staircases',      value: 'staircases'        },
-          { title: 'Skylights',       value: 'skylights'         },
-          { title: 'Stained Glass',   value: 'stained-glass'     },
-          { title: 'Sandblast',       value: 'sandblast'         },
-        ],
-        layout: 'radio',
-      },
+      options: { list: ALUMINUM_CATEGORIES, layout: 'radio' },
       validation: (rule) => rule.custom((value, context) => {
         const doc = context.document as any
         if (doc?.material === 'aluminum' && !value) return 'Category is required for aluminum products'
+        return true
+      }),
+    }),
+
+    defineField({
+      name:        'categoryGlass',
+      title:       'Category',
+      type:        'string',
+      group:       'identity',
+      description: 'Select the glass product category',
+      // Shown only when material = glass; uPVC and aluminum fields appear otherwise
+      hidden: ({ document }: any) => document?.material !== 'glass',
+      options: { list: GLASS_CATEGORIES, layout: 'radio' },
+      validation: (rule) => rule.custom((value, context) => {
+        const doc = context.document as any
+        if (doc?.material === 'glass' && !value) return 'Category is required for glass products'
         return true
       }),
     }),
@@ -319,15 +324,16 @@ export const product = defineType({
   preview: {
     select: {
       title:             'title.en',
-      // coalesce not available in preview.select — use both and pick in prepare()
+      // coalesce not available in preview.select — check all three and pick in prepare()
       categoryUpvc:      'categoryUpvc',
       categoryAluminum:  'categoryAluminum',
+      categoryGlass:     'categoryGlass',
       media:             'mainImage',
     },
-    prepare({ title, categoryUpvc, categoryAluminum, media }) {
+    prepare({ title, categoryUpvc, categoryAluminum, categoryGlass, media }) {
       return {
         title:    title ?? '(untitled)',
-        subtitle: categoryUpvc ?? categoryAluminum ?? '',
+        subtitle: categoryUpvc ?? categoryAluminum ?? categoryGlass ?? '',
         media,
       }
     },

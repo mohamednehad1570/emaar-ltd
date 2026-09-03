@@ -43,7 +43,7 @@ export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
 export const productStaticParamsQuery = groq`*[_type == "product"]{
   "slug": slug.current,
   material,
-  "category": coalesce(categoryUpvc, categoryAluminum)
+  "category": coalesce(categoryUpvc, categoryAluminum, categoryGlass)
 }`
 
 // All products flat — for unified catalog L1 and site-wide search
@@ -51,7 +51,7 @@ export const productStaticParamsQuery = groq`*[_type == "product"]{
 // to avoid Sanity v6 p.map error with dynamic options.list functions
 export const allProductsQuery = groq`*[_type == "product"] | order(_createdAt asc){
   _id, "slug": slug.current, material,
-  "category": coalesce(categoryUpvc, categoryAluminum),
+  "category": coalesce(categoryUpvc, categoryAluminum, categoryGlass),
   title, description,
   "mainImage": mainImage.asset->url,
   badge, specTags,
@@ -61,7 +61,7 @@ export const allProductsQuery = groq`*[_type == "product"] | order(_createdAt as
 // Products by material — drives L2 material landing page with per-category counts
 export const productsByMaterialQuery = groq`*[_type == "product" && material == $material] | order(_createdAt asc){
   _id, "slug": slug.current, material,
-  "category": coalesce(categoryUpvc, categoryAluminum),
+  "category": coalesce(categoryUpvc, categoryAluminum, categoryGlass),
   title, description,
   "mainImage": mainImage.asset->url,
   badge, specTags
@@ -69,9 +69,9 @@ export const productsByMaterialQuery = groq`*[_type == "product" && material == 
 
 // Products by material + category — drives L3 category grid with sidebar filters
 // Filter checks both storage fields; projected category uses coalesce for a clean string
-export const productsByCategoryQuery = groq`*[_type == "product" && material == $material && (categoryUpvc == $category || categoryAluminum == $category)] | order(_createdAt asc){
+export const productsByCategoryQuery = groq`*[_type == "product" && material == $material && (categoryUpvc == $category || categoryAluminum == $category || categoryGlass == $category)] | order(_createdAt asc){
   _id, "slug": slug.current, material,
-  "category": coalesce(categoryUpvc, categoryAluminum),
+  "category": coalesce(categoryUpvc, categoryAluminum, categoryGlass),
   title, description,
   "mainImage": mainImage.asset->url,
   badge, specTags,
@@ -82,7 +82,7 @@ export const productsByCategoryQuery = groq`*[_type == "product" && material == 
 // and tilt-turn-window exist in both materials and the display layer handles disambiguation
 export const productBySlugQuery = groq`*[_type == "product" && slug.current == $slug][0]{
   _id, "slug": slug.current, material,
-  "category": coalesce(categoryUpvc, categoryAluminum),
+  "category": coalesce(categoryUpvc, categoryAluminum, categoryGlass),
   title, description,
   "mainImage": mainImage.asset->url,
   "gallery": gallery[].asset->url,
@@ -95,7 +95,7 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
   "relatedProducts": relatedProducts[]->{
     _id, "slug": slug.current, title,
     "mainImage": mainImage.asset->url,
-    "category": coalesce(categoryUpvc, categoryAluminum),
+    "category": coalesce(categoryUpvc, categoryAluminum, categoryGlass),
     material
   },
   // SEO sub-fields are titleEn/titleAr/descriptionEn/descriptionAr in the schema —

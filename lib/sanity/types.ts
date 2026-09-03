@@ -106,7 +106,7 @@ export interface SanityProduct {
   _id: string
   slug: string
   title: LocalizedString
-  category: 'upvc' | 'aluminum'
+  category: 'upvc' | 'aluminum' | 'glass'
   description?: LocalizedString
   specs?: Array<{ label: LocalizedString; value: LocalizedString }>
   images: string[]
@@ -167,10 +167,10 @@ export interface TechDocument {
 // Fields are nullable: GROQ returns null (not undefined) when a field is unset.
 // slug: string | null because slug.current is null when the Sanity slug field is empty.
 // material: null when the document predates the material field.
-// category: null when both categoryUpvc and categoryAluminum are unset (coalesce returns null).
+// category: null when all category fields are unset (coalesce returns null).
 export interface SanityProductParam {
   slug: string | null
-  material: 'upvc' | 'aluminum' | null
+  material: 'upvc' | 'aluminum' | 'glass' | null
   category: string | null
 }
 
@@ -179,7 +179,7 @@ export interface SanityProductParam {
 export interface SanityProductTile {
   _id: string
   slug: string
-  material: 'upvc' | 'aluminum'
+  material: 'upvc' | 'aluminum' | 'glass'
   category: string
   title: LocalizedString
   description?: LocalizedText
@@ -193,7 +193,7 @@ export interface SanityProductTile {
 export interface SanityProductFull {
   _id: string
   slug: string
-  material: 'upvc' | 'aluminum'
+  material: 'upvc' | 'aluminum' | 'glass'
   category: string
   title: LocalizedString
   description?: LocalizedText

@@ -9,7 +9,6 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { NAV, isActive } from '@/lib/data/nav';
 import { cn } from '@/lib/cn';
 import HeaderDropdown from './HeaderDropdown';
-import HeaderMegaMenu from './HeaderMegaMenu';
 
 const EASE = [0.22, 1, 0.36, 1] as [number, number, number, number];
 // 'active' = full opacity (current page); 'hover' = 50% so they stay visually distinct
@@ -130,9 +129,9 @@ export default function HeaderDesktopNav() {
                 />
               )}
 
-              {/* Compact dropdown — Products uses HeaderMegaMenu at nav level instead */}
+              {/* Compact dropdown for all items with a dropdown array */}
               <AnimatePresence>
-                {isOpen && item.dropdown && item.en !== 'Products' && (
+                {isOpen && item.dropdown && (
                   <HeaderDropdown
                     key={item.en + '-drop'}
                     items={item.dropdown}
@@ -148,12 +147,6 @@ export default function HeaderDesktopNav() {
         })}
       </div>
 
-      {/* ── Products mega menu — fixed positioning; rendered at nav level not inside the loop */}
-      <AnimatePresence>
-        {openDrop === 'Products' && (
-          <HeaderMegaMenu onEnter={cancelClose} onLeave={scheduleClose} />
-        )}
-      </AnimatePresence>
     </nav>
   );
 }

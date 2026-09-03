@@ -10,7 +10,8 @@ type Params = Promise<{ category: string }>;
 
 // ── Category taxonomy — hardcoded so generateStaticParams works without network ──
 
-const ALUMINUM_CATEGORIES = ['windows','doors','doors-and-windows','staircases','skylights','stained-glass','sandblast'] as const;
+// stained-glass and sandblast moved to /products/glass
+const ALUMINUM_CATEGORIES = ['windows','doors','doors-and-windows','staircases','skylights','pergola','frameless-doors','security-system','handrails','acp-panels'] as const;
 
 const CATEGORY_LABELS: Record<string, string> = {
   windows:             'Windows',
@@ -18,8 +19,11 @@ const CATEGORY_LABELS: Record<string, string> = {
   'doors-and-windows': 'Doors & Windows',
   staircases:          'Staircases',
   skylights:           'Skylights',
-  'stained-glass':     'Stained Glass',
-  sandblast:           'Sandblast',
+  pergola:             'Pergola',
+  'frameless-doors':   'Frameless Doors',
+  'security-system':   'Security System',
+  handrails:           'Handrails',
+  'acp-panels':        'ACP Panels',
 }
 
 export function generateStaticParams() {

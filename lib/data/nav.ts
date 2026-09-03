@@ -13,16 +13,18 @@ export interface NavItem {
 }
 
 export const NAV: NavItem[] = [
-  { en: 'Home',      ar: 'الرئيسية',  href: '/' },
+  { en: 'Home', ar: 'الرئيسية', href: '/' },
   {
-    en: 'Products', ar: 'المنتجات', href: '',
+    en: 'Our Solutions', ar: 'حلولنا', href: '',
     dropdown: [
-      { en: 'uPVC',         ar: 'uPVC',            href: '/products/upvc'     },
-      { en: 'Aluminum',     ar: 'الألومنيوم',      href: '/products/aluminum' },
-      { en: 'All Products', ar: 'جميع المنتجات',   href: '/products', dividerBefore: true },
+      { en: 'uPVC Systems',      ar: 'أنظمة uPVC',       href: '/products/upvc'                         },
+      { en: 'Aluminium Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum'                     },
+      { en: 'Glass Systems',     ar: 'أنظمة الزجاج',     href: '/products/glass'                        },
+      { en: 'All Products',      ar: 'جميع المنتجات',    href: '/products',         dividerBefore: true  },
+      { en: 'Villa Projects',    ar: 'مشاريع الفلل',     href: '/projects/villas',  dividerBefore: true  },
+      { en: 'Building Projects', ar: 'مشاريع المباني',   href: '/projects/buildings'                    },
     ],
   },
-{ en: 'Projects',  ar: 'المشاريع',  href: '/projects'  },
   { en: 'Technical', ar: 'المواصفات', href: '/technical' },
   {
     en: 'About', ar: 'من نحن', href: '',

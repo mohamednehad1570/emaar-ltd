@@ -85,7 +85,7 @@ export async function getAllProducts(): Promise<SanityProductTile[]> {
   }
 }
 
-export async function getProductsByMaterial(material: 'upvc' | 'aluminum'): Promise<SanityProductTile[]> {
+export async function getProductsByMaterial(material: 'upvc' | 'aluminum' | 'glass'): Promise<SanityProductTile[]> {
   try {
     return await sanityFetch<SanityProductTile[]>(productsByMaterialQuery, { material })
   } catch {
