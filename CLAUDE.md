@@ -23,7 +23,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
 - components/contact/ — ContactPageClient (client, assembles page), ContactHero, ContactForm (form state + /api/contact submit), ContactInfo (phone/email/address/hours strip), ContactOffices (office cards, CMS + static fallback), ContactMap (iframe or placeholder)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
-- components/ui/ — shared primitives (Breadcrumbs removed — never add back)
+- components/ui/ — shared primitives: Button.tsx, EmaarLogo.tsx (size/showText/textSize/className — used in Header, Footer, HeaderMobileOverlay); Breadcrumbs removed — never add back
 - components/layout/ — HeaderDesktopNav, HeaderMobileOverlay (top bar: logo + LangToggle + close; bottom bar: WhatsApp + Request Quote side-by-side; nav list delegated to MobileNavList), MobileNavList (scrollable nav accordion extracted from HeaderMobileOverlay to keep that file under 150 lines), HeaderDropdown, HeaderMegaMenu (full-width fixed mega menu for Products; category links are `{ en, ar, href }` objects; MegaMenuColumn accepts `language` prop and renders `language === 'en' ? en : ar`), Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
@@ -36,8 +36,8 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - lib/hooks/useTechDocuments.ts — normalises CMS/static tech docs to DisplayDocument[], builds category + productType filter options
 - lib/sanity/client.ts — publicClient, writeClient, sanityFetch<T>()
 - lib/sanity/fetch.ts — typed fetcher functions: getProjects(), getProjectBySlug(), getProducts(), getProductBySlug(slug, category), getTechDocuments(), getFaqs(), getJobPostings(); getSiteSettings() is also called in app/layout.tsx for global header/footer wiring
-- lib/sanity/queries.ts — typed GROQ query strings
-- lib/sanity/types.ts — LocalizedString, LocalizedText, SanityImage, SiteSettings, SanityProject, SanityProductTile (list view), SanityProductFull (detail view with gallery/features/relatedProducts), SanityFaq, TechDocument, JobPosting
+- lib/sanity/queries.ts — typed GROQ query strings; productStaticParamsQuery is a dedicated minimal query for generateStaticParams (avoids CDN stale-slug bug)
+- lib/sanity/types.ts — LocalizedString, LocalizedText, SanityImage, SiteSettings, SanityProject, SanityProductParam (minimal for generateStaticParams), SanityProductTile (list view), SanityProductFull (detail view with gallery/features/relatedProducts), SanityFaq, TechDocument, JobPosting
 - contexts/LanguageContext.tsx — useLanguage() → { language, isRTL, toggleLanguage, setLanguage, isTransitioning, pendingLanguage } · useTranslation() → (en, ar) => string · isTransitioning=true for 150ms during crossfade; pendingLanguage shows incoming language in LangToggle before commit
 - lib/types.ts — shared display types: DisplayProject (language-resolved for ProjectCard/ProjectsGrid), ProjectPreview (bilingual minimal subset for homepage)
 - studio/ — Sanity Studio (Node 22 required — always `nvm use 22` before `npm run dev`)
@@ -212,7 +212,7 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev
 
-## Current State — Aug 24 2026
+## Current State — Sep 3 2026
 
 ### Completed (all committed, on dev)
 - Mega menu: components/layout/HeaderMegaMenu.tsx — two columns, bilingual, RTL, mouse-bridge
@@ -224,6 +224,14 @@ git add -A && git commit -m "scope(area): what changed" && git push origin dev
 - Header mobile: burger-only on mobile (lang toggle + WhatsApp hidden from mobile bar)
 - Unified Button component: components/ui/Button.tsx — all inline CTAs replaced site-wide (including MaintenanceSection.tsx)
 - CMS branding: companyNameEn, companyNameAr, logo fields in siteSettings — schema deployed, queries updated, Header renders CMS values with hardcoded EMAAR/إعمار fallbacks
+- EmaarLogo atom: components/ui/EmaarLogo.tsx — size/showText/textSize/className props; wired into Header.tsx (size=52) and Footer.tsx (size=40); HeaderMobileOverlay logo also replaced
+- 3-bar burger: Header.tsx mobile burger upgraded from 2 bars to 3 bars — top/bottom rotate ±45° + translate 7px, middle fades+collapses, Framer Motion motion.span, respects useReducedMotion
+- Null array crash fix: ProjectsGrid.tsx and ProjectDetailPage.tsx — (x ?? []) guards for materialsUsed and images fields; SanityProject types updated to string[] | null
+- Build fix (generateStaticParams): added productStaticParamsQuery (lib/sanity/queries.ts) — minimal 3-field GROQ query with unique CDN cache key, bypassing stale allProductsQuery CDN response that returned slug as raw object; SanityProductParam type added (lib/sanity/types.ts); both L4 product routes use type-predicate filter
+
+### Known gotchas (added this session)
+- Sanity CDN cache key: each unique GROQ query string is a separate CDN cache entry. If a heavy query (allProductsQuery) has a stale cached response, creating a new minimal query with different field projection forces a fresh cache key — the solution used in productStaticParamsQuery.
+- SanityProject.images and SanityProject.materialsUsed are string[] | null — Sanity returns null (not []) when the field is unset. Always access via (x ?? []) before any index or .length call.
 
 ### Pending prompts
 - Prompt 5: Product detail two-column layout + image gallery + sticky CTA
