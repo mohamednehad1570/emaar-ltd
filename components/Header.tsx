@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+// Image import removed — EmaarLogo now owns the logo <Image> internally.
 import {
   motion, AnimatePresence,
   useScroll, useMotionValueEvent, useReducedMotion,
@@ -15,6 +15,7 @@ import { cn } from '@/lib/cn';
 import HeaderDesktopNav from '@/components/layout/HeaderDesktopNav';
 import HeaderMobileOverlay from '@/components/layout/HeaderMobileOverlay';
 import Button from '@/components/ui/Button';
+import EmaarLogo from '@/components/ui/EmaarLogo'; // shared logo + wordmark atom
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1];
 const SPRING = { type: 'spring' as const, stiffness: 300, damping: 25 };
@@ -25,13 +26,17 @@ const LANGS = [
 
 interface HeaderProps {
   whatsappNumber?: string;
-  // Branding — optional; component falls back to hardcoded values when absent
+  // companyNameEn / companyNameAr / logoUrl kept in interface so the parent (layout.tsx)
+  // can still pass CMS values without TypeScript errors; the logo block now delegates
+  // image + text to EmaarLogo which reads /emaar-logo.png directly.
   companyNameEn?: string;
   companyNameAr?: string;
   logoUrl?: string;
 }
 
-export default function Header({ whatsappNumber, companyNameEn, companyNameAr, logoUrl }: HeaderProps) {
+// Only whatsappNumber is destructured — the other CMS props are accepted but not yet consumed
+// (they remain in the interface for forward-compatibility with CMS-driven overrides).
+export default function Header({ whatsappNumber }: HeaderProps) {
   const { language, toggleLanguage, isRTL, pendingLanguage } = useLanguage();
   const pathname = usePathname();
   const r = useReducedMotion();
@@ -101,27 +106,17 @@ export default function Header({ whatsappNumber, companyNameEn, companyNameAr, l
           >
 
             {/* LEFT — logo always anchored left, never moves */}
-            <Link href="/" aria-label="EMAAR International — home"
-              className="inline-flex items-center gap-2 flex-shrink-0 group">
-              {/* Logo: CMS image when configured, else hardcoded SVG fallback */}
-              {logoUrl ? (
-                <Image src={logoUrl} alt={language === 'en' ? (companyNameEn ?? 'EMAAR') : (companyNameAr ?? 'إعمار')}
-                  width={32} height={32} className="w-8 h-8 object-contain" priority />
-              ) : (
-                <div className="w-8 h-8 bg-brand-dark flex items-center justify-center group-hover:opacity-90 transition-opacity">
-                  <Image src="/logo.svg" alt="" aria-hidden="true" width={32} height={32}
-                    className="w-5 h-5 object-contain brightness-0 invert" priority />
-                </div>
-              )}
-              {/* Company name: CMS values when set, else hardcoded fallbacks */}
-              <span className="font-bold text-base tracking-tight text-brand-dark inline-grid justify-items-center">
-                <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
-                  {companyNameEn ?? 'EMAAR'}
-                </span>
-                <span className={cn('col-start-1 row-start-1', language !== 'ar' && 'invisible')} aria-hidden={language !== 'ar'}>
-                  {companyNameAr ?? 'إعمار'}
-                </span>
-              </span>
+            {/* min-h-[44px] satisfies WCAG 2.5.5 minimum touch-target height on mobile. */}
+            {/* flex-shrink-0 prevents the logo from being compressed by the nav or right controls. */}
+            <Link
+              href="/"
+              aria-label="Emaar International Industry LLC — home"
+              className="inline-flex items-center flex-shrink-0 min-h-[44px]"
+            >
+              {/* EmaarLogo renders /emaar-logo.png + the company name in one shared atom.
+                  size=52 gives a clear brand presence in the 48 px / 56 px header bar.
+                  textSize="md" uses the #1A1A1A heading colour for maximum legibility. */}
+              <EmaarLogo size={52} showText={true} textSize="md" />
             </Link>
 
             {/* CENTER — nav */}

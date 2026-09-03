@@ -32,8 +32,9 @@ import {
   ArrowRight,
   CaretDown,
 } from '@phosphor-icons/react';
-import Image from 'next/image';
-import Link  from 'next/link';
+// Image import removed — EmaarLogo now owns the logo <Image> internally.
+import Link from 'next/link';
+import EmaarLogo from '@/components/ui/EmaarLogo'; // shared logo + wordmark atom
 import { useLanguage, useTranslation } from '../contexts/LanguageContext';
 import { cn } from '@/lib/cn';
 import Container from './layout/Container';
@@ -327,35 +328,15 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
 
           {/* ── Column 1: Brand ───────────────────────────────────────── */}
           <div className="space-y-6">
-            {/* Logo + wordmark */}
+            {/* Logo + wordmark — EmaarLogo atom keeps brand mark consistent with Header.
+                size=40 is slightly smaller than the 52 px header mark, fitting the footer's
+                quieter visual weight. textSize="sm" renders the muted (#7F8C8D) text variant. */}
             <Link
               href="/"
-              className="inline-flex items-center gap-3 group"
-              aria-label="Emaar International — home"
+              className="inline-flex"
+              aria-label="Emaar International Industry LLC — home"
             >
-              <div className="
-                w-11 h-11 rounded-sm overflow-hidden bg-brand-dark flex items-center justify-center
-                shadow-[0_2px_8px_rgba(45,41,38,0.15)]
-                group-hover:shadow-[0_4px_16px_rgba(231,76,60,0.22)]
-                transition-shadow duration-300
-              ">
-                <Image
-                  src="/logo.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={44}
-                  height={44}
-                  className="w-7 h-7 object-contain brightness-0 invert"
-                />
-              </div>
-              <div className={`flex flex-col ${isRTL ? 'items-end' : 'items-start'}`}>
-                <span className="font-extrabold text-xl tracking-tight leading-none text-brand-dark">
-                  {l('EMAAR', 'إعمار')}
-                </span>
-                <span className="text-[10px] font-medium tracking-widest uppercase text-text-muted mt-0.5">
-                  {l('International Industry', 'الدولية للصناعة')}
-                </span>
-              </div>
+              <EmaarLogo size={40} showText={true} textSize="sm" />
             </Link>
 
             {/* Brand tagline */}
@@ -414,31 +395,17 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
         ════════════════════════════════════════════════════════════════ */}
         <div className="lg:hidden mb-8">
 
-          {/* Brand — always visible at the top */}
+          {/* Brand — always visible at the top on mobile */}
           <div className="flex flex-col gap-5 pb-8 mb-2 border-b border-border-light">
+            {/* Same EmaarLogo atom as desktop — consistent mark across breakpoints.
+                Mobile uses the same size=40 as the desktop footer column, keeping
+                the brand weight proportional in both layouts. */}
             <Link
               href="/"
-              className="inline-flex items-center gap-3"
-              aria-label="Emaar International — home"
+              className="inline-flex"
+              aria-label="Emaar International Industry LLC — home"
             >
-              <div className="w-10 h-10 rounded-sm overflow-hidden bg-brand-dark flex items-center justify-center shadow-[0_2px_8px_rgba(45,41,38,0.12)]">
-                <Image
-                  src="/logo.svg"
-                  alt=""
-                  aria-hidden="true"
-                  width={40}
-                  height={40}
-                  className="w-6 h-6 object-contain brightness-0 invert"
-                />
-              </div>
-              <div className={`flex flex-col ${isRTL ? 'items-end' : 'items-start'}`}>
-                <span className="font-extrabold text-lg tracking-tight leading-none text-brand-dark">
-                  {l('EMAAR', 'إعمار')}
-                </span>
-                <span className="text-[10px] font-medium tracking-widest uppercase text-text-muted mt-0.5">
-                  {l('International Industry', 'الدولية للصناعة')}
-                </span>
-              </div>
+              <EmaarLogo size={40} showText={true} textSize="sm" />
             </Link>
 
             <p className="text-sm text-text-body leading-relaxed max-w-sm">
