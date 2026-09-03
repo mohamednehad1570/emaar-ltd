@@ -153,16 +153,58 @@ export default function Header({ whatsappNumber }: HeaderProps) {
               </div>
               {/* Mobile only */}
               <div className="flex lg:hidden items-center ms-auto">
-                {/* -mr-2 pulls the touch target to the edge so the icon aligns with the container */}
-                <button onClick={() => setOpen(v => !v)} aria-label={open ? 'Close menu' : 'Open menu'}
-                  aria-expanded={open} aria-controls="mobile-nav"
-                  className="flex flex-col items-center justify-center gap-[5px] w-10 h-10 -mr-2">
-                  <motion.span animate={r ? undefined : { rotate: open ? 45 : 0, y: open ? 6 : 0 }}
-                    transition={SPRING} style={{ height: '1.5px' }}
-                    className="block w-6 bg-brand-dark origin-center" />
-                  <motion.span animate={r ? undefined : { rotate: open ? -45 : 0, y: open ? -6 : 0 }}
-                    transition={SPRING} style={{ height: '1.5px' }}
-                    className="block w-6 bg-brand-dark origin-center" />
+                {/* -mr-2 nudges the touch target to the container edge so the bars
+                    align visually with other right-edge elements (WhatsApp, CTA). */}
+                <button
+                  onClick={() => setOpen(v => !v)}
+                  aria-label={open ? 'Close menu' : 'Open menu'} // screen-reader label switches state
+                  aria-expanded={open}                            // ARIA live state for assistive tech
+                  aria-controls="mobile-nav"                      // links button to the overlay element
+                  className="flex flex-col justify-center gap-[5px] w-10 h-10 -mr-2"
+                  // gap-[5px] = 5 px between bars; combined with h-0.5 (2 px bars)
+                  // the center-to-center distance is 2 + 5 = 7 px — drives the y translate below
+                >
+                  {/* ── Top bar ─────────────────────────────────────────────────────
+                      Closed: sits at its natural position, no rotation.
+                      Open:   rotates 45° and translates +7 px down so its center
+                              overlaps the middle bar's center, forming the top arm of the ✕. */}
+                  <motion.span
+                    animate={r ? undefined : {  // r = useReducedMotion(); skip animation when set
+                      rotate: open ? 45 : 0,    // 45° clockwise → top arm of X
+                      y:      open ? 7 : 0,     // 7 px = bar height (2) + gap (5); centres on middle
+                    }}
+                    transition={SPRING}           // shared spring constant — consistent with header feel
+                    className="block w-6 h-0.5 rounded-full bg-brand-dark origin-center"
+                    // w-6 = 24 px, h-0.5 = 2 px; rounded-full softens the bar ends
+                    // origin-center ensures rotation pivots around the bar's own midpoint
+                    // bg-brand-dark = #1A1A1A — semantic token, same value as the spec
+                  />
+
+                  {/* ── Middle bar ──────────────────────────────────────────────────
+                      Closed: fully visible.
+                      Open:   fades to opacity 0 and collapses to scaleX 0 so it
+                              disappears without shifting the top/bottom bars. */}
+                  <motion.span
+                    animate={r ? undefined : {
+                      opacity: open ? 0 : 1,    // hide when open; fade avoids a flash
+                      scaleX:  open ? 0 : 1,    // also shrink so it can't be seen if opacity lags
+                    }}
+                    transition={SPRING}
+                    className="block w-6 h-0.5 rounded-full bg-brand-dark origin-center"
+                  />
+
+                  {/* ── Bottom bar ──────────────────────────────────────────────────
+                      Closed: sits at its natural position, no rotation.
+                      Open:   rotates -45° and translates -7 px up to overlap the middle
+                              bar's centre, forming the bottom arm of the ✕. */}
+                  <motion.span
+                    animate={r ? undefined : {
+                      rotate: open ? -45 : 0,   // -45° counter-clockwise → bottom arm of X
+                      y:      open ? -7 : 0,    // mirror of top bar; -7 px moves it up to centre
+                    }}
+                    transition={SPRING}
+                    className="block w-6 h-0.5 rounded-full bg-brand-dark origin-center"
+                  />
                 </button>
               </div>
             </div>
