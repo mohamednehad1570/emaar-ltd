@@ -34,6 +34,18 @@ export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
 
 // ─── PRODUCTS ───────────────────────────────────────────────────────────────
 
+// Minimal query used ONLY by generateStaticParams in the L4 product routes.
+// Kept intentionally small — no asset joins, no localised text — so it gets its own
+// CDN cache key separate from allProductsQuery. This prevents a stale CDN response
+// (where the Sanity CDN returned the raw slug object instead of the slug.current string)
+// from breaking the Next.js build. "slug": slug.current is the authoritative projection
+// that collapses the { _type:'slug', current:'...' } reference to a plain string.
+export const productStaticParamsQuery = groq`*[_type == "product"]{
+  "slug": slug.current,
+  material,
+  "category": coalesce(categoryUpvc, categoryAluminum)
+}`
+
 // All products flat — for unified catalog L1 and site-wide search
 // category projected via coalesce — schema stores upvc/aluminum in separate fields
 // to avoid Sanity v6 p.map error with dynamic options.list functions

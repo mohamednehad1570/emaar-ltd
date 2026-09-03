@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
 import { sanityFetch } from '@/lib/sanity/client';
-import { allProductsQuery, productBySlugQuery } from '@/lib/sanity/queries';
-import type { SanityProductTile, SanityProductFull } from '@/lib/sanity/types';
+// productStaticParamsQuery is a minimal query with its own CDN cache key — avoids the
+// stale CDN cache that was returning raw slug objects instead of plain strings.
+import { productStaticParamsQuery, productBySlugQuery } from '@/lib/sanity/queries';
+import type { SanityProductParam, SanityProductFull } from '@/lib/sanity/types';
 import ProductDetailPage from '@/components/products/ProductDetailPage';
 
 export const revalidate = 3600;
@@ -30,13 +32,24 @@ const UPVC_FALLBACK_PARAMS = [
 
 export async function generateStaticParams() {
   try {
-    const all = await sanityFetch<SanityProductTile[]>(allProductsQuery);
-    // Guard against legacy documents where categoryUpvc may be stored as a localizedString
-    // object instead of a plain string — skip them and fall back to static params
+    // productStaticParamsQuery fetches ONLY slug/material/category — no asset joins.
+    // Its unique query string gives the Sanity CDN a fresh cache key, bypassing any
+    // stale cached response from allProductsQuery that returned slug as an object.
+    const all = await sanityFetch<SanityProductParam[]>(productStaticParamsQuery);
+
+    // Type predicate narrows SanityProductParam (nullable fields) to a guaranteed
+    // { slug: string; category: string } shape so the map needs no casts.
     const upvc = all.filter(
-      (p) => p.material === 'upvc' && typeof p.category === 'string' && p.category.length > 0,
+      (p): p is { slug: string; material: 'upvc'; category: string } =>
+        p.material === 'upvc' &&
+        typeof p.slug === 'string'     && p.slug.length > 0 &&
+        typeof p.category === 'string' && p.category.length > 0,
     );
-    if (upvc.length > 0) return upvc.map((p) => ({ category: p.category, slug: p.slug }));
+
+    if (upvc.length > 0) {
+      // Both fields are guaranteed strings by the type predicate above — no casts needed.
+      return upvc.map((p) => ({ category: p.category, slug: p.slug }));
+    }
   } catch {}
   return UPVC_FALLBACK_PARAMS;
 }

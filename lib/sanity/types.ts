@@ -163,6 +163,17 @@ export interface TechDocument {
   featured?: boolean
 }
 
+// ── Static-params shape — matches productStaticParamsQuery ────────────────────
+// Fields are nullable: GROQ returns null (not undefined) when a field is unset.
+// slug: string | null because slug.current is null when the Sanity slug field is empty.
+// material: null when the document predates the material field.
+// category: null when both categoryUpvc and categoryAluminum are unset (coalesce returns null).
+export interface SanityProductParam {
+  slug: string | null
+  material: 'upvc' | 'aluminum' | null
+  category: string | null
+}
+
 // ── Batch 2 product tile — matches productsByMaterialQuery and productsByCategoryQuery ──
 
 export interface SanityProductTile {

@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
 import { sanityFetch } from '@/lib/sanity/client';
-import { allProductsQuery, productBySlugQuery } from '@/lib/sanity/queries';
-import type { SanityProductTile, SanityProductFull } from '@/lib/sanity/types';
+// productStaticParamsQuery is a minimal query with its own CDN cache key — avoids the
+// stale CDN cache that was returning raw slug objects instead of plain strings.
+import { productStaticParamsQuery, productBySlugQuery } from '@/lib/sanity/queries';
+import type { SanityProductParam, SanityProductFull } from '@/lib/sanity/types';
 import ProductDetailPage from '@/components/products/ProductDetailPage';
 
 export const revalidate = 3600;
@@ -29,12 +31,24 @@ const ALUMINUM_FALLBACK_PARAMS = [
 
 export async function generateStaticParams() {
   try {
-    const all = await sanityFetch<SanityProductTile[]>(allProductsQuery);
-    // Guard against legacy documents where categoryAluminum may be stored as a localizedString object
+    // productStaticParamsQuery fetches ONLY slug/material/category — no asset joins.
+    // Its unique query string gives the Sanity CDN a fresh cache key, bypassing any
+    // stale cached response from allProductsQuery that returned slug as an object.
+    const all = await sanityFetch<SanityProductParam[]>(productStaticParamsQuery);
+
+    // Type predicate narrows SanityProductParam (nullable fields) to a guaranteed
+    // { slug: string; category: string } shape so the map needs no casts.
     const aluminum = all.filter(
-      (p) => p.material === 'aluminum' && typeof p.category === 'string' && p.category.length > 0,
+      (p): p is { slug: string; material: 'aluminum'; category: string } =>
+        p.material === 'aluminum' &&
+        typeof p.slug === 'string'     && p.slug.length > 0 &&
+        typeof p.category === 'string' && p.category.length > 0,
     );
-    if (aluminum.length > 0) return aluminum.map((p) => ({ category: p.category, slug: p.slug }));
+
+    if (aluminum.length > 0) {
+      // Both fields are guaranteed strings by the type predicate above — no casts needed.
+      return aluminum.map((p) => ({ category: p.category, slug: p.slug }));
+    }
   } catch {}
   return ALUMINUM_FALLBACK_PARAMS;
 }
