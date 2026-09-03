@@ -24,9 +24,11 @@ export default function ProjectDetailPage({ project }: Props) {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion() ?? false;
 
-  const [selectedImage, setSelectedImage] = useState(project.images[0] ?? '');
+  // (x ?? []) guards against null — Sanity returns null, not [], when a field is unset
+  const [selectedImage, setSelectedImage] = useState((project.images ?? [])[0] ?? '');
 
-  const primaryMaterial = project.materialsUsed[0] ?? '';
+  // Same null-array guard for materialsUsed
+  const primaryMaterial = (project.materialsUsed ?? [])[0] ?? '';
   const materialLabel   = primaryMaterial === 'upvc' ? 'uPVC' : (language === 'en' ? 'Aluminium' : 'ألومنيوم');
   const categoryLabel   = typeLabels[project.type]?.[language] ?? project.type;
   const altBase         = project.title[language] ?? project.title.en;
@@ -57,7 +59,7 @@ export default function ProjectDetailPage({ project }: Props) {
             viewport={shouldReduce ? undefined : viewportOnce}
           >
             <ProjectImagePanel
-              images={project.images}
+              images={project.images ?? []} // null-coalesce: ProjectImagePanel expects string[], not null
               selectedImage={selectedImage}
               onSelect={setSelectedImage}
               alt={altBase}
@@ -80,7 +82,8 @@ export default function ProjectDetailPage({ project }: Props) {
         </div>
 
         {/* Gallery section */}
-        {project.images.length > 0 && (
+        {/* (project.images ?? []) — null guard before .length and .map */}
+        {(project.images ?? []).length > 0 && (
           <div className="mt-20 pt-12 border-t border-border-light">
             <p className="text-xs uppercase tracking-[0.25em] text-text-muted mb-6">
               {ui.gallery}
@@ -92,7 +95,7 @@ export default function ProjectDetailPage({ project }: Props) {
               whileInView={shouldReduce ? undefined : 'visible'}
               viewport={shouldReduce ? undefined : viewportOnce}
             >
-              {project.images.map((src, idx) => (
+              {(project.images ?? []).map((src, idx) => (
                 <motion.div
                   key={idx}
                   variants={shouldReduce ? {} : fadeIn}

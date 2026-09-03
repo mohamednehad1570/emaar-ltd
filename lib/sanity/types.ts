@@ -88,12 +88,14 @@ export interface SanityProject {
   slug: string
   title: LocalizedString
   type: string
-  materialsUsed: string[]
+  // null (not []) when the field is unset in Sanity — always access via (x ?? [])
+  materialsUsed: string[] | null
   year: number | null
   location: LocalizedString
   // coverImage is images[0].asset->url — pre-resolved for card thumbnails
   coverImage?: string
-  images: string[]
+  // null (not []) when no images are uploaded in Sanity — always access via (x ?? [])
+  images: string[] | null
   stats: Array<{ label: LocalizedString; value: string }>
   description?: LocalizedString
   client?: LocalizedString

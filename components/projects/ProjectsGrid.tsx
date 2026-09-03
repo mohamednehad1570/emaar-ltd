@@ -40,11 +40,15 @@ export default function ProjectsGrid({ projects = [] }: Props) {
     title:    p.title[language] ?? p.title.en,
     category: typeLabels[p.type]?.[language] ?? p.type,
     location: p.location?.[language] ?? p.location?.en ?? '',
-    // coverImage is images[0].asset->url pre-resolved by the GROQ query
-    image:    p.coverImage ?? p.images[0] ?? '',
+    // coverImage is images[0].asset->url pre-resolved by the GROQ query.
+    // (p.images ?? []) guards against null — Sanity returns null, not [], when the
+    // array field is empty or unset, so ?? [] is required before indexing.
+    image:    p.coverImage ?? (p.images ?? [])[0] ?? '',
     year:     p.year != null ? String(p.year) : '',
     type:     p.type,
-    material: p.materialsUsed[0] ?? '',
+    // Same null-array guard: p.materialsUsed is null (not []) when unset in Sanity.
+    // ?? '' on [0] then catches the undefined from an empty array.
+    material: (p.materialsUsed ?? [])[0] ?? '',
   }));
 
   const sectors = [
