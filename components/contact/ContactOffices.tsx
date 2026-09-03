@@ -28,10 +28,10 @@ export default function ContactOffices({ cmsOffices, staticData }: Props) {
   // Spread required because as-const static data is readonly.
   const offices: NormalizedOffice[] = (cmsOffices?.length ?? 0) > 0
     ? cmsOffices!.map(o => ({
-        name:    o.name[language]         ?? o.name.en,
-        address: o.address[language]      ?? o.address.en,
+        name:    o.name?.[language]         ?? o.name?.en    ?? '', // guard null LocalizedString
+        address: o.address?.[language]      ?? o.address?.en ?? '', // guard null LocalizedString
         phone:   o.phone,
-        hours:   o.workingHours[language] ?? o.workingHours.en,
+        hours:   o.workingHours?.[language] ?? o.workingHours?.en ?? '', // guard null LocalizedString
       }))
     : [...t.offices.list];
 

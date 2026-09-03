@@ -36,9 +36,10 @@ export default function ContactPageClient({ settings, staticData }: Props) {
   const email         = settings?.email          ?? t.contact.email.address;
   const whatsappNum   = settings?.whatsappNumber ?? '971500000000';
   const whatsappHref  = getWhatsAppURL({ page: 'contact' }, whatsappNum);
-  // Address and hours are language-dependent — fall back to first static office
-  const address       = settings?.address?.[language]      ?? t.offices.list[0].address;
-  const workingHours  = settings?.workingHours?.[language] ?? t.contact.phone.hours;
+  // Address and hours are language-dependent — fall back to first static office.
+  // Inner .en/.ar on a LocalizedString can be null at runtime even when typed as string.
+  const address      = (settings?.address?.[language] ?? settings?.address?.en ?? '') || t.offices.list[0].address;
+  const workingHours = (settings?.workingHours?.[language] ?? settings?.workingHours?.en ?? '') || t.contact.phone.hours;
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
