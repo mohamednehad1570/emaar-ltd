@@ -1,0 +1,31 @@
+name: Deploy Sanity Studio # workflow name shown in the GitHub Actions tab
+
+on:
+  push:
+    branches: # only run on these two long-lived branches
+      - Main
+      - dev
+    paths: # skip the workflow entirely when no studio file changed
+      - 'studio/**'
+  workflow_dispatch: # allow manual trigger from the GitHub Actions UI
+
+jobs:
+  deploy-studio:
+    runs-on: ubuntu-latest # standard GitHub-hosted runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # pins to the v4 major; Dependabot will bump patch versions
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # matches the Node version required by the Sanity Studio (see CLAUDE.md)
+
+      - name: Install studio dependencies
+        run: cd studio && npm ci # ci = clean install from lockfile — faster and reproducible than npm install
+
+      - name: Deploy Sanity Studio
+        run: cd studio && npx sanity deploy --no-auto-updates # --no-auto-updates skips the CLI self-update prompt so the step does not hang
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }} # personal/robot token stored in repo secrets — never hardcoded
