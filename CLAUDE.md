@@ -16,7 +16,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - app/api/revalidate/route.ts — Sanity ISR webhook endpoint
 - components/home/ — HeroSection, StatsSection, ProductsSection, ProjectsSection, WhyChooseUsSection, CTASection, CertificationsSection, TestimonialsSection
 - components/MotionProvider.tsx — wraps app in MotionConfig reducedMotion="user" (prefers-reduced-motion handled globally here — no per-component useReducedMotion needed)
-- components/products/ — ProductShowcase, ProductMaterialPage (L2 category tiles), ProductCategoryPage (L3 grid), ProductFilterSidebar (shared controlled sidebar, lockedMaterial/lockedCategory props), ProductGrid (shared grid, DisplayProduct interface), WarrantyStrip (horizontal strip, hidden when showWarrantyBadge=false), ProductDetailPage, ProductDetailRelated, ProductDetailHero, ProductDetailSpecs
+- components/products/ — ProductShowcase, ProductMaterialPage (L2 category tiles), ProductCategoryPage (L3 grid), ProductFilterSidebar (shared controlled sidebar, lockedMaterial/lockedCategory props), ProductGrid (shared grid, DisplayProduct interface), WarrantyStrip (horizontal strip, hidden when showWarrantyBadge=false), ProductDetailPage (thin orchestrator, 86 lines), ProductDetailHero (breadcrumb + H1 + 55/45 image/info grid), ProductCharacteristics (specTags + spec chips), ProductDiscoverSection (dark tile grid of other categories for same material), ProductDetailCTA (centered quote CTA), ProductDetailFAQ (height-animated accordion, 5 FAQs from faq.ts)
 - components/technical/ — TechnicalPageClient (client), TechFilters, TechDocumentGrid, TechDocumentCard (exports DisplayDocument interface)
 - components/careers/ — CareersPageClient (client, assembles page + CTA), CareersHero, CareersCulture, CareersJobList (filter + accordion), CareersJobCard, types.ts (DisplayJob interface)
 - components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage
@@ -24,7 +24,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/contact/ — ContactPageClient (client, assembles page), ContactHero, ContactForm (form state + /api/contact submit), ContactInfo (phone/email/address/hours strip), ContactOffices (office cards, CMS + static fallback), ContactMap (iframe or placeholder)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
 - components/ui/ — shared primitives: Button.tsx, EmaarLogo.tsx (size/showText/textSize/className — used in Header, Footer, HeaderMobileOverlay); Breadcrumbs removed — never add back
-- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay (top bar: logo + LangToggle + close; bottom bar: WhatsApp + Request Quote side-by-side; nav list delegated to MobileNavList), MobileNavList (scrollable nav accordion extracted from HeaderMobileOverlay to keep that file under 150 lines), HeaderDropdown, HeaderMegaMenu (full-width fixed mega menu for Products; category links are `{ en, ar, href }` objects; MegaMenuColumn accepts `language` prop and renders `language === 'en' ? en : ar`), Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
+- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay (top bar: logo + LangToggle + close; bottom bar: WhatsApp + Request Quote side-by-side; nav list delegated to MobileNavList), MobileNavList (scrollable nav accordion extracted from HeaderMobileOverlay to keep that file under 150 lines), HeaderDropdown (used for all nav dropdowns including "Our Solutions"), Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades); HeaderMegaMenu.tsx DELETED — "Products" nav item replaced by "Our Solutions" dropdown which uses HeaderDropdown
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
 - lib/data/index.ts — barrel export; now only re-exports nav.ts (NAV, isActive, DropdownItem)
@@ -48,25 +48,29 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - PRODUCT.md — brand personality, audience, voice, anti-references
 
 ## Sitemap
-/ · /about · /products · /products/upvc · /products/aluminum
-/products/upvc/[category] · /products/aluminum/[category]
+/ · /about · /products · /products/upvc · /products/aluminum · /products/glass
+/products/upvc/[category] · /products/aluminum/[category] · /products/glass/[category]
 /products/upvc/[category]/[slug] · /products/aluminum/[category]/[slug]
 /projects · /projects/[id] · /technical · /contact
 Footer only: /about · /why-choose-us · /faq · /careers
 
 Note: Solutions tab deleted — /solutions, /solutions/residential, /solutions/commercial pages removed entirely.
+Note: /products/glass/[category]/[slug] does NOT exist yet — glass has L2 and L3 pages but no L4 product detail route.
 
 ## Product taxonomy
-uPVC categories: windows · doors · doors-and-windows · staircases · stained-glass · sandblast · hebeschibe
-Aluminum categories: windows · doors · doors-and-windows · staircases · skylights · stained-glass · sandblast
+uPVC categories: windows · doors · doors-and-windows · staircases · hebeschibe
+Aluminum categories: windows · doors · doors-and-windows · staircases · skylights · pergola · frameless-doors · security-system · handrails · acp-panels
+Glass categories: double-glazing · stained-glass · sandblast · georgian-bar
+Note: stained-glass and sandblast moved OUT of uPVC and aluminum — now under glass only.
 
 ## Header nav order
-LTR: Home · Products▾ · Projects · Technical · About▾ · Contact
+LTR: Home · Our Solutions▾ · Technical · About▾ · Contact
 RTL: reversed
+Our Solutions dropdown (6 items): uPVC Systems · Aluminium Systems · Glass Systems · [divider] All Products · [divider] Villa Projects · Building Projects
 
 ## Routing rules
 - Product URLs are 4-level: /products/{material}/{category}/{slug}
-- material = upvc | aluminum — never flat /products/{slug}
+- material = upvc | aluminum | glass — never flat /products/{slug}
 - Old 3-level URLs /products/{material}/{slug} redirect 308 to /products/{material} (the material landing page). next.config.ts uses a negative-lookahead regex to exclude valid L3 category slugs from the redirect — without it, category pages like /products/upvc/sandblast would themselves 308.
 - No breadcrumbs — removed, never add back
 - /projects/[id] accepts both numeric IDs (static fallback) and string slugs (Sanity); page handler tries Sanity slug first, then falls back to static data
@@ -138,12 +142,12 @@ Object types (shared): `localizedString`, `localizedText`
 Document types: `product`, `project`, `teamMember`, `faq`, `jobPosting`, `certificate`, `siteSettings`, `techDocument`
 
 #### product schema (5 tabs)
-- **Identity** — title (localizedString, en+ar required), slug (auto from title.en), material (upvc|aluminum, radio), category (subcategory slug, validated against material), mainImage (image, hotspot, **required**), badge
+- **Identity** — title (localizedString, en+ar required), slug (auto from title.en), material (upvc|aluminum|glass, radio), category (subcategory slug, validated against material), mainImage (image, hotspot, **required**), badge
 - **Details** — description (localizedText, en+ar required), features[] ({en,ar} object pairs, min 1), applications[] (plain string array, not localised)
 - **Specifications** — specs object (dimensions required; thermalValue, acousticRating, glassThickness, colorOptions[] optional); specTags[] chips from fixed list (double-glazed, triple-glazed, thermal-insulated, acoustic-insulated, uv-resistant)
 - **Gallery & Docs** — gallery[] images (hotspot on each), technicalSheet (PDF file), cadFile (DWG/DXF file)
 - **Relations** — relatedProducts[] references, seo object (titleEn, titleAr, descriptionEn, descriptionAr)
-- `material` = upvc|aluminum (replaces old `category` field that held the material value); `category` now means the subcategory slug
+- `material` = upvc|aluminum|glass (replaces old `category` field that held the material value); `category` now means the subcategory slug
 - No `inStock` field — do not add it
 
 ### Fetching data in server components
@@ -170,7 +174,7 @@ const data = await sanityFetch<SomeType>(someQuery, { vars })
 - Configure the webhook in the Sanity dashboard → `https://<domain>/api/revalidate?secret=<value>`
 
 ### Static fallback pattern
-`lib/data/products.ts`, `productDetails.ts`, and `projects.ts` are **deleted** — Sanity is sole authority for products and projects. L4 product routes 404 via `UPVC_CATEGORIES`/`ALUMINUM_CATEGORIES` Set check + `if (!product) notFound()`.
+`lib/data/products.ts`, `productDetails.ts`, and `projects.ts` are **deleted** — Sanity is sole authority for products and projects. L4 product routes 404 via `UPVC_CATEGORIES`/`ALUMINUM_CATEGORIES`/`GLASS_CATEGORIES` Set check + `if (!product) notFound()`.
 
 These files still provide static fallbacks when Sanity returns empty:
 - `faq.ts` — 24 static FAQ entries
@@ -183,7 +187,7 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 ### GROQ queries (lib/sanity/queries.ts)
 - `projectsQuery` — all projects ordered by year desc
 - `projectBySlugQuery` — single project by `$slug`
-- `productsByCategoryQuery` — products filtered by `$category` ('upvc' | 'aluminum')
+- `productsByCategoryQuery` — products filtered by `$material` ('upvc' | 'aluminum' | 'glass'); filter: `(categoryUpvc == $material || categoryAluminum == $material || categoryGlass == $material)`
 - `productBySlugQuery` — single product detail by `$slug` + `$category`; includes gallery, features, relatedProducts[]
 - `faqsQuery` — all FAQs ordered by creation date
 - `techDocumentsQuery` — all tech documents ordered by `order` asc; includes resolved file URL and previewImage
@@ -193,7 +197,7 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 
 ## Known gotchas
 - Sanity product schema break: the old schema used `category` to mean material (upvc/aluminum); the new schema uses `material` for that and `category` for the subcategory slug (e.g. "windows"). Any Sanity migration script must account for this field rename.
-- Product category fields: the schema stores category in TWO separate fields — `categoryUpvc` (uPVC products) and `categoryAluminum` (aluminum products) — instead of a single `category` field. This avoids a Sanity v6 runtime error (`p.map is not a function`) caused by passing a function to `options.list` with `layout: 'radio'`. All GROQ queries project these as `"category": coalesce(categoryUpvc, categoryAluminum)` so the rest of the codebase reads a unified `category` string. The `productsByCategoryQuery` filter uses `(categoryUpvc == $category || categoryAluminum == $category)`. Never add a dynamic function to `options.list` in a radio field.
+- Product category fields: the schema stores category in THREE separate fields — `categoryUpvc`, `categoryAluminum`, `categoryGlass` — instead of a single `category` field. This avoids a Sanity v6 runtime error (`p.map is not a function`) caused by passing a function to `options.list` with `layout: 'radio'`. All GROQ queries project these as `"category": coalesce(categoryUpvc, categoryAluminum, categoryGlass)` so the rest of the codebase reads a unified `category` string. The `productsByCategoryQuery` filter uses `(categoryUpvc == $category || categoryAluminum == $category || categoryGlass == $category)`. Never add a dynamic function to `options.list` in a radio field.
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits
   white text. Fix: style={{ color: 'var(--color-brand-dark)' }} on
   light-bg buttons inside dark sections
@@ -203,7 +207,7 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 - revalidateTag in Next.js 16 requires two arguments: revalidateTag('sanity', 'default') — one-arg form is a type error
 - contact API (app/api/contact/route.ts) uses Resend; RESEND_API_KEY must be set in Vercel env vars
 - next.config.ts redirect pattern: use `$`-anchored non-capturing group + `[^/]+` — `:slug((?!(?:cat1|cat2|...)$)[^/]+)` — the `$` prevents prefix collision (e.g. "doors" without it matches the start of "doors-and-windows"); `[^/]+` restricts to single path segments. Always list ALL valid category slugs in both uPVC and aluminum lookaheads; a missing slug causes that category page to 308 to the material landing page
-- L4 product 404 guard: `productDetails.ts` is deleted. L4 routes now use a hardcoded `UPVC_CATEGORIES`/`ALUMINUM_CATEGORIES` Set to reject unknown category segments, then `if (!product) notFound()` after the Sanity fetch — no separate slug registry needed
+- L4 product 404 guard: `productDetails.ts` is deleted. L4 routes use a hardcoded `UPVC_CATEGORIES`/`ALUMINUM_CATEGORIES`/`GLASS_CATEGORIES` Set to reject unknown category segments, then `if (!product) notFound()` after the Sanity fetch — no separate slug registry needed. Note: glass L4 route (`/products/glass/[category]/[slug]`) does not exist yet; only L2 (`/products/glass`) and L3 (`/products/glass/[category]`) pages exist
 - Project `type` field values: `villas | buildings | towers` — old values (residential/commercial/hospitality) are gone. Filter IDs in ProjectsGrid and typeLabels in ProjectDetailPage must match these exact strings. Arabic: فلل / مباني / أبراج
 - Ghost buttons on dark/image overlays: use `hover:bg-brand-red hover:border-brand-red hover:text-white` — NOT `hover:bg-white hover:text-brand-dark`. White fill on a dark overlay is invisible and wastes the hover state; brand-red is the correct CTA fill everywhere
 - Mobile overlay LangToggle pattern: `HeaderMobileOverlay` calls `useLanguage()` directly to get `toggleLanguage` and `pendingLanguage` — these are NOT threaded through its Props interface (which only carries `language`, `isRTL`, `pathname`, `onClose` from `Header.tsx`). Active display state uses `const displayLang = pendingLanguage ?? language` — `pendingLanguage` shows the incoming language during the 150ms LanguageTransition crossfade so the toggle highlights correctly before context commits. This same `pendingLanguage ?? language` pattern is used in the header bar LangToggle.
@@ -215,23 +219,30 @@ git add -A && git commit -m "scope(area): what changed" && git push origin dev
 ## Current State — Sep 3 2026
 
 ### Completed (all committed, on dev)
-- Mega menu: components/layout/HeaderMegaMenu.tsx — two columns, bilingual, RTL, mouse-bridge
+- Mega menu: replaced by "Our Solutions" HeaderDropdown — HeaderMegaMenu.tsx deleted
 - Mobile overlay: rewritten with LangToggle in top bar, WhatsApp+Quote bottom bar
 - MobileNavList: extracted to components/layout/MobileNavList.tsx
 - Horizontal filter bar: ProductFilterBar.tsx + ProductFilterDropdown.tsx — checkbox selection, RTL layout, sort position all fixed
 - ProductCard.tsx: extracted with Material·Category metadata chip
 - Project detail: two-column editorial layout in ProjectDetailPage (feat: f1f426a)
 - Header mobile: burger-only on mobile (lang toggle + WhatsApp hidden from mobile bar)
-- Unified Button component: components/ui/Button.tsx — all inline CTAs replaced site-wide (including MaintenanceSection.tsx)
+- Unified Button component: components/ui/Button.tsx — all inline CTAs replaced site-wide
 - CMS branding: companyNameEn, companyNameAr, logo fields in siteSettings — schema deployed, queries updated, Header renders CMS values with hardcoded EMAAR/إعمار fallbacks
 - EmaarLogo atom: components/ui/EmaarLogo.tsx — size/showText/textSize/className props; wired into Header.tsx (size=52) and Footer.tsx (size=40); HeaderMobileOverlay logo also replaced
-- 3-bar burger: Header.tsx mobile burger upgraded from 2 bars to 3 bars — top/bottom rotate ±45° + translate 7px, middle fades+collapses, Framer Motion motion.span, respects useReducedMotion
+- 3-bar burger: Header.tsx mobile burger — top/bottom rotate ±45° + translate 7px, middle fades+collapses, Framer Motion motion.span, respects useReducedMotion
 - Null array crash fix: ProjectsGrid.tsx and ProjectDetailPage.tsx — (x ?? []) guards for materialsUsed and images fields; SanityProject types updated to string[] | null
-- Build fix (generateStaticParams): added productStaticParamsQuery (lib/sanity/queries.ts) — minimal 3-field GROQ query with unique CDN cache key, bypassing stale allProductsQuery CDN response that returned slug as raw object; SanityProductParam type added (lib/sanity/types.ts); both L4 product routes use type-predicate filter
+- Build fix (generateStaticParams): productStaticParamsQuery — minimal 3-field GROQ query with unique CDN cache key; SanityProductParam type added; both L4 product routes use type-predicate filter
+- Glass material route: /products/glass + /products/glass/[category] — app/products/glass/page.tsx + app/products/glass/[category]/page.tsx; Sanity schema updated with glass material radio option + categoryGlass field; GROQ coalesce updated to include categoryGlass; ProductMaterialPage, ProductCategoryPage, ProductCard, ProductGrid, ProductDiscoverSection all updated (b1726b5)
+- Our Solutions nav: "Products▾" + standalone "Projects" replaced by single "Our Solutions▾" dropdown with 6 items; HeaderMegaMenu removed; lib/data/nav.ts updated (b1726b5)
+- Expanded aluminum categories: added pergola, frameless-doors, security-system, handrails, acp-panels; stained-glass + sandblast moved to glass only (b1726b5)
+- Product detail redesign (TECHNAL-style): ProductDetailPage.tsx (86-line orchestrator) + 5 sub-components — ProductDetailHero, ProductCharacteristics, ProductDiscoverSection, ProductDetailCTA, ProductDetailFAQ; ProductDetailRelated removed; zero TypeScript errors (55f6ac4)
+- GitHub Actions workflow: .github/workflows/deploy-studio.yml — triggers on push to Main/dev when studio/** changes; runs `npx sanity deploy --no-auto-updates` with SANITY_AUTH_TOKEN from secrets (62113cc + 3098617)
 
-### Known gotchas (added this session)
-- Sanity CDN cache key: each unique GROQ query string is a separate CDN cache entry. If a heavy query (allProductsQuery) has a stale cached response, creating a new minimal query with different field projection forces a fresh cache key — the solution used in productStaticParamsQuery.
-- SanityProject.images and SanityProject.materialsUsed are string[] | null — Sanity returns null (not []) when the field is unset. Always access via (x ?? []) before any index or .length call.
+### Known gotchas
+- Sanity CDN cache key: each unique GROQ query string is a separate CDN cache entry — use a dedicated minimal query per generateStaticParams to avoid cache collisions.
+- SanityProject.images and SanityProject.materialsUsed are string[] | null — always access via (x ?? []).
+- Glass L4 route missing: /products/glass/[category]/[slug] does not exist — glass has L2 + L3 pages only. Creating it requires adding app/products/glass/[category]/[slug]/page.tsx (same pattern as uPVC/aluminum L4 routes).
+- next.config.ts has THREE material redirect blocks now (upvc, aluminum, glass) — when adding a new glass category, update the glass lookahead regex.
 
 ### Pending prompts
-- Prompt 5: Product detail two-column layout + image gallery + sticky CTA
+- None
