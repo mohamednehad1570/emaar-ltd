@@ -6,4 +6,3 @@
  */
 
 export { NAV, isActive } from './nav';
-export type { DropdownItem } from './nav';

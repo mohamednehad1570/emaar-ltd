@@ -3,11 +3,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import type { DropdownItem } from '@/lib/data/nav';
+import type { NavLink } from '@/lib/data/nav';
 import { cn } from '@/lib/cn';
 
 interface HeaderDropdownProps {
-  items:    DropdownItem[];
+  items:    NavLink[];
   language: 'en' | 'ar';
   isRTL:    boolean;
   onEnter:  () => void;
@@ -36,9 +36,6 @@ export default function HeaderDropdown({
     >
       {items.map((item, idx) => (
         <React.Fragment key={item.href}>
-          {item.dividerBefore && (
-            <div className="h-px bg-border-light mx-4 my-1" aria-hidden="true" />
-          )}
           <motion.div
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
