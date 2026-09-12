@@ -38,4 +38,3 @@ export default defineConfig({
     types: schemaTypes,
   },
 })
-# updated Thu Sep  3 08:53:11 PM EEST 2026
