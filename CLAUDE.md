@@ -24,11 +24,11 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/contact/ — ContactPageClient (client, assembles page), ContactHero, ContactForm (form state + /api/contact submit), ContactInfo (phone/email/address/hours strip), ContactOffices (office cards, CMS + static fallback), ContactMap (iframe or placeholder)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
 - components/ui/ — shared primitives: Button.tsx, EmaarLogo.tsx (size/showText/textSize/className — used in Header, Footer, HeaderMobileOverlay); Breadcrumbs removed — never add back
-- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay (top bar: logo + LangToggle + close; bottom bar: WhatsApp + Request Quote side-by-side; nav list delegated to MobileNavList), MobileNavList (scrollable nav accordion extracted from HeaderMobileOverlay to keep that file under 150 lines), HeaderDropdown (used for all nav dropdowns including "Our Solutions"), Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades); HeaderMegaMenu.tsx DELETED — "Products" nav item replaced by "Our Solutions" dropdown which uses HeaderDropdown
+- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay (top bar: logo + LangToggle + close; bottom bar: WhatsApp + Request Quote side-by-side; nav list delegated to MobileNavList), MobileNavList (scrollable nav accordion extracted from HeaderMobileOverlay to keep that file under 150 lines), HeaderSolutionsMegaMenu (tabbed full-width mega-menu for "Our Solutions" — Products tab: 3-column MaterialColumn grid; Projects tab: flat links; fixed positioning top:56 full-width; hover-intent via onEnter/onLeave props), HeaderDropdown (compact vertical dropdown — used for About only, NOT "Our Solutions"), Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
-- lib/data/index.ts — barrel export; now only re-exports nav.ts (NAV, isActive, DropdownItem)
-- lib/data/nav.ts — header dropdown items (DropdownItem interface, bilingual en/ar + href)
+- lib/data/index.ts — barrel export; re-exports nav.ts (NAV, isActive only — DropdownItem removed)
+- lib/data/nav.ts — nav data + types: NavLink {en, ar, href}, MaterialColumn {material: NavLink, items: NavLink[]}, NavItem; exports NAV, isActive, SOLUTIONS_PRODUCTS (3 material columns), SOLUTIONS_PROJECTS (villa/building links), SOLUTIONS_HREFS (flat href array for isActive checks)
 - lib/data/uiStrings.ts — re-export barrel for all static UI copy; components import from here, never from individual copy files directly. Re-exports: whyChooseUsData, servicesData, careersData/CareersJob/CareersContent, techData/TechContent/DownloadFile, contactData, aboutData, faqData/faqCategoryIcons/FAQItem
 - lib/data/whyChooseUs.ts · services.ts · careers.ts · tech.ts · contact.ts · about.ts · faq.ts — bilingual { en, ar } static UI copy and CMS fallback data; accessed only through uiStrings.ts — never import these directly
 - lib/cn.ts, lib/motion.ts, lib/iconMap.ts
@@ -66,7 +66,7 @@ Note: stained-glass and sandblast moved OUT of uPVC and aluminum — now under g
 ## Header nav order
 LTR: Home · Our Solutions▾ · Technical · About▾ · Contact
 RTL: reversed
-Our Solutions dropdown (6 items): uPVC Systems · Aluminium Systems · Glass Systems · [divider] All Products · [divider] Villa Projects · Building Projects
+Our Solutions: tabbed mega-menu (HeaderSolutionsMegaMenu, megaMenu:true in NAV) — Products tab: 3-column grid (uPVC Systems, Aluminium Systems, Glass Systems) with sub-category links; Projects tab: Villa Projects + Building Projects links. Desktop uses AnimatePresence + layoutId="tab-indicator". Mobile (MobileNavList) flattens all material columns + projects into a single accordion.
 
 ## Routing rules
 - Product URLs are 4-level: /products/{material}/{category}/{slug}
@@ -212,11 +212,14 @@ All are accessed only through `uiStrings.ts`. UI strings (hero titles, features,
 - Ghost buttons on dark/image overlays: use `hover:bg-brand-red hover:border-brand-red hover:text-white` — NOT `hover:bg-white hover:text-brand-dark`. White fill on a dark overlay is invisible and wastes the hover state; brand-red is the correct CTA fill everywhere
 - Mobile overlay LangToggle pattern: `HeaderMobileOverlay` calls `useLanguage()` directly to get `toggleLanguage` and `pendingLanguage` — these are NOT threaded through its Props interface (which only carries `language`, `isRTL`, `pathname`, `onClose` from `Header.tsx`). Active display state uses `const displayLang = pendingLanguage ?? language` — `pendingLanguage` shows the incoming language during the 150ms LanguageTransition crossfade so the toggle highlights correctly before context commits. This same `pendingLanguage ?? language` pattern is used in the header bar LangToggle.
 - MobileNavList `useReducedMotion()`: this component calls `useReducedMotion()` directly even though `MotionProvider` handles it globally, because the accordion expand/collapse is user-triggered (not scroll/mount) and needs its own reduced-motion gate independent of `MotionConfig`. Same reasoning as `LanguageTransition.tsx`.
+- MaterialCard (ProductsSection) `useReducedMotion()`: same exception — perspective tilt and chip stagger are user-triggered (hover), so the component gates them with its own `useReducedMotion()` call rather than relying on MotionConfig.
+- `DropdownItem` type is deleted — use `NavLink` from `@/lib/data/nav` everywhere. `HeaderDropdown` props already updated. Do not re-introduce DropdownItem.
+- `SOLUTIONS_HREFS` is the flat href array exported from nav.ts for `isActive` checks on the "Our Solutions" nav item — derive it from there, never re-derive inline at render time.
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev
 
-## Current State — Sep 3 2026
+## Current State — Sep 13 2026
 
 ### Completed (all committed, on dev)
 - Mega menu: replaced by "Our Solutions" HeaderDropdown — HeaderMegaMenu.tsx deleted
@@ -237,6 +240,8 @@ git add -A && git commit -m "scope(area): what changed" && git push origin dev
 - Expanded aluminum categories: added pergola, frameless-doors, security-system, handrails, acp-panels; stained-glass + sandblast moved to glass only (b1726b5)
 - Product detail redesign (TECHNAL-style): ProductDetailPage.tsx (86-line orchestrator) + 5 sub-components — ProductDetailHero, ProductCharacteristics, ProductDiscoverSection, ProductDetailCTA, ProductDetailFAQ; ProductDetailRelated removed; zero TypeScript errors (55f6ac4)
 - GitHub Actions workflow: .github/workflows/deploy-studio.yml — triggers on push to Main/dev when studio/** changes; runs `npx sanity deploy --no-auto-updates` with SANITY_AUTH_TOKEN from secrets (62113cc + 3098617)
+- Our Solutions tabbed mega-menu: HeaderSolutionsMegaMenu.tsx (new) — Products tab 3-column grid + Projects tab; replaces flat 6-item dropdown. HeaderDesktopNav updated (megaMenu:true dispatches mega-menu, dropdown array dispatches HeaderDropdown). MobileNavList rewritten to flatten all material columns + project links into single accordion. nav.ts rewritten: NavLink replaces DropdownItem, new exports SOLUTIONS_PRODUCTS/SOLUTIONS_PROJECTS/SOLUTIONS_HREFS. DropdownItem type deleted. (Sep 13 2026)
+- ProductsSection Material Focus Cards: replaced bento grid with 3-panel flex-grow expand/compress layout — hovered card grows (flexGrow 2.5), siblings compress (0.6) and dim (opacity 0.45); perspective tilt via useMotionValue; staggered sub-category chips on hover; mobile stacks flex-col. (Sep 13 2026)
 
 ### Known gotchas
 - Sanity CDN cache key: each unique GROQ query string is a separate CDN cache entry — use a dedicated minimal query per generateStaticParams to avoid cache collisions.

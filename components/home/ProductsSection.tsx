@@ -3,253 +3,236 @@
 /**
  * components/home/ProductsSection.tsx
  *
- * Material Focus Cards — three equal panels that respond to hover with
- * an expand/shrink/dim effect. The hovered card grows (flex-grow 2.5),
- * siblings compress (flex-grow 0.6) and dim (opacity 0.45, scale 0.98).
- * Sub-category chips stagger up inside the expanded card.
+ * Infinite marquee of sub-product cards — all materials mixed.
+ * Direction: EN → left (cards move left), AR → right (cards move right).
  *
- * On click → navigate to /products/[material].
+ * Tagging rule:
+ *   Shared sub-products (Doors & Windows, Staircases) appear twice —
+ *   once per material — each tagged with their material label.
+ *   Unique sub-products (Pergola, Skylights, etc.) appear once, untagged.
  *
- * Animations (all Framer Motion):
- *   • Flex-grow: motion.div layout prop + spring {stiffness:200, damping:28}
- *   • Sibling dim: opacity + scale animate prop
- *   • Image zoom: scale 1.0→1.07 on parent hover, duration 0.6s
- *   • Perspective tilt: rotateY ±5° via useMotionValue + mouse position
- *   • Chip entrance: staggerChildren 0.05s, y 10→0 + opacity 0→1
- *   • Section entrance: fadeUp scroll-triggered
+ * Hover behaviour:
+ *   • Marquee pauses (animation-play-state: paused via CSS variable)
+ *   • Hovered card scales up (1.0 → 1.04) + warm shadow appears
+ *   • Other cards dim slightly (opacity 1.0 → 0.65)
  *
- * Shadows: rgba(45,41,38,x) — never rgba(0,0,0,x).
- * No blue anywhere — all overlays use rgba(26,26,26,x) warm dark.
+ * Click: navigates to the sub-product category page.
+ *
+ * Animation engine:
+ *   CSS @keyframes marquee (defined in globals.css via Tailwind @keyframes)
+ *   controls the scroll — Framer Motion handles per-card hover micro-effects.
+ *   The track is duplicated (renderered twice) so the loop is seamless.
+ *
+ * Shadows: rgba(45,41,38,x) only. No blue. No rgba(0,0,0,x).
  */
 
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  motion,
-  useReducedMotion,
-  useMotionValue,
-  useTransform,
-  AnimatePresence,
-} from 'framer-motion'
-import { ArrowRight } from '@phosphor-icons/react'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { fadeUp, viewportOnce } from '@/lib/motion'
-import { SOLUTIONS_PRODUCTS } from '@/lib/data/nav'
 
-// ─── Static image map ─────────────────────────────────────────────────────────
-// Placeholder Unsplash images — replaced with real photography pre-launch.
-// Each image chosen to visually represent the material system at a glance.
-const MATERIAL_IMAGES: Record<string, string> = {
-  '/products/upvc':
-    'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=1200&h=1600&fit=crop',
-  '/products/aluminum':
-    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&h=1600&fit=crop',
-  '/products/glass':
-    'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&h=1600&fit=crop',
+// ─── Card data ────────────────────────────────────────────────────────────────
+
+interface ProductCard {
+  id:       string          // Unique key for React — material+slug combo
+  label:    { en: string; ar: string }
+  href:     string          // Sub-product category route
+  image:    string          // Placeholder — replaced pre-launch
+  /** Only set for sub-products shared across materials */
+  tag?:     { en: string; ar: string }
 }
 
-// ─── Animation constants ──────────────────────────────────────────────────────
+// Shared sub-products appear twice (once per material) with a material tag.
+// Unique sub-products appear once with no tag.
+// Order is intentionally mixed — not grouped by material.
+const PRODUCT_CARDS: ProductCard[] = [
+  // ── Unique ───────────────────────────────────────────────────────────────
+  {
+    id: 'pergola',
+    label: { en: 'Pergola',          ar: 'برجولة'          },
+    href:  '/products/aluminum/pergola',
+    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&h=800&fit=crop',
+  },
+  {
+    id: 'stained-glass',
+    label: { en: 'Stained Glass',    ar: 'زجاج ملون'        },
+    href:  '/products/glass/stained-glass',
+    image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=600&h=800&fit=crop',
+  },
+  // ── Shared — uPVC ────────────────────────────────────────────────────────
+  {
+    id: 'upvc-doors-windows',
+    label: { en: 'Doors & Windows',  ar: 'أبواب ونوافذ'    },
+    href:  '/products/upvc/doors-and-windows',
+    image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=600&h=800&fit=crop',
+    tag:   { en: 'uPVC',             ar: 'يوبيفيسي'         },
+  },
+  // ── Unique ───────────────────────────────────────────────────────────────
+  {
+    id: 'skylights',
+    label: { en: 'Skylights',        ar: 'فتحات سقفية'     },
+    href:  '/products/aluminum/skylights',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=800&fit=crop',
+  },
+  // ── Shared — Aluminium ───────────────────────────────────────────────────
+  {
+    id: 'alu-staircases',
+    label: { en: 'Staircases',       ar: 'درابزين'          },
+    href:  '/products/aluminum/staircases',
+    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=600&h=800&fit=crop',
+    tag:   { en: 'Aluminium',        ar: 'ألومنيوم'         },
+  },
+  // ── Unique ───────────────────────────────────────────────────────────────
+  {
+    id: 'hebeschibe',
+    label: { en: 'Hebeschibe',       ar: 'نظام رفع وإزاحة' },
+    href:  '/products/upvc/hebeschibe',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=800&fit=crop',
+  },
+  {
+    id: 'frameless-doors',
+    label: { en: 'Frameless Doors',  ar: 'أبواب بلا إطار'  },
+    href:  '/products/aluminum/frameless-doors',
+    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=800&fit=crop',
+  },
+  // ── Shared — Aluminium ───────────────────────────────────────────────────
+  {
+    id: 'alu-doors-windows',
+    label: { en: 'Doors & Windows',  ar: 'أبواب ونوافذ'    },
+    href:  '/products/aluminum/doors-and-windows',
+    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&h=800&fit=crop',
+    tag:   { en: 'Aluminium',        ar: 'ألومنيوم'         },
+  },
+  // ── Unique ───────────────────────────────────────────────────────────────
+  {
+    id: 'security-systems',
+    label: { en: 'Security Systems', ar: 'أنظمة الأمان'    },
+    href:  '/products/aluminum/security-system',
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=800&fit=crop',
+  },
+  {
+    id: 'sandblast',
+    label: { en: 'Sandblast',        ar: 'زجاج مسند'        },
+    href:  '/products/glass/sandblast',
+    image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&h=800&fit=crop',
+  },
+  // ── Shared — uPVC ────────────────────────────────────────────────────────
+  {
+    id: 'upvc-staircases',
+    label: { en: 'Staircases',       ar: 'درابزين'          },
+    href:  '/products/upvc/staircases',
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=800&fit=crop',
+    tag:   { en: 'uPVC',             ar: 'يوبيفيسي'         },
+  },
+  // ── Unique ───────────────────────────────────────────────────────────────
+  {
+    id: 'handrails',
+    label: { en: 'Handrails',        ar: 'درابزين يدوي'     },
+    href:  '/products/aluminum/handrails',
+    image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=600&h=800&fit=crop',
+  },
+  {
+    id: 'acp-panels',
+    label: { en: 'ACP Panels',       ar: 'ألواح ACP'        },
+    href:  '/products/aluminum/acp-panels',
+    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&h=800&fit=crop',
+  },
+]
 
-// Spring used for flex-grow expand/compress — feels physical, not timed
-const LAYOUT_SPRING = { type: 'spring' as const, stiffness: 200, damping: 28 }
+// ─── MarqueeCard ──────────────────────────────────────────────────────────────
 
-// Ease curve for chip stagger and section entrance
-const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
-
-// Chip container — stagger children at 0.05s intervals
-const chipContainer = {
-  hidden:  {},
-  visible: { transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
+interface MarqueeCardProps {
+  card:        ProductCard
+  language:    'en' | 'ar'
+  isAnyHovered: boolean   // True when any card in the track is hovered
+  isHovered:   boolean    // True when THIS card is hovered
+  onHover:     () => void
+  onLeave:     () => void
+  shouldReduce: boolean
 }
 
-// Individual chip — slides up 10px and fades in
-const chipItem = {
-  hidden:  { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.25, ease: EASE } },
-}
-
-// ─── MaterialCard ─────────────────────────────────────────────────────────────
-
-interface CardProps {
-  /** The material column data from SOLUTIONS_PRODUCTS */
-  column:    typeof SOLUTIONS_PRODUCTS[0]
-  /** Whether THIS card is the one being hovered */
-  isHovered: boolean
-  /** Whether ANY card is being hovered (used to dim non-hovered siblings) */
-  anyHovered: boolean
-  language:  'en' | 'ar'
-  isRTL:     boolean
-  onHover:   () => void    // Mouse enters this card
-  onLeave:   () => void    // Mouse leaves this card
-  shouldReduce: boolean    // useReducedMotion result
-}
-
-function MaterialCard({
-  column, isHovered, anyHovered, language, isRTL, onHover, onLeave, shouldReduce,
-}: CardProps) {
-  // Mouse position for perspective tilt — tracked relative to the card element
-  const cardRef  = useRef<HTMLDivElement>(null)
-  const mouseX   = useMotionValue(0)   // -0.5 to +0.5 relative to card width
-  const mouseY   = useMotionValue(0)   // -0.5 to +0.5 relative to card height
-
-  // Map mouse position to rotation: ±5° on Y axis, ±3° on X axis
-  // useTransform maps the 0→1 input range to the degree output range
-  const rotateY  = useTransform(mouseX, [-0.5, 0.5], [5, -5])
-  const rotateX  = useTransform(mouseY, [-0.5, 0.5], [-3, 3])
-
-  // Track mouse position within the card for the tilt effect
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    if (shouldReduce || !cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    // Normalise to -0.5→0.5 range centered on card midpoint
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5)
-    mouseY.set((e.clientY - rect.top)  / rect.height - 0.5)
-  }
-
-  // Reset tilt when mouse leaves
-  function handleMouseLeave() {
-    mouseX.set(0)
-    mouseY.set(0)
-    onLeave()
-  }
-
-  const label    = language === 'en' ? column.material.en : column.material.ar
-  const imgSrc   = MATERIAL_IMAGES[column.material.href] ?? MATERIAL_IMAGES['/products/upvc']
-
+function MarqueeCard({
+  card, language, isAnyHovered, isHovered, onHover, onLeave, shouldReduce,
+}: MarqueeCardProps) {
   return (
-    // layout prop: Framer animates flex-grow changes between renders using LAYOUT_SPRING
+    // motion.div wraps the Link so hover animations don't interfere with navigation
     <motion.div
-      ref={cardRef}
-      layout
-      // Expand hovered card, compress siblings; all equal at rest (flex-grow 1)
-      animate={shouldReduce ? undefined : {
-        // Hovered: wide. Sibling while something is hovered: narrow. Rest: equal.
-        flexGrow:  isHovered ? 2.5 : anyHovered ? 0.6 : 1,
-        // Siblings dim when another card is active
-        opacity:   !isHovered && anyHovered ? 0.45 : 1,
-        // Siblings scale very slightly inward — depth cue
-        scale:     !isHovered && anyHovered ? 0.98 : 1,
-      }}
-      transition={LAYOUT_SPRING}
       onMouseEnter={onHover}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      // perspective enables the 3D tilt — applied on the wrapper not the Link
-      // so the tilt doesn't interfere with Next.js Link's click handling
-      style={shouldReduce ? undefined : {
-        perspective: 800,
-        rotateY:     isHovered ? rotateY : 0,
-        rotateX:     isHovered ? rotateX : 0,
+      onMouseLeave={onLeave}
+      animate={shouldReduce ? undefined : {
+        // Hovered card: lift + full opacity
+        scale:   isHovered ? 1.04 : 1,
+        // Sibling cards dim when another is focused
+        opacity: isAnyHovered && !isHovered ? 0.65 : 1,
       }}
-      // min-w-0 prevents flex children from overflowing their container
-      className="relative min-w-0 min-h-[480px] md:min-h-[560px] overflow-hidden cursor-pointer"
+      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+      // w-56 = 224px card width — fixed so marquee speed is predictable
+      // shrink-0 prevents flex from compressing cards
+      className="relative shrink-0 w-56 h-72 overflow-hidden cursor-pointer"
+      style={{
+        borderRadius: 8,
+        // Warm shadow appears on hover — rgba(45,41,38) never rgba(0,0,0)
+        boxShadow: isHovered
+          ? '0 12px 32px rgba(45,41,38,0.18), 0 4px 8px rgba(45,41,38,0.10)'
+          : '0 2px 8px rgba(45,41,38,0.08)',
+        transition: 'box-shadow 0.2s ease',
+      }}
     >
       <Link
-        href={column.material.href}
+        href={card.href}
         className="block w-full h-full"
-        aria-label={label}
-        // Stretch to fill the motion.div at all flex-grow sizes
+        // Prevent the marquee animation from making the link inaccessible
+        tabIndex={0}
+        aria-label={language === 'en' ? card.label.en : card.label.ar}
         style={{ position: 'absolute', inset: 0 }}
       >
 
         {/* ── Full-bleed background image ─────────────────────────────── */}
         <motion.div
           className="absolute inset-0"
-          animate={shouldReduce ? undefined : {
-            // Image zooms in when its card is hovered
-            scale: isHovered ? 1.07 : 1,
-          }}
-          transition={{ duration: 0.6, ease: EASE }}
+          animate={shouldReduce ? undefined : { scale: isHovered ? 1.06 : 1 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
           <Image
-            src={imgSrc}
-            alt={label}
+            src={card.image}
+            alt={language === 'en' ? card.label.en : card.label.ar}
             fill
-            // sizes: expanded card ≈ 50vw, compressed ≈ 15vw, equal ≈ 33vw
-            sizes="(min-width: 768px) 33vw, 100vw"
+            // All cards same fixed width — 224px + some margin
+            sizes="240px"
             className="object-cover"
-            priority={column.material.href === '/products/upvc'} // LCP candidate — first card
           />
         </motion.div>
 
         {/* ── Gradient overlay — warm dark, never cold black ──────────── */}
-        {/* Two-stop gradient: heavy at bottom for text legibility, fades out at top */}
         <div
           className="absolute inset-0"
           style={{
-            background: isHovered
-              // Hovered: stronger gradient — more text visible
-              ? 'linear-gradient(to top, rgba(26,26,26,0.92) 0%, rgba(26,26,26,0.4) 50%, rgba(26,26,26,0.05) 100%)'
-              // Rest: lighter gradient — image breathes
-              : 'linear-gradient(to top, rgba(26,26,26,0.75) 0%, rgba(26,26,26,0.2) 60%, rgba(26,26,26,0) 100%)',
-            transition: 'background 0.4s ease',
+            background:
+              'linear-gradient(to top, rgba(26,26,26,0.88) 0%, rgba(26,26,26,0.3) 55%, rgba(26,26,26,0) 100%)',
           }}
         />
 
-        {/* ── Card content — pinned to bottom ─────────────────────────── */}
-        <div
-          className="absolute bottom-0 left-0 right-0 p-6 md:p-8"
-          style={{ textAlign: isRTL ? 'right' : 'left' }}
-        >
+        {/* ── Card content ─────────────────────────────────────────────── */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
 
-          {/* Material label — always visible */}
-          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/60 mb-2">
-            {language === 'en' ? 'Material System' : 'نظام المواد'}
-          </p>
+          {/* Material tag — only shown for shared sub-products */}
+          {card.tag && (
+            <span
+              className="inline-block mb-2 px-2 py-0.5 text-[9px] font-bold
+                         uppercase tracking-[0.16em] text-white/80
+                         border border-white/30 bg-white/10 backdrop-blur-sm"
+              style={{ borderRadius: 4 }}
+            >
+              {language === 'en' ? card.tag.en : card.tag.ar}
+            </span>
+          )}
 
-          {/* Material name — H3 scale, bold */}
-          <h3 className="text-2xl md:text-3xl font-bold font-cairo text-white leading-tight mb-3">
-            {label}
+          {/* Sub-product name */}
+          <h3 className="text-sm font-bold font-cairo text-white leading-snug">
+            {language === 'en' ? card.label.en : card.label.ar}
           </h3>
-
-          {/* ── Sub-category chips — appear on hover ─────────────────── */}
-          <AnimatePresence>
-            {isHovered && !shouldReduce && (
-              <motion.div
-                key="chips"
-                variants={chipContainer}
-                initial="hidden"
-                animate="visible"
-                exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                // flex-wrap so chips wrap on narrow expanded cards
-                className="flex flex-wrap gap-2 mb-5"
-              >
-                {column.items.map((item) => (
-                  <motion.span
-                    key={item.href}
-                    variants={chipItem}
-                    className="inline-block px-3 py-1 text-xs font-semibold rounded-sm
-                               bg-white/15 text-white border border-white/25
-                               backdrop-blur-sm"
-                    // 4px radius per brand system — buttons/tags use 4px
-                    style={{ borderRadius: 4 }}
-                  >
-                    {language === 'en' ? item.en : item.ar}
-                  </motion.span>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* ── Explore CTA — appears on hover ──────────────────────── */}
-          <motion.div
-            animate={shouldReduce ? undefined : {
-              opacity: isHovered ? 1 : 0,
-              y:       isHovered ? 0 : 8,
-            }}
-            transition={{ duration: 0.25, ease: EASE }}
-            className={`inline-flex items-center gap-2 text-sm font-bold text-white
-                        border-b border-white/50 pb-0.5 ${isRTL ? 'flex-row-reverse' : ''}`}
-            aria-hidden={!isHovered} // Hidden from screen readers when not visible
-          >
-            <span>{language === 'en' ? 'Explore Products' : 'استعرض المنتجات'}</span>
-            <ArrowRight
-              size={14}
-              weight="bold"
-              className={isRTL ? 'rotate-180' : ''}
-            />
-          </motion.div>
 
         </div>
 
@@ -264,26 +247,26 @@ export default function ProductsSection() {
   const { language, isRTL } = useLanguage()
   const shouldReduce        = useReducedMotion()
 
-  // Track which material is hovered — null when no card is active
-  const [hoveredHref, setHoveredHref] = useState<string | null>(null)
+  // Track which card id is hovered — null when none
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
+
+  // EN: marquee scrolls left (translateX 0 → -50%)
+  // AR: marquee scrolls right (translateX -50% → 0), reversing direction
+  // We always render two copies of the track — at -50% the second copy
+  // is in exactly the same visual position as the first at 0%, creating
+  // a seamless loop regardless of direction.
+  const marqueeFrom = isRTL ? '-50%' : '0%'
+  const marqueeTo   = isRTL ? '0%'   : '-50%'
 
   const copy = {
-    en: {
-      eyebrow:  'Product Range',
-      title:    'Our Products',
-      subtitle: 'uPVC, aluminium, and glass systems for every project scale',
-    },
-    ar: {
-      eyebrow:  'نطاق المنتجات',
-      title:    'منتجاتنا',
-      subtitle: 'أنظمة uPVC والألومنيوم والزجاج لكل مقياس مشروع',
-    },
+    en: { eyebrow: 'Product Range', title: 'Our Products',  subtitle: 'Every system, every scale' },
+    ar: { eyebrow: 'نطاق المنتجات', title: 'منتجاتنا',      subtitle: 'كل نظام، كل مقياس'         },
   }
   const t = copy[language]
 
   return (
     <section
-      className="py-24 bg-off-white"
+      className="py-24 bg-off-white overflow-hidden"
       dir={isRTL ? 'rtl' : 'ltr'}
       aria-labelledby="products-heading"
     >
@@ -297,62 +280,86 @@ export default function ProductsSection() {
           whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
-          {/* Eyebrow label — small red uppercase */}
           <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-red mb-3">
             {t.eyebrow}
           </p>
-
           <h2
             id="products-heading"
-            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-3 text-balance"
+            className="text-4xl md:text-5xl font-bold font-cairo text-brand-dark mb-3"
           >
             {t.title}
           </h2>
-
-          <p className="text-lg text-text-body max-w-lg">
-            {t.subtitle}
-          </p>
+          <p className="text-lg text-text-body max-w-lg">{t.subtitle}</p>
         </motion.div>
 
-        {/* ── Material focus cards ─────────────────────────────────────────── */}
+      </div>
+
+      {/*
+        Marquee track wrapper — full viewport width, overflows container-custom.
+        overflow-hidden on section clips the track horizontally.
+        No padding here — cards bleed to viewport edges for immersive feel.
+      */}
+      <div
+        // Pause the CSS animation when any card is hovered
+        // --play-state is read by the @keyframes rule in globals.css
+        style={{
+          '--marquee-play': hoveredId ? 'paused' : 'running',
+        } as React.CSSProperties}
+      >
         {/*
-          flex layout drives the expand/compress behaviour.
-          gap-3 gives visible breathing room between cards.
-          min-h ensures cards have presence even before hover.
-          overflow-hidden clips the image zoom to card bounds.
+          Inner track: flex row, gap between cards.
+          Rendered twice (two identical sets) so when the first set scrolls
+          fully off-screen, the second set is already in position — seamless loop.
+          total width = 2 × (13 cards × 224px + 13 gaps × 12px) ≈ 6188px
+          The @keyframes animates translateX over this distance.
         */}
         <motion.div
-          className="flex flex-col md:flex-row gap-3 overflow-hidden"
-          // Rounded corners on the container clip all three cards together
-          style={{ borderRadius: 8 }}
-          variants={fadeUp}
-          initial={shouldReduce ? {} : 'hidden'}
-          whileInView={shouldReduce ? undefined : 'visible'}
-          viewport={shouldReduce ? undefined : viewportOnce}
+          className="flex gap-3 w-max"
+          style={{
+            // CSS custom animation — defined via inline style so we can
+            // control play state and direction dynamically
+            animation: shouldReduce
+              ? 'none'
+              : `marquee-scroll 35s linear infinite`,
+            animationPlayState: 'var(--marquee-play, running)',
+            // translateX drives the direction — from/to values set per language
+            '--marquee-from': marqueeFrom,
+            '--marquee-to':   marqueeTo,
+          } as React.CSSProperties}
         >
-          {SOLUTIONS_PRODUCTS.map((column) => (
-            <MaterialCard
-              key={column.material.href}
-              column={column}
-              isHovered={hoveredHref === column.material.href}
-              anyHovered={hoveredHref !== null}
+          {/* First copy of the track */}
+          {PRODUCT_CARDS.map((card) => (
+            <MarqueeCard
+              key={`a-${card.id}`}
+              card={card}
               language={language}
-              isRTL={isRTL}
-              onHover={() => setHoveredHref(column.material.href)}
-              onLeave={() => setHoveredHref(null)}
+              isAnyHovered={hoveredId !== null}
+              isHovered={hoveredId === card.id}
+              onHover={() => setHoveredId(card.id)}
+              onLeave={() => setHoveredId(null)}
+              shouldReduce={shouldReduce ?? false}
+            />
+          ))}
+
+          {/* Second copy — identical, immediately after first.
+              When first copy scrolls fully off-screen, this one takes its place. */}
+          {PRODUCT_CARDS.map((card) => (
+            <MarqueeCard
+              // b- prefix distinguishes second copy keys from first
+              key={`b-${card.id}`}
+              card={card}
+              language={language}
+              isAnyHovered={hoveredId !== null}
+              // Second copy uses same id — both copies pause/highlight together
+              isHovered={hoveredId === card.id}
+              onHover={() => setHoveredId(card.id)}
+              onLeave={() => setHoveredId(null)}
               shouldReduce={shouldReduce ?? false}
             />
           ))}
         </motion.div>
-
-        {/* ── Mobile fallback note ─────────────────────────────────────────── */}
-        {/*
-          The expand/compress effect requires horizontal space — on mobile,
-          cards stack vertically (flex-col) and hover is replaced by tap-to-navigate.
-          This is handled by Tailwind's responsive prefixes below.
-        */}
-
       </div>
+
     </section>
   )
 }

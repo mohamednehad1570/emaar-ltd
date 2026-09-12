@@ -387,6 +387,18 @@ body {
 /* Pause on hover via CSS — no JS needed */
 .ticker-pause:hover .animate-marquee { animation-play-state: paused; }
 
+/* ── Marquee scroll keyframes ───────────────────────────────────────────────
+   Used by ProductsSection and ProjectsSection infinite marquees.
+   Direction is controlled by CSS custom properties set inline on the track:
+     --marquee-from: starting translateX (0% for LTR, -50% for RTL)
+     --marquee-to:   ending translateX  (-50% for LTR, 0% for RTL)
+   Play state is controlled by --marquee-play: running | paused (set on hover).
+*/
+@keyframes marquee-scroll {
+  from { transform: translateX(var(--marquee-from, 0%)); }
+  to   { transform: translateX(var(--marquee-to, -50%)); }
+}
+
 /* ── Container Utility ── */
 .container-custom {
   max-width: 1280px;
