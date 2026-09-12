@@ -387,22 +387,6 @@ body {
 /* Pause on hover via CSS — no JS needed */
 .ticker-pause:hover .animate-marquee { animation-play-state: paused; }
 
-/* ── Marquee: left direction (EN default — cards move left) ─────────────────
-   Used by ProductsSection in LTR, ProjectsSection in RTL.
-   Translates from 0% to -50% — second copy seamlessly replaces first.        */
-@keyframes marquee-left {
-  from { transform: translateX(0%); }
-  to   { transform: translateX(-50%); }
-}
-
-/* ── Marquee: right direction (AR default — cards move right) ───────────────
-   Used by ProductsSection in RTL, ProjectsSection in LTR.
-   Translates from -50% to 0% — reverse of marquee-left.                      */
-@keyframes marquee-right {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0%); }
-}
-
 /* ── Container Utility ── */
 .container-custom {
   max-width: 1280px;
