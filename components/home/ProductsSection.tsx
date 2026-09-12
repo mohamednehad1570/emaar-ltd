@@ -255,9 +255,6 @@ export default function ProductsSection() {
   // We always render two copies of the track — at -50% the second copy
   // is in exactly the same visual position as the first at 0%, creating
   // a seamless loop regardless of direction.
-  const marqueeFrom = isRTL ? '-50%' : '0%'
-  const marqueeTo   = isRTL ? '0%'   : '-50%'
-
   const copy = {
     en: { eyebrow: 'Product Range', title: 'Our Products',  subtitle: 'Every system, every scale' },
     ar: { eyebrow: 'نطاق المنتجات', title: 'منتجاتنا',      subtitle: 'كل نظام، كل مقياس'         },
@@ -316,15 +313,10 @@ export default function ProductsSection() {
         <motion.div
           className="flex gap-3 w-max"
           style={{
-            // CSS custom animation — defined via inline style so we can
-            // control play state and direction dynamically
             animation: shouldReduce
               ? 'none'
-              : `marquee-scroll 35s linear infinite`,
+              : `${isRTL ? 'marquee-right' : 'marquee-left'} 35s linear infinite`,
             animationPlayState: 'var(--marquee-play, running)',
-            // translateX drives the direction — from/to values set per language
-            '--marquee-from': marqueeFrom,
-            '--marquee-to':   marqueeTo,
           } as React.CSSProperties}
         >
           {/* First copy of the track */}

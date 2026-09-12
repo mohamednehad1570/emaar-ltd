@@ -251,9 +251,6 @@ export default function ProjectsSection() {
   // OPPOSITE direction to ProductsSection:
   // EN → moves right (from -50% to 0%) — ProductsSection moves left (0% to -50%)
   // AR → moves left  (from 0% to -50%) — ProductsSection moves right (-50% to 0%)
-  const marqueeFrom = isRTL ? '0%'   : '-50%'
-  const marqueeTo   = isRTL ? '-50%' : '0%'
-
   const copy = {
     en: { eyebrow: 'Our Portfolio', title: 'Featured Projects', subtitle: 'Villas and buildings across the Emirates' },
     ar: { eyebrow: 'محفظتنا',       title: 'المشاريع المميزة',  subtitle: 'فلل ومبانٍ عبر الإمارات'                },
@@ -301,11 +298,8 @@ export default function ProjectsSection() {
           style={{
             animation: shouldReduce
               ? 'none'
-              : `marquee-scroll 40s linear infinite`,
+              : `${isRTL ? 'marquee-left' : 'marquee-right'} 40s linear infinite`,
             animationPlayState: 'var(--marquee-play, running)',
-            // Projects move opposite direction — values swapped vs ProductsSection
-            '--marquee-from': marqueeFrom,
-            '--marquee-to':   marqueeTo,
           } as React.CSSProperties}
         >
           {/* First copy */}
