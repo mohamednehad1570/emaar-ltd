@@ -9,7 +9,11 @@
  *   Hero → Stats + Certs → Products → Projects → Why → Testimonials → CTA
  */
 
+import type { Metadata } from 'next';
 import { getSiteSettings } from '@/lib/sanity/fetch';
+import { generatePageMetadata } from '@/lib/seo/metadata';
+import { organizationSchema } from '@/lib/seo/jsonld';
+import JsonLd from '@/components/seo/JsonLd';
 import HeroSection           from '@/components/home/HeroSection';
 import StatsSection          from '@/components/home/StatsSection';
 import CertificationsSection from '@/components/home/CertificationsSection';
@@ -22,10 +26,20 @@ import SectionDivider        from '@/components/home/SectionDivider';
 
 export const revalidate = 3600;
 
+export function generateMetadata(): Metadata {
+  return generatePageMetadata({
+    title:       'Premium uPVC & Aluminum Windows and Doors',
+    description: 'Emaar International manufactures premium uPVC and aluminum windows, doors, facades, and glass systems in the UAE. Trusted by contractors, architects, and developers across the Gulf.',
+    path:        '/',
+  });
+}
+
 export default async function HomePage() {
   const settings = await getSiteSettings();
 
   return (
+    <>
+    <JsonLd data={organizationSchema()} />
     <div className="min-h-screen">
 
       <HeroSection
@@ -54,5 +68,6 @@ export default async function HomePage() {
       <CTASection />
 
     </div>
+    </>
   );
 }

@@ -16,9 +16,18 @@ const cairo = Cairo({
 });
 
 export const metadata: Metadata = {
-  title: "EMAAR International LLC - Premium uPVC & Aluminum Solutions",
-  description: "Leading manufacturer of premium uPVC windows, doors, and aluminum facades in the UAE. ISO certified with 20+ years of excellence.",
-  keywords: "uPVC windows, aluminum doors, UAE, Dubai, premium windows, curtain walls",
+  metadataBase: new URL('https://emaarupvc.ae'),
+  title: {
+    default:  'Emaar International — Premium uPVC & Aluminium Windows UAE',
+    template: '%s — Emaar International',
+  },
+  description:
+    'UAE manufacturer of premium uPVC and aluminum windows, doors, facades, and glass systems.',
+  openGraph: {
+    siteName: 'Emaar International',
+    locale:   'en_US',
+    type:     'website',
+  },
 };
 
 export default async function RootLayout({

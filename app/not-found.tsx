@@ -17,10 +17,14 @@
 
 import Link from 'next/link';
 import { House, ArrowRight } from '@phosphor-icons/react/dist/ssr';
+import { generatePageMetadata } from '@/lib/seo/metadata';
 
-export const metadata = {
-  title: '404 — Page Not Found | EMAAR International',
-};
+export const metadata = generatePageMetadata({
+  title:   'Page Not Found',
+  description: 'The page you are looking for does not exist or has been moved.',
+  path:    '/404',
+  noIndex: true,
+});
 
 export default function NotFound() {
   return (

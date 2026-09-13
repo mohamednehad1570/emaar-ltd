@@ -1,14 +1,30 @@
+import type { Metadata } from 'next'
 import { getProductsByMaterial } from '@/lib/sanity/fetch'
 import MaterialPageClient from '@/components/products/MaterialPageClient'
+import { generatePageMetadata } from '@/lib/seo/metadata'
+import { breadcrumbSchema } from '@/lib/seo/jsonld'
+import JsonLd from '@/components/seo/JsonLd'
 
 export const revalidate = 3600
 
-export const metadata = {
-  title:       'Glass Systems — Emaar International',
-  description: 'Bespoke architectural glass: stained glass, sandblast glass, and double glazing crafted in our SAIF Zone studio for UAE residences and hospitality.',
+export function generateMetadata(): Metadata {
+  return generatePageMetadata({
+    title:       'Specialty Glass Systems',
+    description: 'From tempered and laminated glass to stained and sandblasted decorative glass, Emaar International supplies premium glass systems for architectural projects across the UAE.',
+    path:        '/products/glass',
+  })
 }
 
 export default async function Page() {
   const products = await getProductsByMaterial('glass')
-  return <MaterialPageClient material="glass" sanityProducts={products} />
+  return (
+    <>
+      <JsonLd data={breadcrumbSchema([
+        { name: 'Home',          href: 'https://emaarupvc.ae/' },
+        { name: 'Products',      href: 'https://emaarupvc.ae/products' },
+        { name: 'Glass Systems', href: 'https://emaarupvc.ae/products/glass' },
+      ])} />
+      <MaterialPageClient material="glass" sanityProducts={products} />
+    </>
+  )
 }

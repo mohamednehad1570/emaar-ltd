@@ -5,6 +5,7 @@ import { sanityFetch } from '@/lib/sanity/client';
 import { productStaticParamsQuery, productBySlugQuery } from '@/lib/sanity/queries';
 import type { SanityProductParam, SanityProductFull } from '@/lib/sanity/types';
 import ProductDetailPage from '@/components/products/ProductDetailPage';
+import { generatePageMetadata } from '@/lib/seo/metadata';
 
 export const revalidate = 3600;
 
@@ -55,12 +56,23 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const { slug } = await params;
+  const { category, slug } = await params;
   try {
     const product = await sanityFetch<SanityProductFull | null>(productBySlugQuery, { slug });
-    if (product?.title) return { title: `${product.title.en} — uPVC | Emaar International` };
+    if (product?.title) {
+      return generatePageMetadata({
+        title:       `${product.title.en} — uPVC`,
+        description: product.description?.en?.slice(0, 160) ?? `Premium uPVC ${product.title.en} by Emaar International, engineered for UAE residences.`,
+        path:        `/products/upvc/${category}/${slug}`,
+        ogImage:     product.mainImage ?? undefined,
+      });
+    }
   } catch {}
-  return { title: `${slug} — uPVC | Emaar International` };
+  return generatePageMetadata({
+    title:       `${slug} — uPVC`,
+    description: 'Premium uPVC fenestration by Emaar International, engineered for UAE residences.',
+    path:        `/products/upvc/${category}/${slug}`,
+  });
 }
 
 export default async function Page({ params }: { params: Params }) {

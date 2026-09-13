@@ -5,6 +5,7 @@ import { sanityFetch } from '@/lib/sanity/client';
 import { productStaticParamsQuery, productBySlugQuery } from '@/lib/sanity/queries';
 import type { SanityProductParam, SanityProductFull } from '@/lib/sanity/types';
 import ProductDetailPage from '@/components/products/ProductDetailPage';
+import { generatePageMetadata } from '@/lib/seo/metadata';
 
 export const revalidate = 3600;
 
@@ -54,12 +55,23 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: Params }) {
-  const { slug } = await params;
+  const { category, slug } = await params;
   try {
     const product = await sanityFetch<SanityProductFull | null>(productBySlugQuery, { slug });
-    if (product?.title) return { title: `${product.title.en} — Aluminium | Emaar International` };
+    if (product?.title) {
+      return generatePageMetadata({
+        title:       `${product.title.en} — Aluminium`,
+        description: product.description?.en?.slice(0, 160) ?? `Structural-grade aluminium ${product.title.en} by Emaar International for UAE commercial and residential projects.`,
+        path:        `/products/aluminum/${category}/${slug}`,
+        ogImage:     product.mainImage ?? undefined,
+      });
+    }
   } catch {}
-  return { title: `${slug} — Aluminium | Emaar International` };
+  return generatePageMetadata({
+    title:       `${slug} — Aluminium`,
+    description: 'Structural-grade aluminium fenestration by Emaar International for UAE projects.',
+    path:        `/products/aluminum/${category}/${slug}`,
+  });
 }
 
 export default async function Page({ params }: { params: Params }) {

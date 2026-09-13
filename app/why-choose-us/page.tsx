@@ -10,8 +10,18 @@ import LogoTickerSection from '@/components/why-choose-us/LogoTickerSection';
 import ComparisonSection from '@/components/why-choose-us/ComparisonSection';
 import TestimonialsSection from '@/components/why-choose-us/TestimonialsSection';
 import CTASection from '@/components/why-choose-us/CTASection';
+import type { Metadata } from 'next';
+import { generatePageMetadata } from '@/lib/seo/metadata';
 
 export const revalidate = 3600;
+
+export function generateMetadata(): Metadata {
+  return generatePageMetadata({
+    title:       'Why Choose Emaar — Quality You Can Trust',
+    description: 'Discover why UAE contractors, architects, and homeowners choose Emaar International: European-grade profiles, certified quality, and end-to-end project support.',
+    path:        '/why-choose-us',
+  });
+}
 
 export default async function WhyChooseUsPage() {
   const [testimonials, awards, clientLogos] = await Promise.all([
