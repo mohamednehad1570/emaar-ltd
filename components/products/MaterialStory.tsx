@@ -41,10 +41,11 @@ export default function MaterialStory({ panels }: Props) {
     // Section wraps all panels — no extra padding, each panel has its own
     <section aria-label={language === 'en' ? 'About this material' : 'عن هذه المادة'}>
       {panels.map((panel, i) => {
-        // Alternate layout: even = stat left, odd = stat right
-        // In RTL the visual order flips automatically via flex-row-reverse
         const statOnLeft = i % 2 === 0
         const bg         = i % 2 === 0 ? 'bg-off-white' : 'bg-white'
+        // XOR: reverse the row when exactly one of (statOnLeft, isRTL) is true.
+        // Handles all four combinations of layout alternation × language direction.
+        const reverseRow = statOnLeft !== isRTL
 
         return (
           <div
@@ -53,8 +54,8 @@ export default function MaterialStory({ panels }: Props) {
             dir={isRTL ? 'rtl' : 'ltr'}
           >
             <div
-              className={`max-w-7xl mx-auto px-8 flex flex-col md:flex-row gap-16 items-center
-                ${statOnLeft ? '' : 'md:flex-row-reverse'}`}
+              className={`max-w-7xl mx-auto px-8 flex flex-col items-center gap-16
+                ${reverseRow ? 'md:flex-row-reverse' : 'md:flex-row'}`}
             >
 
               {/* ── Stat block ─────────────────────────────────────────── */}
