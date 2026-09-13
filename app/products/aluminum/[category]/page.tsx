@@ -1,51 +1,32 @@
-import { notFound } from 'next/navigation';
-import { sanityFetch } from '@/lib/sanity/client';
-import { productsByCategoryQuery } from '@/lib/sanity/queries';
-import type { SanityProductTile } from '@/lib/sanity/types';
-import ProductCategoryPage from '@/components/products/ProductCategoryPage';
+/**
+ * app/products/aluminum/[category]/page.tsx
+ * Permanent redirect → /products/aluminum#[category]
+ */
 
-export const revalidate = 3600;
+import { redirect } from 'next/navigation'
 
-type Params = Promise<{ category: string }>;
-
-// ── Category taxonomy — hardcoded so generateStaticParams works without network ──
-
-// stained-glass and sandblast moved to /products/glass
-const ALUMINUM_CATEGORIES = ['windows','doors','doors-and-windows','staircases','skylights','pergola','frameless-doors','security-system','handrails','acp-panels'] as const;
-
-const CATEGORY_LABELS: Record<string, string> = {
-  windows:             'Windows',
-  doors:               'Doors',
-  'doors-and-windows': 'Doors & Windows',
-  staircases:          'Staircases',
-  skylights:           'Skylights',
-  pergola:             'Pergola',
-  'frameless-doors':   'Frameless Doors',
-  'security-system':   'Security System',
-  handrails:           'Handrails',
-  'acp-panels':        'ACP Panels',
-}
+const ALUMINUM_CATEGORIES = [
+  'windows',
+  'doors',
+  'doors-and-windows',
+  'staircases',
+  'skylights',
+  'pergola',
+  'frameless-doors',
+  'security-system',
+  'handrails',
+  'acp-panels',
+  'stained-glass',
+  'sandblast',
+] as const
 
 export function generateStaticParams() {
-  return ALUMINUM_CATEGORIES.map((category) => ({ category }));
+  return ALUMINUM_CATEGORIES.map((category) => ({ category }))
 }
 
-export async function generateMetadata({ params }: { params: Params }) {
-  const { category } = await params;
-  const label = CATEGORY_LABELS[category];
-  if (!label) return {};
-  return { title: `${label} — Aluminium | Emaar International` };
-}
+type Params = Promise<{ category: string }>
 
 export default async function Page({ params }: { params: Params }) {
-  const { category } = await params;
-
-  if (!(ALUMINUM_CATEGORIES as readonly string[]).includes(category)) notFound();
-
-  let products: SanityProductTile[] = [];
-  try {
-    products = await sanityFetch<SanityProductTile[]>(productsByCategoryQuery, { material: 'aluminum', category });
-  } catch {}
-
-  return <ProductCategoryPage material="aluminum" category={category} sanityProducts={products} />;
+  const { category } = await params
+  redirect(`/products/aluminum#${category}`)
 }

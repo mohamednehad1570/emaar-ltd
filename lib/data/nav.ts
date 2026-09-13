@@ -54,32 +54,32 @@ export const SOLUTIONS_PRODUCTS: MaterialColumn[] = [
     // Column 1 — uPVC Systems
     material: { en: 'uPVC Systems', ar: 'أنظمة uPVC', href: '/products/upvc' },
     items: [
-      { en: 'Doors & Windows', ar: 'أبواب ونوافذ',    href: '/products/upvc/doors-and-windows' },
-      { en: 'Staircases',      ar: 'درابزين',          href: '/products/upvc/staircases'        },
-      { en: 'Hebeschibe',      ar: 'نظام رفع وإزاحة',  href: '/products/upvc/hebeschibe'        },
+      // Hash anchors: clicking navigates to /products/upvc and auto-expands that category
+      { en: 'Doors & Windows', ar: 'أبواب ونوافذ',   href: '/products/upvc#doors-and-windows' },
+      { en: 'Staircases',      ar: 'درابزين',         href: '/products/upvc#staircases'        },
+      { en: 'Hebeschibe',      ar: 'نظام رفع وإزاحة', href: '/products/upvc#hebeschibe'        },
     ],
   },
   {
-    // Column 2 — Aluminium Systems (expanded range)
+    // Column 2 — Aluminium Systems
     material: { en: 'Aluminium Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum' },
     items: [
-      { en: 'Doors & Windows',   ar: 'أبواب ونوافذ',      href: '/products/aluminum/doors-and-windows' },
-      { en: 'Staircases',        ar: 'درابزين',            href: '/products/aluminum/staircases'        },
-      { en: 'Skylights',         ar: 'فتحات سقفية',        href: '/products/aluminum/skylights'         },
-      { en: 'Pergola',           ar: 'برجولة',             href: '/products/aluminum/pergola'           },
-      { en: 'Frameless Doors',   ar: 'أبواب بلا إطار',    href: '/products/aluminum/frameless-doors'   },
-      { en: 'Security Systems',  ar: 'أنظمة الأمان',      href: '/products/aluminum/security-system'   },
-      { en: 'Handrails',         ar: 'درابزين يدوي',       href: '/products/aluminum/handrails'         },
-      { en: 'ACP Panels',        ar: 'ألواح ACP',          href: '/products/aluminum/acp-panels'        },
+      { en: 'Doors & Windows',  ar: 'أبواب ونوافذ',   href: '/products/aluminum#doors-and-windows' },
+      { en: 'Staircases',       ar: 'درابزين',         href: '/products/aluminum#staircases'        },
+      { en: 'Skylights',        ar: 'فتحات سقفية',     href: '/products/aluminum#skylights'         },
+      { en: 'Pergola',          ar: 'برجولة',          href: '/products/aluminum#pergola'           },
+      { en: 'Frameless Doors',  ar: 'أبواب بلا إطار',  href: '/products/aluminum#frameless-doors'   },
+      { en: 'Security Systems', ar: 'أنظمة الأمان',    href: '/products/aluminum#security-system'   },
+      { en: 'Handrails',        ar: 'درابزين يدوي',    href: '/products/aluminum#handrails'         },
+      { en: 'ACP Panels',       ar: 'ألواح ACP',       href: '/products/aluminum#acp-panels'        },
     ],
   },
   {
-    // Column 3 — Glass Systems (new third material track)
-    // Stained Glass and Sandblast consolidated here from uPVC and Aluminium
+    // Column 3 — Glass Systems
     material: { en: 'Glass Systems', ar: 'أنظمة الزجاج', href: '/products/glass' },
     items: [
-      { en: 'Stained Glass', ar: 'زجاج ملون',  href: '/products/glass/stained-glass' },
-      { en: 'Sandblast',     ar: 'زجاج مسند',  href: '/products/glass/sandblast'     },
+      { en: 'Stained Glass', ar: 'زجاج ملون', href: '/products/glass#stained-glass' },
+      { en: 'Sandblast',     ar: 'زجاج مسند', href: '/products/glass#sandblast'     },
     ],
   },
 ]

@@ -417,3 +417,9 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── Hide scrollbar on horizontal scroll containers ────────────────────────
+   Used on marquee rows and sub-nav pill strips where native scrollbar
+   appearance would break the design.                                        */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
