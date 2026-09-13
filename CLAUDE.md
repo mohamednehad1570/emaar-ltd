@@ -16,10 +16,10 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - app/api/revalidate/route.ts — Sanity ISR webhook endpoint
 - components/home/ — HeroSection, StatsSection, ProductsSection, ProjectsSection, WhyChooseUsSection, CTASection, CertificationsSection, TestimonialsSection
 - components/MotionProvider.tsx — wraps app in MotionConfig reducedMotion="user" (prefers-reduced-motion handled globally here — no per-component useReducedMotion needed)
-- components/products/ — ProductShowcase, ProductMaterialPage (L2 category tiles), ProductCategoryPage (L3 grid), ProductFilterSidebar (shared controlled sidebar, lockedMaterial/lockedCategory props), ProductGrid (shared grid, DisplayProduct interface), WarrantyStrip (horizontal strip, hidden when showWarrantyBadge=false), ProductDetailPage (thin orchestrator, 86 lines), ProductDetailHero (breadcrumb + H1 + 55/45 image/info grid), ProductCharacteristics (specTags + spec chips), ProductDiscoverSection (dark tile grid of other categories for same material), ProductDetailCTA (centered quote CTA), ProductDetailFAQ (height-animated accordion, 5 FAQs from faq.ts)
+- components/products/ — ProductShowcase, ProductMaterialPage (L2 category tiles), ProductCategoryPage (L3 grid), ProductFilterSidebar (shared controlled sidebar, lockedMaterial/lockedCategory props), ProductGrid (shared grid, DisplayProduct interface), WarrantyStrip (horizontal strip, hidden when showWarrantyBadge=false), ProductDetailPage (thin orchestrator, 86 lines), ProductDetailHero (breadcrumb + H1 + 55/45 image/info grid), ProductCharacteristics (specTags + spec chips), ProductDiscoverSection (dark tile grid of other categories for same material), ProductDetailCTA (centered quote CTA), ProductDetailFAQ (height-animated accordion, 5 FAQs from faq.ts), MaterialPageClient (client orchestrator for L2 material pages — assembles Hero/Story/CategoryAccordion/WhyUs/CTA), MaterialHero (cinematic hero with eyebrow/title/subtitle/image), MaterialStory (alternating stat+text panels, 3 per material), MaterialWhyUs (3-item advantage grid with Phosphor icons), MaterialCTA (quote CTA section with image background), CategoryAccordion (two variants: "cards" for aluminum — desktop equal-flex row + mobile 160px horizontal scroll, drawer below; "scroll" for uPVC/glass — sticky sub-nav + full-viewport panels desktop, stacked mobile; hash-anchor support; IntersectionObserver active tracking)
 - components/technical/ — TechnicalPageClient (client), TechFilters, TechDocumentGrid, TechDocumentCard (exports DisplayDocument interface)
 - components/careers/ — CareersPageClient (client, assembles page + CTA), CareersHero, CareersCulture, CareersJobList (filter + accordion), CareersJobCard, types.ts (DisplayJob interface)
-- components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage
+- components/projects/ — ProjectCard, ProjectsGrid, ProjectDetailPage, ProjectTypePageClient (editorial magazine layout for /projects/villas and /projects/buildings — sticky sub-nav, alternating full-bleed/split spreads desktop, stacked mobile, parallax images, floating glass card on full-bleed spread)
 - components/faq/ — FAQPageClient (client component, receives sanityFaqs prop)
 - components/contact/ — ContactPageClient (client, assembles page), ContactHero, ContactForm (form state + /api/contact submit), ContactInfo (phone/email/address/hours strip), ContactOffices (office cards, CMS + static fallback), ContactMap (iframe or placeholder)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
@@ -31,6 +31,8 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - lib/data/nav.ts — nav data + types: NavLink {en, ar, href}, MaterialColumn {material: NavLink, items: NavLink[]}, NavItem; exports NAV, isActive, SOLUTIONS_PRODUCTS (3 material columns), SOLUTIONS_PROJECTS (villa/building links), SOLUTIONS_HREFS (flat href array for isActive checks)
 - lib/data/uiStrings.ts — re-export barrel for all static UI copy; components import from here, never from individual copy files directly. Re-exports: whyChooseUsData, servicesData, careersData/CareersJob/CareersContent, techData/TechContent/DownloadFile, contactData, aboutData, faqData/faqCategoryIcons/FAQItem
 - lib/data/whyChooseUs.ts · services.ts · careers.ts · tech.ts · contact.ts · about.ts · faq.ts — bilingual { en, ar } static UI copy and CMS fallback data; accessed only through uiStrings.ts — never import these directly
+- lib/data/materialContent.ts — static bilingual content for all three material landing pages (uPVC/aluminum/glass); exports MATERIAL_CONTENT record + types: LocalizedString, StoryPanel, CategoryContent (slug/label/tagline/description/characteristics/image), WhyEmaarItem, CTAContent, MaterialContent; import directly from here in material page components
+- lib/data/projectContent.ts — static bilingual content for /projects/villas and /projects/buildings; exports VILLA_PROJECTS and BUILDING_PROJECTS arrays of ProjectSpread (id/title/location/year/materials/description/image/href)
 - lib/cn.ts, lib/motion.ts, lib/iconMap.ts
 - lib/hooks/useHorizontalAutoscroll.ts — carousel auto-scroll hook
 - lib/hooks/useTechDocuments.ts — normalises CMS/static tech docs to DisplayDocument[], builds category + productType filter options
@@ -51,7 +53,7 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 / · /about · /products · /products/upvc · /products/aluminum · /products/glass
 /products/upvc/[category] · /products/aluminum/[category] · /products/glass/[category]
 /products/upvc/[category]/[slug] · /products/aluminum/[category]/[slug]
-/projects · /projects/[id] · /technical · /contact
+/projects · /projects/[id] · /projects/villas · /projects/buildings · /technical · /contact
 Footer only: /about · /why-choose-us · /faq · /careers
 
 Note: Solutions tab deleted — /solutions, /solutions/residential, /solutions/commercial pages removed entirely.
@@ -244,12 +246,17 @@ git add -A && git commit -m "scope(area): what changed" && git push origin dev
 - ProductsSection infinite marquee: replaced material focus cards (expand/compress flex layout) with an infinite marquee of 13 sub-product cards across all materials; EN moves left, AR moves right; pause on hover; reduced-motion static fallback. (Sep 13 2026)
 - ProjectsSection infinite marquee: replaced 3-column static grid with an infinite marquee of 8 project cards (4 villas + 4 buildings mixed); EN moves right (opposite of products), AR moves left; duration=40s; same hover/reduced-motion pattern. (Sep 13 2026)
 - InfiniteMarquee shared component: components/ui/InfiniteMarquee.tsx — pure Framer Motion (useAnimationControls), no CSS keyframes; children rendered twice for seamless loop; width measured via ref.current.scrollWidth / 2 after mount; dir="ltr" on outer wrapper prevents RTL page context from reversing flex. (Sep 13 2026)
+- Material landing pages (L2 redesign): MaterialPageClient + MaterialHero + MaterialStory + MaterialWhyUs + MaterialCTA + CategoryAccordion; lib/data/materialContent.ts (full bilingual copy for all 3 materials); all three L2 pages updated; aluminum uses variant="cards", uPVC+glass use variant="scroll". (Sep 13 2026)
+- CategoryAccordion rewrite: mobile support added — cards variant gets 160px horizontal scroll row + full-width stacked drawer with auto-scroll; scroll variant gets stacked mobile panels (45vh image + content below); shared CategoryCard, DrawerContent sub-components extracted. (Sep 13 2026)
+- Project type pages: /projects/villas + /projects/buildings added (app/projects/villas/page.tsx, app/projects/buildings/page.tsx); ProjectTypePageClient — editorial magazine alternating spreads (full-bleed + floating glass card / split text+image), sticky sub-nav, mobile stacked layout; lib/data/projectContent.ts with VILLA_PROJECTS (4) + BUILDING_PROJECTS (4). (Sep 13 2026)
+- .no-scrollbar utility: added to app/globals.css — hides scrollbar on horizontal scroll containers (sub-nav pill strips, mobile card rows). (Sep 13 2026)
 
 ### Known gotchas
 - Sanity CDN cache key: each unique GROQ query string is a separate CDN cache entry — use a dedicated minimal query per generateStaticParams to avoid cache collisions.
 - SanityProject.images and SanityProject.materialsUsed are string[] | null — always access via (x ?? []).
 - Glass L4 route missing: /products/glass/[category]/[slug] does not exist — glass has L2 + L3 pages only. Creating it requires adding app/products/glass/[category]/[slug]/page.tsx (same pattern as uPVC/aluminum L4 routes).
 - next.config.ts has THREE material redirect blocks now (upvc, aluminum, glass) — when adding a new glass category, update the glass lookahead regex.
+- materialContent.ts and projectContent.ts images are Unsplash placeholders — replace with real photography before launch. projectContent.ts href values link to /projects/[id] detail pages that may not exist in Sanity yet.
 
 ### Pending prompts
 - None

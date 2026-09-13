@@ -75,7 +75,7 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
           {/* onClick={onClose} dismisses the overlay when the user taps the logo link */}
           {/* EmaarLogo size=40 matches the footer mark; textSize="md" keeps heading-weight
               contrast on the off-white overlay background (#1A1A1A text colour) */}
-          <Link href="/" onClick={onClose} className="inline-flex" aria-label="Emaar International Industry LLC — home">
+          <Link href="/" onClick={onClose} className="inline-flex items-center min-h-[44px]" aria-label="Emaar International Industry LLC — home">
             <EmaarLogo size={40} showText={true} textSize="md" />
           </Link>
           <div className="flex items-center gap-1">

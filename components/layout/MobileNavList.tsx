@@ -166,7 +166,7 @@ export default function MobileNavList({ language, pathname, onClose }: Props) {
                                       href={sub.href}
                                       onClick={onClose}
                                       className={cn(
-                                        'block py-2 text-sm transition-colors duration-150',
+                                        'block py-2 min-h-[44px] flex items-center text-sm transition-colors duration-150',
                                         pathname.startsWith(sub.href)
                                           ? 'text-brand-red font-semibold'
                                           : 'text-text-body hover:text-brand-red',
@@ -191,7 +191,7 @@ export default function MobileNavList({ language, pathname, onClose }: Props) {
                                   href={project.href}
                                   onClick={onClose}
                                   className={cn(
-                                    'block py-2 text-sm font-semibold transition-colors duration-150',
+                                    'block py-2 min-h-[44px] flex items-center text-sm font-semibold transition-colors duration-150',
                                     pathname.startsWith(project.href)
                                       ? 'text-brand-red'
                                       : 'text-text-heading hover:text-brand-red',
@@ -211,7 +211,7 @@ export default function MobileNavList({ language, pathname, onClose }: Props) {
                               href={child.href}
                               onClick={onClose}
                               className={cn(
-                                'block py-2 text-sm transition-colors duration-150',
+                                'block py-2 min-h-[44px] flex items-center text-sm transition-colors duration-150',
                                 pathname.startsWith(child.href)
                                   ? 'text-brand-red font-semibold'
                                   : 'text-text-body hover:text-brand-red',
