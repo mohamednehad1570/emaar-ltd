@@ -66,14 +66,9 @@ export default function TechnicalPageClient({ cmsDocs, staticData }: TechnicalPa
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
 
-      {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="pt-32 pb-20 px-6 bg-off-white">
+      {/* ── Stats — hero replaced by PageHeader in page.tsx ─────────── */}
+      <section className="pt-10 pb-10 px-6 bg-off-white">
         <div className="max-w-7xl mx-auto">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={viewportOnce} className="text-center mb-12">
-            <h1 className="text-5xl md:text-7xl font-bold text-ink-heading mb-6">{sd.hero.title}</h1>
-            <p className="text-2xl font-semibold text-brand-red mb-4">{sd.hero.subtitle}</p>
-            <p className="text-lg text-ink-body max-w-3xl mx-auto">{sd.hero.description}</p>
-          </motion.div>
           <motion.div
             className="grid grid-cols-2 md:grid-cols-4 gap-6"
             variants={shouldReduce ? {} : staggerContainer}

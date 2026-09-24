@@ -1,5 +1,6 @@
 import { getJobPostings } from '@/lib/sanity/fetch'
 import CareersPageClient from '@/components/careers/CareersPageClient'
+import PageHeader from '@/components/ui/PageHeader'
 import { careersData } from '@/lib/data/uiStrings'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 
@@ -14,9 +15,18 @@ export const metadata = generatePageMetadata({
 export default async function CareersPage() {
   const jobPostings = await getJobPostings()
   return (
-    <CareersPageClient
-      jobPostings={jobPostings}
-      staticData={careersData}
-    />
+    <>
+      <PageHeader
+        eyebrow="Join Us"
+        title="Careers at Emaar"
+        titleAr="وظائف في إعمار"
+        description="Join a 26-year manufacturing leader in the UAE."
+        chips={['Sharjah, UAE', 'SAIF Zone']}
+      />
+      <CareersPageClient
+        jobPostings={jobPostings}
+        staticData={careersData}
+      />
+    </>
   )
 }

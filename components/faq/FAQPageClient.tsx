@@ -59,31 +59,10 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
   return (
     <div className={`min-h-screen bg-off-white ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
 
-      {/* ── Hero ─────────────────────────────────────────── */}
-      <section className="relative pt-32 pb-20 px-6 overflow-hidden bg-surface-white">
+      {/* ── Search — hero replaced by PageHeader in page.tsx ────────── */}
+      <section className="pt-6 pb-12 px-6 bg-surface-white">
         <div className="max-w-5xl mx-auto">
-          <motion.div
-            variants={fadeUp}
-            initial={shouldReduce ? {} : 'hidden'}
-            whileInView={shouldReduce ? undefined : 'visible'}
-            viewport={shouldReduce ? undefined : viewportOnce}
-            className="text-center mb-12"
-          >
-            <h1 className="font-extrabold text-ink-heading mb-4 tracking-[-0.02em] leading-[0.95]"
-              style={{ fontSize: 'clamp(2.75rem, 5vw, 5rem)' }}>
-              {t.hero.title}
-            </h1>
-            <p className="text-xl font-semibold text-ink-body mb-4">{t.hero.subtitle}</p>
-            <p className="text-base text-ink-muted max-w-2xl mx-auto">{t.hero.description}</p>
-          </motion.div>
-
-          <motion.div
-            variants={fadeUp}
-            initial={shouldReduce ? {} : 'hidden'}
-            whileInView={shouldReduce ? undefined : 'visible'}
-            viewport={shouldReduce ? undefined : viewportOnce}
-            className="relative max-w-2xl mx-auto"
-          >
+          <div className="relative max-w-2xl mx-auto">
             <Search className={`absolute ${isRTL ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 w-5 h-5 text-ink-muted`} />
             <input
               type="text"
@@ -92,7 +71,7 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
               placeholder={t.search.placeholder}
               className={`w-full h-12 ${isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4'} border border-border-light focus:border-brand-red focus:outline-none text-ink-body bg-white text-base transition-colors`}
             />
-          </motion.div>
+          </div>
         </div>
       </section>
 

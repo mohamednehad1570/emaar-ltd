@@ -11,7 +11,6 @@
 
 import React from 'react'
 import { MATERIAL_CONTENT } from '@/lib/data/materialContent'
-import MaterialHero      from './MaterialHero'
 import MaterialStory     from './MaterialStory'
 import CategoryAccordion from './CategoryAccordion'
 import MaterialWhyUs     from './MaterialWhyUs'
@@ -32,10 +31,7 @@ export default function MaterialPageClient({ material }: Props) {
 
   return (
     <main>
-      {/* 1 — Cinematic hero */}
-      <MaterialHero hero={content.hero} />
-
-      {/* 2 — Alternating stat + body panels */}
+      {/* Alternating stat + body panels — hero replaced by PageHeader in page.tsx */}
       <MaterialStory panels={content.story} />
 
       {/* 3 — Category explorer */}

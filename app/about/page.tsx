@@ -8,6 +8,7 @@
 import type { Metadata } from 'next';
 import { getSiteSettings, getTeamMembers } from '@/lib/sanity/fetch';
 import AboutPageClient from '@/components/about/AboutPageClient';
+import PageHeader from '@/components/ui/PageHeader';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 
 export function generateMetadata(): Metadata {
@@ -27,10 +28,19 @@ export default async function AboutPage() {
   ]);
 
   return (
-    <AboutPageClient
-      companyBio={settings?.companyBio}
-      foundedYear={settings?.foundedYear}
-      teamMembers={teamMembers}
-    />
+    <>
+      <PageHeader
+        eyebrow="Company"
+        title="About Emaar"
+        titleAr="عن إعمار"
+        description="26 years manufacturing uPVC, Aluminum, and Glass systems in the UAE."
+        chips={['Est. 2000', 'SAIF Zone Sharjah', '50,000 sqft factory']}
+      />
+      <AboutPageClient
+        companyBio={settings?.companyBio}
+        foundedYear={settings?.foundedYear}
+        teamMembers={teamMembers}
+      />
+    </>
   );
 }

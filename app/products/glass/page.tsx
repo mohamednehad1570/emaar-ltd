@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getProductsByMaterial } from '@/lib/sanity/fetch'
 import MaterialPageClient from '@/components/products/MaterialPageClient'
+import PageHeader from '@/components/ui/PageHeader'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { breadcrumbSchema } from '@/lib/seo/jsonld'
 import JsonLd from '@/components/seo/JsonLd'
@@ -24,6 +25,19 @@ export default async function Page() {
         { name: 'Products',      href: 'https://emaarupvc.ae/products' },
         { name: 'Glass Systems', href: 'https://emaarupvc.ae/products/glass' },
       ])} />
+      <PageHeader
+        eyebrow="Products"
+        title="Glass Systems"
+        titleAr="أنظمة الزجاج"
+        description="AGC Belgium · Emirates Float Glass · Guardian USA — sourced globally."
+        chips={['4 categories', 'Double glazing', 'ISO 14001']}
+        anchors={[
+          { label: 'Double Glazing',    href: '#double-glazing'    },
+          { label: 'Stained Glass',     href: '#stained-glass'     },
+          { label: 'Sandblasted Glass', href: '#sandblasted-glass' },
+          { label: 'Decorative Glass',  href: '#decorative-glass'  },
+        ]}
+      />
       <MaterialPageClient material="glass" sanityProducts={products} />
     </>
   )

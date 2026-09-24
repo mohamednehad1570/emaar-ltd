@@ -174,8 +174,8 @@ const upvc: MaterialContent = {
       image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=900&h=700&fit=crop',
     },
     {
-      slug:    'hebeschibe',
-      label:   { en: 'Hebeschibe',       ar: 'نظام رفع وإزاحة' },
+      slug:    'hebeschiebe',
+      label:   { en: 'Hebeschiebe',      ar: 'نظام رفع وإزاحة' },
       tagline: { en: 'Lift-and-slide precision for panoramic openings', ar: 'دقة الرفع والإزاحة للفتحات البانورامية' },
       description: {
         en: 'The Hebeschibe lift-and-slide system allows floor-to-ceiling glass panels weighing up to 400 kg to glide effortlessly with a single handle turn. It is the preferred choice for luxury living rooms and terraces where the boundary between inside and outside must disappear entirely.',

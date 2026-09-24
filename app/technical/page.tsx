@@ -1,5 +1,6 @@
 import { getTechDocuments } from '@/lib/sanity/fetch';
 import TechnicalPageClient from '@/components/technical/TechnicalPageClient';
+import PageHeader from '@/components/ui/PageHeader';
 import { techData } from '@/lib/data/uiStrings';
 import type { Metadata } from 'next';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -19,9 +20,18 @@ export default async function TechnicalPage() {
   const cmsDocs = await getTechDocuments();
 
   return (
-    <TechnicalPageClient
-      cmsDocs={cmsDocs}
-      staticData={techData}
-    />
+    <>
+      <PageHeader
+        eyebrow="Resources"
+        title="Technical Documentation"
+        titleAr="الوثائق التقنية"
+        description="Specifications, CAD files, brochures, and certificates for all product systems."
+        chips={['Specs PDFs', 'CAD files', 'Certificates']}
+      />
+      <TechnicalPageClient
+        cmsDocs={cmsDocs}
+        staticData={techData}
+      />
+    </>
   );
 }

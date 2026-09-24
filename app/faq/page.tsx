@@ -1,4 +1,5 @@
 import FAQPageClient from '@/components/faq/FAQPageClient';
+import PageHeader from '@/components/ui/PageHeader';
 import { sanityFetch } from '@/lib/sanity/client';
 import { faqsQuery } from '@/lib/sanity/queries';
 import type { SanityFaq } from '@/lib/sanity/types';
@@ -25,6 +26,12 @@ export default async function FAQPage() {
   return (
     <>
       <JsonLd data={schema} />
+      <PageHeader
+        eyebrow="Support"
+        title="Frequently Asked Questions"
+        titleAr="الأسئلة الشائعة"
+        description="Everything you need to know about our products, installation, and warranties."
+      />
       <FAQPageClient sanityFaqs={sanityFaqs} />
     </>
   );

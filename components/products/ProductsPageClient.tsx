@@ -25,19 +25,17 @@ import ProductGrid, { type DisplayProduct } from './ProductGrid';
 
 const EDITORIAL = {
   en: {
-    eyebrow: 'Our Systems', title: 'Choose Your Material',
-    subtitle: "Window and door systems precision-engineered for the Gulf's climate and structural standards.",
     cards: [
-      { title: 'uPVC Systems',      desc: 'Energy-efficient thermal profiles. German-engineered. Zero maintenance.',      cta: 'Explore uPVC',      href: '/products/upvc',     image: 'https://images.unsplash.com/photo-1542385412-42e58a804825?w=1200&q=80', alt: 'uPVC window system' },
-      { title: 'Aluminium Systems', desc: 'Structural-grade facades and curtain walls. Built for high-rise and commercial scale.', cta: 'Explore Aluminium', href: '/products/aluminum', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80', alt: 'Aluminium commercial facade' },
+      { title: 'uPVC Systems',      desc: 'Energy-efficient thermal profiles. German-engineered. Zero maintenance.',                   cta: 'Explore uPVC',      href: '/products/upvc',     image: 'https://images.unsplash.com/photo-1542385412-42e58a804825?w=1200&q=80',     alt: 'uPVC window system' },
+      { title: 'Aluminium Systems', desc: 'Structural-grade facades and curtain walls. Built for high-rise and commercial scale.',      cta: 'Explore Aluminium', href: '/products/aluminum', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80',     alt: 'Aluminium commercial facade' },
+      { title: 'Glass Systems',     desc: 'Double glazing, stained, sandblasted and decorative glass.',                                  cta: 'Explore Glass',     href: '/products/glass',    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80',     alt: 'Glass architectural systems' },
     ],
   },
   ar: {
-    eyebrow: 'أنظمتنا', title: 'اختر المادة',
-    subtitle: 'أنظمة نوافذ وأبواب عالمية المستوى مصممة لمناخ الخليج ومعايير العمارة فيه.',
     cards: [
-      { title: 'أنظمة uPVC',       desc: 'قطاعات حرارية موفرة للطاقة. هندسة ألمانية. صيانة صفرية.',             cta: 'استكشف uPVC',      href: '/products/upvc',     image: 'https://images.unsplash.com/photo-1542385412-42e58a804825?w=1200&q=80', alt: 'نظام نوافذ uPVC' },
-      { title: 'أنظمة الألومنيوم', desc: 'واجهات هيكلية وستائرية. مصممة للأبراج والمشاريع التجارية.',           cta: 'استكشف الألومنيوم', href: '/products/aluminum', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80', alt: 'واجهة ألومنيوم تجارية' },
+      { title: 'أنظمة uPVC',       desc: 'قطاعات حرارية موفرة للطاقة. هندسة ألمانية. صيانة صفرية.',             cta: 'استكشف uPVC',      href: '/products/upvc',     image: 'https://images.unsplash.com/photo-1542385412-42e58a804825?w=1200&q=80',     alt: 'نظام نوافذ uPVC' },
+      { title: 'أنظمة الألومنيوم', desc: 'واجهات هيكلية وستائرية. مصممة للأبراج والمشاريع التجارية.',           cta: 'استكشف الألومنيوم', href: '/products/aluminum', image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80',     alt: 'واجهة ألومنيوم تجارية' },
+      { title: 'أنظمة الزجاج',     desc: 'زجاج مزدوج وملون ومسند وزخرفي.',                                       cta: 'استكشف الزجاج',     href: '/products/glass',    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80',     alt: 'أنظمة الزجاج المعمارية' },
     ],
   },
 } as const;
@@ -93,21 +91,9 @@ export default function ProductsPageClient({ products }: Props) {
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
 
-      {/* ── Editorial header ─────────────────────────────────────────────── */}
+      {/* ── Three-column material split — header replaced by PageHeader in page.tsx ── */}
       <motion.div
-        className="py-20 text-center px-6"
-        variants={fadeUp}
-        initial={shouldReduce ? {} : 'hidden'}
-        animate="visible"
-      >
-        <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-red mb-4 block">{t.eyebrow}</span>
-        <h1 className="text-5xl md:text-6xl font-bold font-cairo text-brand-dark mb-5">{t.title}</h1>
-        <p className="text-lg text-ink-body max-w-xl mx-auto">{t.subtitle}</p>
-      </motion.div>
-
-      {/* ── Two-column editorial split ────────────────────────────────────── */}
-      <motion.div
-        className="grid md:grid-cols-2 md:min-h-[80vh]"
+        className="grid md:grid-cols-3 md:min-h-[80vh]"
         variants={staggerContainer}
         initial={shouldReduce ? {} : 'hidden'}
         whileInView={shouldReduce ? undefined : 'visible'}
@@ -115,7 +101,7 @@ export default function ProductsPageClient({ products }: Props) {
       >
         {t.cards.map((card) => (
           <motion.div key={card.href} variants={fadeUp} className="group relative h-[60vh] md:h-auto overflow-hidden">
-            <Image src={card.image} alt={card.alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+            <Image src={card.image} alt={card.alt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
             {/* bg-brand-dark/75 — ensures ≥ 4.5:1 contrast ratio for white text */}
             <div className="absolute inset-0 bg-brand-dark/75 group-hover:bg-brand-dark/65 transition-colors duration-500" />
             <div className={`absolute inset-0 z-10 flex flex-col justify-end p-10 md:p-14 ${isRTL ? 'items-end text-right' : 'items-start text-left'}`}>

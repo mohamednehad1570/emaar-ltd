@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getProductsByMaterial } from '@/lib/sanity/fetch'
 import MaterialPageClient from '@/components/products/MaterialPageClient'
+import PageHeader from '@/components/ui/PageHeader'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { breadcrumbSchema } from '@/lib/seo/jsonld'
 import JsonLd from '@/components/seo/JsonLd'
@@ -24,6 +25,26 @@ export default async function Page() {
         { name: 'Products',           href: 'https://emaarupvc.ae/products' },
         { name: 'Aluminium Systems',  href: 'https://emaarupvc.ae/products/aluminum' },
       ])} />
+      <PageHeader
+        eyebrow="Products"
+        title="Aluminum Systems"
+        titleAr="أنظمة الألمنيوم"
+        description="Tested at Al-Futtaim Exova labs. German DIN standards."
+        chips={['10 categories', 'DIN certified', 'Exova tested']}
+        scrollable={true}
+        anchors={[
+          { label: 'Doors',          href: '#doors'          },
+          { label: 'Windows',        href: '#windows'        },
+          { label: 'Curtain Wall',   href: '#curtain-wall'   },
+          { label: 'ACP Cladding',   href: '#acp-cladding'   },
+          { label: 'Skylights',      href: '#skylights'      },
+          { label: 'Security System',href: '#security-system'},
+          { label: 'Pergola',        href: '#pergola'        },
+          { label: 'Handrails',      href: '#handrails'      },
+          { label: 'Frameless Doors',href: '#frameless-doors'},
+          { label: 'Staircases',     href: '#staircases'     },
+        ]}
+      />
       <MaterialPageClient material="aluminum" sanityProducts={products} />
     </>
   )

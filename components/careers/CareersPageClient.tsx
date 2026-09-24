@@ -75,25 +75,7 @@ export default function CareersPageClient({ jobPostings, staticData }: Props) {
 
   return (
     <div className={`min-h-screen bg-off-white ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
-      {/* Page header — full-bleed dark band with title + subtitle */}
-      <section className="py-24 bg-brand-dark text-white">
-        <Container>
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-            className={`max-w-3xl ${isRTL ? 'text-right' : 'text-left'}`}
-          >
-            <h1 className="text-4xl md:text-5xl font-extrabold font-cairo leading-tight mb-4">
-              {td.hero.title}
-            </h1>
-            <p className="text-xl text-white/70 mb-3">{td.hero.subtitle}</p>
-            <p className="text-base text-white/55 leading-relaxed">{td.hero.description}</p>
-          </motion.div>
-        </Container>
-      </section>
-
+      {/* Hero replaced by PageHeader in page.tsx */}
       <CareersCulture
         title={td.culture.title}
         subtitle={td.culture.subtitle}

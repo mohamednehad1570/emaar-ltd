@@ -1,4 +1,5 @@
 import { getTestimonials, getAwards, getClientLogos } from '@/lib/sanity/fetch';
+import PageHeader from '@/components/ui/PageHeader';
 import AdvantagesSection from '@/components/why-choose-us/AdvantagesSection';
 import ProcessSection from '@/components/why-choose-us/ProcessSection';
 import WarrantySection from '@/components/why-choose-us/WarrantySection';
@@ -27,14 +28,23 @@ export default async function WhyChooseUsPage() {
   ]);
 
   return (
-    <div className="min-h-screen bg-off-white">
-      <AdvantagesSection />
-      <ProcessSection />
-      <WarrantySection />
-      <ClientTestimonialsSection testimonials={testimonials} />
-      <AwardsSection awards={awards} />
-      <LogoTickerSection clientLogos={clientLogos} />
-      <CTASection />
-    </div>
+    <>
+      <PageHeader
+        eyebrow="Why Choose Us"
+        title="Built Different."
+        titleAr="نحن مختلفون"
+        description="German engineering standards. European hardware. 26 years in the UAE."
+        chips={['ISO 14001', 'DIN certified', 'UAE Municipality approved']}
+      />
+      <div className="min-h-screen bg-off-white">
+        <AdvantagesSection />
+        <ProcessSection />
+        <WarrantySection />
+        <ClientTestimonialsSection testimonials={testimonials} />
+        <AwardsSection awards={awards} />
+        <LogoTickerSection clientLogos={clientLogos} />
+        <CTASection />
+      </div>
+    </>
   );
 }
