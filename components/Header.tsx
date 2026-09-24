@@ -153,14 +153,14 @@ export default function Header({ whatsappNumber }: HeaderProps) {
               </div>
               {/* Mobile only */}
               <div className="flex lg:hidden items-center ms-auto">
-                {/* -mr-2 nudges the touch target to the container edge so the bars
-                    align visually with other right-edge elements (WhatsApp, CTA). */}
+                {/* -me-2 nudges the touch target to the container edge so the bars
+                    align visually with other end-edge elements; me= is RTL-aware (end). */}
                 <button
                   onClick={() => setOpen(v => !v)}
                   aria-label={open ? 'Close menu' : 'Open menu'} // screen-reader label switches state
                   aria-expanded={open}                            // ARIA live state for assistive tech
                   aria-controls="mobile-nav"                      // links button to the overlay element
-                  className="flex flex-col justify-center gap-[5px] w-10 h-10 -mr-2"
+                  className="flex flex-col justify-center gap-[5px] w-10 h-10 -me-2"
                   // gap-[5px] = 5 px between bars; combined with h-0.5 (2 px bars)
                   // the center-to-center distance is 2 + 5 = 7 px — drives the y translate below
                 >

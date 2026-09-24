@@ -10,9 +10,8 @@ import type { SanityProject } from '@/lib/sanity/types';
 import type { DisplayProject } from '@/lib/types';
 
 const typeLabels: Record<string, { en: string; ar: string }> = {
-  villas:    { en: 'Villas',              ar: 'فلل'   },
-  buildings: { en: 'Buildings',           ar: 'مباني' },
-  towers:    { en: 'High-Rise / Towers',  ar: 'أبراج' },
+  villas:    { en: 'Villas',    ar: 'فلل'   },
+  buildings: { en: 'Buildings', ar: 'مباني' },
 };
 
 interface Props {
@@ -37,7 +36,7 @@ export default function ProjectsGrid({ projects = [] }: Props) {
   // Hash-anchor init on mount — /projects#villas sets filter to 'villas', etc.
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
-    if (hash === 'villas' || hash === 'buildings' || hash === 'towers') {
+    if (hash === 'villas' || hash === 'buildings') {
       setSectorFilter(hash);
     }
   }, []);
@@ -60,10 +59,9 @@ export default function ProjectsGrid({ projects = [] }: Props) {
   }));
 
   const sectors = [
-    { id: 'all',       label: { en: 'All Types',          ar: 'جميع الأنواع' } },
-    { id: 'villas',    label: { en: 'Villas',              ar: 'فلل'          } },
-    { id: 'buildings', label: { en: 'Buildings',           ar: 'مباني'        } },
-    { id: 'towers',    label: { en: 'High-Rise / Towers',  ar: 'أبراج'        } },
+    { id: 'all',       label: { en: 'All Types', ar: 'جميع الأنواع' } },
+    { id: 'villas',    label: { en: 'Villas',     ar: 'فلل'          } },
+    { id: 'buildings', label: { en: 'Buildings',  ar: 'مباني'        } },
   ];
 
   const materials = [
@@ -150,7 +148,7 @@ export default function ProjectsGrid({ projects = [] }: Props) {
         {/* All mode: grouped by type with hash-anchor dividers */}
         {sectorFilter === 'all' ? (
           <div>
-            {(['villas', 'buildings', 'towers'] as const).map((type, i) => {
+            {(['villas', 'buildings'] as const).map((type, i) => {
               const group = filteredProjects.filter(p => p.type === type);
               if (!group.length) return null;
               return (

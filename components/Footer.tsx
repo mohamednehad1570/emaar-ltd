@@ -66,9 +66,11 @@ const COLUMNS: Column[] = [
     en: 'Products',
     ar: 'المنتجات',
     links: [
-      { en: 'All Products',     ar: 'جميع المنتجات',   href: '/products'          },
-      { en: 'uPVC Systems',     ar: 'أنظمة UPVC',      href: '/products/upvc'     },
+      { en: 'All Products',     ar: 'جميع المنتجات',    href: '/products'          },
+      { en: 'uPVC Systems',     ar: 'أنظمة UPVC',       href: '/products/upvc'     },
       { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum' },
+      { en: 'Glass Systems',    ar: 'أنظمة الزجاج',     href: '/products/glass'    },
+      { en: 'Accessories',      ar: 'الإكسسوارات',       href: '/accessories'       },
     ],
   },
   {
@@ -221,6 +223,33 @@ function ContactBlock({
           />
           <span>{l('Chat on WhatsApp', 'تواصل عبر واتساب')}</span>
         </a>
+      </li>
+
+      {/* Customer Service — separated from sales line; existing customers only */}
+      <li className="border-t border-border-light pt-3 mt-3">
+        <div className="flex items-start gap-2.5">
+          <Phone
+            size={15}
+            className="text-brand-silver-dark shrink-0 mt-0.5"
+          />
+          <div>
+            <p className="text-xs font-semibold text-text-muted uppercase tracking-wide mb-0.5">
+              {language === 'ar' ? 'خدمة العملاء' : 'Customer Service'}
+            </p>
+            <a
+              href="tel:0566668273"
+              className="text-sm text-text-body hover:text-brand-red transition-colors duration-200 tabular-nums"
+              dir="ltr"
+            >
+              056 666 8273
+            </a>
+            <p className="text-xs text-text-muted mt-0.5">
+              {language === 'ar'
+                ? 'للعملاء الحاليين ومتابعة الطلبات'
+                : 'Existing customers & order follow-up'}
+            </p>
+          </div>
+        </div>
       </li>
 
       {/* Request Quote — the red CTA link */}
