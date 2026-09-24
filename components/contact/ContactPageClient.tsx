@@ -15,7 +15,6 @@ import { fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
 import type { SiteSettings } from '@/lib/sanity/types';
 import { contactData } from '@/lib/data/uiStrings';
-import ContactHero from './ContactHero';
 import ContactForm from './ContactForm';
 import ContactInfo from './ContactInfo';
 import ContactOffices from './ContactOffices';
@@ -43,9 +42,6 @@ export default function ContactPageClient({ settings, staticData }: Props) {
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
-
-      {/* ── Hero ──────────────────────────────────────────────── */}
-      <ContactHero />
 
       {/* ── Form + contact info strip ─────────────────────────── */}
       <section className="pb-20">

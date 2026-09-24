@@ -16,7 +16,6 @@ import { organizationSchema } from '@/lib/seo/jsonld';
 import JsonLd from '@/components/seo/JsonLd';
 import HeroSection           from '@/components/home/HeroSection';
 import StatsSection          from '@/components/home/StatsSection';
-import CertificationsSection from '@/components/home/CertificationsSection';
 import ProductsSection       from '@/components/home/ProductsSection';
 import ProjectsSection       from '@/components/home/ProjectsSection';
 import WhyChooseUsSection    from '@/components/home/WhyChooseUsSection';
@@ -49,9 +48,8 @@ export default async function HomePage() {
         heroCTASecondary={settings?.heroCTASecondary}
       />
 
-      {/* Stats and certifications open without a divider — the numerals introduce themselves */}
+      {/* Stats and certification trust badges — numerals + chips in one section */}
       <StatsSection stats={settings?.stats} />
-      <CertificationsSection />
 
       <SectionDivider en="Our Products" ar="منتجاتنا" />
       <ProductsSection />

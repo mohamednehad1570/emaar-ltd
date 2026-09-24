@@ -36,6 +36,10 @@ export default function HeaderDropdown({
     >
       {items.map((item, idx) => (
         <React.Fragment key={item.href}>
+          {/* Visual divider above items that request one (e.g. "All Projects", "FAQ") */}
+          {item.dividerBefore && (
+            <div className="my-1 mx-3 border-t border-border-light" aria-hidden="true" />
+          )}
           <motion.div
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
@@ -43,7 +47,7 @@ export default function HeaderDropdown({
           >
             <Link
               href={item.href}
-              className="flex items-center h-11 px-5 text-sm font-normal text-text-body hover:bg-cream hover:text-text-heading transition-colors duration-150"
+              className="flex items-center h-11 px-5 text-sm font-normal text-ink-body hover:bg-surface-cream hover:text-ink-heading transition-colors duration-150"
             >
               {item[language]}
             </Link>

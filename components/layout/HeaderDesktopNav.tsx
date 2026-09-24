@@ -52,9 +52,9 @@ export default function HeaderDesktopNav() {
     setOpenDrop(key)
   }, [])
 
-  // scheduleClose: wait 120ms before closing — gives mouse time to enter the panel
+  // scheduleClose: wait 150ms before closing — lets mouse travel diagonally into panel
   const scheduleClose = useCallback(() => {
-    closeTimeout.current = setTimeout(() => setOpenDrop(null), 120)
+    closeTimeout.current = setTimeout(() => setOpenDrop(null), 150)
   }, [])
 
   // cancelClose: abort a pending close — called when mouse enters the panel

@@ -49,13 +49,13 @@ interface Props {
 function SkeletonCard() {
   return (
     <div className="rounded-[2px] overflow-hidden" aria-hidden="true">
-      {/* Silver shimmer on brand-silver-light base — warm palette, not grey */}
-      <div className="h-52 bg-[#E4E2DC] animate-pulse" />
+      {/* Silver shimmer on border-light base — warm palette, not grey */}
+      <div className="h-52 bg-border-light animate-pulse" />
       <div className="p-5 space-y-3 bg-white">
-        <div className="h-3 w-1/3 bg-[#E4E2DC] animate-pulse rounded-[1px]" />
-        <div className="h-4 w-3/4 bg-[#E4E2DC] animate-pulse rounded-[1px]" />
-        <div className="h-3 w-full  bg-[#E4E2DC] animate-pulse rounded-[1px]" />
-        <div className="h-3 w-2/3  bg-[#E4E2DC] animate-pulse rounded-[1px]" />
+        <div className="h-3 w-1/3 bg-border-light animate-pulse rounded-[1px]" />
+        <div className="h-4 w-3/4 bg-border-light animate-pulse rounded-[1px]" />
+        <div className="h-3 w-full  bg-border-light animate-pulse rounded-[1px]" />
+        <div className="h-3 w-2/3  bg-border-light animate-pulse rounded-[1px]" />
       </div>
     </div>
   );

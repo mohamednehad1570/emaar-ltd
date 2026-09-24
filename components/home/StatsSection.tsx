@@ -24,6 +24,13 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 import type { SiteSettings } from '@/lib/sanity/types';
 
+/* ── Certification badges — ISO 14001 + UAE authority approvals ────────── */
+
+const CERT_BADGES = {
+  en: ['ISO 9001 Certified', 'UAE Municipality Approved', 'Civil Defence Compliant'],
+  ar: ['معتمد ISO 9001', 'معتمد بلدية الإمارات', 'متوافق مع الدفاع المدني'],
+} as const;
+
 /* ── Data ──────────────────────────────────────────────────────────────── */
 
 const content = {
@@ -140,6 +147,27 @@ export default function StatsSection({ stats: cmsStats }: StatsSectionProps) {
                 {stat.label}
               </span>
             </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Certification trust chips — ISO 14001 + UAE authority approvals */}
+        <motion.div
+          variants={fadeUp}
+          initial={shouldReduce ? {} : 'hidden'}
+          whileInView={shouldReduce ? undefined : 'visible'}
+          viewport={shouldReduce ? undefined : viewportOnce}
+          className="flex flex-wrap justify-center gap-3 mt-14"
+          aria-label={language === 'en' ? 'Certifications' : 'الشهادات'}
+        >
+          {CERT_BADGES[language].map((badge) => (
+            <span
+              key={badge}
+              className="inline-flex items-center px-4 py-1.5 border border-border-light
+                         rounded-[2px] text-xs font-semibold uppercase tracking-[0.18em]
+                         text-ink-muted bg-surface-cream"
+            >
+              {badge}
+            </span>
           ))}
         </motion.div>
       </div>

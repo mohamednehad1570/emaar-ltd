@@ -110,20 +110,52 @@ const upvc: MaterialContent = {
 
   categories: [
     {
-      slug:    'doors-and-windows',
-      label:   { en: 'Doors & Windows',  ar: 'أبواب ونوافذ'    },
-      tagline: { en: 'Precision-engineered openings for every façade', ar: 'فتحات مهندسة بدقة لكل واجهة' },
+      slug:    'doors',
+      label:   { en: 'Doors',    ar: 'أبواب'    },
+      tagline: { en: 'Precision-engineered uPVC doors for every façade', ar: 'أبواب uPVC مهندسة بدقة لكل واجهة' },
       description: {
-        en: 'Our uPVC doors and windows combine multi-chamber profiles with high-performance glazing to deliver exceptional thermal and acoustic performance. Available in casement, tilt-and-turn, sliding, and fixed configurations to suit any architectural brief.',
-        ar: 'تجمع أبوابنا ونوافذنا من الـ uPVC بين قطاعات متعددة الغرف وزجاج عالي الأداء لتوفير أداء حراري وصوتي استثنائي. متوفرة بأشكال مفتوحة للخارج، ومائلة وقابلة للدوران، وانزلاقية، وثابتة لتناسب أي تصميم معماري.',
+        en: 'Our uPVC doors combine multi-chamber profiles with high-performance glazing and multi-point locking to deliver exceptional security, thermal, and acoustic performance in casement, sliding, and lift-and-slide configurations.',
+        ar: 'تجمع أبوابنا من الـ uPVC بين قطاعات متعددة الغرف وزجاج عالي الأداء وأقفال متعددة النقاط لتوفير أداء استثنائي في الأمان والحرارة والصوت.',
       },
       characteristics: [
-        { en: 'Multi-point locking on all operable units',      ar: 'قفل متعدد النقاط على جميع الوحدات القابلة للفتح'   },
-        { en: 'U-value from 1.0 W/m²K with double glazing',    ar: 'قيمة U من 1.0 واط/م²ك مع الزجاج المزدوج'           },
-        { en: 'Sound reduction up to 45 dB with acoustic glass', ar: 'خفض الضوضاء حتى 45 ديسيبل مع الزجاج الصوتي'       },
+        { en: 'Multi-point locking on all operable units',       ar: 'قفل متعدد النقاط على جميع الوحدات القابلة للفتح' },
+        { en: 'U-value from 1.0 W/m²K with double glazing',     ar: 'قيمة U من 1.0 واط/م²ك مع الزجاج المزدوج'         },
+        { en: 'Sound reduction up to 45 dB with acoustic glass', ar: 'خفض الضوضاء حتى 45 ديسيبل مع الزجاج الصوتي'      },
         { en: 'Custom RAL colours — interior and exterior independent', ar: 'ألوان RAL مخصصة — الداخل والخارج مستقلان' },
       ],
       image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=900&h=700&fit=crop',
+    },
+    {
+      slug:    'windows',
+      label:   { en: 'Windows',  ar: 'نوافذ'   },
+      tagline: { en: 'Thermally superior uPVC windows for UAE residences', ar: 'نوافذ uPVC متفوقة حرارياً للمساكن الإماراتية' },
+      description: {
+        en: 'From slim fixed lights to operable tilt-and-turn units, our uPVC windows are validated for UAE summer conditions — colour-stable above 70°C, sound-attenuating up to 45 dB, and available in any RAL colour.',
+        ar: 'من الوحدات الثابتة النحيلة إلى الوحدات المائلة والدوارة، نوافذنا من الـ uPVC معتمدة لظروف صيف الإمارات — مستقرة اللون فوق 70°C، ومخفِّفة للصوت حتى 45 ديسيبل.',
+      },
+      characteristics: [
+        { en: 'Casement, sliding, tilt-and-turn, and fixed configurations', ar: 'أشكال مفتوحة، انزلاقية، مائلة ودوارة، وثابتة' },
+        { en: 'U-value from 1.0 W/m²K with double glazing',                 ar: 'قيمة U من 1.0 واط/م²ك مع الزجاج المزدوج'         },
+        { en: 'Sound reduction up to 45 dB with acoustic glass',            ar: 'خفض الضوضاء حتى 45 ديسيبل مع الزجاج الصوتي'      },
+        { en: 'Colour-stable above 70°C surface temperature',               ar: 'مستقر اللون فوق 70°C لدرجة حرارة السطح'           },
+      ],
+      image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&h=700&fit=crop',
+    },
+    {
+      slug:    'curtain-wall',
+      label:   { en: 'Curtain Wall', ar: 'جدار ستارة'   },
+      tagline: { en: 'Lightweight uPVC facade systems for residential towers', ar: 'أنظمة واجهة uPVC خفيفة الوزن للأبراج السكنية' },
+      description: {
+        en: 'Our uPVC curtain-wall system provides a non-load-bearing exterior envelope with excellent weather resistance, thermal insulation, and low maintenance — ideal for mid-rise residential buildings across the UAE.',
+        ar: 'يوفر نظام الجدار الستار من uPVC غلافاً خارجياً غير حامل للأحمال بمقاومة ممتازة للأحوال الجوية وعزل حراري وصيانة منخفضة.',
+      },
+      characteristics: [
+        { en: 'Non-structural cladding — independent of building frame', ar: 'كسوة غير إنشائية — مستقلة عن الهيكل الإنشائي للمبنى' },
+        { en: 'Weather-sealed to EN 13116 — wind, rain, and UV resistant', ar: 'مغلق ضد الطقس وفق EN 13116 — مقاوم للرياح والمطر والأشعة فوق البنفسجية' },
+        { en: 'Thermally broken profile — U-value from 1.2 W/m²K',       ar: 'قطاع بكسر حراري — قيمة U من 1.2 واط/م²ك'              },
+        { en: 'Custom RAL colours with 25-year colour warranty',          ar: 'ألوان RAL مخصصة مع ضمان لون لمدة 25 عاماً'            },
+      ],
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=700&fit=crop',
     },
     {
       slug:    'staircases',
@@ -236,20 +268,68 @@ const aluminum: MaterialContent = {
 
   categories: [
     {
-      slug:    'doors-and-windows',
-      label:   { en: 'Doors & Windows',  ar: 'أبواب ونوافذ'      },
-      tagline: { en: 'Slim profiles, maximum light, zero compromise', ar: 'قطاعات نحيلة، ضوء أقصى، لا تنازل' },
+      slug:    'doors',
+      label:   { en: 'Doors',    ar: 'أبواب'     },
+      tagline: { en: 'Slim aluminium doors — maximum light, zero compromise', ar: 'أبواب ألومنيوم نحيلة — ضوء أقصى، لا تنازل' },
       description: {
-        en: 'Aluminium doors and windows deliver sight lines up to 40% slimmer than uPVC equivalents, maximising glazed area and natural light. Our thermally-broken systems meet both UAE energy code requirements and the performance expectations of international architects.',
-        ar: 'توفر أبواب ونوافذ الألومنيوم خطوط رؤية أنحف بنسبة تصل إلى 40% مقارنة بمكافلاتها من uPVC، مما يزيد من مساحة الزجاج والضوء الطبيعي.',
+        en: 'Aluminium doors deliver sight lines up to 40% slimmer than uPVC equivalents, maximising glazed area. Our thermally-broken systems meet both UAE energy code requirements and the performance expectations of international architects.',
+        ar: 'تقدم أبواب الألومنيوم خطوط رؤية أنحف بنسبة تصل إلى 40% مقارنة بمكافلاتها من uPVC، مما يزيد من مساحة الزجاج.',
       },
       characteristics: [
-        { en: 'Thermal break polyamide — U-value from 1.4 W/m²K', ar: 'كسر حراري بولياميد — قيمة U من 1.4 واط/م²ك'       },
-        { en: 'Profiles as slim as 35mm visible face width',       ar: 'قطاعات بعرض وجه مرئي يصل إلى 35 مم'               },
-        { en: 'PVDF powder coating — 40-year colour warranty',     ar: 'طلاء بودرة PVDF — ضمان لون لمدة 40 عاماً'           },
-        { en: 'Compliant with Dubai Green Building Regulations',   ar: 'متوافق مع لوائح المباني الخضراء في دبي'              },
+        { en: 'Thermal break polyamide — U-value from 1.4 W/m²K', ar: 'كسر حراري بولياميد — قيمة U من 1.4 واط/م²ك' },
+        { en: 'Profiles as slim as 35mm visible face width',       ar: 'قطاعات بعرض وجه مرئي يصل إلى 35 مم'          },
+        { en: 'PVDF powder coating — 40-year colour warranty',     ar: 'طلاء بودرة PVDF — ضمان لون لمدة 40 عاماً'      },
+        { en: 'Compliant with Dubai Green Building Regulations',   ar: 'متوافق مع لوائح المباني الخضراء في دبي'         },
       ],
       image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&h=700&fit=crop',
+    },
+    {
+      slug:    'windows',
+      label:   { en: 'Windows',  ar: 'نوافذ'    },
+      tagline: { en: 'Floor-to-ceiling aluminium windows for modern facades', ar: 'نوافذ ألومنيوم من الأرض إلى السقف للواجهات الحديثة' },
+      description: {
+        en: 'From slim fixed lights to full-height operable panels, our aluminium windows maximise natural light while meeting UAE energy code. Thermally-broken profiles reduce U-value to 1.4 W/m²K.',
+        ar: 'من الوحدات الثابتة النحيلة إلى الألواح القابلة للفتح بالارتفاع الكامل، نوافذنا الألومنيوم تزيد الضوء الطبيعي مع الامتثال لقانون طاقة الإمارات.',
+      },
+      characteristics: [
+        { en: 'Casement, tilt-and-turn, sliding, and fixed options', ar: 'خيارات مفتوحة ومائلة وانزلاقية وثابتة'                  },
+        { en: 'Thermal break — U-value from 1.4 W/m²K',             ar: 'كسر حراري — قيمة U من 1.4 واط/م²ك'                     },
+        { en: '40-year PVDF colour warranty',                         ar: 'ضمان لون PVDF لمدة 40 عاماً'                           },
+        { en: 'Compliant with Dubai Green Building Regulations',      ar: 'متوافق مع لوائح المباني الخضراء في دبي'                  },
+      ],
+      image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=900&h=700&fit=crop',
+    },
+    {
+      slug:    'curtain-wall',
+      label:   { en: 'Curtain Wall',  ar: 'جدار ستارة'    },
+      tagline: { en: 'High-rise aluminium facades — structural glass from ground to sky', ar: 'واجهات ألومنيوم لناطحات السحاب — زجاج هيكلي من الأرض إلى السماء' },
+      description: {
+        en: 'Our unitised and stick-built aluminium curtain-wall systems serve UAE commercial towers and hospitality projects. Engineered to 2400 Pa wind load and Dubai Municipality Authority approval.',
+        ar: 'تخدم أنظمة الجدار الستار الألومنيوم الموحّدة والمثبتة بالعصا الأبراج التجارية ومشاريع الضيافة في الإمارات.',
+      },
+      characteristics: [
+        { en: 'Unitised system — factory-assembled for fast site installation', ar: 'نظام موحّد — مجمَّع في المصنع للتركيب السريع بالموقع' },
+        { en: '2400 Pa wind-load rating for high-rise conditions',             ar: 'تصنيف حمولة رياح 2400 باسكال لظروف ناطحات السحاب'   },
+        { en: 'Solar-control double-glazing — low SHGC for UAE climate',       ar: 'زجاج مزدوج للتحكم الشمسي — SHGC منخفض لمناخ الإمارات' },
+        { en: 'DM and Abu Dhabi UPC authority-approved',                       ar: 'معتمد من بلدية دبي ومركز أبوظبي للتخطيط العمراني'       },
+      ],
+      image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&h=700&fit=crop',
+    },
+    {
+      slug:    'acp-cladding',
+      label:   { en: 'ACP Cladding',  ar: 'كسوة ACP'     },
+      tagline: { en: 'Aluminium composite cladding that defines the building\'s identity', ar: 'كسوة الألومنيوم المركب التي تُعرِّف هوية المبنى' },
+      description: {
+        en: 'Aluminium composite panels (ACP) are the dominant façade cladding material across UAE commercial and residential towers. Emaar supplies and installs FR-grade ACP systems fully compliant with Dubai Civil Defence circular 5 of 2016.',
+        ar: 'تُعدّ ألواح الألومنيوم المركبة (ACP) مادة الكسوة السائدة على واجهات الأبراج التجارية والسكنية في الإمارات.',
+      },
+      characteristics: [
+        { en: 'FR-grade core — compliant with Dubai Civil Defence circ. 5/2016', ar: 'قلب من درجة FR — متوافق مع تعميم الدفاع المدني بدبي 5/2016' },
+        { en: 'PVDF colour coat — 30-year fade warranty',                        ar: 'طلاء ملوّن PVDF — ضمان بهتان لمدة 30 عاماً'                    },
+        { en: 'Panel sizes up to 1500 × 6000 mm',                               ar: 'أحجام لوحات تصل إلى 1500 × 6000 مم'                            },
+        { en: 'Full design service — shop drawings and engineering sign-off',    ar: 'خدمة تصميم كاملة — رسومات ورشة وموافقة هندسية'                  },
+      ],
+      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=700&fit=crop',
     },
     {
       slug:    'staircases',
@@ -347,22 +427,6 @@ const aluminum: MaterialContent = {
       ],
       image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=900&h=700&fit=crop',
     },
-    {
-      slug:    'acp-panels',
-      label:   { en: 'ACP Panels',       ar: 'ألواح ACP'          },
-      tagline: { en: 'Façade cladding that defines the building\'s identity', ar: 'كسوة واجهة تُعرِّف هوية المبنى' },
-      description: {
-        en: 'Aluminium composite panels (ACP) are the dominant façade cladding material across UAE commercial and residential towers. Emaar supplies and installs FR-grade (fire-retardant) ACP systems in full compliance with Dubai Civil Defence circular 5 of 2016 — the regulation governing fire safety of high-rise facades.',
-        ar: 'تُعدّ ألواح الألومنيوم المركبة (ACP) مادة الكسوة السائدة على واجهات الأبراج التجارية والسكنية في الإمارات. توفر إعمار وتركّب أنظمة ACP من درجة FR (مقاومة الحريق) بما يتوافق تماماً مع التعميم 5 لعام 2016 من الدفاع المدني في دبي.',
-      },
-      characteristics: [
-        { en: 'FR-grade core — compliant with Dubai Civil Defence circ. 5/2016', ar: 'قلب من درجة FR — متوافق مع تعميم الدفاع المدني بدبي 5/2016' },
-        { en: 'PVDF colour coat — 30-year fade warranty',                        ar: 'طلاء ملوّن PVDF — ضمان بهتان لمدة 30 عاماً'                    },
-        { en: 'Panel sizes up to 1500 × 6000 mm',                               ar: 'أحجام لوحات تصل إلى 1500 × 6000 مم'                            },
-        { en: 'Full design service — shop drawings and engineering sign-off',    ar: 'خدمة تصميم كاملة — رسومات ورشة وموافقة هندسية'                  },
-      ],
-      image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&h=700&fit=crop',
-    },
   ],
 
   whyEmaar: [
@@ -442,6 +506,22 @@ const glass: MaterialContent = {
 
   categories: [
     {
+      slug:    'double-glazing',
+      label:   { en: 'Double Glazing',   ar: 'زجاج مزدوج'         },
+      tagline: { en: 'Maximum thermal performance — two glass panes, one sealed unit', ar: 'أداء حراري أقصى — لوحتان زجاجيتان، وحدة مختومة واحدة' },
+      description: {
+        en: 'Our double-glazed units (DGUs) combine two glass panes with a hermetically sealed cavity filled with argon gas, delivering U-values from 1.0 W/m²K. Available with Low-E coating, solar-control tints, and acoustic interlayers.',
+        ar: 'تجمع وحدات الزجاج المزدوج (DGU) لدينا بين لوحتين زجاجيتين مع تجويف مختوم محكم مملوء بغاز الأرجون، لتوفير قيم U تبدأ من 1.0 واط/م²ك.',
+      },
+      characteristics: [
+        { en: 'Argon-filled cavity — U-value from 1.0 W/m²K',         ar: 'تجويف مملوء بالأرجون — قيمة U من 1.0 واط/م²ك'      },
+        { en: 'Low-E coating — blocks 70% solar heat gain',            ar: 'طلاء Low-E — يحجب 70% من اكتساب الحرارة الشمسية'   },
+        { en: 'Sound reduction up to 40 dB with acoustic interlayer',  ar: 'تخفيض الضوضاء حتى 40 ديسيبل مع طبقة صوتية'         },
+        { en: 'Solar-control tints: neutral, blue, green, and bronze', ar: 'ظلال للتحكم الشمسي: محايد وأزرق وأخضر وبرونزي'      },
+      ],
+      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&h=700&fit=crop',
+    },
+    {
       slug:    'stained-glass',
       label:   { en: 'Stained Glass',   ar: 'زجاج ملون'          },
       tagline: { en: 'Hand-crafted colour narratives for remarkable spaces', ar: 'سرديات لونية مصنوعة يدوياً لمساحات استثنائية' },
@@ -458,8 +538,8 @@ const glass: MaterialContent = {
       image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=900&h=700&fit=crop',
     },
     {
-      slug:    'sandblast',
-      label:   { en: 'Sandblast',       ar: 'زجاج مسند'          },
+      slug:    'sandblasted-glass',
+      label:   { en: 'Sandblasted Glass', ar: 'زجاج مسند'         },
       tagline: { en: 'Calibrated privacy — light without sight lines', ar: 'خصوصية مُعايَرة — ضوء بلا خطوط رؤية' },
       description: {
         en: 'Sandblasted glass achieves translucency gradients impossible with frosted film or acid etching. Our CNC-controlled sandblast process can reproduce precise patterns, logos, gradients, and textures on any glass thickness from 6mm to 19mm — creating privacy screens, partition walls, and door panels that are both functional and architectural.',
@@ -472,6 +552,22 @@ const glass: MaterialContent = {
         { en: 'Combine with colour lacquer for tinted translucency', ar: 'يمكن دمجه مع لاك ملون للشفافية الملونة'             },
       ],
       image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&h=700&fit=crop',
+    },
+    {
+      slug:    'decorative-glass',
+      label:   { en: 'Decorative Glass', ar: 'زجاج زخرفي'         },
+      tagline: { en: 'Georgian bar and Islamic geometric glass for distinctive interiors', ar: 'زجاج بشريط جورجي وهندسة إسلامية لمساحات داخلية مميزة' },
+      description: {
+        en: 'Our decorative glass range combines Georgian bar grid patterns with traditional Islamic geometric designs. Handcrafted in our SAIF Zone studio, each panel is a bespoke commission executed in lead-came, painted, or sandblasted technique.',
+        ar: 'يجمع نطاق الزجاج الزخرفي لدينا بين أنماط شبكة الشريط الجورجي والتصاميم الهندسية الإسلامية التقليدية. يُصنع كل لوح يدوياً في استوديونا بالمنطقة الحرة.',
+      },
+      characteristics: [
+        { en: 'Georgian bar grids in brass, white, and custom RAL finishes', ar: 'شبكات الشريط الجورجي بتشطيبات نحاسية وبيضاء وRAL مخصصة' },
+        { en: 'Islamic geometric motifs — hand-drawn original designs',      ar: 'نقوش هندسية إسلامية — تصاميم أصلية مرسومة يدوياً'         },
+        { en: 'Lead-came, fired-paint, or sandblast execution options',      ar: 'خيارات تنفيذ بالرصاص أو الطلاء المحروق أو السند'          },
+        { en: 'Physical colour samples provided before production',          ar: 'عينات لون مادية مقدَّمة قبل الإنتاج'                      },
+      ],
+      image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=900&h=700&fit=crop',
     },
   ],
 

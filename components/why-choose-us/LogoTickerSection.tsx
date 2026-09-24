@@ -3,11 +3,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
+import InfiniteMarquee from '@/components/ui/InfiniteMarquee';
 import type { ClientLogo } from '@/lib/sanity/types';
 
-/* pr-16 on each strip adds trailing padding equal to gap-16,
-   so the seam between strip 1 and strip 2 has the same spacing
-   as gaps within each strip — the loop is visually seamless. */
 const PLACEHOLDER_COMPANIES = [
   'Al Rashidi Contracting',
   'Mahmoud Design Studio',
@@ -20,7 +18,7 @@ const PLACEHOLDER_COMPANIES = [
 ];
 
 interface LogoItemProps {
-  name: string
+  name:     string
   logoUrl?: string
 }
 
@@ -45,9 +43,9 @@ function LogoItem({ name, logoUrl }: LogoItemProps) {
 
   return (
     /* h-12 = 48px per spec; cream placeholder box for text fallback */
-    <div className="shrink-0 h-12 px-8 flex items-center justify-center bg-cream rounded-[4px]
-      border border-transparent hover:border-silver-flat group transition-colors duration-150 cursor-default">
-      <span className="text-sm font-medium text-text-muted group-hover:text-text-heading whitespace-nowrap transition-colors duration-150">
+    <div className="shrink-0 h-12 px-8 flex items-center justify-center bg-surface-cream
+      border border-transparent hover:border-border-medium group transition-colors duration-150 cursor-default">
+      <span className="text-sm font-medium text-ink-muted group-hover:text-ink-heading whitespace-nowrap transition-colors duration-150">
         {name}
       </span>
     </div>
@@ -61,39 +59,49 @@ interface LogoTickerSectionProps {
 export default function LogoTickerSection({ clientLogos }: LogoTickerSectionProps) {
   const { isRTL } = useLanguage();
   const t = useTranslation();
+  const [paused, setPaused] = useState(false);
 
-  // Build the items array from CMS data or fall back to placeholder company names
+  // Build items from CMS data or fall back to placeholder company names
   const items: Array<{ key: string; name: string; logoUrl?: string }> =
     clientLogos.length > 0
       ? clientLogos.map((cl) => ({
-          key: cl._id,
-          name: isRTL ? cl.companyName.ar : cl.companyName.en,
+          key:    cl._id,
+          name:   isRTL ? cl.companyName.ar : cl.companyName.en,
           logoUrl: cl.logo ?? undefined,
         }))
       : PLACEHOLDER_COMPANIES.map((name) => ({ key: name, name }));
 
+  // Cards rendered once — InfiniteMarquee duplicates them internally
+  const cards = items.map((item) => (
+    <div
+      key={item.key}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <LogoItem name={item.name} logoUrl={item.logoUrl} />
+    </div>
+  ));
+
+  // RTL pages scroll right (same visual left-to-right reading feel)
+  const direction = isRTL ? 'right' : 'left';
+
   return (
-    /* overflow-hidden clips the strips as they translate off-screen */
     <section className="py-16 bg-off-white overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Centred label — obeys page language direction */}
-      <p className="text-[11px] tracking-[0.22em] uppercase text-text-muted text-center pb-8 px-4">
+      <p className="text-[11px] tracking-[0.22em] uppercase text-ink-muted text-center pb-8 px-4">
         {t('TRUSTED BY LEADING COMPANIES', 'موثوق به من كبرى الشركات')}
       </p>
 
-      {/* Ticker always scrolls LTR regardless of page language */}
-      <div className="ticker-pause flex" dir="ltr">
-        {/* Strip 1 — visible */}
-        <div className="flex items-center gap-16 shrink-0 animate-marquee pr-16">
-          {items.map((item) => (
-            <LogoItem key={item.key} name={item.name} logoUrl={item.logoUrl} />
-          ))}
-        </div>
-        {/* Strip 2 — aria-hidden duplicate that fills in when strip 1 exits */}
-        <div className="flex items-center gap-16 shrink-0 animate-marquee pr-16" aria-hidden="true">
-          {items.map((item) => (
-            <LogoItem key={`d-${item.key}`} name={item.name} logoUrl={item.logoUrl} />
-          ))}
-        </div>
+      {/* gap-16 between items — matches the previous CSS version */}
+      <div className="[&_>div>div]:gap-16">
+        <InfiniteMarquee
+          duration={30}
+          direction={direction}
+          paused={paused}
+          childrenCopy={cards}
+        >
+          {cards}
+        </InfiniteMarquee>
       </div>
     </section>
   );
