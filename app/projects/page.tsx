@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import ProjectsGrid from '@/components/projects/ProjectsGrid';
-import CTASection from '@/components/home/CTASection';
+import ProjectCTA from '@/components/projects/ProjectCTA';
 import { sanityFetch } from '@/lib/sanity/client';
 import { projectsQuery } from '@/lib/sanity/queries';
 import type { SanityProject } from '@/lib/sanity/types';
@@ -22,7 +22,7 @@ export default async function ProjectsPage() {
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center" />}>
         <ProjectsGrid projects={projects} />
       </Suspense>
-      <CTASection whatsappContext={{ page: 'projects' }} />
+      <ProjectCTA />
     </div>
   );
 }

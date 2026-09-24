@@ -34,6 +34,14 @@ export default function ProjectsGrid({ projects = [] }: Props) {
     if (materialParam) setMaterialFilter(materialParam);
   }, [searchParams]);
 
+  // Hash-anchor init on mount — /projects#villas sets filter to 'villas', etc.
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'villas' || hash === 'buildings' || hash === 'towers') {
+      setSectorFilter(hash);
+    }
+  }, []);
+
   // Normalise Sanity projects into the flat DisplayProject shape
   const displayProjects: DisplayProject[] = projects.map((p) => ({
     id:       p.slug,
@@ -139,18 +147,51 @@ export default function ProjectsGrid({ projects = [] }: Props) {
           </motion.div>
         </div>
 
-        <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <AnimatePresence>
-            {filteredProjects.map((project) => (
-              <ProjectCard key={String(project.id)} project={project} idx={project.id} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {filteredProjects.length === 0 && (
-          <div className="text-center py-20 text-ink-muted">
-            {language === 'en' ? 'No projects found matching these filters.' : 'لا توجد مشاريع تطابق هذه معايير التصفية.'}
+        {/* All mode: grouped by type with hash-anchor dividers */}
+        {sectorFilter === 'all' ? (
+          <div>
+            {(['villas', 'buildings', 'towers'] as const).map((type, i) => {
+              const group = filteredProjects.filter(p => p.type === type);
+              if (!group.length) return null;
+              return (
+                <div key={type}>
+                  {i > 0 && <div className="border-t border-border-light my-10" />}
+                  <div id={type} aria-hidden="true" />
+                  <p className={`text-sm font-bold uppercase tracking-widest text-ink-muted mb-6 ${isRTL ? 'text-right' : ''}`}>
+                    {typeLabels[type][language]}
+                  </p>
+                  <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-2">
+                    <AnimatePresence>
+                      {group.map(project => (
+                        <ProjectCard key={String(project.id)} project={project} idx={project.id} />
+                      ))}
+                    </AnimatePresence>
+                  </motion.div>
+                </div>
+              );
+            })}
+            {filteredProjects.length === 0 && (
+              <div className="text-center py-20 text-ink-muted">
+                {language === 'en' ? 'No projects found matching these filters.' : 'لا توجد مشاريع تطابق هذه معايير التصفية.'}
+              </div>
+            )}
           </div>
+        ) : (
+          /* Single-type mode: flat grid (unchanged) */
+          <>
+            <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <AnimatePresence>
+                {filteredProjects.map((project) => (
+                  <ProjectCard key={String(project.id)} project={project} idx={project.id} />
+                ))}
+              </AnimatePresence>
+            </motion.div>
+            {filteredProjects.length === 0 && (
+              <div className="text-center py-20 text-ink-muted">
+                {language === 'en' ? 'No projects found matching these filters.' : 'لا توجد مشاريع تطابق هذه معايير التصفية.'}
+              </div>
+            )}
+          </>
         )}
 
       </div>
