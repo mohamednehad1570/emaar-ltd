@@ -37,6 +37,7 @@ import Link from 'next/link';
 import EmaarLogo from '@/components/ui/EmaarLogo'; // shared logo + wordmark atom
 import { useLanguage, useTranslation } from '../contexts/LanguageContext';
 import { cn } from '@/lib/cn';
+import { SOLUTIONS, MATERIAL_ORDER } from '@/lib/data/nav';
 import Container from './layout/Container';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -65,12 +66,15 @@ const COLUMNS: Column[] = [
     id: 'products',
     en: 'Products',
     ar: 'المنتجات',
+    // Derived from the nav's SOLUTIONS tree so footer and header can never drift;
+    // each entry pairs a section label with that section's landing-page href
     links: [
-      { en: 'All Products',     ar: 'جميع المنتجات',    href: '/products'          },
-      { en: 'uPVC Systems',     ar: 'أنظمة UPVC',       href: '/products/upvc'     },
-      { en: 'Aluminum Systems', ar: 'أنظمة الألومنيوم', href: '/products/aluminum' },
-      { en: 'Glass Systems',    ar: 'أنظمة الزجاج',     href: '/products/glass'    },
-      { en: 'Accessories',      ar: 'الإكسسوارات',       href: '/accessories'       },
+      { en: 'All Products', ar: 'جميع المنتجات', href: SOLUTIONS.products.viewAll.href },
+      ...MATERIAL_ORDER.map(m => ({
+        ...SOLUTIONS.products.materials[m].label,
+        href: SOLUTIONS.products.materials[m].viewAll.href,
+      })),
+      { ...SOLUTIONS.accessories.label, href: SOLUTIONS.accessories.viewAll.href },
     ],
   },
   {
@@ -80,7 +84,7 @@ const COLUMNS: Column[] = [
     links: [
       { en: 'About Us',  ar: 'من نحن',          href: '/about'     },
       { en: 'Why Emaar', ar: 'لماذا إمار',       href: '/why-choose-us' },
-      { en: 'Projects',  ar: 'المشاريع',         href: '/projects'  },
+      { ...SOLUTIONS.projects.label, href: SOLUTIONS.projects.viewAll.href },
       { en: 'Careers',   ar: 'الوظائف',          href: '/careers'   },
       { en: 'FAQ',       ar: 'الأسئلة الشائعة',  href: '/faq'       },
     ],
@@ -363,7 +367,7 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
             <Link
               href="/"
               className="inline-flex"
-              aria-label="Emaar International Industry LLC — home"
+              aria-label="Emaar International Industry — home"
             >
               <EmaarLogo size="footer" textSize="sm" />
             </Link>
@@ -432,7 +436,7 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
             <Link
               href="/"
               className="inline-flex"
-              aria-label="Emaar International Industry LLC — home"
+              aria-label="Emaar International Industry — home"
             >
               <EmaarLogo size="footer" textSize="sm" />
             </Link>
@@ -489,8 +493,9 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
           flex flex-col sm:flex-row items-center justify-between gap-4
         ">
           <p className="text-xs text-text-muted text-center sm:text-start">
+            {/* The only place the legal suffix appears — brand name elsewhere drops it */}
             {l(
-              `© ${year} EMAAR International Industry LLC. All rights reserved.`,
+              `© ${year} Emaar International Industry L.L.C. All rights reserved.`,
               `© ${year} إعمار الدولية للصناعة ذ.م.م. جميع الحقوق محفوظة.`,
             )}
           </p>

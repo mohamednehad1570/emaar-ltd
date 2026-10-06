@@ -4,8 +4,8 @@ export function organizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Emaar International",
-    alternateName: "إعمار الدولية للصناعة ذ.م.م",
+    name: "Emaar International Industry",
+    alternateName: "إعمار الدولية للصناعة",
     url: "https://emaarupvc.ae",
     logo: "https://emaarupvc.ae/emaar-logo.png",
     description:

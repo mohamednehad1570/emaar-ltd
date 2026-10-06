@@ -21,7 +21,7 @@ export const aboutData = {
     story: {
       title: 'Our Story',
       intro:
-        'Founded in 2004, EMAAR International Industry LLC emerged with a clear vision: to revolutionize the windows and doors industry in the United Arab Emirates.',
+        'Founded in 2004, Emaar International Industry emerged with a clear vision: to revolutionize the windows and doors industry in the United Arab Emirates.',
       body1:
         'What began as a modest operation has grown into one of the most trusted names in premium uPVC and aluminum solutions. Our journey has been marked by continuous innovation, unwavering quality standards, and an uncompromising commitment to customer satisfaction.',
       body2:
@@ -174,7 +174,7 @@ export const aboutData = {
     story: {
       title: 'قصتنا',
       intro:
-        'تأسست شركة إعمار الدولية للصناعة ذ.م.م في عام 2004 برؤية واضحة: إحداث ثورة في صناعة النوافذ والأبواب في دولة الإمارات العربية المتحدة.',
+        'تأسست شركة إعمار الدولية للصناعة في عام 2004 برؤية واضحة: إحداث ثورة في صناعة النوافذ والأبواب في دولة الإمارات العربية المتحدة.',
       body1:
         'ما بدأ كعملية متواضعة نما ليصبح واحدًا من أكثر الأسماء الموثوقة في حلول uPVC والألومنيوم المتميزة. تميزت رحلتنا بالابتكار المستمر ومعايير الجودة الثابتة والالتزام الذي لا يتزعزع برضا العملاء.',
       body2:
