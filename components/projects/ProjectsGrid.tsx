@@ -1,18 +1,40 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+/**
+ * components/projects/ProjectsGrid.tsx
+ *
+ * /projects portfolio: title, type + material filter rows, then either
+ *  • "All" — grouped Residential / Commercial sections, each carrying its anchor id, or
+ *  • a single type — flat grid whose wrapper carries that type's id.
+ * Hash deep links (#residential / #commercial) are handled by useProjectHashFilter.
+ */
+
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { useSearchParams } from 'next/navigation';
+import { useLanguage } from '@/contexts/LanguageContext';
+import Container from '@/components/layout/Container';
 import { fadeUp, viewportOnce } from '@/lib/motion';
 import ProjectCard from './ProjectCard';
-import type { ProjectListItem } from '@/lib/data/projectContent';
+import ProjectFilterBar from './ProjectFilterBar';
+import { useProjectHashFilter, type SectorFilter } from './useProjectHashFilter';
+import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectListItem } from '@/lib/data/projectContent';
 import type { DisplayProject } from '@/lib/types';
 
-const typeLabels: Record<string, { en: string; ar: string }> = {
-  villas:    { en: 'Villas',    ar: 'فلل'   },
-  buildings: { en: 'Buildings', ar: 'مباني' },
-};
+type MaterialFilter = 'all' | 'upvc' | 'aluminum';
+
+const SECTORS: readonly { id: SectorFilter; label: { en: string; ar: string } }[] = [
+  { id: 'all', label: { en: 'All', ar: 'الكل' } },
+  ...PROJECT_TYPES.map((id) => ({ id, label: PROJECT_TYPE_LABELS[id].chip })),
+];
+
+const MATERIALS: readonly { id: MaterialFilter; label: { en: string; ar: string } }[] = [
+  { id: 'all',      label: { en: 'All Materials', ar: 'جميع المواد' } },
+  { id: 'upvc',     label: { en: 'uPVC',          ar: 'uPVC'        } },
+  { id: 'aluminum', label: { en: 'Aluminum',      ar: 'ألومنيوم'    } },
+];
+
+const EMPTY = { en: 'No projects found matching these filters.', ar: 'لا توجد مشاريع تطابق معايير التصفية هذه.' };
 
 interface Props {
   projects: ProjectListItem[];
@@ -23,47 +45,19 @@ export default function ProjectsGrid({ projects }: Props) {
   const searchParams = useSearchParams();
   const shouldReduce = useReducedMotion();
 
-  const [sectorFilter, setSectorFilter] = useState('all');
-  const [materialFilter, setMaterialFilter] = useState('all');
+  const [sector, setSector] = useProjectHashFilter(searchParams.get('category'));
+  const [material, setMaterial] = useState<MaterialFilter>('all');
 
   useEffect(() => {
-    const categoryParam = searchParams.get('category');
-    const materialParam = searchParams.get('material');
-    if (categoryParam) setSectorFilter(categoryParam);
-    if (materialParam) setMaterialFilter(materialParam);
+    const m = searchParams.get('material');
+    if (m === 'upvc' || m === 'aluminum') setMaterial(m);
   }, [searchParams]);
-
-  // Hash anchors — /projects#villas sets filter to 'villas', etc. Also follows later
-  // hash changes, which same-page menu links dispatch via followSamePageHash.
-  // The extra frame matters on client navigation: this effect runs before Next has
-  // written the new #hash into the URL, so a same-tick read still sees the old one.
-  const pendingScroll = useRef<string | null>(null);
-  useEffect(() => {
-    const sync = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (hash !== 'villas' && hash !== 'buildings') return;
-      pendingScroll.current = hash;
-      setSectorFilter(hash);
-    };
-    const frame = requestAnimationFrame(sync);
-    window.addEventListener('hashchange', sync);
-    return () => { cancelAnimationFrame(frame); window.removeEventListener('hashchange', sync); };
-  }, []);
-
-  // Changing the filter re-renders the grid and moves the anchor, so the browser's
-  // own jump lands in the wrong place — scroll again once the new layout is in
-  useEffect(() => {
-    const id = pendingScroll.current;
-    if (!id) return;
-    pendingScroll.current = null;
-    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-  }, [sectorFilter]);
 
   // Flatten the bilingual static projects to the active language
   const displayProjects: DisplayProject[] = projects.map((p) => ({
     id:       p.id,
     title:    p.title[language],
-    category: typeLabels[p.type][language],
+    category: PROJECT_TYPE_LABELS[p.type].chip[language],
     location: p.location[language],
     image:    p.image,
     year:     p.year,
@@ -72,36 +66,32 @@ export default function ProjectsGrid({ projects }: Props) {
     material: p.materials.some((m) => m.en.includes('uPVC')) ? 'upvc' : 'aluminum',
   }));
 
-  const sectors = [
-    { id: 'all',       label: { en: 'All Types', ar: 'جميع الأنواع' } },
-    { id: 'villas',    label: { en: 'Villas',     ar: 'فلل'          } },
-    { id: 'buildings', label: { en: 'Buildings',  ar: 'مباني'        } },
-  ];
+  const filtered = displayProjects.filter((p) =>
+    (sector === 'all' || p.type === sector) && (material === 'all' || p.material === material));
 
-  const materials = [
-    { id: 'all', label: { en: 'All Materials', ar: 'جميع المواد' } },
-    { id: 'upvc', label: { en: 'uPVC', ar: 'uPVC' } },
-    { id: 'aluminum', label: { en: 'Aluminum', ar: 'ألومنيوم' } },
-  ];
+  const reveal = {
+    variants: fadeUp,
+    initial: shouldReduce ? {} : 'hidden',
+    whileInView: shouldReduce ? undefined : 'visible',
+    viewport: shouldReduce ? undefined : viewportOnce,
+  };
 
-  const filteredProjects = displayProjects.filter(p => {
-    const sectorMatch = sectorFilter === 'all' || p.type === sectorFilter;
-    const materialMatch = materialFilter === 'all' || p.material === materialFilter;
-    return sectorMatch && materialMatch;
-  });
+  const grid = (items: DisplayProject[]) => (
+    <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <AnimatePresence>
+        {items.map((project) => <ProjectCard key={String(project.id)} project={project} />)}
+      </AnimatePresence>
+    </motion.div>
+  );
 
   return (
     // Header height + 4rem breathing room above the page title
-    <section className="pt-[calc(var(--header-h)+4rem)] pb-16 px-6 bg-off-white min-h-screen" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="max-w-7xl mx-auto">
+    <section className="pt-[calc(var(--header-h)+4rem)] pb-16 bg-off-white min-h-screen" dir={isRTL ? 'rtl' : 'ltr'}>
+      <Container>
 
+        {/* ── Title + filters ─────────────────────────────────── */}
         <div className="text-center mb-16">
-          <motion.div
-            variants={fadeUp}
-            initial={shouldReduce ? {} : 'hidden'}
-            whileInView={shouldReduce ? undefined : 'visible'}
-            viewport={shouldReduce ? undefined : viewportOnce}
-          >
+          <motion.div {...reveal}>
             <h1
               className="font-extrabold text-ink-heading mb-6 tracking-[-0.02em] leading-[0.95] text-balance"
               style={{ fontSize: 'clamp(2.75rem, 5vw, 5rem)' }}
@@ -110,106 +100,46 @@ export default function ProjectsGrid({ projects }: Props) {
             </h1>
             <p className="text-xl text-ink-body max-w-2xl mx-auto mb-10">
               {language === 'en'
-                ? 'Projects across the UAE — from beachfront resorts to commercial towers, each delivered to specification.'
-                : 'مشاريع في جميع أنحاء الإمارات — من المنتجعات الساحلية إلى الأبراج التجارية، كل منها وفق المواصفات.'}
+                ? 'Residential and commercial projects across the UAE, each delivered to specification.'
+                : 'مشاريع سكنية وتجارية في جميع أنحاء الإمارات، كل منها وفق المواصفات.'}
             </p>
           </motion.div>
 
-          <motion.div
-            className="space-y-6"
-            variants={fadeUp}
-            initial={shouldReduce ? {} : 'hidden'}
-            whileInView={shouldReduce ? undefined : 'visible'}
-            viewport={shouldReduce ? undefined : viewportOnce}
-          >
-            <div className="flex flex-wrap justify-center gap-3">
-              <span className="w-full text-xs font-bold text-ink-muted uppercase tracking-widest mb-2">
-                {language === 'en' ? 'Filter by Type' : 'تصفية حسب النوع'}
-              </span>
-              {sectors.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSectorFilter(cat.id)}
-                  className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-colors duration-150 ${sectorFilter === cat.id
-                    ? 'bg-brand-dark text-white'
-                    : 'bg-surface-white text-ink-body hover:bg-surface-cream border border-border-light'
-                  }`}
-                >
-                  {cat.label[language]}
-                </button>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-3">
-              <span className="w-full text-xs font-bold text-ink-muted uppercase tracking-widest mb-2">
-                {language === 'en' ? 'Filter by Material' : 'تصفية حسب المادة'}
-              </span>
-              {materials.map((mat) => (
-                <button
-                  key={mat.id}
-                  onClick={() => setMaterialFilter(mat.id)}
-                  className={`px-5 py-2 min-h-[44px] rounded-none text-sm font-medium transition-colors duration-150 ${materialFilter === mat.id
-                    ? 'bg-brand-dark text-white'
-                    : 'bg-surface-white text-ink-body hover:bg-surface-cream border border-border-light'
-                  }`}
-                >
-                  {mat.label[language]}
-                </button>
-              ))}
-            </div>
+          <motion.div className="space-y-6" {...reveal}>
+            <ProjectFilterBar heading={{ en: 'Filter by Type', ar: 'تصفية حسب النوع' }} options={SECTORS} value={sector} onChange={setSector} />
+            <ProjectFilterBar heading={{ en: 'Filter by Material', ar: 'تصفية حسب المادة' }} options={MATERIALS} value={material} onChange={setMaterial} />
           </motion.div>
         </div>
 
-        {/* All mode: grouped by type with hash-anchor dividers */}
-        {sectorFilter === 'all' ? (
-          <div>
-            {(['villas', 'buildings'] as const).map((type, i) => {
-              const group = filteredProjects.filter(p => p.type === type);
-              if (!group.length) return null;
-              return (
-                <div key={type}>
-                  {i > 0 && <div className="border-t border-border-light my-10" />}
-                  <div id={type} aria-hidden="true" />
-                  <p className={`text-sm font-bold uppercase tracking-widest text-ink-muted mb-6 ${isRTL ? 'text-right' : ''}`}>
-                    {typeLabels[type][language]}
-                  </p>
-                  <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-2">
-                    <AnimatePresence>
-                      {group.map(project => (
-                        <ProjectCard key={String(project.id)} project={project} idx={project.id} />
-                      ))}
-                    </AnimatePresence>
-                  </motion.div>
+        {/* ── Results ─────────────────────────────────────────── */}
+        {sector === 'all' ? (
+          PROJECT_TYPES.map((type, i) => {
+            const group = filtered.filter((p) => p.type === type);
+            if (!group.length) return null;
+            return (
+              <React.Fragment key={type}>
+                {i > 0 && <div className="border-t border-border-light my-10" />}
+                {/* id doubles as the #residential / #commercial anchor target */}
+                <div id={type}>
+                  <h2 className="text-sm font-bold uppercase tracking-widest text-ink-muted mb-6 text-start">
+                    {PROJECT_TYPE_LABELS[type].heading[language]}
+                  </h2>
+                  {grid(group)}
                 </div>
-              );
-            })}
-            {filteredProjects.length === 0 && (
-              <div className="text-center py-20 text-ink-muted">
-                {language === 'en' ? 'No projects found matching these filters.' : 'لا توجد مشاريع تطابق هذه معايير التصفية.'}
-              </div>
-            )}
-          </div>
+              </React.Fragment>
+            );
+          })
         ) : (
-          /* Single-type mode: flat grid. The wrapper carries the type id so a
-             #villas / #buildings jump still has a target once the filter collapses
-             the grouped anchors above. */
-          <div id={sectorFilter}>
-            <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <AnimatePresence>
-                {filteredProjects.map((project) => (
-                  <ProjectCard key={String(project.id)} project={project} idx={project.id} />
-                ))}
-              </AnimatePresence>
-            </motion.div>
-            {filteredProjects.length === 0 && (
-              <div className="text-center py-20 text-ink-muted">
-                {language === 'en' ? 'No projects found matching these filters.' : 'لا توجد مشاريع تطابق هذه معايير التصفية.'}
-              </div>
-            )}
-          </div>
+          /* Single-type mode keeps the anchor id on the wrapper so the jump
+             still has a target once the grouped sections collapse */
+          <div id={sector}>{grid(filtered)}</div>
         )}
 
-      </div>
+        {filtered.length === 0 && (
+          <div className="text-center py-20 text-ink-muted">{EMPTY[language]}</div>
+        )}
+
+      </Container>
     </section>
   );
 }

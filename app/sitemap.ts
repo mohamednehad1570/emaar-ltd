@@ -33,15 +33,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
 
-    // Project type pages
+    // Projects — residential/commercial are #anchors on this page, not sub-routes
     {
-      url: `${BASE_URL}/projects/villas`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/projects/buildings`,
+      url: `${BASE_URL}/projects`,
       lastModified: now,
       changeFrequency: 'monthly',
       priority: 0.8,

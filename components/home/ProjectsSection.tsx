@@ -3,7 +3,7 @@
 /**
  * components/home/ProjectsSection.tsx
  *
- * Infinite marquee of project cards — 4 villas + 4 buildings mixed.
+ * Infinite marquee of project cards — 4 residential + 4 commercial mixed.
  * EN: moves right (opposite of products). AR: moves left.
  * Uses InfiniteMarquee shared component — pure Framer Motion, no CSS keyframes.
  */
@@ -26,62 +26,62 @@ interface ProjectCard {
   location: { en: string; ar: string }
   year:     string
   image:    ImageSrc
-  type:     'villa' | 'building'
+  type:     'residential' | 'commercial'
   href:     string
 }
 
 const PROJECT_CARDS: ProjectCard[] = [
   {
-    id: 'villa-jumeirah', type: 'villa', href: '/projects/villas',
+    id: 'villa-jumeirah', type: 'residential', href: '/projects#residential',
     title:    { en: 'Jumeirah Villa',        ar: 'فيلا جميرا'           },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2024',
     image: IMAGES.home.projects['villa-jumeirah'],
   },
   {
-    id: 'building-business-bay', type: 'building', href: '/projects/buildings',
+    id: 'building-business-bay', type: 'commercial', href: '/projects#commercial',
     title:    { en: 'Business Bay Tower',    ar: 'برج الخليج التجاري'   },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2023',
     image: IMAGES.home.projects['building-business-bay'],
   },
   {
-    id: 'villa-palm', type: 'villa', href: '/projects/villas',
+    id: 'villa-palm', type: 'residential', href: '/projects#residential',
     title:    { en: 'Palm Residence',        ar: 'إقامة النخيل'          },
     location: { en: 'Abu Dhabi, UAE',        ar: 'أبو ظبي، الإمارات'    },
     year: '2024',
     image: IMAGES.home.projects['villa-palm'],
   },
   {
-    id: 'building-marina', type: 'building', href: '/projects/buildings',
+    id: 'building-marina', type: 'commercial', href: '/projects#commercial',
     title:    { en: 'Marina Heights',        ar: 'مرتفعات المارينا'     },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2023',
     image: IMAGES.home.projects['building-marina'],
   },
   {
-    id: 'villa-arabian', type: 'villa', href: '/projects/villas',
+    id: 'villa-arabian', type: 'residential', href: '/projects#residential',
     title:    { en: 'Arabian Ranches Villa', ar: 'فيلا المرابع العربية' },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2022',
     image: IMAGES.home.projects['villa-arabian'],
   },
   {
-    id: 'building-downtown', type: 'building', href: '/projects/buildings',
+    id: 'building-downtown', type: 'commercial', href: '/projects#commercial',
     title:    { en: 'Downtown Complex',      ar: 'مجمع وسط المدينة'     },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2022',
     image: IMAGES.home.projects['building-downtown'],
   },
   {
-    id: 'villa-meadows', type: 'villa', href: '/projects/villas',
+    id: 'villa-meadows', type: 'residential', href: '/projects#residential',
     title:    { en: 'The Meadows Villa',     ar: 'فيلا ذا ميدوز'        },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2023',
     image: IMAGES.home.projects['villa-meadows'],
   },
   {
-    id: 'building-sharjah', type: 'building', href: '/projects/buildings',
+    id: 'building-sharjah', type: 'commercial', href: '/projects#commercial',
     title:    { en: 'Sharjah Office Park',   ar: 'مجمع مكاتب الشارقة'  },
     location: { en: 'Sharjah, UAE',          ar: 'الشارقة، الإمارات'    },
     year: '2022',
@@ -90,8 +90,8 @@ const PROJECT_CARDS: ProjectCard[] = [
 ]
 
 const TYPE_LABEL = {
-  villa:    { en: 'Villa',    ar: 'فيلا' },
-  building: { en: 'Building', ar: 'مبنى' },
+  residential: { en: 'Residential', ar: 'سكني' },
+  commercial:  { en: 'Commercial',  ar: 'تجاري' },
 }
 
 // ─── Card component ───────────────────────────────────────────────────────────
@@ -190,8 +190,8 @@ export default function ProjectsSection() {
   const [hoveredId, setHoveredId] = useState<string | null>(null)
 
   const copy = {
-    en: { eyebrow: 'Our Portfolio', title: 'Featured Projects', subtitle: 'Villas and buildings across the Emirates' },
-    ar: { eyebrow: 'محفظتنا',       title: 'المشاريع المميزة',  subtitle: 'فلل ومبانٍ عبر الإمارات'                },
+    en: { eyebrow: 'Our Portfolio', title: 'Featured Projects', subtitle: 'Residential and commercial projects across the Emirates' },
+    ar: { eyebrow: 'محفظتنا',       title: 'المشاريع المميزة',  subtitle: 'مشاريع سكنية وتجارية عبر الإمارات'      },
   }
   const t = copy[language]
 

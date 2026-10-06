@@ -73,8 +73,9 @@ export const SOLUTIONS: SolutionsTree = {
     viewAll: { en: 'View all projects', ar: 'عرض كل المشاريع', href: '/projects' },
     groups: [{
       items: [
-        { en: 'Villa Projects',    ar: 'مشاريع الفلل',   href: '/projects#villas'    },
-        { en: 'Building Projects', ar: 'مشاريع المباني', href: '/projects#buildings' },
+        // Anchors must match ProjectType values — ProjectsGrid renders them as section ids
+        { en: 'Residential Projects', ar: 'المشاريع السكنية',  href: '/projects#residential' },
+        { en: 'Commercial Projects',  ar: 'المشاريع التجارية', href: '/projects#commercial'  },
       ],
     }],
   },

@@ -24,7 +24,7 @@ Our Solutions (≥1280px): cascading mega-menu — View (Products/Projects/Acces
 - EmaarLogo size="header" | "footer": 72/60/52 at rest; header compact scales to 56/52/46 (transform only). Name: EN "Emaar International Industry" (≥768) / "Emaar Int. Ind." (<768), AR "إعمار الدولية للصناعة". "L.L.C." / "ذ.م.م" appear ONLY in the footer copyright line.
 
 ## Routing rules
-- Product categories and project types are hash anchors on their landing pages (`/products/{upvc|aluminum|glass}#slug`, `/projects#villas`, `/accessories#brands`) — all `[category]`/`[slug]` sub-routes were deleted (Sep 24 2026). Never add sub-routes back.
+- Product categories and project types are hash anchors on their landing pages (`/products/{upvc|aluminum|glass}#slug`, `/projects#residential`, `/accessories#brands`) — all `[category]`/`[slug]` sub-routes were deleted (Sep 24 2026). Never add sub-routes back.
 - Anchor slugs must match in three places: the ids rendered by the page (`lib/data/materialContent.ts` slugs, ProjectsGrid, accessories sections), `lib/data/navSolutions.ts`, and the next.config.ts redirect lookaheads.
 
 ## Code rules
@@ -96,13 +96,12 @@ Our Solutions (≥1280px): cascading mega-menu — View (Products/Projects/Acces
 - prefers-reduced-motion: MotionProvider handles this globally via reducedMotion="user" — no per-component useReducedMotion() needed. Exception: LanguageTransition.tsx calls useReducedMotion() explicitly because the crossfade is triggered by user action (not scroll/mount) and must be skippable independently of MotionConfig
 - contact API (app/api/contact/route.ts) uses Resend; RESEND_API_KEY must be set in Vercel env vars
 - next.config.ts redirect pattern: use `$`-anchored non-capturing group + `[^/]+` — `:slug((?!(?:cat1|cat2|...)$)[^/]+)` — the `$` prevents prefix collision (e.g. "doors" without it matches the start of "doors-and-windows"); `[^/]+` restricts to single path segments. Always list ALL valid category slugs in both uPVC and aluminum lookaheads; a missing slug causes that category page to 308 to the material landing page
-- Project `type` field values: `villas | buildings | towers` — old values (residential/commercial/hospitality) are gone. Filter IDs in ProjectsGrid must match these exact strings. Arabic: فلل / مباني / أبراج
+- Project categories: residential | commercial (anchors #residential / #commercial).
 - Ghost buttons on dark/image overlays: use `hover:bg-brand-red hover:border-brand-red hover:text-white` — NOT `hover:bg-white hover:text-brand-dark`. White fill on a dark overlay is invisible and wastes the hover state; brand-red is the correct CTA fill everywhere
 - ProductsSection / ProjectsSection `useReducedMotion()`: same exception — the marquee animation is continuous on mount (not scroll/viewport), so both call `useReducedMotion()` directly to gate the `InfiniteMarquee` and fall back to a static `overflow-x-auto` scrollable div when reduced motion is preferred.
 - `DropdownItem` type is deleted — use `NavLink` from `@/lib/data/nav` everywhere. `HeaderDropdown` props already updated. Do not re-introduce DropdownItem.
 - `SOLUTIONS_HREFS` is the flat href array exported from nav.ts for `isActive` checks on the "Our Solutions" nav item — derive it from there, never re-derive inline at render time.
 - next.config.ts has THREE material redirect blocks now (upvc, aluminum, glass) — when adding a new glass category, update the glass lookahead regex.
-- projectContent.ts href values and ProjectCard links point to /projects/[id] detail pages that don't exist yet — they 404 until those pages are built.
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev

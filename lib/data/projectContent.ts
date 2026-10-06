@@ -1,8 +1,9 @@
 /**
  * lib/data/projectContent.ts
  *
- * Static bilingual content for /projects/villas and /projects/buildings pages.
- * 4 villa projects + 4 building projects.
+ * Static bilingual content for the /projects page (#residential / #commercial).
+ * 4 residential projects + 4 commercial projects.
+ * No href — cards are non-navigating until per-project detail pages exist.
  * Each project has editorial prose (not bullet specs) — magazine voice.
  * Images come from IMAGES.projects (null = blank ImageSlot until real photos land).
  */
@@ -17,15 +18,13 @@ export interface ProjectSpread {
   materials:   { en: string; ar: string }[]   // Material chips shown on card
   description: { en: string; ar: string }     // 2-3 sentence editorial prose
   image:       ImageSrc                        // Full-bleed atmospheric photograph
-  href:        string                          // Links to /projects/[id] detail page
 }
 
-// ─── Villa projects ───────────────────────────────────────────────────────────
+// ─── Residential projects ─────────────────────────────────────────────────────
 
-export const VILLA_PROJECTS: ProjectSpread[] = [
+export const RESIDENTIAL_PROJECTS: ProjectSpread[] = [
   {
     id:       'jumeirah-villa',
-    href:     '/projects/jumeirah-villa',
     title:    { en: 'Jumeirah Villa',          ar: 'فيلا جميرا'             },
     location: { en: 'Jumeirah, Dubai',         ar: 'جميرا، دبي'              },
     year:     '2024',
@@ -41,7 +40,6 @@ export const VILLA_PROJECTS: ProjectSpread[] = [
   },
   {
     id:       'palm-residence',
-    href:     '/projects/palm-residence',
     title:    { en: 'Palm Residence',          ar: 'إقامة النخيل'            },
     location: { en: 'Palm Jumeirah, Dubai',    ar: 'نخلة جميرا، دبي'         },
     year:     '2024',
@@ -57,7 +55,6 @@ export const VILLA_PROJECTS: ProjectSpread[] = [
   },
   {
     id:       'arabian-ranches-villa',
-    href:     '/projects/arabian-ranches-villa',
     title:    { en: 'Arabian Ranches Villa',   ar: 'فيلا المرابع العربية'   },
     location: { en: 'Arabian Ranches, Dubai',  ar: 'المرابع العربية، دبي'    },
     year:     '2023',
@@ -73,7 +70,6 @@ export const VILLA_PROJECTS: ProjectSpread[] = [
   },
   {
     id:       'meadows-villa',
-    href:     '/projects/meadows-villa',
     title:    { en: 'The Meadows Villa',       ar: 'فيلا ذا ميدوز'           },
     location: { en: 'The Meadows, Dubai',      ar: 'ذا ميدوز، دبي'           },
     year:     '2023',
@@ -89,12 +85,11 @@ export const VILLA_PROJECTS: ProjectSpread[] = [
   },
 ]
 
-// ─── Building projects ────────────────────────────────────────────────────────
+// ─── Commercial projects ──────────────────────────────────────────────────────
 
-export const BUILDING_PROJECTS: ProjectSpread[] = [
+export const COMMERCIAL_PROJECTS: ProjectSpread[] = [
   {
     id:       'business-bay-tower',
-    href:     '/projects/business-bay-tower',
     title:    { en: 'Business Bay Tower',      ar: 'برج الخليج التجاري'      },
     location: { en: 'Business Bay, Dubai',     ar: 'الخليج التجاري، دبي'     },
     year:     '2023',
@@ -110,7 +105,6 @@ export const BUILDING_PROJECTS: ProjectSpread[] = [
   },
   {
     id:       'marina-heights',
-    href:     '/projects/marina-heights',
     title:    { en: 'Marina Heights',          ar: 'مرتفعات المارينا'        },
     location: { en: 'Dubai Marina, Dubai',     ar: 'دبي مارينا، دبي'         },
     year:     '2023',
@@ -126,7 +120,6 @@ export const BUILDING_PROJECTS: ProjectSpread[] = [
   },
   {
     id:       'downtown-complex',
-    href:     '/projects/downtown-complex',
     title:    { en: 'Downtown Complex',        ar: 'مجمع وسط المدينة'        },
     location: { en: 'Downtown Dubai, Dubai',   ar: 'وسط مدينة دبي، دبي'      },
     year:     '2022',
@@ -142,7 +135,6 @@ export const BUILDING_PROJECTS: ProjectSpread[] = [
   },
   {
     id:       'sharjah-office-park',
-    href:     '/projects/sharjah-office-park',
     title:    { en: 'Sharjah Office Park',     ar: 'مجمع مكاتب الشارقة'     },
     location: { en: 'Sharjah, UAE',            ar: 'الشارقة، الإمارات'        },
     year:     '2022',
@@ -160,10 +152,22 @@ export const BUILDING_PROJECTS: ProjectSpread[] = [
 
 // ─── Projects page list ───────────────────────────────────────────────────────
 
-/** Project tagged with its /projects filter group — ids match the #villas / #buildings anchors. */
-export type ProjectListItem = ProjectSpread & { type: 'villas' | 'buildings' }
+/** Category value doubles as the /projects anchor id (#residential / #commercial). */
+export type ProjectType = 'residential' | 'commercial'
+
+/** Project tagged with its /projects filter group. */
+export type ProjectListItem = ProjectSpread & { type: ProjectType }
 
 export const ALL_PROJECTS: ProjectListItem[] = [
-  ...VILLA_PROJECTS.map((p) => ({ ...p, type: 'villas' as const })),
-  ...BUILDING_PROJECTS.map((p) => ({ ...p, type: 'buildings' as const })),
+  ...RESIDENTIAL_PROJECTS.map((p) => ({ ...p, type: 'residential' as const })),
+  ...COMMERCIAL_PROJECTS.map((p) => ({ ...p, type: 'commercial' as const })),
 ]
+
+/** Bilingual labels per category — chip (singular) and grouped-section heading. */
+export const PROJECT_TYPE_LABELS: Record<ProjectType, { chip: { en: string; ar: string }; heading: { en: string; ar: string } }> = {
+  residential: { chip: { en: 'Residential', ar: 'سكني' }, heading: { en: 'Residential Projects', ar: 'المشاريع السكنية' } },
+  commercial:  { chip: { en: 'Commercial',  ar: 'تجاري' }, heading: { en: 'Commercial Projects',  ar: 'المشاريع التجارية' } },
+}
+
+/** Render order on /projects; also the only hash values ProjectsGrid reacts to. */
+export const PROJECT_TYPES: readonly ProjectType[] = ['residential', 'commercial']

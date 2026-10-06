@@ -6,7 +6,7 @@ import { generatePageMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generatePageMetadata({
   title:       'Our Projects',
-  description: 'Browse Emaar International\'s portfolio of uPVC and aluminium fenestration projects across UAE villas, buildings, and towers.',
+  description: 'Browse Emaar International\'s portfolio of uPVC and aluminium fenestration projects across residential and commercial developments in the UAE.',
   path:        '/projects',
 });
 
