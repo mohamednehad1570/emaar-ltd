@@ -33,7 +33,8 @@ export default function AccessoriesBySystem() {
 
         <div className="grid md:grid-cols-2 gap-12">
           {/* uPVC Hardware */}
-          <div id="upvc-hardware">
+          {/* id matches SOLUTIONS.accessories anchor "/accessories#upvc" */}
+          <div id="upvc">
             <div className="flex items-center gap-2 mb-6">
               <CircleHalf size={24} color="#8A9298" />
               <span className="text-lg font-semibold text-ink-heading">
@@ -53,7 +54,7 @@ export default function AccessoriesBySystem() {
           </div>
 
           {/* Aluminum Hardware */}
-          <div id="aluminum-hardware">
+          <div id="aluminum">
             <div className="flex items-center gap-2 mb-6">
               <Cube size={24} color="#8A9298" />
               <span className="text-lg font-semibold text-ink-heading">

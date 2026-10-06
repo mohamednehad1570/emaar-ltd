@@ -15,8 +15,9 @@ export default function BrandGrid() {
   const { language } = useLanguage();
   const isAr = language === 'ar';
 
+  // id matches the SOLUTIONS.accessories anchor "/accessories#brands"
   return (
-    <section className="py-16 bg-off-white" dir={isAr ? 'rtl' : 'ltr'}>
+    <section id="brands" className="py-16 bg-off-white" dir={isAr ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
           <p className="text-[11px] font-bold uppercase tracking-widest text-ink-muted mb-2">

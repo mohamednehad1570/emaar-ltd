@@ -13,8 +13,9 @@ const PILLARS = [
 export default function QualityPillars() {
   const { language } = useLanguage();
 
+  // id matches the SOLUTIONS.accessories anchor "/accessories#quality"
   return (
-    <div className="bg-white border-b border-border-light py-8">
+    <div id="quality" className="bg-white border-b border-border-light py-8">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {PILLARS.map(({ Icon, en, ar }) => (
