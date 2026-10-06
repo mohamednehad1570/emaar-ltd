@@ -1,19 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-      },
-      // Sanity CDN — used for all CMS-hosted images and files
-      {
-        protocol: 'https',
-        hostname: 'cdn.sanity.io',
-      },
-    ],
-  },
+  // No images.remotePatterns — every photo is served locally from /public/images
 
   // ── Legacy product URL redirects ─────────────────────────────────────────
   // Old 3-level URLs (/products/{material}/{legacy-slug}) redirect to the
