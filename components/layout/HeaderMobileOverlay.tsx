@@ -51,7 +51,7 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
         style={{ backgroundColor: 'rgba(26,26,26,0.3)' }}
-        className="fixed inset-0 z-[60] lg:hidden"
+        className="fixed inset-0 z-[60] xl:hidden"
         aria-hidden="true"
         onClick={onClose}
       />
@@ -67,7 +67,7 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
         animate={{ x: 0 }}
         exit={{ x: '100%', transition: { ease: EASE_DRAWER, duration: 0.28 } }}
         transition={r ? { duration: 0 } : { ease: EASE_DRAWER, duration: 0.35 }}
-        className="fixed top-0 h-full w-full bg-off-white z-[70] lg:hidden flex flex-col right-0"
+        className="fixed top-0 h-full w-full bg-off-white z-[70] xl:hidden flex flex-col right-0"
       >
 
         {/* ── Top bar: logo + lang toggle + close ─────────────────── */}

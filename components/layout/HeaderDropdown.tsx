@@ -7,6 +7,8 @@ import type { NavLink } from '@/lib/data/nav';
 import { cn } from '@/lib/cn';
 
 interface HeaderDropdownProps {
+  /** Lets HeaderDesktopNav find this panel to move focus in on ArrowDown */
+  navKey:   string;
   items:    NavLink[];
   language: 'en' | 'ar';
   isRTL:    boolean;
@@ -14,13 +16,14 @@ interface HeaderDropdownProps {
   onLeave:  () => void;
 }
 
-const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1];
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export default function HeaderDropdown({
-  items, language, isRTL, onEnter, onLeave,
+  navKey, items, language, isRTL, onEnter, onLeave,
 }: HeaderDropdownProps) {
   return (
     <motion.div
+      data-nav-drop={navKey}
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, transition: { duration: 0.12 } }}
@@ -31,8 +34,9 @@ export default function HeaderDropdown({
         'min-w-[220px] max-w-[280px] w-max',
         isRTL ? 'right-0' : 'left-0',
       )}
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
+      dir={isRTL ? 'rtl' : 'ltr'}
+      onPointerEnter={onEnter}
+      onPointerLeave={onLeave}
     >
       {items.map((item, idx) => (
         <React.Fragment key={item.href}>
@@ -47,7 +51,7 @@ export default function HeaderDropdown({
           >
             <Link
               href={item.href}
-              className="flex items-center h-11 px-5 text-sm font-normal text-ink-body hover:bg-surface-cream hover:text-ink-heading transition-colors duration-150"
+              className="flex items-center h-11 px-5 text-sm font-normal text-ink-body hover:bg-surface-cream hover:text-ink-heading focus-visible:outline-none focus-visible:bg-surface-cream transition-colors duration-150"
             >
               {item[language]}
             </Link>

@@ -125,7 +125,7 @@ export default function Header({ whatsappNumber }: HeaderProps) {
             {/* RIGHT — fixed: lang toggle · whatsapp · CTA, never moves */}
             <div className="flex items-center gap-3">
               {/* Desktop only */}
-              <div className="hidden lg:flex items-center gap-3">
+              <div className="hidden xl:flex items-center gap-3">
                 <LangToggle />
                 <motion.a href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
                   whileHover={r ? undefined : { scale: 1.1 }}
@@ -152,7 +152,7 @@ export default function Header({ whatsappNumber }: HeaderProps) {
                 </Button>
               </div>
               {/* Mobile only */}
-              <div className="flex lg:hidden items-center ms-auto">
+              <div className="flex xl:hidden items-center ms-auto">
                 {/* -me-2 nudges the touch target to the container edge so the bars
                     align visually with other end-edge elements; me= is RTL-aware (end). */}
                 <button

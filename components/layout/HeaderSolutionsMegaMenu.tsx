@@ -3,209 +3,141 @@
 /**
  * components/layout/HeaderSolutionsMegaMenu.tsx
  *
- * Full-width 3-column Products mega-menu.
- * No tabs — columns render directly on open.
+ * Full-width "Our Solutions" panel (≥1280px) with three cascading columns:
+ *   View (Products / Projects / Accessories) → Material (Products only) → Items.
+ * Projects and Accessories skip the Material column; their Items span that slot so
+ * the grid template never changes and nothing shifts.
  *
- * Layout: grid-cols-[1fr_1.3fr_1fr] — Aluminium column is 30% wider
- * because it has 10 items split into two visual groups.
- *
- * Group rendering in Aluminium column:
- *   Items with groupLabel but no dividerBefore → section header above first group
- *   Items with dividerBefore + groupLabel → border-t divider + new section header
- *
- * Shadows: rgba(45,41,38,x) only. No blue. No rgba(0,0,0,x).
+ * Hover selection runs through useSafeTriangle so a diagonal move toward the next
+ * column doesn't flip the selection on the rows it crosses. Arrow keys move within
+ * and across columns; Esc is handled by HeaderDesktopNav (it owns trigger focus).
  */
 
-import React from 'react'
-import Link from 'next/link'
-import { motion, useReducedMotion } from 'framer-motion'
-import { ArrowRight } from '@phosphor-icons/react'
-import { usePathname } from 'next/navigation'
+import React, { useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { SOLUTIONS_PRODUCTS } from '@/lib/data/nav'
-import { cn } from '@/lib/cn'
+import {
+  SOLUTIONS, SOLUTIONS_VIEW_ORDER, MATERIAL_ORDER,
+  type MaterialKey, type NavBranch, type SolutionsViewKey,
+} from '@/lib/data/nav'
+import { useSafeTriangle } from '@/lib/hooks/useSafeTriangle'
+import { useColumnKeyboard } from '@/lib/hooks/useColumnKeyboard'
+import { followSamePageHash } from '@/lib/navigateHash'
+import MegaMenuColumn, { GroupLabel } from './MegaMenuColumn'
+import MegaMenuItem from './MegaMenuItem'
 
-const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
+const COL_MATERIAL = 'mm-col-material'
+const COL_ITEMS    = 'mm-col-items'
+const HEADINGS = { view: { en: 'Our Solutions', ar: 'حلولنا' }, material: { en: 'Material', ar: 'المادة' } }
 
-// ─── Sub-components ────────────────────────────────────────────────────────────
+interface Props { id: string; onEnter: () => void; onLeave: () => void; onNavigate: () => void }
 
-/** A single category link row — hover nudge + color shift */
-function CategoryLink({
-  label, href, isRTL, pathname,
-}: {
-  label:    string
-  href:     string
-  isRTL:    boolean
-  pathname: string
-}) {
-  // Hash-anchor links: active when the base path matches (ignore #fragment)
-  const base   = href.split('#')[0]
-  const active = base ? pathname.startsWith(base) : false
-
-  return (
-    <motion.div
-      whileHover={{ x: isRTL ? -4 : 4 }}
-      transition={{ duration: 0.15, ease: 'easeOut' }}
-    >
-      <Link
-        href={href}
-        className={cn(
-          'block py-[7px] text-sm transition-colors duration-150',
-          active
-            ? 'text-brand-red font-semibold'
-            : 'text-ink-body hover:text-brand-red',
-        )}
-      >
-        {label}
-      </Link>
-    </motion.div>
-  )
-}
-
-/** One material column — header, optional group labels, items, "View all" footer link */
-function MaterialColumn({
-  column, language, isRTL, pathname,
-}: {
-  column:   typeof SOLUTIONS_PRODUCTS[0]
-  language: 'en' | 'ar'
-  isRTL:    boolean
-  pathname: string
-}) {
-  const headerActive = pathname.startsWith(column.material.href)
-
-  return (
-    <div className={isRTL ? 'text-right' : 'text-left'}>
-
-      {/* ── Column header — clickable link to material landing page ── */}
-      <motion.div className="relative inline-block mb-4 group">
-        <Link
-          href={column.material.href}
-          className={cn(
-            'text-[13px] font-bold uppercase tracking-[0.2em] transition-colors duration-150',
-            headerActive ? 'text-brand-red' : 'text-ink-heading hover:text-brand-red',
-          )}
-        >
-          {language === 'en' ? column.material.en : column.material.ar}
-        </Link>
-        {/* Animated underline — scaleX 0→1 on hover */}
-        <motion.span
-          className="absolute -bottom-0.5 left-0 right-0 h-[1.5px] bg-brand-red"
-          style={{ transformOrigin: isRTL ? 'right' : 'left' }}
-          initial={{ scaleX: headerActive ? 1 : 0 }}
-          whileHover={{ scaleX: 1 }}
-          transition={{ duration: 0.2, ease: EASE }}
-          aria-hidden="true"
-        />
-      </motion.div>
-
-      {/* Thin divider below header */}
-      <div className="h-px bg-border-light mb-3" aria-hidden="true" />
-
-      {/* ── Category links — renders group labels and dividers from data ── */}
-      <ul className="space-y-0" role="list">
-        {column.items.map((item) => {
-          const label = language === 'en' ? item.en : item.ar
-          const groupLabelText = item.groupLabel
-            ? (language === 'en' ? item.groupLabel.en : item.groupLabel.ar)
-            : null
-
-          return (
-            <React.Fragment key={item.href}>
-              {/* Border-t divider before specialty group */}
-              {item.dividerBefore && (
-                <li aria-hidden="true">
-                  <div className="border-t border-border-light my-2" />
-                </li>
-              )}
-              {/* Section micro-label (e.g. "Core Systems" / "Specialty") */}
-              {groupLabelText && (
-                <li aria-hidden="true">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted mb-1 mt-0.5">
-                    {groupLabelText}
-                  </p>
-                </li>
-              )}
-              <li>
-                <CategoryLink
-                  label={label}
-                  href={item.href}
-                  isRTL={isRTL}
-                  pathname={pathname}
-                />
-              </li>
-            </React.Fragment>
-          )
-        })}
-      </ul>
-
-      {/* ── "View all" footer link ─────────────────────────────────── */}
-      <div className="mt-4 pt-3 border-t border-border-light">
-        <Link
-          href={column.material.href}
-          className={cn(
-            'inline-flex items-center gap-1.5 text-xs font-semibold',
-            'text-ink-muted hover:text-brand-red transition-colors duration-150',
-            isRTL && 'flex-row-reverse',
-          )}
-        >
-          {language === 'en'
-            ? `View all ${column.material.en}`
-            : `عرض كل ${column.material.ar}`}
-          <ArrowRight
-            size={11}
-            weight="bold"
-            className={cn(isRTL && 'rotate-180')}
-            aria-hidden="true"
-          />
-        </Link>
-      </div>
-
-    </div>
-  )
-}
-
-// ─── Main component ────────────────────────────────────────────────────────────
-
-interface Props {
-  onEnter: () => void
-  onLeave: () => void
-}
-
-export default function HeaderSolutionsMegaMenu({ onEnter, onLeave }: Props) {
+export default function HeaderSolutionsMegaMenu({ id, onEnter, onLeave, onNavigate }: Props) {
   const { language, isRTL } = useLanguage()
-  const pathname            = usePathname()
-  const shouldReduce        = useReducedMotion()
+  // Default on every open: Products → uPVC (component mounts fresh each time)
+  const [view, setView]         = useState<SolutionsViewKey>('products')
+  const [material, setMaterial] = useState<MaterialKey>('upvc')
+  const { track, request, cancel } = useSafeTriangle(isRTL)
+  const panelRef  = useRef<HTMLDivElement>(null)
+  const onKeyDown = useColumnKeyboard(panelRef, isRTL)
+  // Snapshot of the current location — the menu is short-lived, no need to subscribe
+  const [here] = useState(() => window.location.pathname + window.location.hash)
+
+  const col = (cid: string) => document.getElementById(cid)
+  const branch: NavBranch = view === 'products' ? SOLUTIONS.products.materials[material] : SOLUTIONS[view]
+
+  function follow(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    if (followSamePageHash(href)) e.preventDefault()
+    onNavigate()
+  }
+
+  const isProducts = view === 'products'
+  const itemsColId = isProducts ? COL_ITEMS : COL_MATERIAL
 
   return (
     <motion.div
-      initial={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
+      id={id}
+      ref={panelRef}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={shouldReduce ? { opacity: 0 } : { opacity: 0, y: -8 }}
-      transition={{ duration: 0.22, ease: EASE }}
-      style={{
-        position: 'fixed', top: 56, left: 0, right: 0, zIndex: 40,
-        boxShadow: '0 12px 40px rgba(45,41,38,0.10), 0 2px 8px rgba(45,41,38,0.06)',
-      }}
-      className="bg-white border-b border-border-light"
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      dir={isRTL ? 'rtl' : 'ltr'}
-      role="dialog"
-      aria-label={language === 'en' ? 'Products menu' : 'قائمة المنتجات'}
+      exit={{ opacity: 0, y: 8, transition: { duration: 0.15 } }}
+      // 0.25s with the house ease — settles before the pointer reaches the rows
+      transition={{ duration: 0.25, ease: EASE }}
+      // top tracks --header-h so the panel docks to the header at rest and when shrunk
+      style={{ top: 'var(--header-h, 56px)', boxShadow: '0 15px 60px rgba(45,41,38,0.16)' }}
+      className="fixed inset-x-0 z-40 bg-white border-y border-border-light"
+      onPointerEnter={onEnter} onPointerLeave={() => { cancel(); onLeave() }}
+      onPointerMove={track} onKeyDown={onKeyDown}
+      dir={isRTL ? 'rtl' : 'ltr'} role="region"
+      aria-label={language === 'en' ? 'Our Solutions menu' : 'قائمة حلولنا'}
     >
-      <div className="max-w-7xl mx-auto px-8 py-8">
-        {/* Aluminium column is 1.3fr — wider to accommodate 2 groups of 5 items */}
-        <div className="grid gap-10" style={{ gridTemplateColumns: '1fr 1.3fr 1fr' }}>
-          {SOLUTIONS_PRODUCTS.map((column) => (
-            <MaterialColumn
-              key={column.material.href}
-              column={column}
-              language={language}
-              isRTL={isRTL}
-              pathname={pathname}
-            />
-          ))}
-        </div>
+      {/* Fixed column template + min-height = no width or height shift on any swap */}
+      <div className="max-w-7xl mx-auto px-8 py-10 grid grid-cols-[240px_240px_minmax(0,1fr)] gap-x-10 min-h-[400px]">
+
+        {/* ── Column 1 — View ─────────────────────────────────── */}
+        <MegaMenuColumn
+          id="mm-col-view" heading={HEADINGS.view[language]} language={language}
+          viewAll={isProducts ? SOLUTIONS.products.viewAll : SOLUTIONS[view].viewAll}
+          swapKey="view" onFollow={follow}
+        >
+          <ul>
+            {SOLUTIONS_VIEW_ORDER.map(v => (
+              <MegaMenuItem
+                key={v} kind="branch" label={SOLUTIONS[v].label[language]}
+                selected={view === v} controls={COL_MATERIAL}
+                onHover={() => request(() => setView(v), col(COL_MATERIAL))}
+                onSelect={() => { cancel(); setView(v) }}
+              />
+            ))}
+          </ul>
+        </MegaMenuColumn>
+
+        {/* ── Column 2 — Material (Products only) ────────────────── */}
+        {isProducts && (
+          <MegaMenuColumn
+            id={COL_MATERIAL} heading={HEADINGS.material[language]} language={language}
+            viewAll={SOLUTIONS.products.viewAll} swapKey="material"
+            onFollow={follow} onPointerEnter={cancel}
+          >
+            <ul>
+              {MATERIAL_ORDER.map(m => (
+                <MegaMenuItem
+                  key={m} kind="branch" label={SOLUTIONS.products.materials[m].label[language]}
+                  selected={material === m} controls={COL_ITEMS}
+                  onHover={() => request(() => setMaterial(m), col(COL_ITEMS))}
+                  onSelect={() => { cancel(); setMaterial(m) }}
+                />
+              ))}
+            </ul>
+          </MegaMenuColumn>
+        )}
+
+        {/* ── Column 3 — Items ─────────────────────────────────── */}
+        <MegaMenuColumn
+          id={itemsColId} heading={branch.label[language]} language={language}
+          viewAll={branch.viewAll} swapKey={isProducts ? material : view}
+          onFollow={follow} onPointerEnter={cancel}
+          className={isProducts ? undefined : 'col-span-2'}
+        >
+          {/* Multi-group branches (Aluminium) sit side by side with a vertical divider,
+              which keeps the tallest material at the same height as the others */}
+          <ul className={branch.groups.length > 1 ? 'grid grid-cols-2 max-w-[560px]' : 'max-w-[280px]'}>
+            {branch.groups.map((g, gi) => (
+              <li key={gi} className={gi > 0 ? 'border-s border-border-light ps-6' : undefined}>
+                <ul>
+                  {g.label && <GroupLabel label={g.label} language={language} />}
+                  {g.items.map(it => (
+                    <MegaMenuItem
+                      key={it.href} kind="link" label={it[language]} href={it.href}
+                      active={here === it.href} onFollow={follow}
+                    />
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        </MegaMenuColumn>
       </div>
     </motion.div>
   )
