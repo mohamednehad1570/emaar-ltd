@@ -13,19 +13,14 @@ import Link from 'next/link';
 // Image import removed — EmaarLogo owns the logo <Image> internally.
 import { motion, useReducedMotion } from 'framer-motion';
 import { X, ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
-import { cn } from '@/lib/cn';
 import MobileDrillNav from './MobileDrillNav';
+import LangToggle from './LangToggle';
 import Button from '@/components/ui/Button';
 import EmaarLogo from '@/components/ui/EmaarLogo'; // shared logo atom — keeps overlay in sync with Header/Footer
 
 // Ease curve for the drawer slide — aggressive start, abrupt landing feel
 const EASE_DRAWER: [number, number, number, number] = [0.32, 0.72, 0, 1];
-const LANGS = [
-  { lang: 'en' as const, label: 'EN', aria: 'Switch to English' },
-  { lang: 'ar' as const, label: 'ع',  aria: 'Switch to Arabic'  },
-];
 
 interface Props {
   id:       string;
@@ -36,10 +31,7 @@ interface Props {
 }
 
 export default function HeaderMobileOverlay({ id, onClose, language, isRTL, pathname }: Props) {
-  const { toggleLanguage, pendingLanguage } = useLanguage();
   const r = useReducedMotion();
-  // pendingLanguage shows incoming lang during the 150ms crossfade before context commits
-  const displayLang = pendingLanguage ?? language;
   const wa = getWhatsAppURL({ page: 'home' });
 
   return (
@@ -71,35 +63,15 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
         className="fixed top-0 h-full w-full bg-off-white z-[70] xl:hidden flex flex-col end-0"
       >
 
-        {/* ── Top bar: logo + lang toggle + close ─────────────────── */}
-        <div className="flex items-center justify-between px-5 h-[52px] border-b border-border-light shrink-0">
+        {/* ── Top bar: logo + lang toggle + close — same height as the header bar ── */}
+        <div className="flex items-center justify-between px-5 border-b border-border-light shrink-0" style={{ height: 'var(--header-h)' }}>
           {/* onClick={onClose} dismisses the overlay when the user taps the logo link */}
-          {/* EmaarLogo size=40 matches the footer mark; textSize="md" keeps heading-weight
-              contrast on the off-white overlay background (#1A1A1A text colour) */}
-          <Link href="/" onClick={onClose} className="inline-flex items-center min-h-[44px]" aria-label="Emaar International Industry LLC — home">
-            <EmaarLogo size={40} showText={true} textSize="md" />
+          {/* Resting header preset — the overlay opens over the page, never compact */}
+          <Link href="/" onClick={onClose} className="inline-flex items-center min-h-[44px]" aria-label="Emaar International Industry — home">
+            <EmaarLogo size="header" textSize="md" />
           </Link>
           <div className="flex items-center gap-1">
-            {/* Lang toggle mirrors header bar — active = bold heading, inactive = muted */}
-            <div className="flex items-center">
-              {LANGS.map(({ lang, label, aria }, i) => (
-                <React.Fragment key={lang}>
-                  {i > 0 && <span className="text-dim text-xs select-none px-0.5" aria-hidden="true">|</span>}
-                  <button
-                    onClick={displayLang !== lang ? toggleLanguage : undefined}
-                    aria-label={aria}
-                    aria-pressed={displayLang === lang}
-                    // min-w/h-[44px] meets WCAG 2.5.5 AA touch-target minimum
-                    className={cn(
-                      'px-1.5 text-xs min-w-[44px] min-h-[44px] flex items-center justify-center',
-                      displayLang === lang
-                        ? 'font-bold text-brand-dark'
-                        : 'font-normal text-text-muted hover:text-text-body',
-                    )}
-                  >{label}</button>
-                </React.Fragment>
-              ))}
-            </div>
+            <LangToggle />
             <button
               onClick={onClose}
               className="flex items-center justify-center w-11 h-11 text-text-muted hover:bg-cream hover:text-text-heading transition-colors duration-200"

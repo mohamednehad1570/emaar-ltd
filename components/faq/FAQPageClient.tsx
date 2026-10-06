@@ -76,7 +76,7 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
       </section>
 
       {/* ── Category Filter ───────────────────────────────── */}
-      <section className="py-6 px-6 bg-surface-white sticky top-[52px] z-40 border-b border-border-light">
+      <section className="py-6 px-6 bg-surface-white sticky top-(--header-h) z-40 border-b border-border-light">
         <div className="max-w-6xl mx-auto">
           <div className={`flex flex-wrap justify-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
             {Object.entries(t.categories).map(([key, label]) => {

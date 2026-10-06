@@ -43,8 +43,8 @@ export default function TechFilters({
   viewMode, onViewModeChange, isRTL, language,
 }: TechFiltersProps) {
   return (
-    /* Sticky below 52px header — top-[52px] offsets the fixed nav exactly */
-    <section className="bg-white sticky top-[52px] z-40 border-b border-border-light">
+    /* Sticky below the fixed header — tracks --header-h through rest/compact */
+    <section className="bg-white sticky top-(--header-h) z-40 border-b border-border-light">
       <div className="max-w-7xl mx-auto">
 
         {/* ── Category tabs ──────────────────────────────────────── */}

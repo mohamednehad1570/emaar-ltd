@@ -365,7 +365,7 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
               className="inline-flex"
               aria-label="Emaar International Industry LLC — home"
             >
-              <EmaarLogo size={40} showText={true} textSize="sm" />
+              <EmaarLogo size="footer" textSize="sm" />
             </Link>
 
             {/* Brand tagline */}
@@ -434,7 +434,7 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
               className="inline-flex"
               aria-label="Emaar International Industry LLC — home"
             >
-              <EmaarLogo size={40} showText={true} textSize="sm" />
+              <EmaarLogo size="footer" textSize="sm" />
             </Link>
 
             <p className="text-sm text-text-body leading-relaxed max-w-sm">

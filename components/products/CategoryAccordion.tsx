@@ -513,6 +513,7 @@ function ScrollVariant({
     initialSlug ?? categories[0]?.slug ?? null,
   )
   const panelRefs = useRef<Map<string, HTMLElement>>(new Map())
+  const subNavRef = useRef<HTMLDivElement>(null)
 
   const setRef = useCallback((slug: string, el: HTMLElement | null) => {
     if (el) panelRefs.current.set(slug, el)
@@ -522,8 +523,10 @@ function ScrollVariant({
   function scrollToPanel(slug: string) {
     const el = panelRefs.current.get(slug)
     if (!el) return
-    // 56px header + 48px sub-nav = 104px total offset
-    const top = el.getBoundingClientRect().top + window.scrollY - 104
+    // Live header height + the sticky sub-nav's own height — both vary by breakpoint
+    const headerH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 0
+    const subNavH = subNavRef.current?.offsetHeight ?? 0
+    const top = el.getBoundingClientRect().top + window.scrollY - headerH - subNavH
     window.scrollTo({ top, behavior: 'smooth' })
   }
 
@@ -550,8 +553,10 @@ function ScrollVariant({
   return (
     <>
       {/* ── Sticky sub-nav ─────────────────────────────────────────── */}
+      {/* top-(--header-h) docks under the header in both rest and compact states */}
       <div
-        className="sticky top-14 z-30 bg-white border-b border-border-light"
+        ref={subNavRef}
+        className="sticky top-(--header-h) z-30 bg-white border-b border-border-light"
         dir={isRTL ? 'rtl' : 'ltr'}
         role="navigation"
         aria-label={subNavLabel}
@@ -605,6 +610,8 @@ function ScrollVariant({
               // Desktop: full-viewport horizontal split
               // Mobile: stacked, image top then content below
               'flex flex-col md:min-h-screen',
+              // Native #hash jumps: html scroll-padding clears the header; this clears the ~69px sub-nav
+              'scroll-mt-[72px]',
               // Desktop flex direction
               'md:flex',
               !isRTL && (imageOnLeft

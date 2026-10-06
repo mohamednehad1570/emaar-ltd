@@ -4,7 +4,7 @@
  * components/ui/PageHeader.tsx
  *
  * Shared compact page header for all inner pages.
- * Sits directly below the fixed site header (h-[48px] mobile / h-14 desktop).
+ * Sits directly below the fixed site header (height = var(--header-h)).
  * Replaces every full-viewport hero on inner pages.
  *
  * Uses useLanguage() for real-time EN/AR switching.
@@ -51,8 +51,8 @@ export default function PageHeader({
   return (
     <div
       className={cn(
-        // pt-[48px] clears mobile header; lg:pt-14 clears desktop header
-        'bg-white border-b border-border-light pt-[48px] lg:pt-14',
+        // pt-(--header-h) clears the fixed header at every breakpoint and state
+        'bg-white border-b border-border-light pt-(--header-h)',
         className,
       )}
       dir={isRTL ? 'rtl' : 'ltr'}

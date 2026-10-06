@@ -1,146 +1,125 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+/**
+ * components/Header.tsx
+ *
+ * Fixed site header. Two states driven by scroll, with hysteresis so it can't
+ * flicker around a single threshold:
+ *   rest    — taller bar, full-size logo, solid white
+ *   compact — after 48px of scroll (back to rest below 16px): shorter bar, logo
+ *             scaled down, frosted glass + silver border + warm shadow
+ *
+ * Height is never animated here: the bar reads var(--header-h), which globals.css
+ * interpolates via @property when html[data-header] flips. Every other offset
+ * (mega-menu, sticky sub-navs, scroll-padding) reads the same variable, so they
+ * all move on one curve. The glass/border/shadow fade uses the same 0.3s ease.
+ */
+
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-// Image import removed — EmaarLogo now owns the logo <Image> internally.
-import {
-  motion, AnimatePresence,
-  useScroll, useMotionValueEvent, useReducedMotion,
-} from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from 'framer-motion';
 import { WhatsappLogo, ArrowRight } from '@phosphor-icons/react';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import { cn } from '@/lib/cn';
+import Container from '@/components/layout/Container';
 import HeaderDesktopNav from '@/components/layout/HeaderDesktopNav';
 import HeaderMobileOverlay from '@/components/layout/HeaderMobileOverlay';
+import LangToggle from '@/components/layout/LangToggle';
+import BurgerButton from '@/components/layout/BurgerButton';
 import Button from '@/components/ui/Button';
-import EmaarLogo from '@/components/ui/EmaarLogo'; // shared logo + wordmark atom
+import EmaarLogo from '@/components/ui/EmaarLogo';
 
-const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1];
-const SPRING = { type: 'spring' as const, stiffness: 300, damping: 25 };
-const LANGS = [
-  { lang: 'en' as const, label: 'EN', aria: 'Switch to English' },
-  { lang: 'ar' as const, label: 'ع',  aria: 'Switch to Arabic'  },
-];
+const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+// Shrink past 48px, expand only once back under 16px — the 32px band absorbs
+// trackpad jitter and elastic overscroll
+const SHRINK_AT = 48;
+const EXPAND_AT = 16;
 
 interface HeaderProps {
   whatsappNumber?: string;
-  // companyNameEn / companyNameAr / logoUrl kept in interface so the parent (layout.tsx)
-  // can still pass CMS values without TypeScript errors; the logo block now delegates
-  // image + text to EmaarLogo which reads /emaar-logo.png directly.
+  // Accepted for forward-compatibility with CMS-driven branding; not consumed yet
   companyNameEn?: string;
   companyNameAr?: string;
   logoUrl?: string;
 }
 
-// Only whatsappNumber is destructured — the other CMS props are accepted but not yet consumed
-// (they remain in the interface for forward-compatibility with CMS-driven overrides).
 export default function Header({ whatsappNumber }: HeaderProps) {
-  const { language, toggleLanguage, isRTL, pendingLanguage } = useLanguage();
+  const { language, isRTL } = useLanguage();
   const pathname = usePathname();
-  const r = useReducedMotion();
+  const reduce   = useReducedMotion();
   const { scrollY } = useScroll();
-  const [scrolled, setScrolled] = useState(false);
+  const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 20));
-  useEffect(() => { setOpen(false); }, [pathname]);
+  useMotionValueEvent(scrollY, 'change', (v) => {
+    setCompact(prev => (prev ? v > EXPAND_AT : v > SHRINK_AT));
+  });
+
+  // No mount check needed: useScroll measures the initial offset and emits a
+  // change, so a reload that lands mid-page still starts compact.
+
+  // Publish the state to CSS — drives --header-h for every consumer
+  useEffect(() => {
+    document.documentElement.dataset.header = compact ? 'compact' : 'rest';
+  }, [compact]);
+
+  // Close the overlay on route change — adjusted during render, not in an effect,
+  // so there's no extra paint with the stale overlay still open
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) { setLastPath(pathname); setOpen(false); }
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
-  // CMS number overrides the hardcoded constant when configured
   const wa = getWhatsAppURL({ page: 'home' }, whatsappNumber);
-
-  const LangToggle = () => {
-    // Use pendingLanguage during the 150 ms crossfade so the toggle
-    // shows the incoming language as active before the content settles.
-    const displayLang = pendingLanguage ?? language;
-    return (
-      <div className="flex items-center">
-        {LANGS.map(({ lang, label, aria }, i) => (
-          <React.Fragment key={lang}>
-            {i > 0 && <span className="text-dim text-xs select-none px-0.5" aria-hidden="true">|</span>}
-            <motion.button
-              onClick={displayLang !== lang ? toggleLanguage : undefined}
-              aria-label={aria} aria-pressed={displayLang === lang}
-              whileHover={r ? undefined : { scale: 1.05 }}
-              transition={{ duration: 0.15, ease: EASE }}
-              className={cn('px-1.5 text-xs',
-                displayLang === lang
-                  ? 'font-bold text-brand-dark'
-                  : 'font-normal text-text-muted hover:text-text-body')}
-            >{label}</motion.button>
-          </React.Fragment>
-        ))}
-      </div>
-    );
-  };
 
   return (
     <>
       <motion.header
+        // Logo stays on the left in both languages; the nav inside mirrors its own order
         dir="ltr"
-        animate={r ? undefined : {
-          backgroundColor:   scrolled ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,1)',
-          backdropFilter:    scrolled ? 'blur(16px)' : 'blur(0px)',
-          boxShadow:         scrolled ? 'var(--shadow-warm-md)' : '0 0 0 rgba(45,41,38,0)',
-          borderBottomColor: scrolled ? 'rgba(192,198,202,1)' : 'rgba(228,226,220,0.8)',
+        initial={false}
+        animate={{
+          backgroundColor:   compact ? 'rgba(255,255,255,0.88)' : 'rgba(255,255,255,1)',
+          backdropFilter:    compact ? 'blur(16px)' : 'blur(0px)',
+          boxShadow:         compact ? '0 4px 20px rgba(45,41,38,0.10)' : '0 0 0 rgba(45,41,38,0)',
+          // silver-material when compact, border-light at rest
+          borderBottomColor: compact ? 'rgba(192,198,202,1)' : 'rgba(228,226,220,1)',
         }}
-        transition={{ duration: 0.4, ease: EASE }}
-        className="fixed top-0 left-0 right-0 z-50 border-b"
-        style={{
-          WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'blur(0px)',
-          ...(r ? {
-            backgroundColor: scrolled ? 'rgba(255,255,255,0.92)' : '#fff',
-            backdropFilter: scrolled ? 'blur(16px)' : 'blur(0px)',
-          } : {}),
-        }}
+        // Reduced motion: switch instantly (MotionProvider only gates transforms)
+        transition={reduce ? { duration: 0 } : { duration: 0.3, ease: EASE }}
+        className="fixed top-0 inset-x-0 z-50 border-b"
+        // Older Safari only honours the prefixed property; FM can't animate it, so it switches
+        style={{ WebkitBackdropFilter: compact ? 'blur(16px)' : 'none' }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className="h-[48px] lg:h-14"
-            style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', alignItems: 'center' }}
-          >
+        <Container>
+          <div className="grid grid-cols-[auto_1fr_auto] items-center" style={{ height: 'var(--header-h)' }}>
 
-            {/* LEFT — logo always anchored left, never moves */}
-            {/* min-h-[44px] satisfies WCAG 2.5.5 minimum touch-target height on mobile. */}
-            {/* flex-shrink-0 prevents the logo from being compressed by the nav or right controls. */}
-            <Link
-              href="/"
-              aria-label="Emaar International Industry LLC — home"
-              className="inline-flex items-center flex-shrink-0 min-h-[44px]"
-            >
-              {/* EmaarLogo renders /emaar-logo.png + the company name in one shared atom.
-                  size=52 gives a clear brand presence in the 48 px / 56 px header bar.
-                  textSize="md" uses the #1A1A1A heading colour for maximum legibility. */}
-              <EmaarLogo size={52} showText={true} textSize="md" />
+            {/* ── Logo — always the left edge ─────────────────────── */}
+            <Link href="/" aria-label="Emaar International Industry — home" className="inline-flex items-center shrink-0 min-h-[44px]">
+              <EmaarLogo size="header" compact={compact} textSize="md" />
             </Link>
 
-            {/* CENTER — nav */}
+            {/* ── Nav (≥1280px) ──────────────────────────────────── */}
             <HeaderDesktopNav />
 
-            {/* RIGHT — fixed: lang toggle · whatsapp · CTA, never moves */}
+            {/* ── Controls ──────────────────────────────────────── */}
             <div className="flex items-center gap-3">
-              {/* Desktop only */}
               <div className="hidden xl:flex items-center gap-3">
                 <LangToggle />
-                <motion.a href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
-                  whileHover={r ? undefined : { scale: 1.1 }}
-                  whileTap={r ? undefined : { scale: 0.92 }}
+                <motion.a
+                  href={wa} target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp"
+                  whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.92 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                  className="flex items-center justify-center">
-                  <WhatsappLogo size={20} weight="fill" className="text-whatsapp" />
-                </motion.a>
-                <Button
-                  variant="primary" size="sm"
-                  href="/contact"
-                  icon={<ArrowRight size={13} weight="bold" />}
+                  className="flex items-center justify-center w-11 h-11"
                 >
-                  {/* inline-grid stacks both lang strings at the same size so
-                      the header width stays stable on EN↔AR toggle */}
+                  <WhatsappLogo size={22} weight="fill" className="text-whatsapp" />
+                </motion.a>
+                <Button variant="primary" size="sm" href="/contact" icon={<ArrowRight size={13} weight="bold" />}>
+                  {/* Both strings share one grid cell so the button width is stable on EN↔AR */}
                   <span className="inline-grid justify-items-center">
                     <span className={cn('col-start-1 row-start-1', language !== 'en' && 'invisible')} aria-hidden={language !== 'en'}>
                       Request Quote
@@ -151,66 +130,13 @@ export default function Header({ whatsappNumber }: HeaderProps) {
                   </span>
                 </Button>
               </div>
-              {/* Mobile only */}
               <div className="flex xl:hidden items-center ms-auto">
-                {/* -me-2 nudges the touch target to the container edge so the bars
-                    align visually with other end-edge elements; me= is RTL-aware (end). */}
-                <button
-                  onClick={() => setOpen(v => !v)}
-                  aria-label={open ? 'Close menu' : 'Open menu'} // screen-reader label switches state
-                  aria-expanded={open}                            // ARIA live state for assistive tech
-                  aria-controls="mobile-nav"                      // links button to the overlay element
-                  className="flex flex-col justify-center gap-[5px] w-10 h-10 -me-2"
-                  // gap-[5px] = 5 px between bars; combined with h-0.5 (2 px bars)
-                  // the center-to-center distance is 2 + 5 = 7 px — drives the y translate below
-                >
-                  {/* ── Top bar ─────────────────────────────────────────────────────
-                      Closed: sits at its natural position, no rotation.
-                      Open:   rotates 45° and translates +7 px down so its center
-                              overlaps the middle bar's center, forming the top arm of the ✕. */}
-                  <motion.span
-                    animate={r ? undefined : {  // r = useReducedMotion(); skip animation when set
-                      rotate: open ? 45 : 0,    // 45° clockwise → top arm of X
-                      y:      open ? 7 : 0,     // 7 px = bar height (2) + gap (5); centres on middle
-                    }}
-                    transition={SPRING}           // shared spring constant — consistent with header feel
-                    className="block w-6 h-0.5 rounded-full bg-brand-dark origin-center"
-                    // w-6 = 24 px, h-0.5 = 2 px; rounded-full softens the bar ends
-                    // origin-center ensures rotation pivots around the bar's own midpoint
-                    // bg-brand-dark = #1A1A1A — semantic token, same value as the spec
-                  />
-
-                  {/* ── Middle bar ──────────────────────────────────────────────────
-                      Closed: fully visible.
-                      Open:   fades to opacity 0 and collapses to scaleX 0 so it
-                              disappears without shifting the top/bottom bars. */}
-                  <motion.span
-                    animate={r ? undefined : {
-                      opacity: open ? 0 : 1,    // hide when open; fade avoids a flash
-                      scaleX:  open ? 0 : 1,    // also shrink so it can't be seen if opacity lags
-                    }}
-                    transition={SPRING}
-                    className="block w-6 h-0.5 rounded-full bg-brand-dark origin-center"
-                  />
-
-                  {/* ── Bottom bar ──────────────────────────────────────────────────
-                      Closed: sits at its natural position, no rotation.
-                      Open:   rotates -45° and translates -7 px up to overlap the middle
-                              bar's centre, forming the bottom arm of the ✕. */}
-                  <motion.span
-                    animate={r ? undefined : {
-                      rotate: open ? -45 : 0,   // -45° counter-clockwise → bottom arm of X
-                      y:      open ? -7 : 0,    // mirror of top bar; -7 px moves it up to centre
-                    }}
-                    transition={SPRING}
-                    className="block w-6 h-0.5 rounded-full bg-brand-dark origin-center"
-                  />
-                </button>
+                <BurgerButton open={open} controls="mobile-nav" onToggle={() => setOpen(v => !v)} />
               </div>
             </div>
 
           </div>
-        </div>
+        </Container>
       </motion.header>
 
       <AnimatePresence>

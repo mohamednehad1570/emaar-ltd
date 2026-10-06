@@ -81,7 +81,8 @@ export default function ProjectsGrid({ projects = [] }: Props) {
   });
 
   return (
-    <section className="pt-32 pb-16 px-6 bg-off-white min-h-screen" dir={isRTL ? 'rtl' : 'ltr'}>
+    // Header height + 4rem breathing room above the page title
+    <section className="pt-[calc(var(--header-h)+4rem)] pb-16 px-6 bg-off-white min-h-screen" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto">
 
         <div className="text-center mb-16">

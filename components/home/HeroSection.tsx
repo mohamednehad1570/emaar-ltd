@@ -226,11 +226,11 @@ export default function HeroSection({
       >
         <Container className="w-full">
           {/*
-            pt-20 — offsets the fixed 80 px header so the stacked content
-            sits in the visual centre of the remaining viewport, not the
+            pt-(--header-h) — offsets the fixed header (72–96px by breakpoint)
+            so the stacked content centres in the remaining viewport, not the
             geometric centre of the full h-screen section.
           */}
-          <div className="pt-24">
+          <div className="pt-(--header-h)">
             <motion.div
               className={`max-w-xl sm:max-w-2xl lg:max-w-3xl ${isRTL ? 'mr-0 ml-auto lg:ml-0' : ''}`}
               variants={staggerContainer}

@@ -123,7 +123,7 @@ export default function ProductFilterSidebar({ filters, onChange, lockedMaterial
   const t = (key: keyof typeof labels) => labels[key][language]
 
   return (
-    <aside className={cn('space-y-8 sticky top-24', isRTL ? 'text-right' : 'text-left')} aria-label="Product filters">
+    <aside className={cn('space-y-8 sticky top-[calc(var(--header-h)+1.5rem)]', isRTL ? 'text-right' : 'text-left')} aria-label="Product filters">
 
       {/* ── Clear all ───────────────────────────────────────────────────── */}
       {hasActiveFilters && (

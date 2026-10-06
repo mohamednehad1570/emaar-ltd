@@ -205,6 +205,41 @@
   --animate-skeleton:   skeleton-loading 1.5s ease-in-out infinite;
 }
 
+/* ── Header height — single source for every offset under the fixed header ──
+   Resting → compact (Header.tsx sets html[data-header="compact"] after 48px of
+   scroll, back to rest below 16px):
+     mobile  <768px    72 → 64
+     tablet  768–1279  84 → 72
+     desktop ≥1280     96 → 76
+   Consumers: header bar height, mega-menu top, scroll-padding-top, sticky
+   sub-navs (CategoryAccordion, TechFilters, FAQ), PageHeader, homepage hero.
+   @property makes the variable interpolable, so every consumer moves on the
+   header's own 0.3s curve instead of jumping. Under reduced motion the global
+   rule below zeroes transition-duration on html, so the switch is instant.   */
+@property --header-h {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 72px;
+}
+
+:root {
+  --header-h: 72px;
+  transition: --header-h 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+:root[data-header='compact'] { --header-h: 64px; }
+
+@media (min-width: 768px) {
+  :root { --header-h: 84px; }
+  :root[data-header='compact'] { --header-h: 72px; }
+}
+@media (min-width: 1280px) {
+  :root { --header-h: 96px; }
+  :root[data-header='compact'] { --header-h: 76px; }
+}
+
+/* +16px breathing room so an anchored heading never kisses the header edge */
+html { scroll-padding-top: calc(var(--header-h) + 16px); }
+
 body {
   background: var(--background);
   color: var(--foreground);
