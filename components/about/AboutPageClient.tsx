@@ -12,8 +12,14 @@ import Container from '@/components/layout/Container';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { IMAGES } from '@/lib/data/images';
 import Button from '@/components/ui/Button';
+import type { Award as AwardEntry } from '@/lib/types';
 
-export default function AboutPageClient() {
+interface AboutPageClientProps {
+  // lib/data/awards.ts — single source for awards site-wide (about.ts keeps only the heading)
+  awards: AwardEntry[];
+}
+
+export default function AboutPageClient({ awards }: AboutPageClientProps) {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
 
@@ -374,10 +380,10 @@ export default function AboutPageClient() {
             <div className="h-0.5 w-12 bg-brand-red mx-auto" />
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {t.awards.items.map((awardItem, idx) => (
+          <div className="grid sm:grid-cols-2 gap-4">
+            {awards.map((awardItem, idx) => (
               <motion.div
-                key={idx}
+                key={awardItem.id}
                 initial={shouldReduce ? {} : { opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={shouldReduce ? undefined : viewportOnce}
@@ -385,7 +391,7 @@ export default function AboutPageClient() {
                 className={`bg-white border border-border-light hover:border-brand-silver transition-colors p-6 text-center ${isRTL ? 'rtl' : ''}`}
               >
                 <Award className="w-10 h-10 mx-auto mb-3 text-gold" aria-hidden="true" />
-                <h3 className="font-bold text-brand-dark text-sm mb-1">{awardItem.name}</h3>
+                <h3 className="font-bold text-brand-dark text-sm mb-1">{awardItem.name[language]}</h3>
                 <p className="text-xs text-text-muted" dir="ltr">{awardItem.year}</p>
               </motion.div>
             ))}

@@ -16,7 +16,7 @@ import type { careersData } from '@/lib/data/uiStrings'
 
 interface Props {
   jobs: Job[]
-  // Culture, filters, and CTA copy only — careersData.jobs is no longer rendered
+  // Culture, filters, and CTA copy — vacancies come from the jobs prop
   staticData: typeof careersData
   cvEmail: string
 }

@@ -143,14 +143,6 @@ export const aboutData = {
     },
     awards: {
       title: 'Awards & Recognition',
-      items: [
-        { name: 'ISO 9001:2015', year: '2023', icon: 'Award' },
-        { name: 'UAE Quality Mark', year: '2022', icon: 'Award' },
-        { name: 'Best Manufacturer Award', year: '2023', icon: 'Award' },
-        { name: 'Green Building Certified', year: '2024', icon: 'Award' },
-        { name: 'Excellence in Innovation', year: '2024', icon: 'Award' },
-        { name: 'Customer Service Award', year: '2023', icon: 'Award' },
-      ],
     },
     cta: {
       title: 'Ready to Experience the EMAAR Difference?',
@@ -234,14 +226,6 @@ export const aboutData = {
     },
     awards: {
       title: 'الجوائز والتقدير',
-      items: [
-        { name: 'ISO 9001:2015', year: '2023', icon: 'Award' },
-        { name: 'علامة الجودة الإماراتية', year: '2022', icon: 'Award' },
-        { name: 'جائزة أفضل مصنّع', year: '2023', icon: 'Award' },
-        { name: 'شهادة البناء الأخضر', year: '2024', icon: 'Award' },
-        { name: 'التميز في الابتكار', year: '2024', icon: 'Award' },
-        { name: 'جائزة خدمة العملاء', year: '2023', icon: 'Award' },
-      ],
     },
     cta: {
       title: 'هل أنت مستعد لتجربة فرق إعمار؟',

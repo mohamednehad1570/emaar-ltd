@@ -12,10 +12,10 @@ export type { WhyChooseUsData } from './whyChooseUs';
 export { servicesData } from './services';
 
 export { careersData } from './careers';
-export type { CareersJob, CareersContent } from './careers';
+export type { CareersContent } from './careers';
 
 export { techData } from './tech';
-export type { TechContent, DownloadFile } from './tech';
+export type { TechContent } from './tech';
 
 export { contactData } from './contact';
 

@@ -6,6 +6,7 @@
 
 import type { Metadata } from 'next';
 import AboutPageClient from '@/components/about/AboutPageClient';
+import { AWARDS } from '@/lib/data/awards';
 import PageHeader from '@/components/ui/PageHeader';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 
@@ -27,7 +28,7 @@ export default function AboutPage() {
         description="26 years manufacturing uPVC, Aluminum, and Glass systems in the UAE."
         chips={['Est. 2000', 'SAIF Zone Sharjah', '50,000 sqft factory']}
       />
-      <AboutPageClient />
+      <AboutPageClient awards={AWARDS} />
     </>
   );
 }

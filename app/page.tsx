@@ -5,7 +5,7 @@
  * trust chips come from lib/data/certificates.ts.
  *
  * Section order:
- *   Hero → Stats + Certs → Products → Projects → Why → Testimonials → CTA
+ *   Hero → Stats + Certs → Products → Projects → Why → CTA
  */
 
 import type { Metadata } from 'next';
@@ -18,7 +18,6 @@ import StatsSection          from '@/components/home/StatsSection';
 import ProductsSection       from '@/components/home/ProductsSection';
 import ProjectsSection       from '@/components/home/ProjectsSection';
 import WhyChooseUsSection    from '@/components/home/WhyChooseUsSection';
-import TestimonialsSection   from '@/components/home/TestimonialsSection';
 import CTASection            from '@/components/home/CTASection';
 import SectionDivider        from '@/components/home/SectionDivider';
 
@@ -50,8 +49,7 @@ export default function HomePage() {
       <SectionDivider en="Why Emaar" ar="لماذا إعمار" />
       <WhyChooseUsSection />
 
-      <SectionDivider en="Client Stories" ar="قصص العملاء" />
-      <TestimonialsSection />
+      {/* TestimonialsSection unmounted — placeholder copy; no fake testimonials until real ones exist */}
 
       <CTASection />
 

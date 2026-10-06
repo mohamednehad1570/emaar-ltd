@@ -20,19 +20,7 @@ export interface DisplayProject {
   material: string;
 }
 
-/**
- * Bilingual project preview — the minimal subset used in the homepage
- * ProjectsSection static data array.
- */
-export interface ProjectPreview {
-  id: number;
-  title: { en: string; ar: string };
-  location: { en: string; ar: string };
-  year: string;
-  image: string;
-}
-
-// ── Static-data types (replace the old CMS types in Batches B–C) ───────────
+// ── Static-data types (lib/data/*) ──────────────────────────────────────────
 
 /** Bilingual value — every user-facing string ships both languages. */
 export type Localized<T> = { en: T; ar: T };

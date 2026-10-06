@@ -44,3 +44,7 @@ node_modules/
 
 # local dev artifacts
 screenshots/
+
+# editor swap files
+*.swp
+*.swo
