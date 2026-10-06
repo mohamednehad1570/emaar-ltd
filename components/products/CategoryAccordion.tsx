@@ -307,6 +307,13 @@ function CardsVariant({
   initialSlug:  string | null
 }) {
   const [activeSlug, setActiveSlug]   = useState<string | null>(initialSlug)
+  // Hash can arrive after mount (menu link on the same page) — open that card's drawer.
+  // Adjust-during-render instead of an effect avoids a cascading second render.
+  const [seenSlug, setSeenSlug] = useState(initialSlug)
+  if (initialSlug !== seenSlug) {
+    setSeenSlug(initialSlug)
+    if (initialSlug) setActiveSlug(initialSlug)
+  }
   const drawerRef                     = useRef<HTMLDivElement>(null)
   const mobileDrawerRef               = useRef<HTMLDivElement>(null)
 
@@ -685,11 +692,16 @@ export default function CategoryAccordion({ categories, material, variant }: Pro
   const shouldReduce        = useReducedMotion()
   const [initialSlug, setInitialSlug] = useState<string | null>(null)
 
+  // Read on mount, then follow later hash changes — same-page menu links dispatch
+  // hashchange via followSamePageHash (Next's <Link> alone does not)
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '')
-    if (hash && categories.some(c => c.slug === hash)) {
-      setInitialSlug(hash)
+    const sync = () => {
+      const hash = window.location.hash.replace('#', '')
+      if (hash && categories.some(c => c.slug === hash)) setInitialSlug(hash)
     }
+    sync()
+    window.addEventListener('hashchange', sync)
+    return () => window.removeEventListener('hashchange', sync)
   }, [categories])
 
   return variant === 'cards' ? (

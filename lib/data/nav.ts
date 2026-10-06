@@ -116,17 +116,3 @@ export const SOLUTIONS_HREFS: string[] = [
 ]
   .map(l => l.href.split('#')[0])
   .filter((v, i, a) => v && a.indexOf(v) === i)
-
-// ─── TEMP legacy shim ─────────────────────────────────────────────────────────
-// Keeps the old mega-menu / accordion compiling between commits. Removed in pass 3.
-
-/** @deprecated TEMP — do not use in new code */
-export interface LegacyNavLink extends NavLink { groupLabel?: Localized }
-
-/** @deprecated TEMP — do not use in new code */
-export const SOLUTIONS_PRODUCTS = MATERIAL_ORDER.map(m => {
-  const b = SOLUTIONS.products.materials[m]
-  const items: LegacyNavLink[] = b.groups.flatMap((g, gi) => g.items.map((it, i) =>
-    i === 0 && g.label ? { ...it, groupLabel: g.label, dividerBefore: gi > 0 } : it))
-  return { material: { ...b.label, href: b.viewAll.href }, items }
-})

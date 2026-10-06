@@ -5,7 +5,7 @@
  * Full-screen slide-in nav drawer for mobile (< lg breakpoint).
  * Top bar: logo + language toggle + close.
  * Bottom bar: WhatsApp + Request Quote side-by-side.
- * Nav list extracted to MobileNavList to stay under the 150-line limit.
+ * Nav body is MobileDrillNav (drill-down panels); the drawer enters from the end side.
  */
 
 import React from 'react';
@@ -16,7 +16,7 @@ import { X, ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import { cn } from '@/lib/cn';
-import MobileNavList from './MobileNavList';
+import MobileDrillNav from './MobileDrillNav';
 import Button from '@/components/ui/Button';
 import EmaarLogo from '@/components/ui/EmaarLogo'; // shared logo atom — keeps overlay in sync with Header/Footer
 
@@ -62,12 +62,13 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
         role="dialog"
         aria-modal="true"
         aria-label="Site navigation"
-        dir="ltr"
-        initial={{ x: '100%' }}
+        dir={isRTL ? 'rtl' : 'ltr'}
+        // Enters from the end side — physical right in LTR, left in RTL
+        initial={{ x: isRTL ? '-100%' : '100%' }}
         animate={{ x: 0 }}
-        exit={{ x: '100%', transition: { ease: EASE_DRAWER, duration: 0.28 } }}
+        exit={{ x: isRTL ? '-100%' : '100%', transition: { ease: EASE_DRAWER, duration: 0.28 } }}
         transition={r ? { duration: 0 } : { ease: EASE_DRAWER, duration: 0.35 }}
-        className="fixed top-0 h-full w-full bg-off-white z-[70] xl:hidden flex flex-col right-0"
+        className="fixed top-0 h-full w-full bg-off-white z-[70] xl:hidden flex flex-col end-0"
       >
 
         {/* ── Top bar: logo + lang toggle + close ─────────────────── */}
@@ -110,7 +111,7 @@ export default function HeaderMobileOverlay({ id, onClose, language, isRTL, path
         </div>
 
         {/* ── Nav list ────────────────────────────────────────────── */}
-        <MobileNavList language={language} pathname={pathname} onClose={onClose} />
+        <MobileDrillNav language={language} isRTL={isRTL} pathname={pathname} onClose={onClose} />
 
         {/* ── Bottom CTAs: WhatsApp + Request Quote ───────────────── */}
         <motion.div

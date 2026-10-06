@@ -33,12 +33,16 @@ export default function ProjectsGrid({ projects = [] }: Props) {
     if (materialParam) setMaterialFilter(materialParam);
   }, [searchParams]);
 
-  // Hash-anchor init on mount — /projects#villas sets filter to 'villas', etc.
+  // Hash anchors — /projects#villas sets filter to 'villas', etc. Also follows later
+  // hash changes, which same-page menu links dispatch via followSamePageHash.
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
-    if (hash === 'villas' || hash === 'buildings') {
-      setSectorFilter(hash);
-    }
+    const sync = () => {
+      const hash = window.location.hash.replace('#', '');
+      if (hash === 'villas' || hash === 'buildings') setSectorFilter(hash);
+    };
+    sync();
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
   }, []);
 
   // Normalise Sanity projects into the flat DisplayProject shape
@@ -175,8 +179,10 @@ export default function ProjectsGrid({ projects = [] }: Props) {
             )}
           </div>
         ) : (
-          /* Single-type mode: flat grid (unchanged) */
-          <>
+          /* Single-type mode: flat grid. The wrapper carries the type id so a
+             #villas / #buildings jump still has a target once the filter collapses
+             the grouped anchors above. */
+          <div id={sectorFilter}>
             <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <AnimatePresence>
                 {filteredProjects.map((project) => (
@@ -189,7 +195,7 @@ export default function ProjectsGrid({ projects = [] }: Props) {
                 {language === 'en' ? 'No projects found matching these filters.' : 'لا توجد مشاريع تطابق هذه معايير التصفية.'}
               </div>
             )}
-          </>
+          </div>
         )}
 
       </div>
