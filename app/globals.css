@@ -182,6 +182,9 @@
   /* ── Brand red deep (CLAUDE.md hover alias) ── */
   --color-brand-red-deep:  var(--brand-red-dark);  /* hover:bg-brand-red-deep = #C0392B */
 
+  /* ── Warm ink (shadow base colour as a token) — image overlays: from-warm-ink/72 ── */
+  --color-warm-ink: #2D2926; /* = rgba(45,41,38) — never black overlays */
+
   /* ── Warm Shadow Scale (rgba(45,41,38,x) — never rgba(0,0,0,x)) ── */
   --shadow-warm-sm:  0 2px 8px  rgba(45, 41, 38, 0.08);
   --shadow-warm-md:  0 4px 20px rgba(45, 41, 38, 0.10);

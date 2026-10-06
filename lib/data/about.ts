@@ -10,7 +10,7 @@ export const aboutData = {
   en: {
     hero: {
       title: 'About EMAAR',
-      subtitle: 'Building Excellence Since 2004',
+      subtitle: 'Building Excellence Since 2000',
       description:
         'Two decades of innovation, craftsmanship, and unwavering commitment to quality in the UAE construction industry.',
     },
@@ -23,7 +23,7 @@ export const aboutData = {
     story: {
       title: 'Our Story',
       intro:
-        'Founded in 2004, Emaar International Industry emerged with a clear vision: to revolutionize the windows and doors industry in the United Arab Emirates.',
+        'Founded in 2000, Emaar International Industry emerged with a clear vision: to revolutionize the windows and doors industry in the United Arab Emirates.',
       body1:
         'What began as a modest operation has grown into one of the most trusted names in premium uPVC and aluminum solutions. Our journey has been marked by continuous innovation, unwavering quality standards, and an uncompromising commitment to customer satisfaction.',
       body2:
@@ -35,7 +35,7 @@ export const aboutData = {
       subtitle: 'Milestones That Define Us',
       events: [
         {
-          year: 2004,
+          year: 2000,
           title: 'Foundation',
           description: 'EMAAR International established with a vision to transform the industry',
           icon: 'Sparkles',
@@ -155,7 +155,7 @@ export const aboutData = {
   ar: {
     hero: {
       title: 'عن إعمار',
-      subtitle: 'نبني التميز منذ 2004',
+      subtitle: 'نبني التميز منذ 2000',
       description:
         'عقدان من الابتكار والحرفية والالتزام الثابت بالجودة في صناعة البناء في الإمارات.',
     },
@@ -168,7 +168,7 @@ export const aboutData = {
     story: {
       title: 'قصتنا',
       intro:
-        'تأسست شركة إعمار الدولية للصناعة في عام 2004 برؤية واضحة: إحداث ثورة في صناعة النوافذ والأبواب في دولة الإمارات العربية المتحدة.',
+        'تأسست شركة إعمار الدولية للصناعة في عام 2000 برؤية واضحة: إحداث ثورة في صناعة النوافذ والأبواب في دولة الإمارات العربية المتحدة.',
       body1:
         'ما بدأ كعملية متواضعة نما ليصبح واحدًا من أكثر الأسماء الموثوقة في حلول uPVC والألومنيوم المتميزة. تميزت رحلتنا بالابتكار المستمر ومعايير الجودة الثابتة والالتزام الذي لا يتزعزع برضا العملاء.',
       body2:
@@ -179,7 +179,7 @@ export const aboutData = {
       title: 'رحلتنا',
       subtitle: 'المعالم التي تحددنا',
       events: [
-        { year: 2004, title: 'التأسيس', description: 'تأسست إعمار الدولية برؤية لتحويل الصناعة', icon: 'Sparkles' },
+        { year: 2000, title: 'التأسيس', description: 'تأسست إعمار الدولية برؤية لتحويل الصناعة', icon: 'Sparkles' },
         { year: 2008, title: 'توسع المصنع', description: 'افتتاح منشأة التصنيع الحديثة بمساحة 15,000 متر مربع', icon: 'Factory' },
         { year: 2012, title: 'شهادة ISO', description: 'حصلنا على شهادة إدارة الجودة ISO 9001:2015', icon: 'Award' },
         { year: 2016, title: 'الذكرى العاشرة', description: 'احتفلنا بـ 10 سنوات من التميز مع أكثر من 250 مشروعًا مكتملًا', icon: 'TrendingUp' },

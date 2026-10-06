@@ -118,3 +118,20 @@ export const heroEntrance: Variants = {
     transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
 };
+
+/** Homepage featured grids — 80ms card cascade (spec), children own the fade */
+export const featuredGrid: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+};
+
+/** Featured card entrance — reduced motion keeps the fade but drops the 16px rise */
+export function featuredItem(reduce: boolean): Variants {
+  return {
+    hidden: { opacity: 0, y: reduce ? 0 : 16 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
+  };
+}
+
+/** Featured grids fire once, when 30% of the grid is on screen */
+export const featuredViewport = { once: true, amount: 0.3 } as const;

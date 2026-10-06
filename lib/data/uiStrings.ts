@@ -23,3 +23,6 @@ export { aboutData } from './about';
 
 export { faqData, faqCategoryIcons } from './faq';
 export type { FAQItem } from './faq';
+
+export { FEATURED_PRODUCTS, FEATURED_PROJECTS, HOME_FEATURED_COPY } from './homeFeatured';
+export type { FeaturedProduct, FeaturedProject } from './homeFeatured';

@@ -18,19 +18,12 @@ const BLANK: ImageSrc = null;
 export const IMAGES = {
   home: {
     hero: { slide1: BLANK, slide2: BLANK, slide3: BLANK },
-    // ProductsSection carousel ids — note 'hebeschibe' spelling matches the existing component id
+    // FEATURED_PRODUCTS keys in homeFeatured.ts — 4-card static grid
     products: {
-      pergola: BLANK, 'stained-glass': BLANK, 'upvc-doors-windows': BLANK,
-      skylights: BLANK, 'alu-staircases': BLANK, hebeschibe: BLANK,
-      'frameless-doors': BLANK, 'alu-doors-windows': BLANK, 'security-systems': BLANK,
-      sandblast: BLANK, 'upvc-staircases': BLANK, handrails: BLANK, 'acp-panels': BLANK,
+      hebeschiebe: BLANK, 'stained-glass': BLANK, 'curtain-wall': BLANK, 'slide-and-fold': BLANK,
     },
-    // ProjectsSection marquee ids
-    projects: {
-      'villa-jumeirah': BLANK, 'building-business-bay': BLANK, 'villa-palm': BLANK,
-      'building-marina': BLANK, 'villa-arabian': BLANK, 'building-downtown': BLANK,
-      'villa-meadows': BLANK, 'building-sharjah': BLANK,
-    },
+    // FEATURED_PROJECTS types in homeFeatured.ts — one card per project type
+    projects: { residential: BLANK, commercial: BLANK },
   },
 
   products: {
