@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useSearchParams } from 'next/navigation';
@@ -35,15 +35,29 @@ export default function ProjectsGrid({ projects = [] }: Props) {
 
   // Hash anchors — /projects#villas sets filter to 'villas', etc. Also follows later
   // hash changes, which same-page menu links dispatch via followSamePageHash.
+  // The extra frame matters on client navigation: this effect runs before Next has
+  // written the new #hash into the URL, so a same-tick read still sees the old one.
+  const pendingScroll = useRef<string | null>(null);
   useEffect(() => {
     const sync = () => {
       const hash = window.location.hash.replace('#', '');
-      if (hash === 'villas' || hash === 'buildings') setSectorFilter(hash);
+      if (hash !== 'villas' && hash !== 'buildings') return;
+      pendingScroll.current = hash;
+      setSectorFilter(hash);
     };
-    sync();
+    const frame = requestAnimationFrame(sync);
     window.addEventListener('hashchange', sync);
-    return () => window.removeEventListener('hashchange', sync);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('hashchange', sync); };
   }, []);
+
+  // Changing the filter re-renders the grid and moves the anchor, so the browser's
+  // own jump lands in the wrong place — scroll again once the new layout is in
+  useEffect(() => {
+    const id = pendingScroll.current;
+    if (!id) return;
+    pendingScroll.current = null;
+    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  }, [sectorFilter]);
 
   // Normalise Sanity projects into the flat DisplayProject shape
   const displayProjects: DisplayProject[] = projects.map((p) => ({

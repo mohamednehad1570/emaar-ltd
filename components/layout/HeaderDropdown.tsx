@@ -32,7 +32,8 @@ export default function HeaderDropdown({
         'absolute top-full z-50 py-2',
         'bg-white border border-border-light shadow-warm-xl',
         'min-w-[220px] max-w-[280px] w-max',
-        isRTL ? 'right-0' : 'left-0',
+        // start-0 anchors to the trigger's reading-start edge (dir is set below)
+        'start-0',
       )}
       dir={isRTL ? 'rtl' : 'ltr'}
       onPointerEnter={onEnter}

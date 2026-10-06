@@ -78,7 +78,8 @@ export default function HeaderSolutionsMegaMenu({ id, onEnter, onLeave, onNaviga
         {/* ── Column 1 — View ─────────────────────────────────── */}
         <MegaMenuColumn
           id="mm-col-view" heading={HEADINGS.view[language]} language={language}
-          viewAll={isProducts ? SOLUTIONS.products.viewAll : SOLUTIONS[view].viewAll}
+          // Fixed catalogue link — the selected branch's own "View all" closes the Items column
+          viewAll={SOLUTIONS.products.viewAll}
           swapKey="view" onFollow={follow}
         >
           <ul>
@@ -97,7 +98,8 @@ export default function HeaderSolutionsMegaMenu({ id, onEnter, onLeave, onNaviga
         {isProducts && (
           <MegaMenuColumn
             id={COL_MATERIAL} heading={HEADINGS.material[language]} language={language}
-            viewAll={SOLUTIONS.products.viewAll} swapKey="material"
+            // No footer: it could only repeat column 1's "View all products"
+            swapKey="material"
             onFollow={follow} onPointerEnter={cancel}
           >
             <ul>

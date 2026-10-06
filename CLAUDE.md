@@ -24,11 +24,13 @@ Phosphor Icons + Sanity.io CMS. Deployed on Vercel.
 - components/contact/ — ContactPageClient (client, assembles page), ContactHero, ContactForm (form state + /api/contact submit), ContactInfo (phone/email/address/hours strip), ContactOffices (office cards, CMS + static fallback), ContactMap (iframe or placeholder)
 - components/why-choose-us/ — HeroSection, AdvantagesSection, CertificationsSection, ComparisonSection, MaintenanceSection, ProcessSection, TestimonialsSection, WarrantySection, CTASection
 - components/ui/ — shared primitives: Button.tsx, EmaarLogo.tsx (size/showText/textSize/className — used in Header, Footer, HeaderMobileOverlay), InfiniteMarquee.tsx (shared marquee engine — pure Framer Motion, no CSS keyframes; children rendered twice for seamless loop; direction/paused/duration props; dir="ltr" on track always); Breadcrumbs removed — never add back
-- components/layout/ — HeaderDesktopNav, HeaderMobileOverlay (top bar: logo + LangToggle + close; bottom bar: WhatsApp + Request Quote side-by-side; nav list delegated to MobileNavList), MobileNavList (scrollable nav accordion extracted from HeaderMobileOverlay to keep that file under 150 lines), HeaderSolutionsMegaMenu (tabbed full-width mega-menu for "Our Solutions" — Products tab: 3-column MaterialColumn grid; Projects tab: flat links; fixed positioning top:56 full-width; hover-intent via onEnter/onLeave props), HeaderDropdown (compact vertical dropdown — used for About only, NOT "Our Solutions"), Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
+- components/layout/ — HeaderDesktopNav (≥1280px; hover intent via useHoverIntent, click toggle, Esc returns focus), HeaderSolutionsMegaMenu + MegaMenuColumn + MegaMenuItem (cascading View → Material → Items panel, fixed grid, safe-triangle via useSafeTriangle, arrow keys via useColumnKeyboard, top: var(--header-h)), HeaderMobileOverlay (<1280px; top bar logo + LangToggle + close; bottom bar WhatsApp + Request Quote), MobileDrillNav + drillPanels.ts (drill-down panels root → Our Solutions → Products → material → items, via usePanelStack; derived from nav data), LangToggle, BurgerButton, HeaderDropdown (compact dropdown — About only), Container (max-w-7xl mx-auto px-4 sm:px-6 lg:px-8), LanguageTransition (crossfade wrapper — wraps {children} in layout.tsx, fades page content on language switch; header sits above it and never fades)
 - components/Header.tsx, Footer.tsx
 - lib/whatsapp.ts — getWhatsAppURL({ page, productName?, projectName? })
 - lib/data/index.ts — barrel export; re-exports nav.ts (NAV, isActive only — DropdownItem removed)
-- lib/data/nav.ts — nav data + types: NavLink {en, ar, href}, MaterialColumn {material: NavLink, items: NavLink[]}, NavItem; exports NAV, isActive, SOLUTIONS_PRODUCTS (3 material columns), SOLUTIONS_PROJECTS (villa/building links), SOLUTIONS_HREFS (flat href array for isActive checks)
+- lib/data/nav.ts — nav types (Localized, NavLink, NavGroup, NavBranch, SolutionsTree, NavItem) + NAV, isActive, branchLinks, SOLUTIONS_VIEW_ORDER, MATERIAL_ORDER, SOLUTIONS_HREFS; re-exports SOLUTIONS from lib/data/navSolutions.ts (products.materials.{upvc,aluminum,glass} / projects / accessories, all hash anchors)
+- lib/navigateHash.ts — followSamePageHash(): same-page hash links push the hash, dispatch hashchange, then scroll (Next <Link> fires no hashchange)
+- lib/hooks/useBreakpoint.ts · useHoverIntent.ts · useSafeTriangle.ts · useColumnKeyboard.ts · usePanelStack.ts — header/nav hooks
 - lib/data/uiStrings.ts — re-export barrel for all static UI copy; components import from here, never from individual copy files directly. Re-exports: whyChooseUsData, servicesData, careersData/CareersJob/CareersContent, techData/TechContent/DownloadFile, contactData, aboutData, faqData/faqCategoryIcons/FAQItem
 - lib/data/whyChooseUs.ts · services.ts · careers.ts · tech.ts · contact.ts · about.ts · faq.ts — bilingual { en, ar } static UI copy and CMS fallback data; accessed only through uiStrings.ts — never import these directly
 - lib/data/materialContent.ts — static bilingual content for all three material landing pages (uPVC/aluminum/glass); exports MATERIAL_CONTENT record + types: LocalizedString, StoryPanel, CategoryContent (slug/label/tagline/description/characteristics/image), WhyEmaarItem, CTAContent, MaterialContent; import directly from here in material page components
@@ -67,8 +69,13 @@ Note: stained-glass and sandblast moved OUT of uPVC and aluminum — now under g
 
 ## Header nav order
 LTR: Home · Our Solutions▾ · Technical · About▾ · Contact
-RTL: reversed
-Our Solutions: tabbed mega-menu (HeaderSolutionsMegaMenu, megaMenu:true in NAV) — Products tab: 3-column grid (uPVC Systems, Aluminium Systems, Glass Systems) with sub-category links; Projects tab: Villa Projects + Building Projects links. Desktop uses AnimatePresence + layoutId="tab-indicator". Mobile (MobileNavList) flattens all material columns + projects into a single accordion.
+RTL: reversed (nav has dir; the header bar itself stays dir="ltr" so the logo is always left)
+Our Solutions (≥1280px): cascading mega-menu — View (Products/Projects/Accessories) → Material (Products only) → Items. Default Products → uPVC. <1280px: MobileDrillNav drill-down panels.
+
+## Header sizing
+- `--header-h` (globals.css, @property-interpolated): rest/compact 72/64 mobile, 84/72 tablet (≥768), 96/76 desktop (≥1280). Header.tsx toggles html[data-header="compact"] after 48px scroll, back below 16px.
+- Use `top-(--header-h)` / `pt-(--header-h)` for anything under the header — never hard-code a header height. html has scroll-padding-top: calc(var(--header-h) + 16px).
+- EmaarLogo size="header" | "footer": 72/60/52 at rest; header compact scales to 56/52/46 (transform only). Name: EN "Emaar International Industry" (≥768) / "Emaar Int. Ind." (<768), AR "إعمار الدولية للصناعة". "L.L.C." / "ذ.م.م" appear ONLY in the footer copyright line.
 
 ## Routing rules
 - Product URLs are 4-level: /products/{material}/{category}/{slug}
@@ -258,5 +265,7 @@ git add -A && git commit -m "scope(area): what changed" && git push origin dev
 - next.config.ts has THREE material redirect blocks now (upvc, aluminum, glass) — when adding a new glass category, update the glass lookahead regex.
 - materialContent.ts and projectContent.ts images are Unsplash placeholders — replace with real photography before launch. projectContent.ts href values link to /projects/[id] detail pages that may not exist in Sanity yet.
 
+- Header/nav redesign (Oct 6 2026): cascading mega-menu, mobile drill-down, shrink-on-scroll header with --header-h, logo presets, LLC removed outside copyright, footer links derived from SOLUTIONS, accessories anchors (brands/upvc/aluminum/quality).
+
 ### Pending prompts
-- None
+- Logo artwork (public/emaar-logo.png) still contains "INTERNATIONAL IND. L.L.C." and ring text "إعمار العالمية للصناعات ذ.م.م" (العالمية ≠ الدولية) — needs a client decision / new asset.

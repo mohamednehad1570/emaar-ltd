@@ -317,6 +317,17 @@ function CardsVariant({
   const drawerRef                     = useRef<HTMLDivElement>(null)
   const mobileDrawerRef               = useRef<HTMLDivElement>(null)
 
+  // Cards render twice (desktop row + mobile scroller) under the same id, and the
+  // browser's #hash jump picks the first — hidden on mobile. Scroll the visible copy.
+  useEffect(() => {
+    if (!initialSlug) return
+    const t = setTimeout(() => {
+      const cards = Array.from(document.querySelectorAll<HTMLElement>(`[id="${initialSlug}"]`))
+      cards.find(c => c.offsetParent !== null)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 400)   // after the drawer's AnimatePresence has started, so layout is final
+    return () => clearTimeout(t)
+  }, [initialSlug])
+
   function handleClick(slug: string) {
     const isClosing = slug === activeSlug
     setActiveSlug(isClosing ? null : slug)

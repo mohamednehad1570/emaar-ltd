@@ -62,9 +62,7 @@ export default function HeaderDesktopNav() {
   useEffect(() => {
     if (!openKey) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return
-      triggers.current.get(openKey)?.focus()
-      close()
+      if (e.key === 'Escape') { triggers.current.get(openKey)?.focus(); close() }
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
@@ -72,11 +70,10 @@ export default function HeaderDesktopNav() {
 
   function onTriggerKey(e: React.KeyboardEvent, key: string) {
     if (e.key !== 'ArrowDown') return
-    e.preventDefault()
-    open(key)
+    e.preventDefault(); open(key)
     // One frame for the panel to mount before focusing its first row
-    requestAnimationFrame(() => document.querySelector<HTMLElement>(
-      key === 'mega' ? `#${MEGA_ID} [data-mm-item]` : `[data-nav-drop="${key}"] a`)?.focus())
+    const sel = key === 'mega' ? `#${MEGA_ID} [data-mm-item]` : `[data-nav-drop="${key}"] a`
+    requestAnimationFrame(() => document.querySelector<HTMLElement>(sel)?.focus())
   }
 
   return (
@@ -126,12 +123,8 @@ export default function HeaderDesktopNav() {
               )}
 
               {/* ── Red underline — grows from the reading-start edge ── */}
-              <motion.span
-                variants={underline}
-                className="absolute bottom-0 inset-x-0 h-[2px] bg-brand-red"
-                style={{ transformOrigin: isRTL ? 'right' : 'left' }}
-                aria-hidden="true"
-              />
+              <motion.span variants={underline} aria-hidden="true" className="absolute bottom-0 inset-x-0 h-[2px] bg-brand-red"
+                style={{ transformOrigin: isRTL ? 'right' : 'left' }} />
 
               {/* ── Panels ──────────────────────────────────────────── */}
               <AnimatePresence>

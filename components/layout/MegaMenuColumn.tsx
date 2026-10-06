@@ -19,7 +19,8 @@ import { cn } from '@/lib/cn'
 interface Props {
   id:        string
   heading:   string
-  viewAll:   NavLink
+  /** Omitted where it would repeat a neighbouring column's link */
+  viewAll?:  NavLink
   language:  'en' | 'ar'
   swapKey:   string
   onFollow:  (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void
@@ -58,7 +59,7 @@ export default function MegaMenuColumn({
       </motion.div>
 
       {/* ── View all — red underline text link ──────────────── */}
-      <Link
+      {viewAll && <Link
         href={viewAll.href}
         data-mm-item=""
         onClick={(e) => onFollow(e, viewAll.href)}
@@ -71,7 +72,7 @@ export default function MegaMenuColumn({
       >
         {viewAll[language]}
         <ArrowRight size={12} weight="bold" aria-hidden="true" className="rtl:rotate-180" />
-      </Link>
+      </Link>}
     </section>
   )
 }
