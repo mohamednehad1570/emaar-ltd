@@ -31,7 +31,7 @@ export const careersData: Record<'en' | 'ar', CareersContent> = {
         { icon: 'Zap', title: 'Innovation', description: 'Encouraged to bring new ideas and solutions' },
       ],
       stats: [
-        { number: '50+', label: 'Team Members' }, { number: '20+', label: 'Years Experience' },
+        { number: '50+', label: 'Team Members' }, { number: '26+', label: 'Years Experience' },
         { number: '95%', label: 'Employee Satisfaction' }, { number: '15+', label: 'Nationalities' },
       ],
     },
@@ -52,7 +52,7 @@ export const careersData: Record<'en' | 'ar', CareersContent> = {
         { icon: 'Zap', title: 'الابتكار', description: 'تشجيع طرح أفكار وحلول جديدة' },
       ],
       stats: [
-        { number: '50+', label: 'عضو في الفريق' }, { number: '20+', label: 'سنة خبرة' },
+        { number: '50+', label: 'عضو في الفريق' }, { number: '26+', label: 'سنة خبرة' },
         { number: '95%', label: 'رضا الموظفين' }, { number: '15+', label: 'جنسية' },
       ],
     },

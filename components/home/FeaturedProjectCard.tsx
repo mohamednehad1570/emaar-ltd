@@ -32,8 +32,9 @@ export default function FeaturedProjectCard({ project, reduceMotion }: FeaturedP
       href={project.href}
       aria-label={`${label} — ${t(project.line.en, project.line.ar)}`}
       className={cn(
-        'group relative block overflow-hidden rounded-sm shadow-warm-sm',
-        'transition-[scale] duration-300 ease-out active:scale-98',
+        // rounded-card = 2px card token; shadow appears on hover only (CLAUDE.md)
+        'group relative block overflow-hidden rounded-card',
+        'transition-[scale,box-shadow] duration-300 ease-out hover:shadow-warm-md active:scale-98',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-silver-material',
       )}
     >
@@ -65,9 +66,10 @@ export default function FeaturedProjectCard({ project, reduceMotion }: FeaturedP
       />
 
       {/* ── Content ─────────────────────────────────────────── */}
-      {/* inset-x-0 + text-start = bottom-start corner in both directions */}
-      <div className="absolute inset-x-0 bottom-0 p-6 text-start">
-        <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.22em] text-white/80">
+      {/* inset-x-0 + text-start = bottom-start corner in both directions.
+          text-shadow-warm (warm ink, never black) lifts white copy off the pale top of the gradient */}
+      <div className="absolute inset-x-0 bottom-0 p-6 text-start text-shadow-warm">
+        <p className="text-[0.6875rem] font-semibold uppercase tracking-[0.22em] text-white">
           {label}
         </p>
         <p className="mt-1 text-base font-bold leading-snug text-white lg:text-2xl">
@@ -75,7 +77,8 @@ export default function FeaturedProjectCard({ project, reduceMotion }: FeaturedP
         </p>
         {/* min-h-11 keeps a 44px row; explicit text-white beats the global a:hover red */}
         <span className="mt-2 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-white">
-          <span className="underline decoration-transparent decoration-2 underline-offset-4 transition-[text-decoration-color] duration-300 group-hover:decoration-brand-red">
+          {/* Border, not text-decoration: text-shadow would paint a grey ghost of a transparent underline */}
+          <span className="border-b-2 border-transparent pb-0.5 transition-[border-color] duration-300 group-hover:border-brand-red">
             {t(explore.en, explore.ar)}
           </span>
           {/* Mirrored in RTL so it points along the reading direction */}

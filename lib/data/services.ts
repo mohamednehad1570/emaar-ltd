@@ -13,7 +13,7 @@ export const servicesData = {
     process: {
       title: 'Building Process Lifecycle',
       subtitle: 'Your Journey with EMAAR',
-      intro: "We've refined our process over 20 years to deliver exceptional results, every time. Here's what you can expect when you partner with us.",
+      intro: "We've refined our process over 26 years to deliver exceptional results, every time. Here's what you can expect when you partner with us.",
       steps: [
         { number: '01', title: 'Initial Consultation', description: 'Free expert consultation to understand your needs, preferences, and project requirements. We discuss options, provide recommendations, and answer all your questions.', icon: 'Phone', duration: '30-60 min', deliverable: 'Project Assessment' },
         { number: '02', title: 'Site Survey & Measurements', description: 'Our technical team visits your site for precise measurements and assessment. We evaluate structural conditions, sun exposure, and installation requirements.', icon: 'Ruler', duration: '1-2 hours', deliverable: 'Technical Report' },
@@ -92,7 +92,7 @@ export const servicesData = {
     process: {
       title: 'دورة عملية البناء',
       subtitle: 'رحلتك مع إعمار',
-      intro: 'لقد قمنا بتحسين عمليتنا على مدار 20 عامًا لتقديم نتائج استثنائية في كل مرة. إليك ما يمكنك توقعه عندما تصبح شريكًا معنا.',
+      intro: 'لقد قمنا بتحسين عمليتنا على مدار 26 عامًا لتقديم نتائج استثنائية في كل مرة. إليك ما يمكنك توقعه عندما تصبح شريكًا معنا.',
       steps: [
         { number: '01', title: 'الاستشارة الأولية', description: 'استشارة مجانية من الخبراء لفهم احتياجاتك وتفضيلاتك ومتطلبات مشروعك. نناقش الخيارات ونقدم التوصيات ونجيب على جميع أسئلتك.', icon: 'Phone', duration: '30-60 دقيقة', deliverable: 'تقييم المشروع' },
         { number: '02', title: 'المسح الموقعي والقياسات', description: 'يزور فريقنا التقني موقعك للقياسات الدقيقة والتقييم. نقوم بتقييم الظروف الهيكلية والتعرض للشمس ومتطلبات التركيب.', icon: 'Ruler', duration: '1-2 ساعة', deliverable: 'تقرير تقني' },

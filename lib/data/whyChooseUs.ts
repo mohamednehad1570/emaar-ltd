@@ -13,7 +13,7 @@ export const whyChooseUsData = {
     valueProps: [
       { icon: 'Award', title: 'Unmatched Quality', description: 'ISO-certified manufacturing with zero-compromise standards', stat: 'A+ Rating' },
       { icon: 'Clock', title: 'On-Time Delivery', description: 'Reliable schedules you can count on', stat: '98% On-Time' },
-      { icon: 'Users', title: 'Expert Team', description: '20+ years combined industry experience', stat: '50+ Specialists' },
+      { icon: 'Users', title: 'Expert Team', description: '26+ years combined industry experience', stat: '50+ Specialists' },
       { icon: 'ThumbsUp', title: 'Client Satisfaction', description: 'Proven track record of happy customers', stat: '100% Satisfaction' },
     ],
     advantages: {
@@ -95,7 +95,7 @@ export const whyChooseUsData = {
     valueProps: [
       { icon: 'Award', title: 'جودة لا مثيل لها', description: 'تصنيع معتمد ISO بمعايير لا تقبل التنازل', stat: 'تصنيف A+' },
       { icon: 'Clock', title: 'تسليم في الوقت المحدد', description: 'جداول زمنية موثوقة يمكنك الاعتماد عليها', stat: '98% في الموعد' },
-      { icon: 'Users', title: 'فريق خبراء', description: 'أكثر من 20 عامًا من الخبرة الصناعية المجمعة', stat: '50+ متخصص' },
+      { icon: 'Users', title: 'فريق خبراء', description: 'أكثر من 26 عامًا من الخبرة الصناعية المجمعة', stat: '50+ متخصص' },
       { icon: 'ThumbsUp', title: 'رضا العملاء', description: 'سجل حافل من العملاء السعداء', stat: '100% رضا' },
     ],
     advantages: {

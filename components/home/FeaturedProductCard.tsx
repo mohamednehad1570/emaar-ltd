@@ -36,8 +36,8 @@ export default function FeaturedProductCard({ product, reduceMotion }: FeaturedP
       href={product.href}
       aria-label={name}
       className={cn(
-        // 0.5px hairline per spec; rounded-sm = 8px card radius in globals.css
-        'group flex h-full flex-col overflow-hidden rounded-sm border-[0.5px] border-border-light bg-surface-white shadow-warm-sm',
+        // 0.5px hairline per spec; rounded-card = 2px card token; no resting shadow (CLAUDE.md)
+        'group flex h-full flex-col overflow-hidden rounded-card border-[0.5px] border-border-light bg-surface-white',
         // Only border / shadow / transform transition — ≤0.4s per interaction budget
         'transition-[border-color,box-shadow,translate,scale] duration-300 ease-out',
         'hover:border-silver-material hover:shadow-warm-md',

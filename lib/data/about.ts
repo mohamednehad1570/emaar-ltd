@@ -15,7 +15,7 @@ export const aboutData = {
         'Two decades of innovation, craftsmanship, and unwavering commitment to quality in the UAE construction industry.',
     },
     stats: [
-      { number: '20+', label: 'Years Experience', icon: 'Calendar' },
+      { number: '26+', label: 'Years Experience', icon: 'Calendar' },
       { number: '500+', label: 'Projects Completed', icon: 'CheckCircle2' },
       { number: '50K+', label: 'SQM Installed', icon: 'Factory' },
       { number: '100%', label: 'Client Satisfaction', icon: 'Award' },
@@ -47,16 +47,16 @@ export const aboutData = {
           icon: 'Factory',
         },
         {
+          year: 2010,
+          title: '10th Anniversary',
+          description: 'Celebrated 10 years of excellence with 250+ completed projects',
+          icon: 'TrendingUp',
+        },
+        {
           year: 2012,
           title: 'ISO Certification',
           description: 'Achieved ISO 9001:2015 quality management certification',
           icon: 'Award',
-        },
-        {
-          year: 2016,
-          title: '10th Anniversary',
-          description: 'Celebrated 10 years of excellence with 250+ completed projects',
-          icon: 'TrendingUp',
         },
         {
           year: 2020,
@@ -160,7 +160,7 @@ export const aboutData = {
         'عقدان من الابتكار والحرفية والالتزام الثابت بالجودة في صناعة البناء في الإمارات.',
     },
     stats: [
-      { number: '20+', label: 'سنة خبرة', icon: 'Calendar' },
+      { number: '26+', label: 'سنة خبرة', icon: 'Calendar' },
       { number: '500+', label: 'مشروع مكتمل', icon: 'CheckCircle2' },
       { number: '50K+', label: 'متر مربع تم تركيبه', icon: 'Factory' },
       { number: '100%', label: 'رضا العملاء', icon: 'Award' },
@@ -181,8 +181,8 @@ export const aboutData = {
       events: [
         { year: 2000, title: 'التأسيس', description: 'تأسست إعمار الدولية برؤية لتحويل الصناعة', icon: 'Sparkles' },
         { year: 2008, title: 'توسع المصنع', description: 'افتتاح منشأة التصنيع الحديثة بمساحة 15,000 متر مربع', icon: 'Factory' },
+        { year: 2010, title: 'الذكرى العاشرة', description: 'احتفلنا بـ 10 سنوات من التميز مع أكثر من 250 مشروعًا مكتملًا', icon: 'TrendingUp' },
         { year: 2012, title: 'شهادة ISO', description: 'حصلنا على شهادة إدارة الجودة ISO 9001:2015', icon: 'Award' },
-        { year: 2016, title: 'الذكرى العاشرة', description: 'احتفلنا بـ 10 سنوات من التميز مع أكثر من 250 مشروعًا مكتملًا', icon: 'TrendingUp' },
         { year: 2020, title: 'مركز الابتكار', description: 'إطلاق مركز البحث والتطوير لتطوير المنتجات المتطورة', icon: 'Target' },
         { year: 2024, title: 'رائد إقليمي', description: 'معترف به كمزود رئيسي لحلول uPVC والألومنيوم في الإمارات', icon: 'Trophy' },
       ],

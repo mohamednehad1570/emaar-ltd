@@ -28,13 +28,13 @@ import type { Certificate } from '@/lib/types';
 
 const content = {
   en: [
-    { number: '20+',  label: 'Years Experience'    },
+    { number: '26+',  label: 'Years Experience'    },
     { number: '500+', label: 'Projects Completed'  },
     { number: '50+',  label: 'Expert Team'         },
     { number: '100%', label: 'Client Satisfaction' },
   ],
   ar: [
-    { number: '20+',  label: 'سنة خبرة'     },
+    { number: '26+',  label: 'سنة خبرة'     },
     { number: '500+', label: 'مشروع مكتمل'   },
     { number: '50+',  label: 'فريق خبراء'    },
     { number: '100%', label: 'رضا العملاء'   },

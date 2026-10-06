@@ -10,7 +10,7 @@ export const contactData = {
       subtitle: 'Get in touch with our expert team',
       trust: [
         { icon: 'Building2', text: '500+ Projects' },
-        { icon: 'Users', text: '20+ Years' },
+        { icon: 'Users', text: '26+ Years' },
         { icon: 'Award', text: 'ISO Certified' },
       ],
     },
@@ -56,7 +56,7 @@ export const contactData = {
       subtitle: 'تواصل مع فريق الخبراء لدينا',
       trust: [
         { icon: 'Building2', text: '500+ مشروع' },
-        { icon: 'Users', text: '20+ سنة' },
+        { icon: 'Users', text: '+26 سنة' },
         { icon: 'Award', text: 'معتمد ISO' },
       ],
     },
