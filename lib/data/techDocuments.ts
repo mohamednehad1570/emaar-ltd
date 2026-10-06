@@ -1,6 +1,6 @@
 /**
  * lib/data/techDocuments.ts
- * Technical documents shown as "Available on request" — replaces the Sanity
+ * Technical documents shown as "Available on request" — replaces the old CMS
  * `techDocument` type. No file URLs on purpose: every card routes to a
  * request (WhatsApp/contact) instead of a download until files are approved.
  */

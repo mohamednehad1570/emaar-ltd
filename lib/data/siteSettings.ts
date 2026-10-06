@@ -1,6 +1,6 @@
 /**
  * lib/data/siteSettings.ts
- * Company contact details — replaces the Sanity `siteSettings` singleton.
+ * Company contact details — replaces the old CMS `siteSettings` singleton.
  * The WhatsApp number is re-exported from lib/whatsapp.ts so there is one source of truth.
  */
 

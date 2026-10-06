@@ -6,14 +6,15 @@
 
 /**
  * Language-resolved (display-ready) project used by ProjectCard and
- * ProjectsGrid after Sanity/static data is flattened to the active language.
+ * ProjectsGrid after static project data is flattened to the active language.
  */
 export interface DisplayProject {
   id: number | string;
   title: string;
   category: string;
   location: string;
-  image: string;
+  // null until a real photo is inserted — ProjectCard renders a blank ImageSlot
+  image: string | null;
   year: string;
   type: string;
   material: string;
@@ -31,7 +32,7 @@ export interface ProjectPreview {
   image: string;
 }
 
-// ── Static-data types (replace lib/sanity/types.ts in Batches B–C) ─────────
+// ── Static-data types (replace the old CMS types in Batches B–C) ───────────
 
 /** Bilingual value — every user-facing string ships both languages. */
 export type Localized<T> = { en: T; ar: T };

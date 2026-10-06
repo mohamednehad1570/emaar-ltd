@@ -1,12 +1,10 @@
 /**
  * app/about/page.tsx — About page (server component)
  *
- * Fetches CMS data and passes it down to the client component.
- * If the CMS is empty, AboutPageClient falls back to static lib/data/about.ts.
+ * Static — AboutPageClient reads its copy from lib/data/about.ts via uiStrings.
  */
 
 import type { Metadata } from 'next';
-import { getSiteSettings, getTeamMembers } from '@/lib/sanity/fetch';
 import AboutPageClient from '@/components/about/AboutPageClient';
 import PageHeader from '@/components/ui/PageHeader';
 import { generatePageMetadata } from '@/lib/seo/metadata';
@@ -19,14 +17,7 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export const revalidate = 3600;
-
-export default async function AboutPage() {
-  const [settings, teamMembers] = await Promise.all([
-    getSiteSettings(),
-    getTeamMembers(),
-  ]);
-
+export default function AboutPage() {
   return (
     <>
       <PageHeader
@@ -36,11 +27,7 @@ export default async function AboutPage() {
         description="26 years manufacturing uPVC, Aluminum, and Glass systems in the UAE."
         chips={['Est. 2000', 'SAIF Zone Sharjah', '50,000 sqft factory']}
       />
-      <AboutPageClient
-        companyBio={settings?.companyBio}
-        foundedYear={settings?.foundedYear}
-        teamMembers={teamMembers}
-      />
+      <AboutPageClient />
     </>
   );
 }

@@ -1,6 +1,6 @@
 /**
  * lib/data/awards.ts
- * Static awards list — replaces the Sanity `award` document type.
+ * Static awards list — replaces the old CMS `award` document type.
  * Gold styling is allowed for these entries (awards/certifications only).
  */
 

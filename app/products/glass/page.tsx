@@ -1,12 +1,9 @@
 import type { Metadata } from 'next'
-import { getProductsByMaterial } from '@/lib/sanity/fetch'
 import MaterialPageClient from '@/components/products/MaterialPageClient'
 import PageHeader from '@/components/ui/PageHeader'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { breadcrumbSchema } from '@/lib/seo/jsonld'
 import JsonLd from '@/components/seo/JsonLd'
-
-export const revalidate = 3600
 
 export function generateMetadata(): Metadata {
   return generatePageMetadata({
@@ -16,8 +13,7 @@ export function generateMetadata(): Metadata {
   })
 }
 
-export default async function Page() {
-  const products = await getProductsByMaterial('glass')
+export default function Page() {
   return (
     <>
       <JsonLd data={breadcrumbSchema([
@@ -38,7 +34,7 @@ export default async function Page() {
           { label: 'Decorative Glass',  href: '#decorative-glass'  },
         ]}
       />
-      <MaterialPageClient material="glass" sanityProducts={products} />
+      <MaterialPageClient material="glass" />
     </>
   )
 }

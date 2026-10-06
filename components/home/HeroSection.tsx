@@ -39,12 +39,12 @@ import {
   useReducedMotion,
 } from 'framer-motion';
 import { ArrowRight, ArrowDown } from '@phosphor-icons/react';
-import Image from 'next/image';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import Container from '@/components/layout/Container';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import Button from '@/components/ui/Button';
-import type { LocalizedString } from '@/lib/sanity/types';
+import ImageSlot from '@/components/ui/ImageSlot';
+import { IMAGES } from '@/lib/data/images';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Data
@@ -52,15 +52,15 @@ import type { LocalizedString } from '@/lib/sanity/types';
 
 const SLIDES = [
   {
-    src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&h=1080&fit=crop&q=80',
+    src: IMAGES.home.hero.slide1,
     alt: 'Modern luxury residence with floor-to-ceiling uPVC windows',
   },
   {
-    src: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=1080&fit=crop&q=80',
+    src: IMAGES.home.hero.slide2,
     alt: 'Contemporary aluminium-glazed commercial façade',
   },
   {
-    src: 'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1920&h=1080&fit=crop&q=80',
+    src: IMAGES.home.hero.slide3,
     alt: 'Elegant residential architecture with clean sightlines',
   },
 ] as const;
@@ -107,19 +107,7 @@ const scaleLine = {
 // Component
 // ─────────────────────────────────────────────────────────────────────────────
 
-interface HeroSectionProps {
-  heroTagline?: LocalizedString
-  heroSubtitle?: LocalizedString
-  heroCTAPrimary?: LocalizedString
-  heroCTASecondary?: LocalizedString
-}
-
-export default function HeroSection({
-  heroTagline,
-  heroSubtitle,
-  heroCTAPrimary,
-  heroCTASecondary,
-}: HeroSectionProps) {
+export default function HeroSection() {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
@@ -182,14 +170,15 @@ export default function HeroSection({
             exit={{ opacity: 0 }}
             transition={{ duration: 1.4, ease: 'easeOut' }}
           >
-            <Image
-              fill
+            {/* Overrides turn the ratio frame into a full-bleed layer: aspect-auto + h-full
+                fill the oversized wrapper, rounded-none keeps the hero edge square */}
+            <ImageSlot
               src={SLIDES[activeSlide].src}
               alt={SLIDES[activeSlide].alt}
-              className="object-cover object-center"
+              ratio="16/9"
+              className="absolute inset-0 h-full w-full aspect-auto rounded-none"
               priority={activeSlide === 0}
               sizes="100vw"
-              quality={85}
             />
           </motion.div>
         </AnimatePresence>
@@ -241,8 +230,7 @@ export default function HeroSection({
 
               {/* ── Overline pill ───────────────────────────────────────
                    Glass morphism: white/10 bg + backdrop-blur + white/20
-                   border. Red dot signals brand presence.
-                   heroTagline from CMS overrides the fallback if provided. */}
+                   border. Red dot signals brand presence.                 */}
               <motion.div variants={fadeUp} className="mb-6 lg:mb-7">
                 <span className="
                   inline-flex items-center gap-2
@@ -255,9 +243,7 @@ export default function HeroSection({
                     className="w-1.5 h-1.5 rounded-full bg-brand-red shrink-0"
                     aria-hidden="true"
                   />
-                  {heroTagline
-                    ? (isRTL ? heroTagline.ar : heroTagline.en)
-                    : l('Premium uPVC & Aluminium · UAE', 'حلول uPVC والألومنيوم المتميزة · الإمارات')}
+                  {l('Premium uPVC & Aluminium · UAE', 'حلول uPVC والألومنيوم المتميزة · الإمارات')}
                 </span>
               </motion.div>
 
@@ -303,8 +289,7 @@ export default function HeroSection({
 
               {/* ── Subtitle ────────────────────────────────────────────
                    font-light creates optical contrast with the extrabold
-                   headline — luxury rhythm through weight disparity.
-                   heroSubtitle from CMS overrides the fallback if provided. */}
+                   headline — luxury rhythm through weight disparity.     */}
               <motion.p
                 variants={fadeUp}
                 className="
@@ -312,12 +297,10 @@ export default function HeroSection({
                   max-w-lg mb-8 lg:mb-12
                 "
               >
-                {heroSubtitle
-                  ? (isRTL ? heroSubtitle.ar : heroSubtitle.en)
-                  : l(
-                      'Engineering-grade fenestration systems trusted by leading developers and contractors across the Emirates.',
-                      'أنظمة هندسية موثوق بها من كبار المطورين والمقاولين في الإمارات العربية المتحدة.',
-                    )}
+                {l(
+                  'Engineering-grade fenestration systems trusted by leading developers and contractors across the Emirates.',
+                  'أنظمة هندسية موثوق بها من كبار المطورين والمقاولين في الإمارات العربية المتحدة.',
+                )}
               </motion.p>
 
               {/* ── CTAs ────────────────────────────────────────────────
@@ -327,26 +310,22 @@ export default function HeroSection({
                 variants={fadeUp}
                 className="flex flex-col sm:flex-row items-start gap-3 mb-12"
               >
-                {/* Primary — solid red; heroCTAPrimary from CMS overrides label if provided */}
+                {/* Primary — solid red */}
                 <Button
                   variant="primary" size="lg"
                   href={getWhatsAppURL({ page: 'home' })}
                   target="_blank" rel="noopener noreferrer"
                   icon={<ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />}
                 >
-                  {heroCTAPrimary
-                    ? (isRTL ? heroCTAPrimary.ar : heroCTAPrimary.en)
-                    : l('Request a Quote', 'اطلب عرض سعر')}
+                  {l('Request a Quote', 'اطلب عرض سعر')}
                 </Button>
 
-                {/* Secondary — ghost; heroCTASecondary from CMS overrides label if provided */}
+                {/* Secondary — ghost */}
                 <Button
                   variant="ghost" size="lg"
                   href="/products/upvc"
                 >
-                  {heroCTASecondary
-                    ? (isRTL ? heroCTASecondary.ar : heroCTASecondary.en)
-                    : l('Explore Products', 'استكشف المنتجات')}
+                  {l('Explore Products', 'استكشف المنتجات')}
                 </Button>
               </motion.div>
 

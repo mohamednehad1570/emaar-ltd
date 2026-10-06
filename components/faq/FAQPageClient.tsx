@@ -8,14 +8,8 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { faqData, faqCategoryIcons } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
-import type { SanityFaq } from '@/lib/sanity/types';
-import type { FAQItem } from '@/lib/data/uiStrings';
 
-interface Props {
-  sanityFaqs?: SanityFaq[];
-}
-
-export default function FAQPageClient({ sanityFaqs = [] }: Props) {
+export default function FAQPageClient() {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState('all');
@@ -24,15 +18,7 @@ export default function FAQPageClient({ sanityFaqs = [] }: Props) {
 
   const t = faqData[language];
 
-  // Use Sanity FAQs when available; fall back to static data
-  const activeFaqs: FAQItem[] = sanityFaqs.length > 0
-    ? sanityFaqs.map(f => ({
-        question: f.question[language] ?? f.question.en,
-        answer: f.answer[language] ?? f.answer.en,
-        category: f.category,
-        popular: f.popular,
-      }))
-    : t.faqs;
+  const activeFaqs = t.faqs;
 
   const getCategoryIcon = (category: string) => {
     const iconName = faqCategoryIcons[category] ?? 'HelpCircle';

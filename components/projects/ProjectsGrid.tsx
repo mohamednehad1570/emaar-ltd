@@ -6,7 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useSearchParams } from 'next/navigation';
 import { fadeUp, viewportOnce } from '@/lib/motion';
 import ProjectCard from './ProjectCard';
-import type { SanityProject } from '@/lib/sanity/types';
+import type { ProjectListItem } from '@/lib/data/projectContent';
 import type { DisplayProject } from '@/lib/types';
 
 const typeLabels: Record<string, { en: string; ar: string }> = {
@@ -15,10 +15,10 @@ const typeLabels: Record<string, { en: string; ar: string }> = {
 };
 
 interface Props {
-  projects?: SanityProject[];
+  projects: ProjectListItem[];
 }
 
-export default function ProjectsGrid({ projects = [] }: Props) {
+export default function ProjectsGrid({ projects }: Props) {
   const { language, isRTL } = useLanguage();
   const searchParams = useSearchParams();
   const shouldReduce = useReducedMotion();
@@ -59,21 +59,17 @@ export default function ProjectsGrid({ projects = [] }: Props) {
     requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   }, [sectorFilter]);
 
-  // Normalise Sanity projects into the flat DisplayProject shape
+  // Flatten the bilingual static projects to the active language
   const displayProjects: DisplayProject[] = projects.map((p) => ({
-    id:       p.slug,
-    title:    p.title[language] ?? p.title.en,
-    category: typeLabels[p.type]?.[language] ?? p.type,
-    location: p.location?.[language] ?? p.location?.en ?? '',
-    // coverImage is images[0].asset->url pre-resolved by the GROQ query.
-    // (p.images ?? []) guards against null — Sanity returns null, not [], when the
-    // array field is empty or unset, so ?? [] is required before indexing.
-    image:    p.coverImage ?? (p.images ?? [])[0] ?? '',
-    year:     p.year != null ? String(p.year) : '',
+    id:       p.id,
+    title:    p.title[language],
+    category: typeLabels[p.type][language],
+    location: p.location[language],
+    image:    p.image,
+    year:     p.year,
     type:     p.type,
-    // Same null-array guard: p.materialsUsed is null (not []) when unset in Sanity.
-    // ?? '' on [0] then catches the undefined from an empty array.
-    material: (p.materialsUsed ?? [])[0] ?? '',
+    // Material filter key — any uPVC chip makes it a uPVC project, otherwise aluminium
+    material: p.materials.some((m) => m.en.includes('uPVC')) ? 'upvc' : 'aluminum',
   }));
 
   const sectors = [

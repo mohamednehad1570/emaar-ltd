@@ -3,37 +3,19 @@
 import { MapPin, Phone, Clock } from '@phosphor-icons/react';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import Container from '@/components/layout/Container';
-import type { SiteSettings } from '@/lib/sanity/types';
 import { contactData } from '@/lib/data/uiStrings';
 
-interface NormalizedOffice {
-  name: string;
-  address: string;
-  phone: string;
-  hours: string;
-}
-
 interface Props {
-  cmsOffices?: SiteSettings['officeLocations'];
   staticData: typeof contactData;
 }
 
-/** Office location cards — CMS-powered with static fallback. */
-export default function ContactOffices({ cmsOffices, staticData }: Props) {
+/** Office location cards from the static contact copy. */
+export default function ContactOffices({ staticData }: Props) {
   const { language, isRTL } = useLanguage();
   const l = useTranslation();
   const t = staticData[language];
 
-  // Normalize CMS offices to the same flat shape as static data.
-  // Spread required because as-const static data is readonly.
-  const offices: NormalizedOffice[] = (cmsOffices?.length ?? 0) > 0
-    ? cmsOffices!.map(o => ({
-        name:    o.name?.[language]         ?? o.name?.en    ?? '', // guard null LocalizedString
-        address: o.address?.[language]      ?? o.address?.en ?? '', // guard null LocalizedString
-        phone:   o.phone,
-        hours:   o.workingHours?.[language] ?? o.workingHours?.en ?? '', // guard null LocalizedString
-      }))
-    : [...t.offices.list];
+  const offices = t.offices.list;
 
   return (
     <section className="py-16 bg-surface-cream">

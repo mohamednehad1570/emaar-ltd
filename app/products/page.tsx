@@ -1,9 +1,6 @@
-import { getAllProducts } from '@/lib/sanity/fetch';
 import ProductsPageClient from '@/components/products/ProductsPageClient';
 import PageHeader from '@/components/ui/PageHeader';
 import { generatePageMetadata } from '@/lib/seo/metadata';
-
-export const revalidate = 3600;
 
 export const metadata = generatePageMetadata({
   title: 'Products',
@@ -11,8 +8,7 @@ export const metadata = generatePageMetadata({
   path: '/products',
 });
 
-export default async function Page() {
-  const products = await getAllProducts();
+export default function Page() {
   return (
     <>
       <PageHeader
@@ -21,7 +17,7 @@ export default async function Page() {
         titleAr="ثلاثة أنظمة. مصنّع واحد."
         description="uPVC, Aluminum, and Glass — designed, manufactured, and installed in the UAE."
       />
-      <ProductsPageClient products={products} />
+      <ProductsPageClient />
     </>
   );
 }

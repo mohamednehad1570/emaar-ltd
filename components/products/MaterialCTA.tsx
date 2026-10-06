@@ -14,7 +14,7 @@
  */
 
 import React from 'react'
-import Image from 'next/image'
+import ImageSlot from '@/components/ui/ImageSlot'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { ArrowRight } from '@phosphor-icons/react'
@@ -60,12 +60,12 @@ export default function MaterialCTA({ cta }: Props) {
           viewport={viewportOnce}
           transition={{ duration: 0.7, ease: EASE }}
         >
-          <Image
+          <ImageSlot
             src={cta.image}
-            alt=""             // Decorative — section heading carries the meaning
-            fill
+            alt={cta.title.en}
+            ratio="4/3"
+            className="absolute inset-0 h-full w-full aspect-auto rounded-none"
             sizes="(min-width: 768px) 45vw, 100vw"
-            className="object-cover"
           />
           {/* Gradient toward text side for smooth blend */}
           <div

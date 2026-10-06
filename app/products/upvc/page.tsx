@@ -1,18 +1,15 @@
 /**
  * app/products/upvc/page.tsx
  * uPVC material landing page — server component.
- * Fetches Sanity products then passes to the new MaterialPageClient.
+ * Static — MaterialPageClient renders lib/data/materialContent.ts.
  */
 
 import type { Metadata } from 'next'
-import { getProductsByMaterial } from '@/lib/sanity/fetch'
 import MaterialPageClient from '@/components/products/MaterialPageClient'
 import PageHeader from '@/components/ui/PageHeader'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { breadcrumbSchema } from '@/lib/seo/jsonld'
 import JsonLd from '@/components/seo/JsonLd'
-
-export const revalidate = 3600
 
 export function generateMetadata(): Metadata {
   return generatePageMetadata({
@@ -22,8 +19,7 @@ export function generateMetadata(): Metadata {
   })
 }
 
-export default async function Page() {
-  const products = await getProductsByMaterial('upvc')
+export default function Page() {
   return (
     <>
       <JsonLd data={breadcrumbSchema([
@@ -45,7 +41,7 @@ export default async function Page() {
           { label: 'Staircases',  labelAr: 'درابزين',           href: '#staircases'  },
         ]}
       />
-      <MaterialPageClient material="upvc" sanityProducts={products} />
+      <MaterialPageClient material="upvc" />
     </>
   )
 }

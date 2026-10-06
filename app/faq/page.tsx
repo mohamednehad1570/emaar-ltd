@@ -1,14 +1,10 @@
 import FAQPageClient from '@/components/faq/FAQPageClient';
 import PageHeader from '@/components/ui/PageHeader';
-import { sanityFetch } from '@/lib/sanity/client';
-import { faqsQuery } from '@/lib/sanity/queries';
-import type { SanityFaq } from '@/lib/sanity/types';
+import { faqData } from '@/lib/data/uiStrings';
 import type { Metadata } from 'next';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 import { faqPageSchema } from '@/lib/seo/jsonld';
 import JsonLd from '@/components/seo/JsonLd';
-
-export const revalidate = 3600;
 
 export function generateMetadata(): Metadata {
   return generatePageMetadata({
@@ -18,10 +14,10 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default async function FAQPage() {
-  const sanityFaqs = await sanityFetch<SanityFaq[]>(faqsQuery);
+export default function FAQPage() {
+  // FAQPage JSON-LD is built from the English static FAQs — Google indexes one language per URL
   const schema = faqPageSchema(
-    sanityFaqs.map((f) => ({ question: f.question.en, answer: f.answer.en })),
+    faqData.en.faqs.map((f) => ({ question: f.question, answer: f.answer })),
   );
   return (
     <>
@@ -32,7 +28,7 @@ export default async function FAQPage() {
         titleAr="الأسئلة الشائعة"
         description="Everything you need to know about our products, installation, and warranties."
       />
-      <FAQPageClient sanityFaqs={sanityFaqs} />
+      <FAQPageClient />
     </>
   );
 }

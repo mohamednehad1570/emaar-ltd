@@ -1,10 +1,9 @@
-import { getJobPostings } from '@/lib/sanity/fetch'
+import { JOBS } from '@/lib/data/jobs'
+import { SITE_SETTINGS } from '@/lib/data/siteSettings'
 import CareersPageClient from '@/components/careers/CareersPageClient'
 import PageHeader from '@/components/ui/PageHeader'
 import { careersData } from '@/lib/data/uiStrings'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-
-export const revalidate = 3600
 
 export const metadata = generatePageMetadata({
   title:       'Careers',
@@ -12,8 +11,7 @@ export const metadata = generatePageMetadata({
   path:        '/careers',
 })
 
-export default async function CareersPage() {
-  const jobPostings = await getJobPostings()
+export default function CareersPage() {
   return (
     <>
       <PageHeader
@@ -24,8 +22,9 @@ export default async function CareersPage() {
         chips={['Sharjah, UAE', 'SAIF Zone']}
       />
       <CareersPageClient
-        jobPostings={jobPostings}
+        jobs={JOBS}
         staticData={careersData}
+        cvEmail={SITE_SETTINGS.emails.info}
       />
     </>
   )

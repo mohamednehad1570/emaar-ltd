@@ -9,67 +9,44 @@ import { fadeUp, viewportOnce } from '@/lib/motion'
 import Container from '@/components/layout/Container'
 import CareersCulture from './CareersCulture'
 import CareersJobList from './CareersJobList'
+import CareersEmptyState from './CareersEmptyState'
 import type { DisplayJob } from './types'
-import type { JobPosting } from '@/lib/sanity/types'
-import { careersData, type CareersJob } from '@/lib/data/uiStrings'
+import type { Job } from '@/lib/types'
+import type { careersData } from '@/lib/data/uiStrings'
 
 interface Props {
-  jobPostings: JobPosting[]
+  jobs: Job[]
+  // Culture, filters, and CTA copy only — careersData.jobs is no longer rendered
   staticData: typeof careersData
+  cvEmail: string
 }
 
-// Map a Sanity JobPosting to the normalized DisplayJob shape
-function normalizeCmsJob(job: JobPosting, lang: 'en' | 'ar'): DisplayJob {
-  return {
-    id:            job._id,
-    title:         job.title[lang] ?? job.title.en,
-    department:    job.department ?? '',
-    departmentKey: (job.department ?? '').toLowerCase(),
-    location:      job.location?.[lang] ?? job.location?.en ?? 'Sharjah, UAE',
-    type:          job.type ?? '',
-    experience:    job.experience ?? '',
-    salary:        job.salary ?? '',
-    description:   job.description?.[lang] ?? job.description?.en ?? '',
-    // Requirements is a multiline LocalizedText — split on newlines for bullets
-    requirements:  (job.requirements?.[lang] ?? job.requirements?.en ?? '')
-                     .split('\n').filter(Boolean),
-    responsibilities: (job.responsibilities ?? []).map(r => r[lang] ?? r.en),
-    benefits:         (job.benefits ?? []).map(b => b[lang] ?? b.en),
-  }
-}
-
-// Map a static CareersJob; enDept carries the English department name for filtering
-function normalizeStaticJob(job: CareersJob, enDept: string): DisplayJob {
+// Flatten a bilingual Job to the active language; departmentKey stays English for filter matching
+function toDisplayJob(job: Job, lang: 'en' | 'ar'): DisplayJob {
   return {
     id:               job.id,
-    title:            job.title,
-    department:       job.department,
-    departmentKey:    enDept.toLowerCase(),
-    location:         job.location,
+    title:            job.title[lang],
+    department:       job.department[lang],
+    departmentKey:    job.department.en.toLowerCase(),
+    location:         job.location[lang],
     type:             job.type,
-    experience:       job.experience,
-    salary:           job.salary,
-    description:      job.description,
-    responsibilities: job.responsibilities,
-    requirements:     job.requirements,
-    benefits:         job.benefits,
+    experience:       job.experience?.[lang] ?? '',
+    salary:           '',
+    description:      job.description[lang],
+    responsibilities: job.responsibilities[lang],
+    requirements:     job.requirements[lang],
+    benefits:         job.benefits?.[lang] ?? [],
   }
 }
 
-export default function CareersPageClient({ jobPostings, staticData }: Props) {
+export default function CareersPageClient({ jobs, staticData, cvEmail }: Props) {
   const { language, isRTL } = useLanguage()
   const t = useTranslation()
 
-  const displayJobs = useMemo<DisplayJob[]>(() => {
-    if (jobPostings.length > 0) {
-      return jobPostings.map(job => normalizeCmsJob(job, language))
-    }
-    const locJobs = staticData[language].jobs
-    const enJobs  = staticData.en.jobs
-    return locJobs.map((job, i) =>
-      normalizeStaticJob(job, enJobs[i]?.department ?? job.department),
-    )
-  }, [jobPostings, language, staticData])
+  const displayJobs = useMemo<DisplayJob[]>(
+    () => jobs.map(job => toDisplayJob(job, language)),
+    [jobs, language],
+  )
 
   const td = staticData[language]
 
@@ -82,11 +59,16 @@ export default function CareersPageClient({ jobPostings, staticData }: Props) {
         values={td.culture.values}
         stats={td.culture.stats}
       />
-      <CareersJobList
-        jobs={displayJobs}
-        filters={td.filters}
-        applyEmail={td.application.email}
-      />
+      {/* ── Openings — empty state until JOBS has entries ────────── */}
+      {displayJobs.length > 0 ? (
+        <CareersJobList
+          jobs={displayJobs}
+          filters={td.filters}
+          applyEmail={td.application.email}
+        />
+      ) : (
+        <CareersEmptyState email={cvEmail} />
+      )}
 
       {/* CTA — dark background, no gradient */}
       <section className="py-24 bg-brand-dark text-white">

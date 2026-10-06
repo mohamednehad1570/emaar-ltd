@@ -1,6 +1,6 @@
 /**
  * lib/data/certificates.ts
- * Static certificates list — replaces the Sanity `certificate` document type.
+ * Static certificates list — replaces the old CMS `certificate` document type.
  * No images: `icon` is an iconMap key resolved via resolveIcon() at render time.
  */
 

@@ -6,7 +6,7 @@ import MotionProvider from "@/components/MotionProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import LanguageTransition from "@/components/layout/LanguageTransition";
-import { getSiteSettings } from "@/lib/sanity/fetch";
+import { SITE_SETTINGS } from "@/lib/data/siteSettings";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -30,32 +30,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Fetch once at layout level — propagated to Header and Footer as props
-  const settings = await getSiteSettings();
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${cairo.variable} antialiased`}>
         <MotionProvider>
           <LanguageProvider>
-            <Header
-              whatsappNumber={settings?.whatsappNumber}
-              companyNameEn={settings?.companyNameEn}
-              companyNameAr={settings?.companyNameAr}
-              logoUrl={settings?.logoUrl}
-            />
+            {/* Header/Footer keep their contact props so the custom CMS can feed them later */}
+            <Header whatsappNumber={SITE_SETTINGS.whatsappNumber} />
             <LanguageTransition>
               {children}
             </LanguageTransition>
             <Footer
-              phone={settings?.phone}
-              email={settings?.email}
-              whatsappNumber={settings?.whatsappNumber}
+              phone={SITE_SETTINGS.phone}
+              email={SITE_SETTINGS.emails.info}
+              whatsappNumber={SITE_SETTINGS.whatsappNumber}
             />
           </LanguageProvider>
         </MotionProvider>

@@ -9,7 +9,8 @@
  */
 
 import React, { useState } from 'react'
-import Image from 'next/image'
+import ImageSlot from '@/components/ui/ImageSlot'
+import { IMAGES, type ImageSrc } from '@/lib/data/images'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -22,7 +23,7 @@ interface ProductCard {
   id:    string
   label: { en: string; ar: string }
   href:  string
-  image: string
+  image: ImageSrc
   tag?:  { en: string; ar: string }
 }
 
@@ -31,83 +32,83 @@ const PRODUCT_CARDS: ProductCard[] = [
     id:    'pergola',
     label: { en: 'Pergola',          ar: 'برجولة'           },
     href:  '/products/aluminum#pergola',
-    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['pergola'],
   },
   {
     id:    'stained-glass',
     label: { en: 'Stained Glass',    ar: 'زجاج ملون'         },
     href:  '/products/glass#stained-glass',
-    image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['stained-glass'],
   },
   {
     id:    'upvc-doors-windows',
     label: { en: 'Doors & Windows',  ar: 'أبواب ونوافذ'     },
     href:  '/products/upvc#doors-and-windows',
-    image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['upvc-doors-windows'],
     tag:   { en: 'uPVC',             ar: 'يوبيفيسي'          },
   },
   {
     id:    'skylights',
     label: { en: 'Skylights',        ar: 'فتحات سقفية'      },
     href:  '/products/aluminum#skylights',
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['skylights'],
   },
   {
     id:    'alu-staircases',
     label: { en: 'Staircases',       ar: 'درابزين'           },
     href:  '/products/aluminum#staircases',
-    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['alu-staircases'],
     tag:   { en: 'Aluminium',        ar: 'ألومنيوم'          },
   },
   {
     id:    'hebeschibe',
     label: { en: 'Hebeschibe',       ar: 'نظام رفع وإزاحة'  },
     href:  '/products/upvc#hebeschibe',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['hebeschibe'],
   },
   {
     id:    'frameless-doors',
     label: { en: 'Frameless Doors',  ar: 'أبواب بلا إطار'   },
     href:  '/products/aluminum#frameless-doors',
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['frameless-doors'],
   },
   {
     id:    'alu-doors-windows',
     label: { en: 'Doors & Windows',  ar: 'أبواب ونوافذ'     },
     href:  '/products/aluminum#doors-and-windows',
-    image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['alu-doors-windows'],
     tag:   { en: 'Aluminium',        ar: 'ألومنيوم'          },
   },
   {
     id:    'security-systems',
     label: { en: 'Security Systems', ar: 'أنظمة الأمان'     },
     href:  '/products/aluminum#security-system',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['security-systems'],
   },
   {
     id:    'sandblast',
     label: { en: 'Sandblast',        ar: 'زجاج مسند'         },
     href:  '/products/glass#sandblast',
-    image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['sandblast'],
   },
   {
     id:    'upvc-staircases',
     label: { en: 'Staircases',       ar: 'درابزين'           },
     href:  '/products/upvc#staircases',
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['upvc-staircases'],
     tag:   { en: 'uPVC',             ar: 'يوبيفيسي'          },
   },
   {
     id:    'handrails',
     label: { en: 'Handrails',        ar: 'درابزين يدوي'      },
     href:  '/products/aluminum#handrails',
-    image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['handrails'],
   },
   {
     id:    'acp-panels',
     label: { en: 'ACP Panels',       ar: 'ألواح ACP'         },
     href:  '/products/aluminum#acp-panels',
-    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&h=800&fit=crop',
+    image: IMAGES.home.products['acp-panels'],
   },
 ]
 
@@ -156,13 +157,8 @@ function ProductCard({
           animate={shouldReduce ? undefined : { scale: isHovered ? 1.06 : 1 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Image
-            src={card.image}
-            alt={label}
-            fill
-            sizes="240px"
-            className="object-cover"
-          />
+          {/* Portrait card sets its own size — aspect-auto lets ImageSlot fill it */}
+          <ImageSlot src={card.image} alt={label} ratio="4/3" className="absolute inset-0 h-full w-full aspect-auto rounded-none" sizes="240px" />
         </motion.div>
 
         {/* Gradient */}

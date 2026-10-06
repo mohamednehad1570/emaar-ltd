@@ -65,8 +65,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-15',
           downloads: 1250,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-window-systems-technical-specifications.pdf',
-          preview: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-window-systems-technical-specifications.pdf'
         },
         {
           id: 2,
@@ -78,8 +77,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-12',
           downloads: 980,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-door-systems-technical-data-sheet.pdf',
-          preview: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-door-systems-technical-data-sheet.pdf'
         },
         {
           id: 3,
@@ -91,8 +89,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-28',
           downloads: 765,
           productType: 'upvc',
-          downloadUrl: '/downloads/sliding-systems-performance-data.pdf',
-          preview: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/sliding-systems-performance-data.pdf'
         },
         {
           id: 4,
@@ -104,8 +101,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-15',
           downloads: 654,
           productType: 'aluminum',
-          downloadUrl: '/downloads/curtain-wall-systems-engineering-specifications.pdf',
-          preview: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/curtain-wall-systems-engineering-specifications.pdf'
         },
         {
           id: 5,
@@ -117,8 +113,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-08-22',
           downloads: 432,
           productType: 'hardware',
-          downloadUrl: '/downloads/hardware-locks-technical-catalog.pdf',
-          preview: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/hardware-locks-technical-catalog.pdf'
         },
 
         // CAD Files
@@ -132,8 +127,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-20',
           downloads: 2100,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-casement-window-cad-drawing.dwg',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-casement-window-cad-drawing.dwg'
         },
         {
           id: 7,
@@ -145,8 +139,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-18',
           downloads: 1890,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-sliding-door-3d-model.dwg',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-sliding-door-3d-model.dwg'
         },
         {
           id: 8,
@@ -158,8 +151,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-10',
           downloads: 1560,
           productType: 'upvc',
-          downloadUrl: '/downloads/tilt-turn-window-system-cad-details.dwg',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/tilt-turn-window-system-cad-details.dwg'
         },
         {
           id: 9,
@@ -171,8 +163,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-25',
           downloads: 1340,
           productType: 'aluminum',
-          downloadUrl: '/downloads/curtain-wall-section-details-cad-library.dwg',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/curtain-wall-section-details-cad-library.dwg'
         },
         {
           id: 10,
@@ -184,8 +175,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-08-30',
           downloads: 3250,
           productType: 'upvc',
-          downloadUrl: '/downloads/complete-upvc-systems-cad-block-library.zip',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/complete-upvc-systems-cad-block-library.zip'
         },
 
         // Installation Guides
@@ -199,8 +189,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-05',
           downloads: 2850,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-window-installation-guide.pdf',
-          preview: 'https://images.unsplash.com/photo-1581094794329-c8112d38e1e4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-window-installation-guide.pdf'
         },
         {
           id: 12,
@@ -212,8 +201,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-20',
           downloads: 2340,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-door-installation-manual.pdf',
-          preview: 'https://images.unsplash.com/photo-1581094794329-c8112d38e1e4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-door-installation-manual.pdf'
         },
         {
           id: 13,
@@ -225,8 +213,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-10',
           downloads: 1890,
           productType: 'aluminum',
-          downloadUrl: '/downloads/curtain-wall-installation-guide.pdf',
-          preview: 'https://images.unsplash.com/photo-1581094794329-c8112d38e1e4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/curtain-wall-installation-guide.pdf'
         },
         {
           id: 14,
@@ -238,8 +225,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-08-15',
           downloads: 1650,
           productType: 'hardware',
-          downloadUrl: '/downloads/hardware-installation-adjustment-guide.pdf',
-          preview: 'https://images.unsplash.com/photo-1581094794329-c8112d38e1e4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/hardware-installation-adjustment-guide.pdf'
         },
 
         // Maintenance Manuals
@@ -253,8 +239,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-01',
           downloads: 1560,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-systems-maintenance-care-manual.pdf',
-          preview: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-systems-maintenance-care-manual.pdf'
         },
         {
           id: 16,
@@ -266,8 +251,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-18',
           downloads: 1340,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-systems-maintenance-schedule.pdf',
-          preview: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-systems-maintenance-schedule.pdf'
         },
         {
           id: 17,
@@ -279,8 +263,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-08-25',
           downloads: 2100,
           productType: 'upvc',
-          downloadUrl: '/downloads/preventive-maintenance-checklist.pdf',
-          preview: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/preventive-maintenance-checklist.pdf'
         },
         {
           id: 18,
@@ -292,8 +275,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-07-30',
           downloads: 1780,
           productType: 'upvc',
-          downloadUrl: '/downloads/troubleshooting-common-issues.pdf',
-          preview: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/troubleshooting-common-issues.pdf'
         },
 
         // Brochures & Catalogs
@@ -307,8 +289,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-01-15',
           downloads: 5670,
           productType: 'upvc',
-          downloadUrl: '/downloads/emaar-complete-product-catalog-2024.pdf',
-          preview: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/emaar-complete-product-catalog-2024.pdf'
         },
         {
           id: 20,
@@ -320,8 +301,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-02-20',
           downloads: 4230,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-windows-doors-product-brochure.pdf',
-          preview: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-windows-doors-product-brochure.pdf'
         },
         {
           id: 21,
@@ -333,8 +313,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-02-15',
           downloads: 3890,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-systems-commercial-solutions.pdf',
-          preview: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-systems-commercial-solutions.pdf'
         },
         {
           id: 22,
@@ -346,8 +325,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-03-10',
           downloads: 2560,
           productType: 'upvc',
-          downloadUrl: '/downloads/energy-efficiency-guide.pdf',
-          preview: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/energy-efficiency-guide.pdf'
         },
 
         // Certifications
@@ -361,8 +339,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2023-06-01',
           downloads: 1890,
           productType: 'upvc',
-          downloadUrl: '/downloads/iso-9001-quality-management-certificate.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/iso-9001-quality-management-certificate.pdf'
         },
         {
           id: 24,
@@ -374,8 +351,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2022-08-15',
           downloads: 1650,
           productType: 'upvc',
-          downloadUrl: '/downloads/uae-quality-mark-certification.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/uae-quality-mark-certification.pdf'
         },
         {
           id: 25,
@@ -387,8 +363,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-01-20',
           downloads: 1420,
           productType: 'upvc',
-          downloadUrl: '/downloads/green-building-certification.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/green-building-certification.pdf'
         },
         {
           id: 26,
@@ -400,8 +375,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2023-03-12',
           downloads: 1230,
           productType: 'aluminum',
-          downloadUrl: '/downloads/ce-marking-certificate.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/ce-marking-certificate.pdf'
         },
         {
           id: 27,
@@ -413,8 +387,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2023-11-08',
           downloads: 980,
           productType: 'aluminum',
-          downloadUrl: '/downloads/fire-safety-test-reports.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/fire-safety-test-reports.pdf'
         },
         {
           id: 28,
@@ -426,8 +399,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2023-09-22',
           downloads: 850,
           productType: 'upvc',
-          downloadUrl: '/downloads/acoustic-performance-test-reports.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/acoustic-performance-test-reports.pdf'
         }
       ],
       actions: {
@@ -489,8 +461,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-15',
           downloads: 1250,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-window-systems-technical-specifications.pdf',
-          preview: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-window-systems-technical-specifications.pdf'
         },
         {
           id: 2,
@@ -502,8 +473,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-12',
           downloads: 980,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-door-systems-technical-data-sheet.pdf',
-          preview: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-door-systems-technical-data-sheet.pdf'
         },
         {
           id: 3,
@@ -515,8 +485,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-28',
           downloads: 765,
           productType: 'upvc',
-          downloadUrl: '/downloads/sliding-systems-performance-data.pdf',
-          preview: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/sliding-systems-performance-data.pdf'
         },
         {
           id: 4,
@@ -528,8 +497,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-15',
           downloads: 654,
           productType: 'aluminum',
-          downloadUrl: '/downloads/curtain-wall-systems-engineering-specifications.pdf',
-          preview: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/curtain-wall-systems-engineering-specifications.pdf'
         },
         {
           id: 5,
@@ -541,8 +509,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-08-22',
           downloads: 432,
           productType: 'hardware',
-          downloadUrl: '/downloads/hardware-locks-technical-catalog.pdf',
-          preview: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/hardware-locks-technical-catalog.pdf'
         },
 
         // ملفات CAD
@@ -556,8 +523,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-20',
           downloads: 2100,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-casement-window-cad-drawing.dwg',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-casement-window-cad-drawing.dwg'
         },
         {
           id: 7,
@@ -569,8 +535,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-18',
           downloads: 1890,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-sliding-door-3d-model.dwg',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-sliding-door-3d-model.dwg'
         },
         {
           id: 8,
@@ -582,8 +547,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-10',
           downloads: 1560,
           productType: 'upvc',
-          downloadUrl: '/downloads/tilt-turn-window-system-cad-details.dwg',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/tilt-turn-window-system-cad-details.dwg'
         },
         {
           id: 9,
@@ -595,8 +559,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-25',
           downloads: 1340,
           productType: 'aluminum',
-          downloadUrl: '/downloads/curtain-wall-section-details-cad-library.dwg',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/curtain-wall-section-details-cad-library.dwg'
         },
         {
           id: 10,
@@ -608,8 +571,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-08-30',
           downloads: 3250,
           productType: 'upvc',
-          downloadUrl: '/downloads/complete-upvc-systems-cad-block-library.zip',
-          preview: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/complete-upvc-systems-cad-block-library.zip'
         },
 
         // أدلة التركيب
@@ -623,8 +585,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-05',
           downloads: 2850,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-window-installation-guide.pdf',
-          preview: 'https://images.unsplash.com/photo-1581094794329-c8112d38e1e4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-window-installation-guide.pdf'
         },
         {
           id: 12,
@@ -636,8 +597,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-20',
           downloads: 2340,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-door-installation-manual.pdf',
-          preview: 'https://images.unsplash.com/photo-1581094794329-c8112d38e1e4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-door-installation-manual.pdf'
         },
         {
           id: 13,
@@ -649,8 +609,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-10',
           downloads: 1890,
           productType: 'aluminum',
-          downloadUrl: '/downloads/curtain-wall-installation-guide.pdf',
-          preview: 'https://images.unsplash.com/photo-1581094794329-c8112d38e1e4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/curtain-wall-installation-guide.pdf'
         },
         {
           id: 14,
@@ -662,8 +621,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-08-15',
           downloads: 1650,
           productType: 'hardware',
-          downloadUrl: '/downloads/hardware-installation-adjustment-guide.pdf',
-          preview: 'https://images.unsplash.com/photo-1581094794329-c8112d38e1e4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/hardware-installation-adjustment-guide.pdf'
         },
 
         // أدلة الصيانة
@@ -677,8 +635,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-10-01',
           downloads: 1560,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-systems-maintenance-care-manual.pdf',
-          preview: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-systems-maintenance-care-manual.pdf'
         },
         {
           id: 16,
@@ -690,8 +647,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-09-18',
           downloads: 1340,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-systems-maintenance-schedule.pdf',
-          preview: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-systems-maintenance-schedule.pdf'
         },
         {
           id: 17,
@@ -703,8 +659,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-08-25',
           downloads: 2100,
           productType: 'upvc',
-          downloadUrl: '/downloads/preventive-maintenance-checklist.pdf',
-          preview: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/preventive-maintenance-checklist.pdf'
         },
         {
           id: 18,
@@ -716,8 +671,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-07-30',
           downloads: 1780,
           productType: 'upvc',
-          downloadUrl: '/downloads/troubleshooting-common-issues.pdf',
-          preview: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/troubleshooting-common-issues.pdf'
         },
 
         // الكتيبات والكتالوجات
@@ -731,8 +685,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-01-15',
           downloads: 5670,
           productType: 'upvc',
-          downloadUrl: '/downloads/emaar-complete-product-catalog-2024.pdf',
-          preview: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/emaar-complete-product-catalog-2024.pdf'
         },
         {
           id: 20,
@@ -744,8 +697,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-02-20',
           downloads: 4230,
           productType: 'upvc',
-          downloadUrl: '/downloads/upvc-windows-doors-product-brochure.pdf',
-          preview: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/upvc-windows-doors-product-brochure.pdf'
         },
         {
           id: 21,
@@ -757,8 +709,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-02-15',
           downloads: 3890,
           productType: 'aluminum',
-          downloadUrl: '/downloads/aluminum-systems-commercial-solutions.pdf',
-          preview: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/aluminum-systems-commercial-solutions.pdf'
         },
         {
           id: 22,
@@ -770,8 +721,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-03-10',
           downloads: 2560,
           productType: 'upvc',
-          downloadUrl: '/downloads/energy-efficiency-guide.pdf',
-          preview: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/energy-efficiency-guide.pdf'
         },
 
         // الشهادات
@@ -785,8 +735,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2023-06-01',
           downloads: 1890,
           productType: 'upvc',
-          downloadUrl: '/downloads/iso-9001-quality-management-certificate.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/iso-9001-quality-management-certificate.pdf'
         },
         {
           id: 24,
@@ -798,8 +747,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2022-08-15',
           downloads: 1650,
           productType: 'upvc',
-          downloadUrl: '/downloads/uae-quality-mark-certification.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/uae-quality-mark-certification.pdf'
         },
         {
           id: 25,
@@ -811,8 +759,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2024-01-20',
           downloads: 1420,
           productType: 'upvc',
-          downloadUrl: '/downloads/green-building-certification.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/green-building-certification.pdf'
         },
         {
           id: 26,
@@ -824,8 +771,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2023-03-12',
           downloads: 1230,
           productType: 'aluminum',
-          downloadUrl: '/downloads/ce-marking-certificate.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/ce-marking-certificate.pdf'
         },
         {
           id: 27,
@@ -837,8 +783,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2023-11-08',
           downloads: 980,
           productType: 'aluminum',
-          downloadUrl: '/downloads/fire-safety-test-reports.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/fire-safety-test-reports.pdf'
         },
         {
           id: 28,
@@ -850,8 +795,7 @@ export const techData: Record<"en" | "ar", TechContent> = {
           date: '2023-09-22',
           downloads: 850,
           productType: 'upvc',
-          downloadUrl: '/downloads/acoustic-performance-test-reports.pdf',
-          preview: 'https://images.unsplash.com/photo-1554224311-beee2ade6d7d?w=400&h=300&fit=crop'
+          downloadUrl: '/downloads/acoustic-performance-test-reports.pdf'
         }
       ],
       actions: {

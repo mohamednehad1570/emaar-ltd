@@ -22,14 +22,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion, useInView } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
-import type { SiteSettings } from '@/lib/sanity/types';
-
-/* ── Certification badges — ISO 14001 + UAE authority approvals ────────── */
-
-const CERT_BADGES = {
-  en: ['ISO 9001 Certified', 'UAE Municipality Approved', 'Civil Defence Compliant'],
-  ar: ['معتمد ISO 9001', 'معتمد بلدية الإمارات', 'متوافق مع الدفاع المدني'],
-} as const;
+import type { Certificate } from '@/lib/types';
 
 /* ── Data ──────────────────────────────────────────────────────────────── */
 
@@ -94,22 +87,16 @@ function StatCounter({ raw, inView, shouldReduce }: StatCounterProps) {
 }
 
 interface StatsSectionProps {
-  stats?: SiteSettings['stats']
+  // Trust chips — lib/data/certificates.ts, passed in by app/page.tsx
+  certificates: Certificate[]
 }
 
 /* ── Component ─────────────────────────────────────────────────────────── */
 
-export default function StatsSection({ stats: cmsStats }: StatsSectionProps) {
+export default function StatsSection({ certificates }: StatsSectionProps) {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
-
-  // CMS stats take priority when provided and non-empty; otherwise use hardcoded fallback
-  const stats = (cmsStats && cmsStats.length > 0)
-    ? cmsStats.map((s) => ({
-        number: s.value,
-        label: isRTL ? s.label.ar : s.label.en,
-      }))
-    : content[language];
+  const stats = content[language];
   const sectionRef = useRef<HTMLElement>(null);
   /* Fires once when 50% of the section is in view — triggers count-up */
   const inView = useInView(sectionRef, { once: true, amount: 0.5 });
@@ -150,7 +137,7 @@ export default function StatsSection({ stats: cmsStats }: StatsSectionProps) {
           ))}
         </motion.div>
 
-        {/* Certification trust chips — ISO 14001 + UAE authority approvals */}
+        {/* Certification trust chips — one per CERTIFICATES entry */}
         <motion.div
           variants={fadeUp}
           initial={shouldReduce ? {} : 'hidden'}
@@ -159,14 +146,14 @@ export default function StatsSection({ stats: cmsStats }: StatsSectionProps) {
           className="flex flex-wrap justify-center gap-3 mt-14"
           aria-label={language === 'en' ? 'Certifications' : 'الشهادات'}
         >
-          {CERT_BADGES[language].map((badge) => (
+          {certificates.map((cert) => (
             <span
-              key={badge}
+              key={cert.id}
               className="inline-flex items-center px-4 py-1.5 border border-border-light
                          rounded-[2px] text-xs font-semibold uppercase tracking-[0.18em]
                          text-ink-muted bg-surface-cream"
             >
-              {badge}
+              {cert.name[language]}
             </span>
           ))}
         </motion.div>

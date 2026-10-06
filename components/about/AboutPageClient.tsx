@@ -3,27 +3,17 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Medal as Award } from '@phosphor-icons/react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { aboutData } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
-import type { TeamMember, LocalizedText } from '@/lib/sanity/types';
+import ImageSlot from '@/components/ui/ImageSlot';
+import { IMAGES } from '@/lib/data/images';
 import Button from '@/components/ui/Button';
 
-interface AboutPageClientProps {
-  companyBio?: LocalizedText
-  foundedYear?: number
-  teamMembers: TeamMember[]
-}
-
-export default function AboutPageClient({
-  companyBio,
-  foundedYear: _foundedYear,
-  teamMembers,
-}: AboutPageClientProps) {
+export default function AboutPageClient() {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
 
@@ -46,11 +36,6 @@ export default function AboutPageClient({
       scrollTrackRef.current.scrollLeft = scrollTrackRef.current.scrollWidth;
     }
   }, [isRTL]);
-
-  // Use CMS story intro if provided; otherwise fall back to static data
-  const storyIntro = companyBio
-    ? (isRTL ? companyBio.ar : companyBio.en)
-    : t.story.intro;
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -103,8 +88,7 @@ export default function AboutPageClient({
             <div className={`h-0.5 w-12 bg-brand-red mb-8 ${isRTL ? 'mr-0' : ''}`} />
 
             <div className="space-y-5 text-text-body leading-relaxed" style={{ textAlign: isRTL ? 'right' : 'left' }}>
-              {/* CMS companyBio replaces the intro paragraph when provided */}
-              <p className="text-lg">{storyIntro}</p>
+              <p className="text-lg">{t.story.intro}</p>
               <p>{t.story.body1}</p>
               <p>{t.story.body2}</p>
             </div>
@@ -250,62 +234,24 @@ export default function AboutPageClient({
             animate={teamInView ? 'visible' : 'hidden'}
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
-            {/* CMS team members take priority when non-empty; else render static placeholders */}
-            {teamMembers.length > 0
-              ? teamMembers.map((member) => (
-                  <motion.div key={member._id} variants={fadeUp} className="group">
-                    <div className="bg-white border border-border-light hover:border-brand-silver transition-colors duration-300 overflow-hidden">
-                      <div className="relative h-60 overflow-hidden">
-                        {member.photo ? (
-                          <Image
-                            src={member.photo}
-                            alt={isRTL ? member.name.ar : member.name.en}
-                            fill
-                            sizes="(max-width: 768px) 100vw, 25vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        ) : (
-                          /* Placeholder when no photo uploaded yet */
-                          <div className="w-full h-full bg-surface-cream flex items-center justify-center">
-                            <span className="text-4xl text-text-muted font-bold">
-                              {(isRTL ? member.name.ar : member.name.en).charAt(0)}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                      <div className={`p-5 ${isRTL ? 'text-right' : ''}`}>
-                        <h3 className="text-base font-bold text-brand-dark mb-0.5">
-                          {isRTL ? member.name.ar : member.name.en}
-                        </h3>
-                        <p className="text-sm text-brand-red font-semibold mb-3">
-                          {isRTL ? member.role.ar : member.role.en}
-                        </p>
-                        {member.bio && (
-                          <p className="text-sm text-text-body leading-relaxed">
-                            {isRTL ? member.bio.ar : member.bio.en}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))
-              : t.team.members.map((member, idx) => (
-                  <motion.div key={idx} variants={fadeUp} className="group">
-                    <div className="bg-white border border-border-light hover:border-brand-silver transition-colors duration-300 overflow-hidden">
-                      <div className="relative h-60 overflow-hidden">
-                        <img
-                          src={member.image}
-                          alt={member.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className={`p-5 ${isRTL ? 'text-right' : ''}`}>
-                        <h3 className="text-base font-bold text-brand-dark mb-0.5">{member.name}</h3>
-                        <p className="text-sm text-brand-red font-semibold mb-3">{member.title}</p>
-                        <p className="text-sm text-text-body leading-relaxed">{member.bio}</p>
-                      </div>
-                    </div>
-                  </motion.div>
+            {t.team.members.map((member, idx) => (
+              <motion.div key={idx} variants={fadeUp} className="group">
+                <div className="bg-white border border-border-light hover:border-brand-silver transition-colors duration-300 overflow-hidden">
+                  {/* Team portraits are 1:1; rounded-none keeps the square card edge flush */}
+                  <ImageSlot
+                    src={member.image}
+                    alt={member.name}
+                    ratio="1/1"
+                    className="rounded-none"
+                    sizes="(max-width: 768px) 100vw, 25vw"
+                  />
+                  <div className={`p-5 ${isRTL ? 'text-right' : ''}`}>
+                    <h3 className="text-base font-bold text-brand-dark mb-0.5">{member.name}</h3>
+                    <p className="text-sm text-brand-red font-semibold mb-3">{member.title}</p>
+                    <p className="text-sm text-text-body leading-relaxed">{member.bio}</p>
+                  </div>
+                </div>
+              </motion.div>
                 ))}
           </motion.div>
         </div>
@@ -354,12 +300,16 @@ export default function AboutPageClient({
             viewport={shouldReduce ? undefined : viewportOnce}
             className="relative h-80 overflow-hidden border border-border-light"
           >
-            <img
-              src="https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1600&h=600&fit=crop"
+            {/* Full-bleed inside the fixed h-80 banner — aspect-auto lets the parent set height */}
+            <ImageSlot
+              src={IMAGES.about.banner}
               alt="EMAAR manufacturing facility"
-              className="w-full h-full object-cover"
+              ratio="16/9"
+              className="absolute inset-0 h-full w-full aspect-auto rounded-none"
+              sizes="(min-width:1280px) 1280px, 100vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent flex items-end p-6">
+            {/* brand-dark instead of black — warm-only overlays (CLAUDE.md) */}
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/55 to-transparent flex items-end p-6">
               <p className={`text-white text-base font-semibold ${isRTL ? 'text-right w-full' : ''}`}>
                 {language === 'en'
                   ? 'EMAAR Manufacturing Facility — 15,000 sqm, Sharjah'

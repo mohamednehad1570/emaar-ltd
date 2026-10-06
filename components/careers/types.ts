@@ -1,5 +1,5 @@
 // Normalized job shape — used by all careers sub-components.
-// Both CMS (JobPosting) and static (CareersJob) data map into this before rendering.
+// lib/types Job entries are flattened to the active language before rendering.
 
 export interface DisplayJob {
   id: string | number

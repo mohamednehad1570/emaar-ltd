@@ -16,7 +16,7 @@
  */
 
 import React from 'react'
-import Image from 'next/image'
+import ImageSlot from '@/components/ui/ImageSlot'
 import { motion, useReducedMotion } from 'framer-motion'
 import { CaretDown } from '@phosphor-icons/react'
 import { useLanguage } from '@/contexts/LanguageContext'
@@ -57,13 +57,14 @@ export default function MaterialHero({ hero }: Props) {
         animate={shouldReduce ? undefined : { scale: 1.08 }}
         transition={{ duration: 8, ease: 'linear' }}
       >
-        <Image
+        {/* priority — LCP candidate above the fold */}
+        <ImageSlot
           src={hero.image}
-          alt=""              // Decorative — aria-labelledby on section handles accessibility
-          fill
-          priority            // LCP candidate — above the fold
+          alt={hero.title.en}
+          ratio="16/9"
+          className="absolute inset-0 h-full w-full aspect-auto rounded-none"
+          priority
           sizes="100vw"
-          className="object-cover"
         />
       </motion.div>
 

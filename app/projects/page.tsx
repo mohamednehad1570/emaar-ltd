@@ -1,12 +1,8 @@
 import { Suspense } from 'react';
 import ProjectsGrid from '@/components/projects/ProjectsGrid';
 import ProjectCTA from '@/components/projects/ProjectCTA';
-import { sanityFetch } from '@/lib/sanity/client';
-import { projectsQuery } from '@/lib/sanity/queries';
-import type { SanityProject } from '@/lib/sanity/types';
+import { ALL_PROJECTS } from '@/lib/data/projectContent';
 import { generatePageMetadata } from '@/lib/seo/metadata';
-
-export const revalidate = 3600;
 
 export const metadata = generatePageMetadata({
   title:       'Our Projects',
@@ -14,13 +10,11 @@ export const metadata = generatePageMetadata({
   path:        '/projects',
 });
 
-export default async function ProjectsPage() {
-  const projects = await sanityFetch<SanityProject[]>(projectsQuery);
-
+export default function ProjectsPage() {
   return (
     <div className="min-h-screen bg-off-white">
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center" />}>
-        <ProjectsGrid projects={projects} />
+        <ProjectsGrid projects={ALL_PROJECTS} />
       </Suspense>
       <ProjectCTA />
     </div>

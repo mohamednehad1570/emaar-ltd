@@ -5,58 +5,18 @@ import { Medal } from '@phosphor-icons/react';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { staggerContainerSlow, fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
-import type { Award as CmsAward } from '@/lib/sanity/types';
+import type { Award } from '@/lib/types';
 
-interface Award {
-  year:   string;
-  name:   { en: string; ar: string };
-  issuer: { en: string; ar: string };
-}
-
-/* Gold (#C9A84C) is the project's ONLY awards/certifications colour — never used elsewhere */
-const GOLD = '#C9A84C';
-
-// Placeholder rows shown when CMS is empty
-const PLACEHOLDER_AWARDS: Award[] = [
-  {
-    year:   '2023',
-    name:   { en: 'Excellence in uPVC Manufacturing',   ar: 'التميز في تصنيع uPVC'             },
-    issuer: { en: 'UAE Construction Industry Council',  ar: 'مجلس صناعة البناء الإماراتي'      },
-  },
-  {
-    year:   '2022',
-    name:   { en: 'Best Facade Systems Supplier',       ar: 'أفضل مورد لأنظمة الواجهات'         },
-    issuer: { en: 'Sharjah Chamber of Commerce',        ar: 'غرفة تجارة الشارقة'                },
-  },
-  {
-    year:   '2021',
-    name:   { en: 'ISO 9001:2015 Certification',        ar: 'شهادة ISO 9001:2015'               },
-    issuer: { en: 'Bureau Veritas',                     ar: 'بيورو فيريتاس'                      },
-  },
-  {
-    year:   '2020',
-    name:   { en: 'Outstanding Project Delivery Award', ar: 'جائزة تميز تسليم المشاريع'         },
-    issuer: { en: 'SAIF Zone Authority',                ar: 'هيئة منطقة سيف الحرة'              },
-  },
-];
+/* Gold (text-gold = #C9A84C) is the project's ONLY awards/certifications colour */
 
 interface AwardsSectionProps {
-  awards: CmsAward[]
+  awards: Award[]
 }
 
-export default function AwardsSection({ awards: cmsAwards }: AwardsSectionProps) {
-  const { isRTL } = useLanguage();
+export default function AwardsSection({ awards }: AwardsSectionProps) {
+  const { language, isRTL } = useLanguage();
   const t = useTranslation();
   const shouldReduce = useReducedMotion();
-
-  // Normalise CMS awards into the display shape; fall back to placeholders if empty
-  const displayAwards: Award[] = cmsAwards.length > 0
-    ? cmsAwards.map((a) => ({
-        year:   String(a.year),
-        name:   { en: a.name.en,     ar: a.name.ar     },
-        issuer: { en: a.issuedBy.en, ar: a.issuedBy.ar },
-      }))
-    : PLACEHOLDER_AWARDS;
 
   return (
     <section className="py-24 bg-white" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -85,20 +45,19 @@ export default function AwardsSection({ awards: cmsAwards }: AwardsSectionProps)
           whileInView={shouldReduce ? undefined : 'visible'}
           viewport={shouldReduce ? undefined : viewportOnce}
         >
-          {displayAwards.map((award, i) => (
+          {awards.map((award, i) => (
             <motion.div
-              key={i}
+              key={award.id}
               variants={shouldReduce ? undefined : fadeUp}
               /* 0.3s per row — snappier than default for list items */
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className={`flex items-center gap-6 py-6 ${
-                i < displayAwards.length - 1 ? 'border-b border-border-light' : ''
+                i < awards.length - 1 ? 'border-b border-border-light' : ''
               } ${isRTL ? 'flex-row-reverse' : ''}`}
             >
               {/* Year — gold text, awards only */}
               <span
-                className="font-bold font-cairo text-sm min-w-[48px] shrink-0"
-                style={{ color: GOLD }}
+                className="font-bold font-cairo text-sm min-w-[48px] shrink-0 text-gold"
                 /* dir=ltr keeps the four-digit year LTR inside an RTL row */
                 dir="ltr"
               >
@@ -108,15 +67,18 @@ export default function AwardsSection({ awards: cmsAwards }: AwardsSectionProps)
               {/* Award name + issuer */}
               <div className="flex-1">
                 <p className="font-semibold text-text-heading text-base">
-                  {isRTL ? award.name.ar : award.name.en}
+                  {award.name[language]}
                 </p>
                 <p className="text-text-muted text-sm mt-0.5">
-                  {isRTL ? award.issuer.ar : award.issuer.en}
+                  {award.issuedBy[language]}
                 </p>
+                {award.description && (
+                  <p className="text-text-body text-sm mt-2">{award.description[language]}</p>
+                )}
               </div>
 
               {/* Medal icon — gold, awards only */}
-              <Medal size={24} weight="duotone" style={{ color: GOLD }} className="shrink-0" aria-hidden="true" />
+              <Medal size={24} weight="duotone" className="shrink-0 text-gold" aria-hidden="true" />
             </motion.div>
           ))}
         </motion.div>

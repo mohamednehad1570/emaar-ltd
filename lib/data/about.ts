@@ -4,6 +4,8 @@
  * Icons are stored as string keys — use resolveIcon() from lib/iconMap.ts.
  */
 
+import { IMAGES } from './images';
+
 export const aboutData = {
   en: {
     hero: {
@@ -92,28 +94,28 @@ export const aboutData = {
           title: 'Chief Executive Officer',
           bio: "20+ years experience in construction industry. Visionary leader driving EMAAR's strategic growth.",
           image:
-            'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop',
+            IMAGES.about.team.member1,
         },
         {
           name: 'Sarah Williams',
           title: 'Chief Operations Officer',
           bio: 'Expert in manufacturing excellence. Ensures every product meets our rigorous quality standards.',
           image:
-            'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop',
+            IMAGES.about.team.member2,
         },
         {
           name: 'Mohammed Hassan',
           title: 'Technical Director',
           bio: 'Engineering specialist with German manufacturing expertise. Pioneer of our innovation initiatives.',
           image:
-            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop',
+            IMAGES.about.team.member3,
         },
         {
           name: 'Lisa Chen',
           title: 'Design Director',
           bio: 'Award-winning architect bringing cutting-edge design thinking to every project.',
           image:
-            'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop',
+            IMAGES.about.team.member4,
         },
       ],
     },
@@ -202,10 +204,10 @@ export const aboutData = {
       title: 'صناع التغيير',
       subtitle: 'تعرف على القادة وراء نجاحنا',
       members: [
-        { name: 'أحمد المنصوري', title: 'الرئيس التنفيذي', bio: 'أكثر من 20 عامًا من الخبرة في صناعة البناء. قائد صاحب رؤية يقود النمو الاستراتيجي لإعمار.', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop' },
-        { name: 'سارة ويليامز', title: 'مدير العمليات التنفيذي', bio: 'خبيرة في التميز التصنيعي. تضمن أن كل منتج يلبي معايير الجودة الصارمة لدينا.', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop' },
-        { name: 'محمد حسن', title: 'المدير التقني', bio: 'متخصص هندسي بخبرة التصنيع الألمانية. رائد مبادرات الابتكار لدينا.', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop' },
-        { name: 'ليزا تشين', title: 'مدير التصميم', bio: 'مهندسة معمارية حائزة على جوائز تجلب تفكير التصميم المتطور لكل مشروع.', image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop' },
+        { name: 'أحمد المنصوري', title: 'الرئيس التنفيذي', bio: 'أكثر من 20 عامًا من الخبرة في صناعة البناء. قائد صاحب رؤية يقود النمو الاستراتيجي لإعمار.', image: IMAGES.about.team.member1 },
+        { name: 'سارة ويليامز', title: 'مدير العمليات التنفيذي', bio: 'خبيرة في التميز التصنيعي. تضمن أن كل منتج يلبي معايير الجودة الصارمة لدينا.', image: IMAGES.about.team.member2 },
+        { name: 'محمد حسن', title: 'المدير التقني', bio: 'متخصص هندسي بخبرة التصنيع الألمانية. رائد مبادرات الابتكار لدينا.', image: IMAGES.about.team.member3 },
+        { name: 'ليزا تشين', title: 'مدير التصميم', bio: 'مهندسة معمارية حائزة على جوائز تجلب تفكير التصميم المتطور لكل مشروع.', image: IMAGES.about.team.member4 },
       ],
     },
     factory: {

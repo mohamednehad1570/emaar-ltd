@@ -1,4 +1,4 @@
-import { getSiteSettings } from '@/lib/sanity/fetch';
+import { SITE_SETTINGS } from '@/lib/data/siteSettings';
 import { contactData } from '@/lib/data/uiStrings';
 import ContactPageClient from '@/components/contact/ContactPageClient';
 import PageHeader from '@/components/ui/PageHeader';
@@ -6,8 +6,6 @@ import type { Metadata } from 'next';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 import { localBusinessSchema } from '@/lib/seo/jsonld';
 import JsonLd from '@/components/seo/JsonLd';
-
-export const revalidate = 3600;
 
 export function generateMetadata(): Metadata {
   return generatePageMetadata({
@@ -17,8 +15,7 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default async function ContactPage() {
-  const settings = await getSiteSettings();
+export default function ContactPage() {
   return (
     <>
       <JsonLd data={localBusinessSchema()} />
@@ -29,7 +26,7 @@ export default async function ContactPage() {
         description="We Care. We Listen. We Deliver."
         chips={['800 2226', 'Sun–Thu 8am–6pm']}
       />
-      <ContactPageClient settings={settings} staticData={contactData} />
+      <ContactPageClient settings={SITE_SETTINGS} staticData={contactData} />
     </>
   );
 }

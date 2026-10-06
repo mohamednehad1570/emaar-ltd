@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { motion , useReducedMotion } from 'framer-motion';
 import { MapPin, ArrowsOut as Expand, ArrowRight } from '@phosphor-icons/react';
-import Image from 'next/image';
+import ImageSlot from '@/components/ui/ImageSlot';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { fadeUp, viewportOnce } from '@/lib/motion';
 import type { DisplayProject } from '@/lib/types';
@@ -32,13 +32,14 @@ export default function ProjectCard({ project, idx }: ProjectCardProps) {
             {/* Link wraps the entire tile — nested <a> inside removed to keep valid HTML */}
             <Link href={`/projects/${project.id}`} className="block">
             {/* image tile: rounded-sm; shadow-lg was cold rgba(0,0,0) — removed; border instead */}
-            <div className="relative overflow-hidden rounded-sm aspect-[4/3] cursor-pointer border-2 border-transparent hover:border-brand-silver transition-all">
-                <Image
+            <div className="relative overflow-hidden rounded-sm aspect-video cursor-pointer border-2 border-transparent hover:border-brand-silver transition-all">
+                {/* Projects are 16:9; ImageSlot fills the tile and scales on card hover */}
+                <ImageSlot
                     src={project.image}
                     alt={project.title}
-                    fill
+                    ratio="16/9"
+                    className="absolute inset-0 rounded-none transition-transform duration-500 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
 
                 {/* Overlay */}

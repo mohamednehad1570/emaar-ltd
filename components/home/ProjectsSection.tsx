@@ -9,7 +9,8 @@
  */
 
 import React, { useState } from 'react'
-import Image from 'next/image'
+import ImageSlot from '@/components/ui/ImageSlot'
+import { IMAGES, type ImageSrc } from '@/lib/data/images'
 import Link from 'next/link'
 import { motion, useReducedMotion } from 'framer-motion'
 import { MapPin } from '@phosphor-icons/react'
@@ -24,7 +25,7 @@ interface ProjectCard {
   title:    { en: string; ar: string }
   location: { en: string; ar: string }
   year:     string
-  image:    string
+  image:    ImageSrc
   type:     'villa' | 'building'
   href:     string
 }
@@ -35,56 +36,56 @@ const PROJECT_CARDS: ProjectCard[] = [
     title:    { en: 'Jumeirah Villa',        ar: 'فيلا جميرا'           },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2024',
-    image: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?w=800&h=600&fit=crop',
+    image: IMAGES.home.projects['villa-jumeirah'],
   },
   {
     id: 'building-business-bay', type: 'building', href: '/projects/buildings',
     title:    { en: 'Business Bay Tower',    ar: 'برج الخليج التجاري'   },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2023',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&h=600&fit=crop',
+    image: IMAGES.home.projects['building-business-bay'],
   },
   {
     id: 'villa-palm', type: 'villa', href: '/projects/villas',
     title:    { en: 'Palm Residence',        ar: 'إقامة النخيل'          },
     location: { en: 'Abu Dhabi, UAE',        ar: 'أبو ظبي، الإمارات'    },
     year: '2024',
-    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop',
+    image: IMAGES.home.projects['villa-palm'],
   },
   {
     id: 'building-marina', type: 'building', href: '/projects/buildings',
     title:    { en: 'Marina Heights',        ar: 'مرتفعات المارينا'     },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2023',
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&h=600&fit=crop',
+    image: IMAGES.home.projects['building-marina'],
   },
   {
     id: 'villa-arabian', type: 'villa', href: '/projects/villas',
     title:    { en: 'Arabian Ranches Villa', ar: 'فيلا المرابع العربية' },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2022',
-    image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&h=600&fit=crop',
+    image: IMAGES.home.projects['villa-arabian'],
   },
   {
     id: 'building-downtown', type: 'building', href: '/projects/buildings',
     title:    { en: 'Downtown Complex',      ar: 'مجمع وسط المدينة'     },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2022',
-    image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&h=600&fit=crop',
+    image: IMAGES.home.projects['building-downtown'],
   },
   {
     id: 'villa-meadows', type: 'villa', href: '/projects/villas',
     title:    { en: 'The Meadows Villa',     ar: 'فيلا ذا ميدوز'        },
     location: { en: 'Dubai, UAE',            ar: 'دبي، الإمارات'        },
     year: '2023',
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop',
+    image: IMAGES.home.projects['villa-meadows'],
   },
   {
     id: 'building-sharjah', type: 'building', href: '/projects/buildings',
     title:    { en: 'Sharjah Office Park',   ar: 'مجمع مكاتب الشارقة'  },
     location: { en: 'Sharjah, UAE',          ar: 'الشارقة، الإمارات'    },
     year: '2022',
-    image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&h=600&fit=crop',
+    image: IMAGES.home.projects['building-sharjah'],
   },
 ]
 
@@ -139,13 +140,8 @@ function ProjectCard({
           animate={shouldReduce ? undefined : { scale: isHovered ? 1.06 : 1 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Image
-            src={card.image}
-            alt={title}
-            fill
-            sizes="320px"
-            className="object-cover"
-          />
+          {/* Portrait card sets its own size — aspect-auto lets ImageSlot fill it */}
+          <ImageSlot src={card.image} alt={title} ratio="16/9" className="absolute inset-0 h-full w-full aspect-auto rounded-none" sizes="320px" />
         </motion.div>
 
         {/* Gradient */}

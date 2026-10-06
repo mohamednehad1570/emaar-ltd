@@ -24,7 +24,7 @@
 import React, {
   useState, useEffect, useRef, useCallback,
 } from 'react'
-import Image from 'next/image'
+import ImageSlot from '@/components/ui/ImageSlot'
 import Link from 'next/link'
 import {
   motion, AnimatePresence, useReducedMotion,
@@ -172,13 +172,8 @@ function CategoryCard({
         animate={shouldReduce ? undefined : { scale: isActive ? 1.05 : 1 }}
         transition={{ duration: 0.5, ease: EASE }}
       >
-        <Image
-          src={category.image}
-          alt={label}
-          fill
-          sizes="180px"
-          className="object-cover"
-        />
+        {/* Product imagery is 4:3; aspect-auto lets the card's own height win */}
+        <ImageSlot src={category.image} alt={label} ratio="4/3" className="absolute inset-0 h-full w-full aspect-auto rounded-none" sizes="180px" />
       </motion.div>
 
       {/* Gradient */}
@@ -263,12 +258,12 @@ function DrawerContent({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: EASE }}
           >
-            <Image
+            <ImageSlot
               src={category.image}
-              alt=""
-              fill
+              alt={category.label[language]}
+              ratio="4/3"
+              className="absolute inset-0 h-full w-full aspect-auto rounded-none"
               sizes={mobile ? '100vw' : '40vw'}
-              className="object-cover"
             />
           </motion.div>
         </AnimatePresence>
@@ -481,7 +476,7 @@ function CardsVariant({
 // ─── VARIANT B — Scroll-snap panels (uPVC + Glass) ───────────────────────────
 
 function ParallaxImage({ src, alt, desktopOnly }: {
-  src:          string
+  src:          string | null
   alt:          string
   desktopOnly?: boolean   // Skip parallax on mobile — too heavy
 }) {
@@ -497,13 +492,13 @@ function ParallaxImage({ src, alt, desktopOnly }: {
         // Disable parallax on mobile (desktopOnly) or reduced motion
         style={(shouldReduce || desktopOnly) ? undefined : { y }}
       >
-        <Image
+        {/* scale-120 — overscan so the ±10% parallax travel never exposes an edge */}
+        <ImageSlot
           src={src}
           alt={alt}
-          fill
+          ratio="4/3"
+          className="absolute inset-0 h-full w-full aspect-auto rounded-none scale-120"
           sizes="(min-width: 768px) 60vw, 100vw"
-          className="object-cover"
-          style={{ scale: 1.2 }}
         />
       </motion.div>
     </div>

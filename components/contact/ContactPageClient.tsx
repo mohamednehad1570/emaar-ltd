@@ -3,9 +3,8 @@
 /**
  * components/contact/ContactPageClient.tsx
  *
- * Orchestrates the contact page sections. Merges CMS settings with static
- * fallback data so every field is always populated — the form always renders
- * regardless of CMS state.
+ * Orchestrates the contact page sections. Company contact details come from
+ * lib/data/siteSettings.ts; section copy and office cards from contactData.
  */
 
 import { motion, useReducedMotion } from 'framer-motion';
@@ -13,7 +12,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import { fadeUp, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
-import type { SiteSettings } from '@/lib/sanity/types';
+import type { SiteSettings } from '@/lib/types';
 import { contactData } from '@/lib/data/uiStrings';
 import ContactForm from './ContactForm';
 import ContactInfo from './ContactInfo';
@@ -21,7 +20,7 @@ import ContactOffices from './ContactOffices';
 import ContactMap from './ContactMap';
 
 interface Props {
-  settings: SiteSettings | null;
+  settings: SiteSettings;
   staticData: typeof contactData;
 }
 
@@ -30,15 +29,9 @@ export default function ContactPageClient({ settings, staticData }: Props) {
   const shouldReduce = useReducedMotion();
   const t = staticData[language];
 
-  // ── CMS → static fallback merging ─────────────────────────────────────────
-  const phone         = settings?.phone          ?? t.contact.phone.number;
-  const email         = settings?.email          ?? t.contact.email.address;
-  const whatsappNum   = settings?.whatsappNumber ?? '971500000000';
-  const whatsappHref  = getWhatsAppURL({ page: 'contact' }, whatsappNum);
-  // Address and hours are language-dependent — fall back to first static office.
-  // Inner .en/.ar on a LocalizedString can be null at runtime even when typed as string.
-  const address      = (settings?.address?.[language] ?? settings?.address?.en ?? '') || t.offices.list[0].address;
-  const workingHours = (settings?.workingHours?.[language] ?? settings?.workingHours?.en ?? '') || t.contact.phone.hours;
+  const whatsappHref = getWhatsAppURL({ page: 'contact' }, settings.whatsappNumber);
+  // SiteSettings has no hours field — the static contact copy owns them
+  const workingHours = t.contact.phone.hours;
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -52,11 +45,11 @@ export default function ContactPageClient({ settings, staticData }: Props) {
             whileInView={shouldReduce ? undefined : 'visible'}
             viewport={shouldReduce ? undefined : viewportOnce}
           >
-          <ContactForm whatsappHref={whatsappHref} phone={phone} />
+          <ContactForm whatsappHref={whatsappHref} phone={settings.phone} />
           <ContactInfo
-            phone={phone}
-            email={email}
-            address={address}
+            phone={settings.phone}
+            email={settings.emails.info}
+            address={settings.address[language]}
             workingHours={workingHours}
           />
           </motion.div>
@@ -64,13 +57,10 @@ export default function ContactPageClient({ settings, staticData }: Props) {
       </section>
 
       {/* ── Office locations ──────────────────────────────────── */}
-      <ContactOffices
-        cmsOffices={settings?.officeLocations}
-        staticData={staticData}
-      />
+      <ContactOffices staticData={staticData} />
 
-      {/* ── Map embed (or placeholder) ────────────────────────── */}
-      <ContactMap mapEmbedUrl={settings?.mapEmbedUrl} />
+      {/* ── Map placeholder — no embed URL until the client supplies one ── */}
+      <ContactMap />
 
     </div>
   );

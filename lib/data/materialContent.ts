@@ -13,6 +13,7 @@
  */
 
 import type { Icon } from '@phosphor-icons/react'
+import { IMAGES, type ImageSrc } from './images'
 import {
   Shield, Thermometer, SpeakerSlash, Sun, Wind,
   Leaf, Drop, Lightning, Wrench, Star,
@@ -39,7 +40,7 @@ export interface CategoryContent {
   tagline:         LocalizedString   // One punchy line shown in collapsed state
   description:     LocalizedString   // 2-sentence editorial description
   characteristics: LocalizedString[] // 4 bullet advantages shown in expanded state
-  image:           string            // Placeholder — replaced pre-launch
+  image:           ImageSrc          // IMAGES.products.<material>.categories[slug]
 }
 
 export interface WhyEmaarItem {
@@ -52,7 +53,7 @@ export interface CTAContent {
   title:    LocalizedString
   subtitle: LocalizedString
   button:   LocalizedString
-  image:    string
+  image:    ImageSrc
 }
 
 export interface MaterialContent {
@@ -60,7 +61,7 @@ export interface MaterialContent {
     eyebrow:  LocalizedString
     title:    LocalizedString
     subtitle: LocalizedString
-    image:    string
+    image:    ImageSrc
   }
   story:      StoryPanel[]
   categories: CategoryContent[]
@@ -78,7 +79,7 @@ const upvc: MaterialContent = {
       en: 'German-engineered profiles delivering thermal comfort, acoustic silence, and lasting beauty for UAE residences.',
       ar: 'قطاعات ذات هندسة ألمانية توفر الراحة الحرارية والصمت الصوتي والجمال الدائم للمساكن الإماراتية.',
     },
-    image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=1920&h=1080&fit=crop',
+    image: IMAGES.products.upvc.hero,
   },
 
   story: [
@@ -123,7 +124,7 @@ const upvc: MaterialContent = {
         { en: 'Sound reduction up to 45 dB with acoustic glass', ar: 'خفض الضوضاء حتى 45 ديسيبل مع الزجاج الصوتي'      },
         { en: 'Custom RAL colours — interior and exterior independent', ar: 'ألوان RAL مخصصة — الداخل والخارج مستقلان' },
       ],
-      image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=900&h=700&fit=crop',
+      image: IMAGES.products.upvc.categories['doors'],
     },
     {
       slug:    'windows',
@@ -139,7 +140,7 @@ const upvc: MaterialContent = {
         { en: 'Sound reduction up to 45 dB with acoustic glass',            ar: 'خفض الضوضاء حتى 45 ديسيبل مع الزجاج الصوتي'      },
         { en: 'Colour-stable above 70°C surface temperature',               ar: 'مستقر اللون فوق 70°C لدرجة حرارة السطح'           },
       ],
-      image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&h=700&fit=crop',
+      image: IMAGES.products.upvc.categories['windows'],
     },
     {
       slug:    'curtain-wall',
@@ -155,7 +156,7 @@ const upvc: MaterialContent = {
         { en: 'Thermally broken profile — U-value from 1.2 W/m²K',       ar: 'قطاع بكسر حراري — قيمة U من 1.2 واط/م²ك'              },
         { en: 'Custom RAL colours with 25-year colour warranty',          ar: 'ألوان RAL مخصصة مع ضمان لون لمدة 25 عاماً'            },
       ],
-      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=700&fit=crop',
+      image: IMAGES.products.upvc.categories['curtain-wall'],
     },
     {
       slug:    'staircases',
@@ -171,7 +172,7 @@ const upvc: MaterialContent = {
         { en: 'Modular system — adapts to straight and curved runs', ar: 'نظام معياري — يتكيف مع المسارات المستقيمة والمنحنية' },
         { en: 'Available in wood-grain and solid colour finishes',   ar: 'متوفر بتشطيبات حبوب الخشب والألوان الصلبة'          },
       ],
-      image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=900&h=700&fit=crop',
+      image: IMAGES.products.upvc.categories['staircases'],
     },
     {
       slug:    'hebeschiebe',
@@ -187,7 +188,7 @@ const upvc: MaterialContent = {
         { en: 'Floor-to-ceiling glass with minimal frame sightlines',  ar: 'زجاج من الأرض إلى السقف بخطوط إطار في الحد الأدنى'   },
         { en: 'Multi-point perimeter seal — Class E1200 water-tight',  ar: 'حشية محيطية متعددة النقاط — ضد الماء من الفئة E1200'  },
       ],
-      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=700&fit=crop',
+      image: IMAGES.products.upvc.categories['hebeschiebe'],
     },
   ],
 
@@ -222,7 +223,7 @@ const upvc: MaterialContent = {
     title:    { en: 'Ready to Specify uPVC for Your Project?', ar: 'مستعد لتحديد uPVC لمشروعك؟'          },
     subtitle: { en: 'Our technical team will review your drawings and recommend the right system within 48 hours.', ar: 'سيراجع فريقنا الفني رسوماتك ويوصي بالنظام المناسب خلال 48 ساعة.' },
     button:   { en: 'Request a Quote',                         ar: 'اطلب عرض سعر'                          },
-    image:    'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&h=700&fit=crop',
+    image:    IMAGES.products.upvc.cta,
   },
 }
 
@@ -236,7 +237,7 @@ const aluminum: MaterialContent = {
       en: 'Structural-grade aluminium systems engineered for commercial scale, architectural ambition, and UAE climate resilience.',
       ar: 'أنظمة ألومنيوم بدرجة هيكلية مهندسة للحجم التجاري والطموح المعماري والصمود أمام مناخ الإمارات.',
     },
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&h=1080&fit=crop',
+    image: IMAGES.products.aluminum.hero,
   },
 
   story: [
@@ -281,7 +282,7 @@ const aluminum: MaterialContent = {
         { en: 'PVDF powder coating — 40-year colour warranty',     ar: 'طلاء بودرة PVDF — ضمان لون لمدة 40 عاماً'      },
         { en: 'Compliant with Dubai Green Building Regulations',   ar: 'متوافق مع لوائح المباني الخضراء في دبي'         },
       ],
-      image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['doors'],
     },
     {
       slug:    'windows',
@@ -297,7 +298,7 @@ const aluminum: MaterialContent = {
         { en: '40-year PVDF colour warranty',                         ar: 'ضمان لون PVDF لمدة 40 عاماً'                           },
         { en: 'Compliant with Dubai Green Building Regulations',      ar: 'متوافق مع لوائح المباني الخضراء في دبي'                  },
       ],
-      image: 'https://images.unsplash.com/photo-1545259741-2ea3ebf61fa3?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['windows'],
     },
     {
       slug:    'curtain-wall',
@@ -313,7 +314,7 @@ const aluminum: MaterialContent = {
         { en: 'Solar-control double-glazing — low SHGC for UAE climate',       ar: 'زجاج مزدوج للتحكم الشمسي — SHGC منخفض لمناخ الإمارات' },
         { en: 'DM and Abu Dhabi UPC authority-approved',                       ar: 'معتمد من بلدية دبي ومركز أبوظبي للتخطيط العمراني'       },
       ],
-      image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['curtain-wall'],
     },
     {
       slug:    'acp-cladding',
@@ -329,7 +330,7 @@ const aluminum: MaterialContent = {
         { en: 'Panel sizes up to 1500 × 6000 mm',                               ar: 'أحجام لوحات تصل إلى 1500 × 6000 مم'                            },
         { en: 'Full design service — shop drawings and engineering sign-off',    ar: 'خدمة تصميم كاملة — رسومات ورشة وموافقة هندسية'                  },
       ],
-      image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['acp-cladding'],
     },
     {
       slug:    'staircases',
@@ -345,7 +346,7 @@ const aluminum: MaterialContent = {
         { en: 'Powder-coated in any RAL — site-colour-matched',      ar: 'مطلي بودرة بأي لون RAL — مطابق للون الموقع'                  },
         { en: 'Modular — adapts to straight, L, U, and spiral runs', ar: 'معياري — يتكيف مع المسارات المستقيمة وL وU والحلزونية'       },
       ],
-      image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['staircases'],
     },
     {
       slug:    'skylights',
@@ -361,7 +362,7 @@ const aluminum: MaterialContent = {
         { en: 'Thermally broken frame — no condensation risk',        ar: 'إطار بكسر حراري — لا خطر تكثف'                           },
         { en: 'Structural silicone or mechanical fixing options',     ar: 'خيارات تثبيت بالسيليكون الإنشائي أو الميكانيكي'          },
       ],
-      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['skylights'],
     },
     {
       slug:    'pergola',
@@ -377,7 +378,7 @@ const aluminum: MaterialContent = {
         { en: 'Built-in LED linear lighting strips',            ar: 'شرائط LED خطية مدمجة'                         },
         { en: 'Wind-rated to 120 km/h with side screens fitted', ar: 'مقاومة للرياح حتى 120 كم/ساعة مع الشاشات الجانبية' },
       ],
-      image: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['pergola'],
     },
     {
       slug:    'frameless-doors',
@@ -393,7 +394,7 @@ const aluminum: MaterialContent = {
         { en: 'Openings up to 6m wide with zero central post',  ar: 'فتحات بعرض يصل إلى 6 م بدون عمود مركزي'           },
         { en: 'Anti-burst laminated glass option for security', ar: 'خيار زجاج طبقي مقاوم للانفجار للأمان'              },
       ],
-      image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['frameless-doors'],
     },
     {
       slug:    'security-system',
@@ -409,7 +410,7 @@ const aluminum: MaterialContent = {
         { en: 'P6B laminated glass — resists sustained attack',    ar: 'زجاج طبقي P6B — يقاوم الهجوم المتواصل'             },
         { en: 'Concealed hinges — no external attack surface',     ar: 'مفصلات مخفية — لا سطح هجوم خارجي'                  },
       ],
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['security-system'],
     },
     {
       slug:    'handrails',
@@ -425,7 +426,7 @@ const aluminum: MaterialContent = {
         { en: 'Glass, aluminium, or stainless infill options',   ar: 'خيارات حشوة من الزجاج أو الألومنيوم أو الفولاذ'     },
         { en: '200+ RAL powder-coat colours in-house',           ar: 'أكثر من 200 لون طلاء بودرة RAL داخلياً'             },
       ],
-      image: 'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=900&h=700&fit=crop',
+      image: IMAGES.products.aluminum.categories['handrails'],
     },
   ],
 
@@ -460,7 +461,7 @@ const aluminum: MaterialContent = {
     title:    { en: 'Specify Aluminium for Your Next Project',    ar: 'حدّد الألومنيوم لمشروعك القادم'      },
     subtitle: { en: 'Send us your drawings. We\'ll return a full BOQ and system specification within 10 working days.', ar: 'أرسل لنا رسوماتك. سنعيد قائمة كميات كاملة ومواصفة نظام خلال 10 أيام عمل.' },
     button:   { en: 'Request a Quote',                            ar: 'اطلب عرض سعر'                         },
-    image:    'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=900&h=700&fit=crop',
+    image:    IMAGES.products.aluminum.cta,
   },
 }
 
@@ -474,7 +475,7 @@ const glass: MaterialContent = {
       en: 'Architectural glass solutions that transform light into living art — crafted for privacy, identity, and enduring beauty.',
       ar: 'حلول زجاج معمارية تحوّل الضوء إلى فن حي — مصنوعة للخصوصية والهوية والجمال الدائم.',
     },
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&h=1080&fit=crop',
+    image: IMAGES.products.glass.hero,
   },
 
   story: [
@@ -519,7 +520,7 @@ const glass: MaterialContent = {
         { en: 'Sound reduction up to 40 dB with acoustic interlayer',  ar: 'تخفيض الضوضاء حتى 40 ديسيبل مع طبقة صوتية'         },
         { en: 'Solar-control tints: neutral, blue, green, and bronze', ar: 'ظلال للتحكم الشمسي: محايد وأزرق وأخضر وبرونزي'      },
       ],
-      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=900&h=700&fit=crop',
+      image: IMAGES.products.glass.categories['double-glazing'],
     },
     {
       slug:    'stained-glass',
@@ -535,7 +536,7 @@ const glass: MaterialContent = {
         { en: 'UV-stable pigments — 50-year colour retention',           ar: 'صبغات مستقرة للأشعة فوق البنفسجية — احتفاظ بالون لمدة 50 عاماً' },
         { en: 'Full-scale physical colour samples before production',    ar: 'عينات لونية مادية بالحجم الكامل قبل الإنتاج'         },
       ],
-      image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=900&h=700&fit=crop',
+      image: IMAGES.products.glass.categories['stained-glass'],
     },
     {
       slug:    'sandblasted-glass',
@@ -551,7 +552,7 @@ const glass: MaterialContent = {
         { en: 'Available on 6mm to 19mm glass thickness',            ar: 'متوفر بسماكة زجاج من 6 مم إلى 19 مم'               },
         { en: 'Combine with colour lacquer for tinted translucency', ar: 'يمكن دمجه مع لاك ملون للشفافية الملونة'             },
       ],
-      image: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&h=700&fit=crop',
+      image: IMAGES.products.glass.categories['sandblasted-glass'],
     },
     {
       slug:    'decorative-glass',
@@ -567,7 +568,7 @@ const glass: MaterialContent = {
         { en: 'Lead-came, fired-paint, or sandblast execution options',      ar: 'خيارات تنفيذ بالرصاص أو الطلاء المحروق أو السند'          },
         { en: 'Physical colour samples provided before production',          ar: 'عينات لون مادية مقدَّمة قبل الإنتاج'                      },
       ],
-      image: 'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=900&h=700&fit=crop',
+      image: IMAGES.products.glass.categories['decorative-glass'],
     },
   ],
 
@@ -602,7 +603,7 @@ const glass: MaterialContent = {
     title:    { en: 'Commission a Bespoke Glass Installation',   ar: 'اطلب تركيب زجاج مخصص'             },
     subtitle: { en: 'Send us your space dimensions and design inspiration. We\'ll develop a concept and physical samples at no obligation.', ar: 'أرسل لنا أبعاد المكان وإلهام التصميم. سنطور مفهوماً وعينات مادية بدون التزام.' },
     button:   { en: 'Request a Quote',                           ar: 'اطلب عرض سعر'                      },
-    image:    'https://images.unsplash.com/photo-1548438294-1ad5d5f4f063?w=900&h=700&fit=crop',
+    image:    IMAGES.products.glass.cta,
   },
 }
 

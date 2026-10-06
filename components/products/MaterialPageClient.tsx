@@ -15,11 +15,9 @@ import MaterialStory     from './MaterialStory'
 import CategoryAccordion from './CategoryAccordion'
 import MaterialWhyUs     from './MaterialWhyUs'
 import ProductDetailCTA  from './ProductDetailCTA'
-import type { SanityProductTile } from '@/lib/sanity/types'
 
 interface Props {
-  material:       'upvc' | 'aluminum' | 'glass'
-  sanityProducts: SanityProductTile[]
+  material: 'upvc' | 'aluminum' | 'glass'
 }
 
 export default function MaterialPageClient({ material }: Props) {

@@ -1,16 +1,12 @@
-import { getTestimonials, getAwards, getClientLogos } from '@/lib/sanity/fetch';
+import { AWARDS } from '@/lib/data/awards';
 import PageHeader from '@/components/ui/PageHeader';
 import AdvantagesSection from '@/components/why-choose-us/AdvantagesSection';
 import ProcessSection from '@/components/why-choose-us/ProcessSection';
 import WarrantySection from '@/components/why-choose-us/WarrantySection';
-import ClientTestimonialsSection from '@/components/why-choose-us/ClientTestimonialsSection';
 import AwardsSection from '@/components/why-choose-us/AwardsSection';
-import LogoTickerSection from '@/components/why-choose-us/LogoTickerSection';
 import CTASection from '@/components/why-choose-us/CTASection';
 import type { Metadata } from 'next';
 import { generatePageMetadata } from '@/lib/seo/metadata';
-
-export const revalidate = 3600;
 
 export function generateMetadata(): Metadata {
   return generatePageMetadata({
@@ -20,13 +16,7 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default async function WhyChooseUsPage() {
-  const [testimonials, awards, clientLogos] = await Promise.all([
-    getTestimonials(),
-    getAwards(),
-    getClientLogos(),
-  ]);
-
+export default function WhyChooseUsPage() {
   return (
     <>
       <PageHeader
@@ -40,9 +30,8 @@ export default async function WhyChooseUsPage() {
         <AdvantagesSection />
         <ProcessSection />
         <WarrantySection />
-        <ClientTestimonialsSection testimonials={testimonials} />
-        <AwardsSection awards={awards} />
-        <LogoTickerSection clientLogos={clientLogos} />
+        {/* ClientTestimonialsSection + LogoTickerSection unmounted — no real testimonials/logos yet */}
+        <AwardsSection awards={AWARDS} />
         <CTASection />
       </div>
     </>

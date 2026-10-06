@@ -1,11 +1,9 @@
-import { getTechDocuments } from '@/lib/sanity/fetch';
 import TechnicalPageClient from '@/components/technical/TechnicalPageClient';
 import PageHeader from '@/components/ui/PageHeader';
 import { techData } from '@/lib/data/uiStrings';
+import { TECH_DOCUMENTS, TECH_DOCUMENT_CATEGORIES } from '@/lib/data/techDocuments';
 import type { Metadata } from 'next';
 import { generatePageMetadata } from '@/lib/seo/metadata';
-
-export const revalidate = 3600;
 
 export function generateMetadata(): Metadata {
   return generatePageMetadata({
@@ -15,10 +13,7 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default async function TechnicalPage() {
-  // Fetch CMS documents — falls back to [] when Sanity is empty
-  const cmsDocs = await getTechDocuments();
-
+export default function TechnicalPage() {
   return (
     <>
       <PageHeader
@@ -29,7 +24,8 @@ export default async function TechnicalPage() {
         chips={['Specs PDFs', 'CAD files', 'Certificates']}
       />
       <TechnicalPageClient
-        cmsDocs={cmsDocs}
+        documents={TECH_DOCUMENTS}
+        categories={TECH_DOCUMENT_CATEGORIES}
         staticData={techData}
       />
     </>

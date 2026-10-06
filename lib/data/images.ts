@@ -4,7 +4,7 @@
  * Values become /images/<path>.webp when real photos are inserted; later written by custom CMS.
  *
  * One key per image slot currently rendered on the site (inventoried from the
- * Unsplash placeholders + next/image call sites). Every value is null today so
+ * stock-photo placeholders + next/image call sites). Every value is null today so
  * <ImageSlot> renders its blank cream frame. Keys mirror the ids/slugs already
  * used in materialContent.ts, projectContent.ts and the home sections, so the
  * swap-over in Batch B is a lookup, not a rename.
@@ -36,7 +36,6 @@ export const IMAGES = {
   products: {
     // /products landing — one tile per material
     landing: { upvc: BLANK, aluminum: BLANK, glass: BLANK },
-    showcase: BLANK, // ProductShowcase feature panel
     // Category keys = materialContent.ts slugs = page anchor ids (must stay in sync)
     upvc: {
       hero: BLANK, cta: BLANK,

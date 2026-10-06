@@ -1,6 +1,6 @@
 /**
  * lib/data/jobs.ts
- * Open positions — replaces the Sanity `jobPosting` document type.
+ * Open positions — replaces the old CMS `jobPosting` document type.
  * Empty until the client supplies real vacancies; the careers page renders its empty state.
  */
 
