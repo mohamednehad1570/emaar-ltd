@@ -1,6 +1,6 @@
 /**
  * lib/data/catalog/productTypes/doorsHinged.ts
- * Hinged / swing door types. Frameless-doors description reused from materialContent.ts;
+ * Hinged / swing door types. Frameless-doors description reused from the former materialContent.ts;
  * the rest is new copy from catalog notes.
  * AR copy machine-translated — needs native review.
  */
@@ -76,10 +76,10 @@ export const HINGED_DOOR_TYPES: ProductType[] = [
   {
     slug: 'frameless-doors', group: 'doors', mechanism: 'unspecified', placeholder: true,
     name: { en: 'Frameless Doors', ar: 'أبواب بلا إطار' },
-    // Reused site copy — the catalog has no description; its figures are not catalog-verified
+    // Reused site copy — the catalog has no description; figures not in the catalog were removed
     description: {
-      en: 'Frameless glass door systems create the illusion of a glass wall that opens. Suspended on concealed stainless-steel tracks with floor-spring pivots, panels of up to 12mm toughened glass can swing, slide, or fold across openings up to 6 metres wide — with no visible frame to interrupt the view.',
-      ar: 'تخلق أنظمة الأبواب الزجاجية بلا إطار وهم جدار زجاجي يفتح. معلقة على مسارات فولاذية مخفية مع محاور نابض أرضية، يمكن لألواح الزجاج المقسّى بسماكة تصل إلى 12 مم أن تتأرجح أو تنزلق أو تطوى عبر فتحات عرضها يصل إلى 6 أمتار.',
+      en: 'Frameless glass door systems create the illusion of a glass wall that opens. Suspended on concealed stainless-steel tracks with floor-spring pivots, toughened glass panels can swing, slide, or fold across wide openings — with no visible frame to interrupt the view.',
+      ar: 'تخلق أنظمة الأبواب الزجاجية بلا إطار وهم جدار زجاجي يفتح. معلقة على مسارات فولاذية مخفية مع محاور نابض أرضية، يمكن لألواح الزجاج المقسّى أن تتأرجح أو تنزلق أو تطوى عبر فتحات واسعة.',
     },
     bestFor: [],
     heroImage: null, hotspots: [],

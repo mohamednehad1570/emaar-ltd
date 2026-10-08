@@ -5,7 +5,7 @@ Next.js 16 (Turbopack) + TypeScript + Tailwind v4 + Framer Motion +
 Phosphor Icons. Deployed on Vercel.
 
 ## Repo conventions (non-obvious — the rest of the layout is what `ls` shows)
-- Static UI copy: components import from `lib/data/uiStrings.ts` only, never from the individual copy files (whyChooseUs/services/careers/tech/contact/about/faq). Exceptions: `lib/data/materialContent.ts` and `lib/data/nav.ts` are imported directly.
+- Static UI copy: components import from `lib/data/uiStrings.ts` only, never from the individual copy files (whyChooseUs/services/careers/tech/contact/about/faq). Exception: `lib/data/nav.ts` is imported directly. Catalog data comes from `lib/data/catalog` (barrel `index.ts`; use the selectors) — never from its individual files.
 - `scripts/rename-products.mjs` / `rename-projects.mjs` are dry-run by default; `--apply` writes; logs go to `scripts/rename-log.txt` / `scripts/rename-projects-log.txt`.
 - Breadcrumbs were removed site-wide — never add them back.
 
@@ -24,8 +24,10 @@ Our Solutions (≥1280px): cascading mega-menu — View (Products/Projects/Acces
 - EmaarLogo size="header" | "footer": 72/60/52 at rest; header compact scales to 56/52/46 (transform only). Name: EN "Emaar International Industry" (≥768) / "Emaar Int. Ind." (<768), AR "إعمار الدولية للصناعة". "L.L.C." / "ذ.م.م" appear ONLY in the footer copyright line.
 
 ## Routing rules
-- Product categories and project types are hash anchors on their landing pages (`/products/{upvc|aluminum|glass}#slug`, `/projects#residential`, `/accessories#brands`) — all `[category]`/`[slug]` sub-routes were deleted (Sep 24 2026). Never add sub-routes back.
-- Anchor slugs must match in three places: the ids rendered by the page (`lib/data/materialContent.ts` slugs, ProjectsGrid, accessories sections), `lib/data/navSolutions.ts`, and the next.config.ts redirect lookaheads.
+- Material pages: `/upvc`, `/aluminum`. Product types: 22 shared static pages at `/products/[slug]` (generateStaticParams from `lib/data/catalog`, `dynamicParams = false`). Nav items in `navSolutions.ts` are derived from the catalog — never hand-write type hrefs.
+- No glass or accessories pages — they are sections (later tabs) on the material pages: `/upvc#glass`, `/upvc#accessories` (same ids on `/aluminum`). Projects stay hash anchors (`/projects#residential|#commercial`).
+- Old routes 308 in next.config.ts: `/products` → `/`, `/products/upvc/*` → `/upvc`, `/products/aluminum/*` → `/aluminum`, `/products/glass/*` → `/upvc#glass`, `/accessories/*` → `/upvc#accessories`. Internal links must never hit these redirects.
+- Type slugs `upvc`, `aluminum`, `glass` are reserved (they'd be shadowed by the redirects) — enforced by `npx tsx scripts/validate-catalog.ts`; run it after any catalog edit.
 
 ## Code rules
 - Server components by default — use client only for hooks/motion/events
@@ -95,13 +97,11 @@ Our Solutions (≥1280px): cascading mega-menu — View (Products/Projects/Acces
 - Framer Motion owns all animations — no CSS transitions on animated elements
 - prefers-reduced-motion: MotionProvider handles this globally via reducedMotion="user" — no per-component useReducedMotion() needed. Exception: LanguageTransition.tsx calls useReducedMotion() explicitly because the crossfade is triggered by user action (not scroll/mount) and must be skippable independently of MotionConfig
 - contact API (app/api/contact/route.ts) uses Resend; RESEND_API_KEY must be set in Vercel env vars
-- next.config.ts redirect pattern: use `$`-anchored non-capturing group + `[^/]+` — `:slug((?!(?:cat1|cat2|...)$)[^/]+)` — the `$` prevents prefix collision (e.g. "doors" without it matches the start of "doors-and-windows"); `[^/]+` restricts to single path segments. Always list ALL valid category slugs in both uPVC and aluminum lookaheads; a missing slug causes that category page to 308 to the material landing page
 - Project categories: residential | commercial (anchors #residential / #commercial).
 - Ghost buttons on dark/image overlays: use `hover:bg-brand-red hover:border-brand-red hover:text-white` — NOT `hover:bg-white hover:text-brand-dark`. White fill on a dark overlay is invisible and wastes the hover state; brand-red is the correct CTA fill everywhere
 - ProductsSection / ProjectsSection `useReducedMotion()`: same exception — the featured grids' hover lift / image zoom are Tailwind `hover:` utilities (not Framer), so MotionConfig can't reach them; the sections call `useReducedMotion()` and pass `reduceMotion` to the cards. Featured data lives in `lib/data/homeFeatured.ts` (re-exported via uiStrings).
 - `DropdownItem` type is deleted — use `NavLink` from `@/lib/data/nav` everywhere. `HeaderDropdown` props already updated. Do not re-introduce DropdownItem.
 - `SOLUTIONS_HREFS` is the flat href array exported from nav.ts for `isActive` checks on the "Our Solutions" nav item — derive it from there, never re-derive inline at render time.
-- next.config.ts has THREE material redirect blocks now (upvc, aluminum, glass) — when adding a new glass category, update the glass lookahead regex.
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev

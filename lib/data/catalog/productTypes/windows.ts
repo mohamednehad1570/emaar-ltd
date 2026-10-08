@@ -1,6 +1,6 @@
 /**
  * lib/data/catalog/productTypes/windows.ts
- * All copy written new from catalog notes (no matching materialContent.ts category).
+ * All copy written new from catalog notes (no matching category in the former materialContent.ts).
  * AR copy machine-translated — needs native review.
  */
 

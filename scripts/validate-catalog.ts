@@ -25,8 +25,10 @@ function check(ok: boolean, label: string): void {
 check(PRODUCT_TYPES.length === 22, `expected 22 types, got ${PRODUCT_TYPES.length}`);
 const slugs = PRODUCT_TYPES.map((t) => t.slug);
 check(new Set(slugs).size === slugs.length, 'type slugs are not unique');
-// A type slug equal to a material id would collide with /products/[material] routes
-for (const s of slugs) check(s !== 'upvc' && s !== 'aluminum', `slug "${s}" collides with a material id`);
+// upvc/aluminum/glass are old /products/{material} URLs that now redirect — a type slug
+// with those names would be shadowed by the redirect and never render
+const RESERVED_SLUGS = ['upvc', 'aluminum', 'glass'];
+for (const s of slugs) check(!RESERVED_SLUGS.includes(s), `slug "${s}" collides with a reserved route segment`);
 
 const systemById = new Map(PROFILE_SYSTEMS.map((s) => [s.id, s]));
 for (const t of PRODUCT_TYPES) {

@@ -4,29 +4,18 @@ const nextConfig: NextConfig = {
   // No images.remotePatterns — every photo is served locally from /public/images
 
   // ── Legacy product URL redirects ─────────────────────────────────────────
-  // Old 3-level URLs (/products/{material}/{legacy-slug}) redirect to the
-  // material page. The negative-lookahead excludes valid L3 category slugs so
-  // they are NOT caught and reach their own Next.js route handler.
+  // Material pages moved to /upvc and /aluminum; glass and accessories became
+  // sections (later tabs) on the material pages. `:path*` also matches the bare
+  // path, so each rule covers both the old landing page and any old sub-URL.
+  // /products/:slug is now the shared type route — only the three old material
+  // segments are redirected, and the catalog validator reserves those slugs.
   async redirects() {
     return [
-      {
-        // stained-glass and sandblast moved to /products/glass — redirect old uPVC URLs
-        source:      '/products/upvc/:slug((?!(?:windows|doors|doors-and-windows|staircases|hebeschibe)$)[^/]+)',
-        destination: '/products/upvc',
-        permanent:   true,
-      },
-      {
-        // stained-glass and sandblast moved to /products/glass — redirect old aluminum URLs
-        source:      '/products/aluminum/:slug((?!(?:windows|doors|doors-and-windows|staircases|skylights|pergola|frameless-doors|security-system|handrails|acp-panels)$)[^/]+)',
-        destination: '/products/aluminum',
-        permanent:   true,
-      },
-      {
-        // Guard unknown glass category slugs — redirect to material landing page
-        source:      '/products/glass/:slug((?!(?:double-glazing|stained-glass|sandblast|georgian-bar)$)[^/]+)',
-        destination: '/products/glass',
-        permanent:   true,
-      },
+      { source: '/products',                 destination: '/',                 permanent: true },
+      { source: '/products/upvc/:path*',     destination: '/upvc',             permanent: true },
+      { source: '/products/aluminum/:path*', destination: '/aluminum',         permanent: true },
+      { source: '/products/glass/:path*',    destination: '/upvc#glass',       permanent: true },
+      { source: '/accessories/:path*',       destination: '/upvc#accessories', permanent: true },
     ];
   },
 };

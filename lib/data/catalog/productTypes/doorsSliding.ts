@@ -1,6 +1,6 @@
 /**
  * lib/data/catalog/productTypes/doorsSliding.ts
- * Sliding / folding door types. Hebeschiebe description reused from materialContent.ts
+ * Sliding / folding door types. Hebeschiebe description reused from the former materialContent.ts
  * (typo "Hebeschibe" corrected); the rest is new copy from catalog notes.
  * AR copy machine-translated — needs native review.
  */
@@ -76,8 +76,8 @@ export const SLIDING_DOOR_TYPES: ProductType[] = [
     slug: 'hebeschiebe', group: 'doors', mechanism: 'sliding', tier: 'flagship',
     name: { en: 'Hebeschiebe Lift & Slide', ar: 'هيبشيبه للرفع والإزاحة' },
     description: {
-      en: 'The Hebeschiebe lift-and-slide system allows floor-to-ceiling glass panels weighing up to 400 kg to glide effortlessly with a single handle turn. It is the preferred choice for luxury living rooms and terraces where the boundary between inside and outside must disappear entirely.',
-      ar: 'يتيح نظام الرفع والإزاحة Hebeschiebe لألواح الزجاج الممتدة من الأرض إلى السقف بوزن يصل إلى 400 كجم أن تنزلق بسهولة تامة بدوران مقبض واحد. إنه الخيار المفضل لغرف المعيشة والتراسات الفاخرة حيث يجب أن تختفي الحدود بين الداخل والخارج كلياً.',
+      en: 'The Hebeschiebe lift-and-slide system allows large floor-to-ceiling glass panels to glide effortlessly with a single handle turn. It is the preferred choice for luxury living rooms and terraces where the boundary between inside and outside must disappear entirely.',
+      ar: 'يتيح نظام الرفع والإزاحة Hebeschiebe لألواح الزجاج الكبيرة الممتدة من الأرض إلى السقف أن تنزلق بسهولة تامة بدوران مقبض واحد. إنه الخيار المفضل لغرف المعيشة والتراسات الفاخرة حيث يجب أن تختفي الحدود بين الداخل والخارج كلياً.',
     },
     bestFor: [{ en: 'Floor-to-ceiling openings', ar: 'الفتحات من الأرض إلى السقف' }],
     heroImage: null, hotspots: [],

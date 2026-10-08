@@ -1,6 +1,6 @@
 /**
  * lib/data/catalog/materials.ts
- * Pitch copy reused from materialContent.ts hero subtitles (spelling normalised to "aluminum").
+ * Pitch copy reused from the former materialContent.ts hero subtitles (spelling normalised to "aluminum").
  */
 
 import type { Material, MaterialId } from './types';

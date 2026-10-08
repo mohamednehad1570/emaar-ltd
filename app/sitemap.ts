@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { getTypes } from '@/lib/data/catalog';
 
 const BASE_URL = 'https://emaarupvc.ae';
 
@@ -14,24 +15,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     // Material landing pages
-    {
-      url: `${BASE_URL}/products/upvc`,
+    ...(['/upvc', '/aluminum'] as const).map((path) => ({
+      url: `${BASE_URL}${path}`,
       lastModified: now,
-      changeFrequency: 'monthly',
+      changeFrequency: 'monthly' as const,
       priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/products/aluminum`,
+    })),
+
+    // Shared product-type pages — one per catalog type
+    ...getTypes().map((t) => ({
+      url: `${BASE_URL}/products/${t.slug}`,
       lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/products/glass`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
 
     // Projects — residential/commercial are #anchors on this page, not sub-routes
     {

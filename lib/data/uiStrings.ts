@@ -26,3 +26,5 @@ export type { FAQItem } from './faq';
 
 export { FEATURED_PRODUCTS, FEATURED_PROJECTS, HOME_FEATURED_COPY } from './homeFeatured';
 export type { FeaturedProduct, FeaturedProject } from './homeFeatured';
+
+export { CATALOG_PAGE_COPY } from './catalogCopy';

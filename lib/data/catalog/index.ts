@@ -2,6 +2,7 @@
 
 export type * from './types';
 export { MATERIALS, MATERIAL_IDS } from './materials';
+export { TYPE_GROUPS } from './typeGroups';
 export { PRODUCT_TYPES } from './productTypes';
 export { PROFILE_SYSTEMS } from './profileSystems';
 export { BRANDS } from './brands';

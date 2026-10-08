@@ -113,7 +113,8 @@ export default function MobileDrillNav({ language, isRTL, pathname, onClose }: P
               }
               const active = linkActive(row.link.href)
               return (
-                <li key={row.link.href}>
+                // Index-prefixed: a branch's "View all" may share an href with one of its items
+                <li key={`${i}:${row.link.href}`}>
                   <Link
                     href={row.link.href}
                     onClick={(e) => follow(e, row.link.href)}

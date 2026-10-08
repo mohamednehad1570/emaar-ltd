@@ -49,7 +49,7 @@ export default function ProductsSection() {
         <div className="mt-8 flex justify-end">
           {/* min-h-11 = 44px touch target; explicit red so the a:hover base rule can't recolour it */}
           <Link
-            href="/products"
+            href="/upvc"
             className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand-red hover:text-brand-red-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-silver-material"
           >
             {t(copy.viewAll.en, copy.viewAll.ar)}

@@ -77,3 +77,13 @@ export const getDesignSubtypes = (material: MaterialId): Localized[] =>
   uniqueLabels(getDesigns(material).map((d) => d.subtype));
 
 export const getBrand = (id: string): Brand | undefined => BRANDS.find((b) => b.id === id);
+
+// The Domus with-key lock reprints K7610X (the no-key brown code) — a catalog misprint.
+// Data stays verbatim; only the displayed code list drops it.
+const DISPLAY_CODE_OMISSIONS: Record<string, string[]> = { 'domus-sliding-lock-key': ['K7610X'] };
+
+/** Codes as they should be shown to visitors, split from the catalog's " / " notation. */
+export const getDisplayCodes = (item: AccessoryItem): string[] => {
+  const omit = DISPLAY_CODE_OMISSIONS[item.id] ?? [];
+  return (item.code?.split(' / ') ?? []).filter((c) => !omit.includes(c));
+};

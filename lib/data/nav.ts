@@ -8,7 +8,8 @@
  *   SOLUTIONS — (navSolutions.ts) the three "Our Solutions" views consumed by the desktop mega-menu
  *               (View → Material → Items) and the mobile drill-down (same tree).
  *
- * Every sub-item href is a hash anchor on an existing page — no sub-routes exist.
+ * Product items link to /products/[slug] type pages; material links go to /upvc and
+ * /aluminum; glass/accessories/projects items are hash anchors on existing pages.
  */
 
 // ─── Types ────────────────────────────────────────────────────────────────────

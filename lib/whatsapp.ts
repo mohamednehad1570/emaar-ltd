@@ -9,8 +9,7 @@ export type WhatsAppContext = {
     | 'project-detail'
     | 'technical'
     | 'contact'
-    | 'why-choose-us'
-    | 'accessories';
+    | 'why-choose-us';
   productName?: string;
   projectName?: string;
 };
@@ -26,7 +25,6 @@ const MESSAGES: Record<WhatsAppContext['page'], MessageFactory> = {
   'technical':             "Hi, I'm reviewing your technical specifications. I'd like to discuss a project.",
   'contact':               "Hi, I'd like to get in touch with Emaar International.",
   'why-choose-us':         "Hi, I've been reading about Emaar International and I'd like to get a quote.",
-  'accessories':           "Hi, I'd like to know more about the accessories and hardware you use in your systems.",
 };
 
 // Optional override lets server-fetched CMS number replace the constant

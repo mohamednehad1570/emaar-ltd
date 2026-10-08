@@ -2,9 +2,9 @@
  * lib/data/homeFeatured.ts
  *
  * Homepage featured grids — 4 products + 2 projects, replacing the old marquees.
- * Every href is a hash anchor on a landing page; the fragment must match an id
- * the target page actually renders (materialContent.ts slugs / ProjectsGrid
- * type ids) — see CLAUDE.md "Routing rules".
+ * Product hrefs are /products/[slug] catalog type pages (slugs from
+ * lib/data/catalog) or #glass on a material page; project hrefs are hash anchors
+ * matching ProjectsGrid type ids — see CLAUDE.md "Routing rules".
  */
 
 import { IMAGES, type ImageSrc } from './images';
@@ -44,7 +44,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
       en: 'Floor-to-ceiling panoramas on a lift-and-slide system',
       ar: 'إطلالات بانورامية من الأرض إلى السقف بنظام الرفع والانزلاق',
     },
-    href:  '/products/upvc#hebeschiebe',
+    href:  '/products/hebeschiebe',
     image: IMAGES.home.products.hebeschiebe,
   },
   {
@@ -52,7 +52,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     material: { en: 'Glass', ar: 'زجاج' },
     name:    { en: 'Stained Glass', ar: 'الزجاج المعشّق' },
     tagline: { en: 'Crafted in-house, colour by hand', ar: 'مصنوع يدوياً في مصنعنا' },
-    href:  '/products/glass#stained-glass',
+    href:  '/upvc#glass',
     image: IMAGES.home.products['stained-glass'],
   },
   {
@@ -63,7 +63,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
       en: 'Structural glazing for towers and facades',
       ar: 'واجهات زجاجية إنشائية للأبراج والمباني',
     },
-    href:  '/products/aluminum#curtain-wall',
+    href:  '/products/curtain-wall',
     image: IMAGES.home.products['curtain-wall'],
   },
   {
@@ -71,8 +71,7 @@ export const FEATURED_PRODUCTS: readonly FeaturedProduct[] = [
     material: UPVC,
     name:    { en: 'Slide & Fold', ar: 'أبواب الطي والانزلاق' },
     tagline: { en: 'Open an entire wall to the outdoors', ar: 'افتح الجدار بالكامل نحو الخارج' },
-    // No dedicated slide-and-fold category — it lives under uPVC doors
-    href:  '/products/upvc#doors',
+    href:  '/products/slide-and-fold-doors',
     image: IMAGES.home.products['slide-and-fold'],
   },
 ];

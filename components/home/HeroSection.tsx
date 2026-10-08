@@ -323,7 +323,7 @@ export default function HeroSection() {
                 {/* Secondary — ghost */}
                 <Button
                   variant="ghost" size="lg"
-                  href="/products/upvc"
+                  href="/upvc"
                 >
                   {l('Explore Products', 'استكشف المنتجات')}
                 </Button>

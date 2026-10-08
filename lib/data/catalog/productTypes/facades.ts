@@ -1,6 +1,6 @@
 /**
  * lib/data/catalog/productTypes/facades.ts
- * Cladding description reused from materialContent.ts (acp-cladding, spelling normalised);
+ * Cladding description reused from the former materialContent.ts (acp-cladding, spelling normalised);
  * curtain-wall copy is new — both existing curtain-wall texts were material-specific.
  * AR copy machine-translated — needs native review.
  */
@@ -34,8 +34,8 @@ export const FACADE_TYPES: ProductType[] = [
     slug: 'cladding', group: 'facades', mechanism: 'fixed',
     name: { en: 'Aluminum Cladding (ACP)', ar: 'كسوة ألمنيوم (ACP)' },
     description: {
-      en: 'Aluminum composite panels (ACP) are the dominant façade cladding material across UAE commercial and residential towers. Emaar supplies and installs FR-grade ACP systems fully compliant with Dubai Civil Defence circular 5 of 2016.',
-      ar: 'تُعدّ ألواح الألومنيوم المركبة (ACP) مادة الكسوة السائدة على واجهات الأبراج التجارية والسكنية في الإمارات.',
+      en: 'Aluminum composite panels (ACP) are the dominant façade cladding material across UAE commercial and residential towers. Emaar supplies and installs complete ACP cladding systems.',
+      ar: 'تُعدّ ألواح الألومنيوم المركبة (ACP) مادة الكسوة السائدة على واجهات الأبراج التجارية والسكنية في الإمارات. تورّد إعمار أنظمة كسوة ACP متكاملة وتتولى تركيبها.',
     },
     bestFor: [],
     heroImage: null, hotspots: [],
