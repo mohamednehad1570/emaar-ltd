@@ -11,17 +11,26 @@ import { useTranslation } from '@/contexts/LanguageContext';
 import { TYPE_PAGE_COPY as COPY } from '@/lib/data/uiStrings';
 import Container from '@/components/layout/Container';
 import type { Localized, MechanismCopy } from '@/lib/data/catalog';
+import type { DrawnMechanism } from '../types';
+import { getPictogram } from '../pictograms';
 
 interface TypeIntroProps {
   mechanism?: MechanismCopy;
+  mechanismId?: DrawnMechanism;
   bestFor: Localized[];
 }
 
 const LABEL = 'text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-muted mb-3';
 
-export default function TypeIntro({ mechanism, bestFor }: TypeIntroProps) {
+export default function TypeIntro({ mechanism, mechanismId, bestFor }: TypeIntroProps) {
   const t = useTranslation();
   if (!mechanism && bestFor.length === 0) return null;
+  // role=img + label here (unlike the cards): the symbol is content in its own right
+  const pictogram = mechanism && getPictogram(mechanismId, {
+    size: 56,
+    label: t(COPY.openingSymbol.en, COPY.openingSymbol.ar).replace('{name}', t(mechanism.label.en, mechanism.label.ar)),
+    className: 'text-ink-muted',
+  });
 
   return (
     <section className="bg-surface-white border-y border-border-light py-12 md:py-16">
@@ -30,10 +39,15 @@ export default function TypeIntro({ mechanism, bestFor }: TypeIntroProps) {
         {mechanism && (
           <div>
             <h2 className={LABEL}>{t(COPY.howItOpens.en, COPY.howItOpens.ar)}</h2>
-            <p className="text-[clamp(1.125rem,1.5vw,1.375rem)] font-semibold text-ink-heading leading-[1.3]">
-              {t(mechanism.label.en, mechanism.label.ar)}
-            </p>
-            <p className="mt-2 text-ink-body leading-relaxed">{t(mechanism.how.en, mechanism.how.ar)}</p>
+            <div className="flex items-start gap-4">
+              {pictogram}
+              <div>
+                <p className="text-[clamp(1.125rem,1.5vw,1.375rem)] font-semibold text-ink-heading leading-[1.3]">
+                  {t(mechanism.label.en, mechanism.label.ar)}
+                </p>
+                <p className="mt-2 text-ink-body leading-relaxed">{t(mechanism.how.en, mechanism.how.ar)}</p>
+              </div>
+            </div>
           </div>
         )}
 

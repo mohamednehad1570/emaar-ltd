@@ -16,11 +16,17 @@ import { TYPE_HERO_TAG } from '@/lib/data/placeholderPhotos';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { cn } from '@/lib/cn';
 import MaterialSwatch from '../type/MaterialSwatch';
+import { getPictogram } from '../pictograms';
 import type { TypeCardView } from '../types';
 
 export default function TypeCard({ type, reduceMotion }: { type: TypeCardView; reduceMotion: boolean }) {
   const t = useTranslation();
   const name = t(type.name.en, type.name.ar);
+  // Decorative (no label) — the mechanism name is the text beside it. Muted → heading on card hover
+  const pictogram = getPictogram(type.mechanismId, {
+    size: 40,
+    className: 'text-ink-muted transition-colors duration-300 group-hover:text-ink-heading',
+  });
 
   return (
     <Link
@@ -68,10 +74,16 @@ export default function TypeCard({ type, reduceMotion }: { type: TypeCardView; r
 
       {/* ── Body ────────────────────────────────────────────── */}
       <div className="flex flex-1 flex-col p-3 md:p-4">
-        <h4 className="text-base md:text-lg font-bold leading-snug text-ink-heading">{name}</h4>
-        {type.mechanism && (
-          <p className="mt-0.5 text-xs md:text-sm text-ink-muted">{t(type.mechanism.en, type.mechanism.ar)}</p>
-        )}
+        {/* Pictogram sits at the inline-end corner (left in AR); only its position flips, never the drawing */}
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0">
+            <h4 className="text-base md:text-lg font-bold leading-snug text-ink-heading">{name}</h4>
+            {type.mechanism && (
+              <p className="mt-0.5 text-xs md:text-sm text-ink-muted">{t(type.mechanism.en, type.mechanism.ar)}</p>
+            )}
+          </div>
+          {pictogram}
+        </div>
 
         {/* Static "Available in" row — mt-auto pins it to the card foot so rows align */}
         <div className="mt-auto pt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-ink-body">

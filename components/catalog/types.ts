@@ -1,8 +1,11 @@
 /** Serializable view-models the server routes hand to the catalog client components. */
 
-import type { Hotspot, Localized, MaterialId, MechanismCopy, TypeGroup } from '@/lib/data/catalog';
+import type { Hotspot, Localized, MaterialId, Mechanism, MechanismCopy, TypeGroup } from '@/lib/data/catalog';
 import type { PlaceholderTag } from '@/lib/data/placeholderPhotos';
 import type { LightboxDetail } from '@/components/ui/lightboxTypes';
+
+/** Mechanisms that have a pictogram + hotspot diagram — 'unspecified' never gets a drawing. */
+export type DrawnMechanism = Exclude<Mechanism, 'unspecified'>;
 
 /** One card in the material page's type grid. */
 export interface TypeCardView {
@@ -10,6 +13,8 @@ export interface TypeCardView {
   name: Localized;
   group: TypeGroup;
   mechanism?: Localized;
+  // Drives the opening pictogram; absent for 'unspecified' (card shows no icon)
+  mechanismId?: DrawnMechanism;
   tier?: 'flagship' | 'special';
   heroImage: string | null;
   // Every material the type is offered in — the card's "Available in" swatches
@@ -90,9 +95,14 @@ export interface TypePageView {
   group: TypeGroup;
   groupLabel: Localized;
   mechanism?: MechanismCopy;
+  // Opening pictogram in "How it opens"; absent for 'unspecified'
+  mechanismId?: DrawnMechanism;
   bestFor: Localized[];
   hotspots: Hotspot[];
   diagramImage: string | null;
+  // Set only when the pins are the mechanism's shared set — a per-type hotspot override
+  // has its own x/y, which the mechanism drawing was never fitted to
+  diagramMechanism?: DrawnMechanism;
   // 3–6 entries (null = placeholder); empty for placeholder types
   gallery: (string | null)[];
   materials: MaterialConfigView[];

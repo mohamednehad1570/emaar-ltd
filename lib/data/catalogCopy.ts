@@ -40,6 +40,17 @@ export const TYPE_PAGE_COPY = {
   ctaEyebrow:    { en: 'Get Started', ar: 'ابدأ الآن' },
   // {name} is replaced with the type name in the active language
   ctaHeadline:   { en: 'Planning a {name} project?', ar: 'تخطط لمشروع {name}؟' },
+  // AR below machine-translated — needs native review.
+  // "How it opens" pictogram aria-label; {name} = the mechanism label (Sliding, Casement …)
+  openingSymbol: { en: 'Opening symbol: {name}', ar: 'رمز طريقة الفتح: {name}' },
+  // Hotspot diagram aria-labels, keyed by mechanism — each names what the drawing shows
+  diagramLabels: {
+    'sliding':     { en: 'Diagram of a sliding window or door', ar: 'مخطط نافذة أو باب منزلق' },
+    'casement':    { en: 'Diagram of a casement window', ar: 'مخطط نافذة مفصلية' },
+    'hinged-door': { en: 'Diagram of a hinged door', ar: 'مخطط باب مفصلي' },
+    'folding':     { en: 'Diagram of a folding door', ar: 'مخطط باب قابل للطي' },
+    'fixed':       { en: 'Diagram of a fixed glazing panel', ar: 'مخطط لوح زجاج ثابت' },
+  },
 } as const;
 
 /** Labels for the full material page (components/catalog/material/*). */

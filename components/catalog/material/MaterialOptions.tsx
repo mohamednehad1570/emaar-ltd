@@ -21,7 +21,7 @@ import type { OptionTabId, OptionTabView } from '../types';
 import LineTabs from './LineTabs';
 import OptionGrid from './OptionGrid';
 import { isOpenable, toLightboxItem } from './optionLightbox';
-import { useOptionsHash, writeOptionsHash } from './useOptionsHash';
+import { OPTION_TAB_IDS, useOptionsHash, writeOptionsHash } from './useOptionsHash';
 
 const SECTION_ID = 'options';
 const PANEL_ID = 'options-panel';
@@ -44,7 +44,14 @@ export default function MaterialOptions({ tabs }: { tabs: OptionTabView[] }) {
   const lightboxItems = openable.map(toLightboxItem);
 
   return (
-    <section id={SECTION_ID} aria-labelledby="options-title" className="bg-off-white border-t border-border-light py-16 md:py-20">
+    <section id={SECTION_ID} aria-labelledby="options-title" className="relative bg-off-white border-t border-border-light py-16 md:py-20">
+      {/* ── No-JS deep-link anchors ──────────────────────────── */}
+      {/* Zero-height, pinned to the section top: #glass etc. land exactly where #options does
+          before hydration / without JS. No scroll-margin — html scroll-padding-top already gives
+          #options its 88px offset, and adding a margin would double it. */}
+      {OPTION_TAB_IDS.map((id) => (
+        <span key={id} id={id} aria-hidden="true" className="absolute top-0 h-0" />
+      ))}
       <Container>
         <h2 id="options-title" className="font-bold text-ink-heading text-[clamp(1.75rem,3.5vw,3rem)] leading-[1.1] tracking-[-0.01em] mb-8 md:mb-10">
           {t(COPY.optionsTitle.en, COPY.optionsTitle.ar)}

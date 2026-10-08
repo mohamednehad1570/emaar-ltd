@@ -42,7 +42,9 @@ export default function LogoPlate({ language, onNavigate }: LogoPlateProps) {
       >
         {/* 6% inset keeps the mark's outer ring clear of the plate edge */}
         <div className="absolute inset-[6%]">
-          <Image src="/emaar-logo.png" alt="" fill sizes="112px" priority className="object-contain" />
+          {/* Dev log flags this as the LCP element. Next 16 deprecates `priority`, and its docs
+              prefer eager + fetchPriority over `preload` (never combine them) */}
+          <Image src="/emaar-logo.png" alt="" fill sizes="112px" loading="eager" fetchPriority="high" className="object-contain" />
         </div>
       </div>
     </Link>

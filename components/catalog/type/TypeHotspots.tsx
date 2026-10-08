@@ -8,24 +8,26 @@
  * Highlight persists after the pointer leaves so the last-read feature stays marked.
  * <768 the list sits below the diagram, so tapping a pin scrolls its list item into view.
  * Hidden entirely when the mechanism has no hotspot set ('unspecified').
+ * The drawing behind the pins (SVG elevation / file / placeholder) lives in HotspotFigure.
  */
 
 import { useId, useRef, useState } from 'react';
 import { useTranslation } from '@/contexts/LanguageContext';
 import { TYPE_PAGE_COPY as COPY } from '@/lib/data/uiStrings';
 import Container from '@/components/layout/Container';
-import ImageSlot from '@/components/ui/ImageSlot';
 import { cn } from '@/lib/cn';
 import type { Hotspot } from '@/lib/data/catalog';
-import HotspotPin from './HotspotPin';
+import type { DrawnMechanism } from '../types';
+import HotspotFigure from './HotspotFigure';
 
 interface TypeHotspotsProps {
   hotspots: Hotspot[];
   diagramImage: string | null;
+  diagramMechanism?: DrawnMechanism;
   typeName: string;
 }
 
-export default function TypeHotspots({ hotspots, diagramImage, typeName }: TypeHotspotsProps) {
+export default function TypeHotspots({ hotspots, diagramImage, diagramMechanism, typeName }: TypeHotspotsProps) {
   const t = useTranslation();
   const [active, setActive] = useState<number | null>(null);
   const items = useRef<Map<number, HTMLLIElement>>(new Map());
@@ -50,27 +52,16 @@ export default function TypeHotspots({ hotspots, diagramImage, typeName }: TypeH
         </h2>
 
         <div className="grid gap-8 md:grid-cols-[3fr_2fr] md:gap-12 md:items-center">
-          {/* ── Diagram ─────────────────────────────────────── */}
-          {/* dir=ltr: pin x/y are physical and must not mirror in Arabic */}
-          <div dir="ltr" className="relative">
-            <ImageSlot
-              src={diagramImage}
-              alt={`${typeName} — ${t(COPY.diagramAlt.en, COPY.diagramAlt.ar)}`}
-              ratio="4/3"
-              className="rounded-card"
-              sizes="(min-width:768px) 60vw, 100vw"
-            />
-            {hotspots.map((p) => (
-              <HotspotPin
-                key={p.n}
-                point={p}
-                label={t(p.label.en, p.label.ar)}
-                active={active === p.n}
-                detailId={detailId(p.n)}
-                onActivate={activate}
-              />
-            ))}
-          </div>
+          {/* ── Diagram + pins ─────────────────────────────── */}
+          <HotspotFigure
+            hotspots={hotspots}
+            diagramImage={diagramImage}
+            diagramMechanism={diagramMechanism}
+            typeName={typeName}
+            active={active}
+            detailId={detailId}
+            onActivate={activate}
+          />
 
           {/* ── Numbered list ───────────────────────────────── */}
           <ol className="space-y-2">

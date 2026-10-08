@@ -3,7 +3,8 @@
  *
  * Material-neutral feature callouts keyed by opening mechanism — every type with the
  * same mechanism shares one set until a type gets its own `hotspots` override.
- * x/y are % placeholders spread across the frame; retune once real drawings land.
+ * x/y are % of the 4:3 diagram box. The SVG elevations in components/catalog/hotspotDiagrams
+ * are drawn to these exact points — move a pin here and that drawing must be redrawn.
  * Hardware brands come from the catalog accessories pages.
  * AR numeric ranges are wrapped in \u2066…\u2069 (LRI/PDI) so they never flip in RTL.
  * AR copy machine-translated — needs native review.
@@ -76,8 +77,8 @@ export const MECHANISM_HOTSPOTS: Record<Mechanism, Hotspot[]> = {
   unspecified: [],
 };
 
-// Diagram drawing per mechanism for the hotspot section — null = cream ImageSlot placeholder.
-// Pins are % positions, so a drawing swapped in here only needs the x/y above retuned.
+// Diagram file per mechanism for the hotspot section — null = the SVG elevation from
+// components/catalog/hotspotDiagrams. A file set here wins; retune the x/y above to match it.
 export const MECHANISM_DIAGRAMS: Record<Mechanism, string | null> = {
   sliding: null, casement: null, 'hinged-door': null, folding: null, fixed: null, unspecified: null,
 };

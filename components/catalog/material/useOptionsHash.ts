@@ -4,6 +4,7 @@
  * Deep links for the Options module: #colours / #designs / #glass / #accessories select that
  * main tab and scroll to #options (the header offset comes from scroll-padding-top on <html>).
  * Tab clicks rewrite the hash with replaceState — no history entry, no scroll jump.
+ * Without JS, the zero-height #colours … #accessories anchors in MaterialOptions do the scroll.
  */
 
 import { useEffect, useRef } from 'react';
@@ -27,7 +28,8 @@ export function useOptionsHash(onTab: (id: OptionTabId) => void, sectionId: stri
         document.getElementById(sectionId)?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' }));
     };
     // Two frames on mount: on client navigation Next writes the #hash after this effect runs,
-    // and its own (failed) jump to the missing #glass id must land before ours
+    // and its own jump to the zero-height #glass fallback anchor must land before ours
+    // (same spot as #options, so the second scroll never visibly moves)
     let inner = 0;
     const outer = requestAnimationFrame(() => { inner = requestAnimationFrame(() => sync(false)); });
     // Same-page links (footer, mobile menu) dispatch hashchange via followSamePageHash
