@@ -7,6 +7,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import LanguageTransition from "@/components/layout/LanguageTransition";
 import { SITE_SETTINGS } from "@/lib/data/siteSettings";
+import { buildHeaderNav } from "@/lib/data/headerNav";
+import StickyQuoteBar from "@/components/layout/StickyQuoteBar";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -30,6 +32,9 @@ export const metadata: Metadata = {
   },
 };
 
+// Built once at module load on the server — the header receives plain data, not the catalog
+const HEADER_NAV = buildHeaderNav();
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,7 +46,7 @@ export default function RootLayout({
         <MotionProvider>
           <LanguageProvider>
             {/* Header/Footer keep their contact props so the custom CMS can feed them later */}
-            <Header whatsappNumber={SITE_SETTINGS.whatsappNumber} />
+            <Header nav={HEADER_NAV} whatsappNumber={SITE_SETTINGS.whatsappNumber} />
             <LanguageTransition>
               {children}
             </LanguageTransition>
@@ -50,6 +55,8 @@ export default function RootLayout({
               email={SITE_SETTINGS.emails.info}
               whatsappNumber={SITE_SETTINGS.whatsappNumber}
             />
+            {/* <1024 only; mounted once here so it survives client navigation */}
+            <StickyQuoteBar whatsappNumber={SITE_SETTINGS.whatsappNumber} nav={HEADER_NAV} />
           </LanguageProvider>
         </MotionProvider>
       </body>

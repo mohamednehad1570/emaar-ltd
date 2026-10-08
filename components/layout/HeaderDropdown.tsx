@@ -1,62 +1,56 @@
 'use client';
 
-import React from 'react';
+/**
+ * components/layout/HeaderDropdown.tsx
+ * Compact desktop dropdown (About). Same placement and motion as HeaderMaterialPanel:
+ * physical-left under the trigger, 2px radius, warm shadow-md, 0.2s fade + 4px.
+ */
+
+import React, { useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import type { NavLink } from '@/lib/data/nav';
-import { cn } from '@/lib/cn';
-
-interface HeaderDropdownProps {
-  /** Lets HeaderDesktopNav find this panel to move focus in on ArrowDown */
-  navKey:   string;
-  items:    NavLink[];
-  language: 'en' | 'ar';
-  isRTL:    boolean;
-  onEnter:  () => void;
-  onLeave:  () => void;
-}
+import { usePanelClamp } from './usePanelClamp';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-export default function HeaderDropdown({
-  navKey, items, language, isRTL, onEnter, onLeave,
-}: HeaderDropdownProps) {
+interface HeaderDropdownProps {
+  id:         string;
+  items:      NavLink[];
+  language:   'en' | 'ar';
+  onEnter:    () => void;
+  onLeave:    () => void;
+  onNavigate: () => void;
+}
+
+export default function HeaderDropdown({ id, items, language, onEnter, onLeave, onNavigate }: HeaderDropdownProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  usePanelClamp(ref);
+
   return (
     <motion.div
-      data-nav-drop={navKey}
-      initial={{ opacity: 0, y: -8 }}
+      ref={ref}
+      id={id}
+      data-nav-panel
+      dir={language === 'ar' ? 'rtl' : 'ltr'}
+      initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, transition: { duration: 0.12 } }}
+      exit={{ opacity: 0, y: 4, transition: { duration: 0.12 } }}
       transition={{ duration: 0.2, ease: EASE }}
-      className={cn(
-        'absolute top-full z-50 py-2',
-        'bg-white border border-border-light shadow-warm-xl',
-        'min-w-[220px] max-w-[280px] w-max',
-        // start-0 anchors to the trigger's reading-start edge (dir is set below)
-        'start-0',
-      )}
-      dir={isRTL ? 'rtl' : 'ltr'}
       onPointerEnter={onEnter}
       onPointerLeave={onLeave}
+      className="absolute top-full z-50 py-2 min-w-[220px] max-w-[280px] w-max bg-white border border-border-light rounded-[2px] shadow-warm-md"
     >
-      {items.map((item, idx) => (
+      {items.map(item => (
         <React.Fragment key={item.href}>
-          {/* Visual divider above items that request one (e.g. "All Projects", "FAQ") */}
-          {item.dividerBefore && (
-            <div className="my-1 mx-3 border-t border-border-light" aria-hidden="true" />
-          )}
-          <motion.div
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.04, duration: 0.2, ease: EASE }}
+          {item.dividerBefore && <div className="my-1 mx-3 border-t border-border-light" aria-hidden="true" />}
+          <Link
+            href={item.href}
+            onClick={onNavigate}
+            className="flex items-center h-11 px-5 text-sm text-ink-body hover:bg-surface-cream hover:text-ink-heading focus-visible:outline-none focus-visible:bg-surface-cream"
           >
-            <Link
-              href={item.href}
-              className="flex items-center h-11 px-5 text-sm font-normal text-ink-body hover:bg-surface-cream hover:text-ink-heading focus-visible:outline-none focus-visible:bg-surface-cream transition-colors duration-150"
-            >
-              {item[language]}
-            </Link>
-          </motion.div>
+            {item[language]}
+          </Link>
         </React.Fragment>
       ))}
     </motion.div>

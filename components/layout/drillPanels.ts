@@ -2,23 +2,20 @@
  * components/layout/drillPanels.ts
  *
  * Maps nav data onto the mobile drill-down tree:
- *   root → Our Solutions → Products → uPVC → items
- *                        → Projects / Accessories → items
+ *   root → uPVC / Aluminum → group labels + types + option links
+ *        → Projects · Technical · Contact (links)
  *        → About → items
- * Derived entirely from lib/data/nav.ts so desktop and mobile can never drift.
+ * Material panels come from the catalog-derived HeaderNavData (the same props the
+ * desktop panels use), so desktop and mobile can never drift.
  */
 
 import {
-  NAV, SOLUTIONS, SOLUTIONS_VIEW_ORDER, MATERIAL_ORDER,
-  type Localized, type MaterialKey, type NavBranch, type NavLink, type SolutionsViewKey,
+  NAV, materialOptionLinks,
+  type HeaderNavData, type Localized, type NavLink,
 } from '@/lib/data/nav'
+import type { MaterialId } from '@/lib/data/catalog'
 
-export type PanelId =
-  | 'root'
-  | 'solutions'
-  | `view:${SolutionsViewKey}`
-  | `material:${MaterialKey}`
-  | `drop:${string}`
+export type PanelId = 'root' | `material:${MaterialId}` | `drop:${string}`
 
 export type DrillRow =
   | { kind: 'link';  link: NavLink }
@@ -31,63 +28,46 @@ export interface DrillPanel {
 }
 
 const MENU = { en: 'Menu', ar: 'القائمة' }
-const SOLUTIONS_LABEL = NAV.find(n => n.megaMenu) ?? { en: 'Our Solutions', ar: 'حلولنا' }
 
-/** Group micro-labels, then items, then the branch's "View all" link */
-function branchRows(b: NavBranch): DrillRow[] {
-  return [
-    ...b.groups.flatMap<DrillRow>(g => [
-      ...(g.label ? [{ kind: 'label' as const, label: g.label }] : []),
-      ...g.items.map(link => ({ kind: 'link' as const, link })),
-    ]),
-    { kind: 'link', link: b.viewAll },
-  ]
-}
-
-export function getPanel(id: PanelId): DrillPanel {
+export function getPanel(id: PanelId, nav: HeaderNavData): DrillPanel {
   if (id === 'root') {
     return {
       title: MENU,
-      rows: NAV.map<DrillRow>(item =>
-        item.megaMenu ? { kind: 'panel', label: item, to: 'solutions' }
-        : item.dropdown ? { kind: 'panel', label: item, to: `drop:${item.en}` }
-        : { kind: 'link', link: item }),
+      rows: NAV.flatMap<DrillRow>(e => {
+        if (e.kind === 'material') {
+          const m = nav.materials.find(x => x.id === e.id)
+          return m ? [{ kind: 'panel', label: m.label, to: `material:${m.id}` }] : []
+        }
+        if (e.kind === 'dropdown') return [{ kind: 'panel', label: e.label, to: `drop:${e.key}` }]
+        return [{ kind: 'link', link: { ...e.label, href: e.href } }]
+      }),
     }
   }
-  if (id === 'solutions') {
+  if (id.startsWith('material:')) {
+    const m = nav.materials.find(x => `material:${x.id}` === id)
+    if (!m) return { title: MENU, rows: [] }
     return {
-      title: SOLUTIONS_LABEL,
-      rows: SOLUTIONS_VIEW_ORDER.map(v => ({ kind: 'panel', label: SOLUTIONS[v].label, to: `view:${v}` })),
-    }
-  }
-  if (id === 'view:products') {
-    const p = SOLUTIONS.products
-    return {
-      title: p.label,
+      title: m.label,
       rows: [
-        ...MATERIAL_ORDER.map<DrillRow>(m => ({ kind: 'panel', label: p.materials[m].label, to: `material:${m}` })),
-        { kind: 'link', link: p.viewAll },
+        ...m.groups.flatMap<DrillRow>(g => [
+          { kind: 'label', label: g.label },
+          ...g.types.map(t => ({ kind: 'link' as const, link: { ...t.name, href: `/products/${t.slug}` } })),
+        ]),
+        { kind: 'label', label: { en: 'Options', ar: 'الخيارات' } },
+        ...materialOptionLinks(m).map(link => ({ kind: 'link' as const, link })),
       ],
     }
   }
-  if (id === 'view:projects' || id === 'view:accessories') {
-    const b = SOLUTIONS[id === 'view:projects' ? 'projects' : 'accessories']
-    return { title: b.label, rows: branchRows(b) }
-  }
-  if (id.startsWith('material:')) {
-    const b = SOLUTIONS.products.materials[id.slice('material:'.length) as MaterialKey]
-    return { title: b.label, rows: branchRows(b) }
-  }
-  // drop:<en> — compact dropdowns such as About
-  const item = NAV.find(n => `drop:${n.en}` === id)
+  // drop:<key> — compact dropdowns such as About
+  const item = NAV.find(e => e.kind === 'dropdown' && `drop:${e.key}` === id)
   return {
-    title: item ?? MENU,
-    rows: (item?.dropdown ?? []).map(link => ({ kind: 'link', link })),
+    title: item && item.kind === 'dropdown' ? item.label : MENU,
+    rows: item && item.kind === 'dropdown' ? item.items.map(link => ({ kind: 'link', link })) : [],
   }
 }
 
 /** Every href reachable from a panel — used to mark the row that leads to the current page */
-export function panelHrefs(id: PanelId): string[] {
-  return getPanel(id).rows.flatMap(r =>
-    r.kind === 'link' ? [r.link.href] : r.kind === 'panel' ? panelHrefs(r.to) : [])
+export function panelHrefs(id: PanelId, nav: HeaderNavData): string[] {
+  return getPanel(id, nav).rows.flatMap(r =>
+    r.kind === 'link' ? [r.link.href] : r.kind === 'panel' ? panelHrefs(r.to, nav) : [])
 }

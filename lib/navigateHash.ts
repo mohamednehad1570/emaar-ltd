@@ -2,7 +2,7 @@
  * lib/navigateHash.ts
  *
  * Same-page hash links. Next's <Link> updates history without firing `hashchange`,
- * so hash listeners (CategoryAccordion, ProjectsGrid) never hear about the new
+ * so hash listeners (e.g. ProjectsGrid) never hear about the new
  * anchor, and the scroll can be swallowed while a menu still holds the body
  * scroll-lock. This helper pushes the hash, notifies listeners, then scrolls once
  * the menu has unmounted. Landing offset comes from `scroll-padding-top` on <html>.

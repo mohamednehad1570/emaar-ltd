@@ -1,16 +1,17 @@
 /**
  * lib/data/nav.ts
  *
- * Single source of truth for all navigation data.
+ * Single source of truth for site navigation.
  *
- * Structure:
- *   NAV       — top-level items (Home · Our Solutions▾ · Technical · About▾ · Contact)
- *   SOLUTIONS — (navSolutions.ts) the three "Our Solutions" views consumed by the desktop mega-menu
- *               (View → Material → Items) and the mobile drill-down (same tree).
- *
- * Product items link to /products/[slug] type pages; material links go to /upvc and
- * /aluminum; glass/accessories/projects items are hash anchors on existing pages.
+ *   NAV           — header items in their FIXED physical order (identical in EN and AR):
+ *                   uPVC▾ · Aluminum▾ · Projects · Technical · About▾ · Contact
+ *   HeaderNavData — the catalog-derived material menus; built server-side by
+ *                   lib/data/headerNav.ts and passed down as props, so the client
+ *                   bundle never ships the full catalog.
+ *   PRODUCT_LINKS — footer "Products" column.
  */
+
+import type { MaterialId } from './catalog'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -26,94 +27,107 @@ export interface NavLink extends Localized {
   dividerBefore?: boolean
 }
 
-/** A run of links; `label` renders as a micro-label (e.g. Aluminum "Core Systems") */
-export interface NavGroup {
-  label?: Localized
-  items:  NavLink[]
+export type NavEntry =
+  | { kind: 'material'; id: MaterialId }
+  | { kind: 'link'; key: string; label: Localized; href: string }
+  | { kind: 'dropdown'; key: string; label: Localized; items: NavLink[] }
+
+export interface NavTypeLink {
+  slug: string
+  name: Localized
 }
 
-export type MaterialKey      = 'upvc' | 'aluminum' | 'glass'
-export type SolutionsViewKey = 'products' | 'projects' | 'accessories'
-
-/** A list of item groups closed by a "View all …" link */
-export interface NavBranch {
-  label:   Localized
-  viewAll: NavLink
-  groups:  NavGroup[]
+export interface NavTypeGroup {
+  id: string
+  label: Localized
+  types: NavTypeLink[]
 }
 
-export interface SolutionsTree {
-  /** Products is the only view with a Material level */
-  products:    { label: Localized; viewAll: NavLink; materials: Record<MaterialKey, NavBranch> }
-  projects:    NavBranch
-  accessories: NavBranch
+export interface NavMaterial {
+  id: MaterialId
+  label: Localized
+  groups: NavTypeGroup[]
 }
 
-/** A top-level nav item */
-export interface NavItem extends Localized {
-  href:      string
-  dropdown?: NavLink[]
-  /** True for Our Solutions — desktop opens the mega-menu, mobile drills into SOLUTIONS */
-  megaMenu?: boolean
+export interface HeaderNavData {
+  materials: NavMaterial[]
+  /** slug → materials offering it; drives the active underline on /products/[slug] */
+  typeMaterials: Record<string, MaterialId[]>
 }
-
-// Display order — Record keys don't guarantee iteration order across consumers
-// Tree data lives in navSolutions.ts to keep both files under the 150-line limit.
-// Only types flow back from that file, so the import graph has no runtime cycle.
-import { SOLUTIONS } from './navSolutions'
-export { SOLUTIONS }
-
-export const SOLUTIONS_VIEW_ORDER: SolutionsViewKey[] = ['products', 'projects', 'accessories']
-export const MATERIAL_ORDER:       MaterialKey[]      = ['upvc', 'aluminum', 'glass']
 
 // ─── Primary navigation ────────────────────────────────────────────────────────
 
-export const NAV: NavItem[] = [
-  { en: 'Home', ar: 'الرئيسية', href: '/' },
-  // href '' — the item is a menu trigger, never a link; active state comes from SOLUTIONS_HREFS
-  { en: 'Our Solutions', ar: 'حلولنا', href: '', megaMenu: true },
-  { en: 'Technical', ar: 'المواصفات', href: '/technical' },
-  {
-    en: 'About', ar: 'من نحن', href: '',
-    dropdown: [
-      { en: 'About Us',      ar: 'من نحن',          href: '/about'         },
-      { en: 'Why Choose Us', ar: 'لماذا نحن',       href: '/why-choose-us' },
-      { en: 'Careers',       ar: 'الوظائف',         href: '/careers'       },
-      { en: 'FAQ',           ar: 'الأسئلة الشائعة', href: '/faq', dividerBefore: true },
-    ],
-  },
-  { en: 'Contact', ar: 'اتصل بنا', href: '/contact' },
+const ABOUT_ITEMS: NavLink[] = [
+  { en: 'About Us',      ar: 'من نحن',          href: '/about'         },
+  { en: 'Why Choose Us', ar: 'لماذا نحن',       href: '/why-choose-us' },
+  { en: 'Careers',       ar: 'الوظائف',         href: '/careers'       },
+  { en: 'FAQ',           ar: 'الأسئلة الشائعة', href: '/faq', dividerBefore: true },
 ]
 
-// ─── isActive helper ──────────────────────────────────────────────────────────
-
-export function isActive(
-  pathname:    string,
-  href:        string,
-  childHrefs?: string[],
-): boolean {
-  if (href === '/') return pathname === '/'
-  const base = href.split('#')[0]
-  if (base && pathname.startsWith(base)) return true
-  return childHrefs?.some(h => {
-    const b = h.split('#')[0]
-    return b && pathname.startsWith(b)
-  }) ?? false
-}
-
-// ─── Derived ──────────────────────────────────────────────────────────────────
-
-/** Every link under a branch, groups flattened, "View all" last */
-export function branchLinks(branch: NavBranch): NavLink[] {
-  return [...branch.groups.flatMap(g => g.items), branch.viewAll]
-}
-
-// Flat, de-duplicated base paths for "Our Solutions" active-state detection
-export const SOLUTIONS_HREFS: string[] = [
-  SOLUTIONS.products.viewAll,
-  ...MATERIAL_ORDER.flatMap(m => branchLinks(SOLUTIONS.products.materials[m])),
-  ...branchLinks(SOLUTIONS.projects),
-  ...branchLinks(SOLUTIONS.accessories),
+// Existing short AR labels kept (المواصفات, اتصل بنا) — the header stacks both
+// languages in one cell, so the longer AR variants would widen the 1024px bar
+export const NAV: NavEntry[] = [
+  { kind: 'material', id: 'upvc' },
+  { kind: 'material', id: 'aluminum' },
+  { kind: 'link',     key: 'projects',  label: { en: 'Projects',  ar: 'المشاريع'  }, href: '/projects'  },
+  { kind: 'link',     key: 'technical', label: { en: 'Technical', ar: 'المواصفات' }, href: '/technical' },
+  { kind: 'dropdown', key: 'about',     label: { en: 'About',     ar: 'من نحن'    }, items: ABOUT_ITEMS },
+  { kind: 'link',     key: 'contact',   label: { en: 'Contact',   ar: 'اتصل بنا'  }, href: '/contact'   },
 ]
-  .map(l => l.href.split('#')[0])
-  .filter((v, i, a) => v && a.indexOf(v) === i)
+
+/** Footer row of a material panel: landing page, glass and accessories sections */
+export function materialOptionLinks(m: NavMaterial): NavLink[] {
+  return [
+    { en: `All ${m.label.en} products`, ar: `كل منتجات ${m.label.ar}`, href: `/${m.id}` },
+    { en: 'Glass options', ar: 'خيارات الزجاج', href: `/${m.id}#glass` },
+    { en: 'Accessories', ar: 'الإكسسوارات', href: `/${m.id}#accessories` },
+  ]
+}
+
+export const PRODUCT_LINKS: NavLink[] = [
+  { en: 'uPVC Systems',     ar: 'أنظمة uPVC',      href: '/upvc'             },
+  { en: 'Aluminum Systems', ar: 'أنظمة الألمنيوم', href: '/aluminum'         },
+  { en: 'Glass',            ar: 'الزجاج',          href: '/upvc#glass'       },
+  { en: 'Accessories',      ar: 'الإكسسوارات',     href: '/upvc#accessories' },
+]
+
+/** English type name for a /products/[slug] path — names the product in WhatsApp messages */
+export function typeNameForPath(nav: HeaderNavData, pathname: string): string | undefined {
+  const slug = pathname.startsWith('/products/') ? pathname.slice('/products/'.length) : ''
+  for (const m of nav.materials) for (const g of m.groups) {
+    const t = g.types.find(x => x.slug === slug)
+    if (t) return t.name.en
+  }
+  return undefined
+}
+
+// ─── Active state ─────────────────────────────────────────────────────────────
+
+/** Material tab is current on its landing page or on any type it offers */
+export function isMaterialActive(pathname: string, id: MaterialId, nav: HeaderNavData): boolean {
+  if (pathname === `/${id}`) return true
+  const slug = pathname.startsWith('/products/') ? pathname.slice('/products/'.length) : ''
+  return nav.typeMaterials[slug]?.includes(id) ?? false
+}
+
+/** Plain links match their path prefix; dropdowns match any child path */
+export function isPathActive(pathname: string, hrefs: string[]): boolean {
+  return hrefs.some(h => {
+    const base = h.split('#')[0]
+    return base !== '' && (pathname === base || pathname.startsWith(`${base}/`))
+  })
+}
+
+/** Key, label, matched material and active flag for one header entry */
+export function describeEntry(entry: NavEntry, nav: HeaderNavData, pathname: string) {
+  if (entry.kind === 'material') {
+    const material = nav.materials.find(m => m.id === entry.id)
+    return {
+      key: entry.id, material,
+      label: material?.label ?? { en: entry.id, ar: entry.id },
+      active: isMaterialActive(pathname, entry.id, nav),
+    }
+  }
+  const hrefs = entry.kind === 'link' ? [entry.href] : entry.items.map(i => i.href)
+  return { key: entry.key, label: entry.label, material: undefined, active: isPathActive(pathname, hrefs) }
+}

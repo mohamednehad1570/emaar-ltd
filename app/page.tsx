@@ -22,11 +22,14 @@ import CTASection            from '@/components/home/CTASection';
 import SectionDivider        from '@/components/home/SectionDivider';
 
 export function generateMetadata(): Metadata {
-  return generatePageMetadata({
+  const meta = generatePageMetadata({
     title:       'Premium uPVC & Aluminum Windows and Doors',
     description: 'Emaar International manufactures premium uPVC and aluminum windows, doors, facades, and glass systems in the UAE. Trusted by contractors, architects, and developers across the Gulf.',
     path:        '/',
   });
+  // The root layout's title.template only applies to child segments, never to this
+  // page (same segment) — so the brand suffix is added here, once, as an absolute title
+  return { ...meta, title: { absolute: 'Premium uPVC & Aluminum Windows and Doors — Emaar International' } };
 }
 
 export default function HomePage() {

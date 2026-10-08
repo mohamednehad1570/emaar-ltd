@@ -6,7 +6,7 @@
  * One key per image slot currently rendered on the site (inventoried from the
  * stock-photo placeholders + next/image call sites). Every value is null today so
  * <ImageSlot> renders its blank cream frame. Keys mirror the ids/slugs already
- * used in materialContent.ts, projectContent.ts and the home sections, so the
+ * used in projectContent.ts and the home sections, so the
  * swap-over in Batch B is a lookup, not a rename.
  */
 
@@ -26,33 +26,8 @@ export const IMAGES = {
     projects: { residential: BLANK, commercial: BLANK },
   },
 
-  products: {
-    // /products landing — one tile per material
-    landing: { upvc: BLANK, aluminum: BLANK, glass: BLANK },
-    // Category keys = materialContent.ts slugs = page anchor ids (must stay in sync)
-    upvc: {
-      hero: BLANK, cta: BLANK,
-      categories: {
-        doors: BLANK, windows: BLANK, 'curtain-wall': BLANK,
-        staircases: BLANK, hebeschiebe: BLANK,
-      },
-    },
-    aluminum: {
-      hero: BLANK, cta: BLANK,
-      categories: {
-        doors: BLANK, windows: BLANK, 'curtain-wall': BLANK, 'acp-cladding': BLANK,
-        staircases: BLANK, skylights: BLANK, pergola: BLANK, 'frameless-doors': BLANK,
-        'security-system': BLANK, handrails: BLANK,
-      },
-    },
-    glass: {
-      hero: BLANK, cta: BLANK,
-      categories: {
-        'double-glazing': BLANK, 'stained-glass': BLANK,
-        'sandblasted-glass': BLANK, 'decorative-glass': BLANK,
-      },
-    },
-  },
+  // Catalog images (materials, product types, accessories, glass) live on the
+  // catalog records themselves (heroImage / image fields in lib/data/catalog)
 
   // projectContent.ts ids — cover/hero image per featured project
   projects: {

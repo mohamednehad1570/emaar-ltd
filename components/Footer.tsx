@@ -37,7 +37,7 @@ import Link from 'next/link';
 import EmaarLogo from '@/components/ui/EmaarLogo'; // shared logo + wordmark atom
 import { useLanguage, useTranslation } from '../contexts/LanguageContext';
 import { cn } from '@/lib/cn';
-import { SOLUTIONS, MATERIAL_ORDER } from '@/lib/data/nav';
+import { PRODUCT_LINKS } from '@/lib/data/nav';
 import Container from './layout/Container';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -66,16 +66,8 @@ const COLUMNS: Column[] = [
     id: 'products',
     en: 'Products',
     ar: 'المنتجات',
-    // Derived from the nav's SOLUTIONS tree so footer and header can never drift;
-    // each entry pairs a section label with that section's landing-page href
-    links: [
-      { en: 'All Products', ar: 'جميع المنتجات', href: SOLUTIONS.products.viewAll.href },
-      ...MATERIAL_ORDER.map(m => ({
-        ...SOLUTIONS.products.materials[m].label,
-        href: SOLUTIONS.products.materials[m].viewAll.href,
-      })),
-      { ...SOLUTIONS.accessories.label, href: SOLUTIONS.accessories.viewAll.href },
-    ],
+    // Shared with nav.ts so footer and header targets can never drift
+    links: PRODUCT_LINKS,
   },
   {
     id: 'company',
@@ -84,7 +76,7 @@ const COLUMNS: Column[] = [
     links: [
       { en: 'About Us',  ar: 'من نحن',          href: '/about'     },
       { en: 'Why Emaar', ar: 'لماذا إمار',       href: '/why-choose-us' },
-      { ...SOLUTIONS.projects.label, href: SOLUTIONS.projects.viewAll.href },
+      { en: 'Projects',  ar: 'المشاريع',        href: '/projects'  },
       { en: 'Careers',   ar: 'الوظائف',          href: '/careers'   },
       { en: 'FAQ',       ar: 'الأسئلة الشائعة',  href: '/faq'       },
     ],
@@ -369,7 +361,7 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
               className="inline-flex"
               aria-label="Emaar International Industry — home"
             >
-              <EmaarLogo size="footer" textSize="sm" />
+              <EmaarLogo textSize="sm" />
             </Link>
 
             {/* Brand tagline */}
@@ -438,7 +430,7 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
               className="inline-flex"
               aria-label="Emaar International Industry — home"
             >
-              <EmaarLogo size="footer" textSize="sm" />
+              <EmaarLogo textSize="sm" />
             </Link>
 
             <p className="text-sm text-text-body leading-relaxed max-w-sm">
@@ -511,6 +503,9 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
         </div>
 
       </Container>
+
+      {/* Reserves StickyQuoteBar's height (<1024 only) so the last footer row is never hidden under it */}
+      <div aria-hidden="true" className="lg:hidden h-[calc(var(--quote-bar-h)+env(safe-area-inset-bottom))]" />
     </footer>
   );
 }

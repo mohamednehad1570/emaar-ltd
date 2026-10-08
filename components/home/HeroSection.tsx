@@ -215,11 +215,11 @@ export default function HeroSection() {
       >
         <Container className="w-full">
           {/*
-            pt-(--header-h) — offsets the fixed header (72–96px by breakpoint)
-            so the stacked content centres in the remaining viewport, not the
-            geometric centre of the full h-screen section.
+            Offsets the 72px header plus the logo plate's overhang, so the
+            stacked content centres in the remaining viewport and the plate
+            never sits on the overline or headline.
           */}
-          <div className="pt-(--header-h)">
+          <div className="pt-[calc(var(--header-h)+var(--logo-overhang))]">
             <motion.div
               className={`max-w-xl sm:max-w-2xl lg:max-w-3xl ${isRTL ? 'mr-0 ml-auto lg:ml-0' : ''}`}
               variants={staggerContainer}

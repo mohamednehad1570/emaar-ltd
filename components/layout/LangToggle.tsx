@@ -18,7 +18,8 @@ const LANGS = [
   { lang: 'ar' as const, label: 'ع',  aria: 'Switch to Arabic'  },
 ];
 
-export default function LangToggle() {
+// onDark: white text over the homepage hero while the header bar is transparent
+export default function LangToggle({ onDark = false }: { onDark?: boolean }) {
   const { language, toggleLanguage, pendingLanguage } = useLanguage();
   const displayLang = pendingLanguage ?? language;
 
@@ -27,7 +28,7 @@ export default function LangToggle() {
     <div className="flex items-center" dir="ltr">
       {LANGS.map(({ lang, label, aria }, i) => (
         <React.Fragment key={lang}>
-          {i > 0 && <span className="text-dim text-xs select-none" aria-hidden="true">|</span>}
+          {i > 0 && <span className={cn('text-xs select-none', onDark ? 'text-white/60' : 'text-dim')} aria-hidden="true">|</span>}
           <button
             type="button"
             onClick={displayLang !== lang ? toggleLanguage : undefined}
@@ -36,8 +37,8 @@ export default function LangToggle() {
             className={cn(
               'min-w-[44px] min-h-[44px] flex items-center justify-center text-xs transition-colors duration-150',
               displayLang === lang
-                ? 'font-bold text-ink-heading'
-                : 'font-normal text-ink-muted hover:text-ink-body',
+                ? cn('font-bold', onDark ? 'text-white' : 'text-ink-heading')
+                : cn('font-normal', onDark ? 'text-white/70 hover:text-white' : 'text-ink-muted hover:text-ink-body'),
             )}
           >
             {label}

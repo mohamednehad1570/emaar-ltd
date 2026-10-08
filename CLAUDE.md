@@ -13,18 +13,20 @@ Phosphor Icons. Deployed on Vercel.
 - DESIGN.md — design system, tokens, component specs, do/don't rules
 - PRODUCT.md — brand personality, audience, voice, anti-references
 
-## Header nav order
-LTR: Home · Our Solutions▾ · Technical · About▾ · Contact
-RTL: reversed (nav has dir; the header bar itself stays dir="ltr" so the logo is always left)
-Our Solutions (≥1280px): cascading mega-menu — View (Products/Projects/Accessories) → Material (Products only) → Items. Default Products → uPVC. <1280px: MobileDrillNav drill-down panels.
-
-## Header sizing
-- `--header-h` (globals.css, @property-interpolated): rest/compact 72/64 mobile, 84/72 tablet (≥768), 96/76 desktop (≥1280). Header.tsx toggles html[data-header="compact"] after 48px scroll, back below 16px.
-- Use `top-(--header-h)` / `pt-(--header-h)` for anything under the header — never hard-code a header height. html has scroll-padding-top: calc(var(--header-h) + 16px).
-- EmaarLogo size="header" | "footer": 72/60/52 at rest; header compact scales to 56/52/46 (transform only). Name: EN "Emaar International Industry" (≥768) / "Emaar Int. Ind." (<768), AR "إعمار الدولية للصناعة". "L.L.C." / "ذ.م.م" appear ONLY in the footer copyright line.
+## Header (components/Header.tsx + components/layout/Header*, LogoPlate, StickyQuoteBar)
+- Physical layout is FIXED in EN and AR — never mirror it: `[LogoPlate] … uPVC▾ · Aluminum▾ · Projects · Technical · About▾ · Contact … EN|ع · WhatsApp · [Request Quote]`. The bar row is dir="ltr"; each label (NavLabel) and dropdown panel sets its own dir. No Home tab, no mega-menu, no wordmark beside the logo.
+- Nav data: `NAV` in lib/data/nav.ts (order + labels). Material dropdowns are catalog-driven: app/layout.tsx calls `buildHeaderNav()` (lib/data/headerNav.ts) on the server and passes plain `HeaderNavData` to Header / StickyQuoteBar — never import lib/data/catalog into client chrome (it would ship the whole catalog).
+- ≥1024: HeaderNav with HeaderMaterialPanel (columns Windows · Doors · Facades · Specialty, only non-empty; footer row all products · #glass · #accessories) and HeaderDropdown (About). Hover-intent + click/Enter/Space; Esc / outside click / route change close. Active underline: material landing page or any /products/[slug] that material offers (both underline for shared types). 1024–1279: WhatsApp is icon-only.
+- <1024: logo · [768–1023: EN|ع + WhatsApp icon] · burger → HeaderMobileOverlay + MobileDrillNav (drillPanels.ts, fed by HeaderNavData).
+- Bar: 72px at every breakpoint and scroll state (`--header-h`). Rest = white + 0.5px border-light; homepage = transparent over the hero (white labels, `onDark`); after 48px scroll (back below 16px) = frosted white/80 + silver border.
+- LogoPlate: white circle + border-light + shadow-warm-md, top 8px into the bar. Rest 72 / 88 / 96 / 112px (<768 / md / lg / xl), scrolled 56px (Framer scale, fully inside the bar). `--logo-overhang` (8 / 24 / 32 / 48px) on :root — anything sitting at the top of a page under the header must pad `calc(var(--header-h) + var(--logo-overhang))` (PageHeader and the homepage hero already do).
+- Use `top-(--header-h)` / `pt-(--header-h)` for things under the bar — never hard-code 72. html has scroll-padding-top: calc(var(--header-h) + 16px).
+- StickyQuoteBar (<1024 only, mounted once in layout): appears past 60% of the first viewport, hidden while the overlay is open (`useMobileNavOpen`). Footer reserves `--quote-bar-h` + safe-area at its end.
+- EmaarLogo (mark + name) is footer-only. Name: EN "Emaar International Industry" (≥768) / "Emaar Int. Ind." (<768), AR "إعمار الدولية للصناعة". "L.L.C." / "ذ.م.م" appear ONLY in the footer copyright line.
+- Page titles: `generatePageMetadata` returns the bare title; the brand suffix comes only from app/layout.tsx's `title.template` (the home page sets an absolute title because the template doesn't apply to its own segment).
 
 ## Routing rules
-- Material pages: `/upvc`, `/aluminum`. Product types: 22 shared static pages at `/products/[slug]` (generateStaticParams from `lib/data/catalog`, `dynamicParams = false`). Nav items in `navSolutions.ts` are derived from the catalog — never hand-write type hrefs.
+- Material pages: `/upvc`, `/aluminum`. Product types: 22 shared static pages at `/products/[slug]` (generateStaticParams from `lib/data/catalog`, `dynamicParams = false`). Header/mobile type links are derived from the catalog via `buildHeaderNav()` — never hand-write type hrefs.
 - No glass or accessories pages — they are sections (later tabs) on the material pages: `/upvc#glass`, `/upvc#accessories` (same ids on `/aluminum`). Projects stay hash anchors (`/projects#residential|#commercial`).
 - Old routes 308 in next.config.ts: `/products` → `/`, `/products/upvc/*` → `/upvc`, `/products/aluminum/*` → `/aluminum`, `/products/glass/*` → `/upvc#glass`, `/accessories/*` → `/upvc#accessories`. Internal links must never hit these redirects.
 - Type slugs `upvc`, `aluminum`, `glass` are reserved (they'd be shadowed by the redirects) — enforced by `npx tsx scripts/validate-catalog.ts`; run it after any catalog edit.
@@ -101,7 +103,6 @@ Our Solutions (≥1280px): cascading mega-menu — View (Products/Projects/Acces
 - Ghost buttons on dark/image overlays: use `hover:bg-brand-red hover:border-brand-red hover:text-white` — NOT `hover:bg-white hover:text-brand-dark`. White fill on a dark overlay is invisible and wastes the hover state; brand-red is the correct CTA fill everywhere
 - ProductsSection / ProjectsSection `useReducedMotion()`: same exception — the featured grids' hover lift / image zoom are Tailwind `hover:` utilities (not Framer), so MotionConfig can't reach them; the sections call `useReducedMotion()` and pass `reduceMotion` to the cards. Featured data lives in `lib/data/homeFeatured.ts` (re-exported via uiStrings).
 - `DropdownItem` type is deleted — use `NavLink` from `@/lib/data/nav` everywhere. `HeaderDropdown` props already updated. Do not re-introduce DropdownItem.
-- `SOLUTIONS_HREFS` is the flat href array exported from nav.ts for `isActive` checks on the "Our Solutions" nav item — derive it from there, never re-derive inline at render time.
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev

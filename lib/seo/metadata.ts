@@ -22,8 +22,13 @@ export function generatePageMetadata({
   const canonical = `${SITE_URL}${path}`;
   const resolvedOgImage = ogImage ?? DEFAULT_OG_IMAGE;
 
+  // Brand suffix lives only in app/layout.tsx's title.template — adding it here too
+  // produced "X — Emaar International — Emaar International". OG/Twitter titles
+  // don't pass through the template, so they keep the suffix explicitly.
+  const brandedTitle = `${title} — ${BRAND}`;
+
   return {
-    title: `${title} — ${BRAND}`,
+    title,
     description,
     alternates: {
       canonical,
@@ -34,7 +39,7 @@ export function generatePageMetadata({
       },
     },
     openGraph: {
-      title: `${title} — ${BRAND}`,
+      title: brandedTitle,
       description,
       url: canonical,
       siteName: BRAND,
@@ -45,13 +50,13 @@ export function generatePageMetadata({
           url: resolvedOgImage,
           width: 1200,
           height: 630,
-          alt: `${title} — ${BRAND}`,
+          alt: brandedTitle,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} — ${BRAND}`,
+      title: brandedTitle,
       description,
       images: [resolvedOgImage],
     },

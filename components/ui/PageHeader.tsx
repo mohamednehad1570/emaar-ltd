@@ -28,7 +28,7 @@ interface PageHeaderProps {
   descriptionAr?: string;
   /** Small trust chips rendered below the description */
   chips?: string[];
-  /** Hash-anchor quick links (e.g. to CategoryAccordion sections) */
+  /** Hash-anchor quick links to sections further down the page */
   anchors?: AnchorLink[];
   /** When true the anchor row scrolls horizontally instead of wrapping */
   scrollable?: boolean;
@@ -51,8 +51,8 @@ export default function PageHeader({
   return (
     <div
       className={cn(
-        // pt-(--header-h) clears the fixed header at every breakpoint and state
-        'bg-white border-b border-border-light pt-(--header-h)',
+        // Clears the 72px bar plus the logo plate's overhang, so the plate never covers the H1
+        'bg-white border-b border-border-light pt-[calc(var(--header-h)+var(--logo-overhang))]',
         className,
       )}
       dir={isRTL ? 'rtl' : 'ltr'}

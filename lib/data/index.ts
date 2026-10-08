@@ -6,7 +6,7 @@
  * UI copy accessed via uiStrings.ts (which re-exports the individual copy files).
  */
 
-export { NAV, isActive } from './nav';
+export { NAV } from './nav';
 export { IMAGES } from './images';
 export { AWARDS } from './awards';
 export { CERTIFICATES } from './certificates';
