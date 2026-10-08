@@ -5,7 +5,7 @@
  */
 
 export const CATALOG_PAGE_COPY = {
-  materialEyebrow: { en: 'Material', ar: 'المادة' },
+  materialEyebrow: { en: 'Material', ar: 'الخامة' },
   typeEyebrow:     { en: 'Product', ar: 'المنتج' },
   bestFor:         { en: 'Best for', ar: 'الأنسب لـ' },
   availableIn:     { en: 'Available in', ar: 'متوفر بـ' },
@@ -40,4 +40,53 @@ export const TYPE_PAGE_COPY = {
   ctaEyebrow:    { en: 'Get Started', ar: 'ابدأ الآن' },
   // {name} is replaced with the type name in the active language
   ctaHeadline:   { en: 'Planning a {name} project?', ar: 'تخطط لمشروع {name}؟' },
+} as const;
+
+/** Labels for the full material page (components/catalog/material/*). */
+export const MATERIAL_PAGE_COPY = {
+  // {material} is replaced with the material name in the active language
+  typesTitle:   { en: '{material} products', ar: 'منتجات {material}' },
+  ctaHeadline:  { en: 'Planning a {material} project?', ar: 'تخطط لمشروع {material}؟' },
+  optionsTitle: { en: 'Options & finishes', ar: 'الخيارات والتشطيبات' },
+  optionsTabs:  { en: 'Option categories', ar: 'فئات الخيارات' },
+  optionsSub:   { en: 'Filter', ar: 'تصفية' },
+  all:          { en: 'All', ar: 'الكل' },
+  openItem:     { en: 'View details', ar: 'عرض التفاصيل' },
+  // Main option tabs — order is the tab order
+  tabs: {
+    colours:     { en: 'Colours', ar: 'الألوان' },
+    designs:     { en: 'Designs', ar: 'التصاميم' },
+    glass:       { en: 'Glass', ar: 'الزجاج' },
+    accessories: { en: 'Accessories', ar: 'الإكسسوارات' },
+  },
+  glassGroups: {
+    performance: { en: 'Performance', ar: 'عالي الأداء' },
+    decorative:  { en: 'Decorative', ar: 'زخرفي' },
+  },
+  // Accessory sub-tabs, keyed by AccessoryKind (only kinds with items are shown)
+  kinds: {
+    'handle':         { en: 'Handles', ar: 'المقابض' },
+    'sliding-lock':   { en: 'Sliding locks', ar: 'أقفال منزلقة' },
+    'cylinder':       { en: 'Cylinders', ar: 'الأسطوانات' },
+    'door-lock':      { en: 'Door locks', ar: 'أقفال الأبواب' },
+    'hinge':          { en: 'Hinges', ar: 'المفصلات' },
+    'roller':         { en: 'Rollers', ar: 'البكرات' },
+    'closer-stopper': { en: 'Closers & stoppers', ar: 'المُغلقات والمصدّات' },
+    'side-arm':       { en: 'Side arms', ar: 'الأذرع الجانبية' },
+    'flyscreen':      { en: 'Flyscreens', ar: 'شبك الحشرات' },
+  },
+  // Lightbox detail-panel labels
+  detail: {
+    collection: { en: 'Collection', ar: 'المجموعة' },
+    code:       { en: 'Code', ar: 'الرمز' },
+    category:   { en: 'Category', ar: 'الفئة' },
+    colour:     { en: 'Colour', ar: 'اللون' },
+    colours:    { en: 'Colours', ar: 'الألوان' },
+    supplier:   { en: 'Supplier', ar: 'المورّد' },
+    type:       { en: 'Type', ar: 'النوع' },
+    brand:      { en: 'Brand', ar: 'العلامة التجارية' },
+    origin:     { en: 'Origin', ar: 'بلد المنشأ' },
+    spec:       { en: 'Specification', ar: 'المواصفات' },
+    note:       { en: 'Note', ar: 'ملاحظة' },
+  },
 } as const;

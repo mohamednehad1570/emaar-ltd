@@ -4,7 +4,7 @@
  */
 
 import type { Metadata } from 'next';
-import MaterialPageBare from '@/components/catalog/MaterialPageBare';
+import MaterialPage from '@/components/catalog/material/MaterialPage';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 import { materialPageProps } from '@/lib/catalogPageData';
 
@@ -15,5 +15,5 @@ export const metadata: Metadata = generatePageMetadata({
 });
 
 export default function Page() {
-  return <MaterialPageBare {...materialPageProps('upvc')} />;
+  return <MaterialPage {...materialPageProps('upvc')} />;
 }

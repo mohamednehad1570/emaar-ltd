@@ -16,6 +16,10 @@ import type { TypeGroup } from './catalog';
 
 export const USE_PLACEHOLDER_PHOTOS = true;
 
+/** True when ImageSlot will show a review photo for this key (call sites that make null-src
+ *  slots clickable need to know). Remove together with this file before launch. */
+export const hasPlaceholderPhoto = (key?: string): boolean => USE_PLACEHOLDER_PHOTOS && !!key;
+
 export type PlaceholderTag = 'exterior' | 'interior' | 'window' | 'facade' | 'outdoor' | 'hardware';
 
 const p = (n: number) => `/images/_placeholder/p${String(n).padStart(2, '0')}.webp`;

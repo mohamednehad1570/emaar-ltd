@@ -27,9 +27,17 @@ Phosphor Icons. Deployed on Vercel.
 
 ## Routing rules
 - Material pages: `/upvc`, `/aluminum`. Product types: 22 shared static pages at `/products/[slug]` (generateStaticParams from `lib/data/catalog`, `dynamicParams = false`). Type links (material pages, footer, home) come from the catalog selectors — never hand-write type hrefs.
-- No glass or accessories pages — they are sections (later tabs) on the material pages: `/upvc#glass`, `/upvc#accessories` (same ids on `/aluminum`). Projects stay hash anchors (`/projects#residential|#commercial`).
+- No glass or accessories pages — they are Options tabs on the material pages: `/upvc#glass`, `/upvc#accessories` (same hashes on `/aluminum`). Projects stay hash anchors (`/projects#residential|#commercial`).
 - Old routes 308 in next.config.ts: `/products` → `/`, `/products/upvc/*` → `/upvc`, `/products/aluminum/*` → `/aluminum`, `/products/glass/*` → `/upvc#glass`, `/accessories/*` → `/upvc#accessories`. Internal links must never hit these redirects.
 - Type slugs `upvc`, `aluminum`, `glass` are reserved (they'd be shadowed by the redirects) — enforced by `npx tsx scripts/validate-catalog.ts`; run it after any catalog edit.
+
+## Material page (/upvc, /aluminum → components/catalog/material/*)
+- Order: A) MaterialHero (TypeHero language, no legend; ImageSlot `material-{id}` / tag exterior) → B) MaterialTypes ("{Material} products", groups Windows · Doors · Facades · Specialty, empty groups dropped; TypeCard → /products/[slug], same placeholder key as the type hero `{slug}-g0`) → C) MaterialOptions (section `#options`) → D) ProductDetailCTA ("Planning a {material} project?").
+- Props: `materialPageProps(id)` in lib/catalogPageData.ts → `{ view: MaterialPageView }`; the Options cards come from `buildOptionTabs()` in lib/materialOptionsData.ts (sub-tab ids, card lines, Lightbox details, accessory dot hexes). Components never import the catalog. Labels: `MATERIAL_PAGE_COPY` in catalogCopy.
+- Options: LineTabs (WAI-ARIA tabs, manual activation, roving tabindex, ←/→ mirrored in RTL, Home/End; red underline via layoutId spring 500/35; one-line horizontal scroll + end fade <overflow) — main row Colours · Designs · Glass · Accessories, sub row "All" + groups (accessories: only kinds that exist). OptionGrid: AnimatePresence mode="wait", min-height pinned until the last card lands (no layout shift). Hover zooms are Tailwind group-hover (MaterialOptions calls useReducedMotion, same exception as the home grids).
+- Deep links (useOptionsHash): `#colours|#designs|#glass|#accessories` select the tab and scroll to `#options`; tab clicks `history.replaceState` the hash (no history, no scroll). There are NO `#glass` / `#accessories` element ids any more — redirects, nav and footer links rely on the hook.
+- Lightbox API (components/ui/lightboxTypes.ts): `LightboxItem { src, alt, caption?, swatchHex?, details?: { label: Localized; value: string | Localized }[], placeholderKey?, placeholderTag? }`. `swatchHex` renders a flat colour block; `details` adds a panel beside the media (below <768, caption becomes its title); string values render dir=ltr. Options cards open when they have a swatch, a real src, or a placeholder photo (`hasPlaceholderPhoto`).
+- Swatch hexes (colours, performance glass, accessory dots) are the ONLY place blue may appear.
 
 ## Type page (/products/[slug] → components/catalog/type/*)
 - Section order: TypeHero → TypeIntro (how it opens + best for) → TypeHotspots → TypeGallery → TypeConfigurations → CTA band (ProductDetailCTA with headline/productName/quoteHref). Placeholder types: Hero (no description) + "Details coming soon" + CTA only.
@@ -103,9 +111,9 @@ Phosphor Icons. Deployed on Vercel.
 
 ## Placeholder photos (TEMPORARY — must be removed before launch)
 - 32 Unsplash review photos in `public/images/_placeholder/p01–p32.webp` (credits: CREDITS.md there), wired only through `lib/data/placeholderPhotos.ts`. ImageSlot shows one when `src` is null AND `USE_PLACEHOLDER_PHOTOS` AND the call site passes `placeholderKey` (+ optional `placeholderTag`). Catalog data and IMAGES stay null — never write placeholder paths into them.
-- Keys in use: `home-hero-{n}`, `home-product-{key}`, `home-project-{type}`, type hero `{slug}-g0`, gallery `{slug}-g{n}`; Batch 5 material heroes: `material-upvc` / `material-aluminum`. Numbered keys spread within a tag, so siblings don't repeat.
-- Gallery tiles showing a placeholder photo are still placeholders (not clickable, no lightbox).
-- Remove: quick = `USE_PLACEHOLDER_PHOTOS = false`. Full = delete `public/images/_placeholder/` + `lib/data/placeholderPhotos.ts`, the marked TEMPORARY block in `components/ui/ImageSlot.tsx`, and every `placeholderKey` / `placeholderTag` prop (grep `placeholder` in components/).
+- Keys in use: `home-hero-{n}`, `home-product-{key}`, `home-project-{type}`, type hero `{slug}-g0`, gallery `{slug}-g{n}`; material heroes `material-upvc` / `material-aluminum`; Options `{material}-design-{id}`, `glass-{id}`, `acc-{id}`. Numbered keys spread within a tag, so siblings don't repeat.
+- Gallery tiles showing a placeholder photo are still placeholders (not clickable, no lightbox). Options cards are the exception: they open the Lightbox on the placeholder photo (`hasPlaceholderPhoto`).
+- Remove: quick = `USE_PLACEHOLDER_PHOTOS = false`. Full = delete `public/images/_placeholder/` + `lib/data/placeholderPhotos.ts`, the marked TEMPORARY block in `components/ui/ImageSlot.tsx`, and every `placeholderKey` / `placeholderTag` prop (grep `placeholder` in components/ and lib/materialOptionsData.ts), and make `isOpenable` in components/catalog/material/optionLightbox.ts drop `hasPlaceholderPhoto`.
 
 ## Known gotchas
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits

@@ -1,23 +1,75 @@
-/** Serializable view-models the server routes hand to the bare catalog client components. */
+/** Serializable view-models the server routes hand to the catalog client components. */
 
 import type { Hotspot, Localized, MaterialId, MechanismCopy, TypeGroup } from '@/lib/data/catalog';
+import type { PlaceholderTag } from '@/lib/data/placeholderPhotos';
+import type { LightboxDetail } from '@/components/ui/lightboxTypes';
 
-export interface TypeLink {
+/** One card in the material page's type grid. */
+export interface TypeCardView {
   slug: string;
   name: Localized;
+  group: TypeGroup;
+  mechanism?: Localized;
+  tier?: 'flagship' | 'special';
+  heroImage: string | null;
+  // Every material the type is offered in — the card's "Available in" swatches
+  materials: { id: MaterialId; name: Localized }[];
 }
 
-export interface TypeGroupList {
+export interface TypeGroupView {
   id: TypeGroup;
   label: Localized;
-  types: TypeLink[];
+  types: TypeCardView[];
 }
 
-export interface AccessoryRow {
+export type OptionTabId = 'colours' | 'designs' | 'glass' | 'accessories';
+
+export interface OptionSubTab {
   id: string;
+  label: Localized;
+}
+
+export type OptionMedia =
+  | { kind: 'swatch'; hex: string }
+  | { kind: 'image'; src: string | null; ratio: '4/3' | '1/1'; placeholderKey: string; placeholderTag: PlaceholderTag };
+
+/** Accessory finish dot — hex is a display approximation of the printed RAL / colour name. */
+export interface OptionDot {
   name: Localized;
-  brand?: string;
-  codes: string[];
+  ral?: string;
+  hex: string;
+}
+
+/** One Options card; `details` feeds the Lightbox panel. */
+export interface OptionCardView {
+  id: string;
+  // Sub-tab id this card belongs to ('all' is implicit)
+  sub: string;
+  name: Localized;
+  // Muted line under the name: colour, supplier, brand · origin
+  meta?: Localized;
+  // Printed code(s) or spec — always rendered dir=ltr
+  code?: string;
+  dots?: OptionDot[];
+  note?: Localized;
+  media: OptionMedia;
+  details: LightboxDetail[];
+}
+
+export interface OptionTabView {
+  id: OptionTabId;
+  label: Localized;
+  subs: OptionSubTab[];
+  items: OptionCardView[];
+}
+
+export interface MaterialPageView {
+  id: MaterialId;
+  name: Localized;
+  pitch: Localized;
+  heroImage: string | null;
+  groups: TypeGroupView[];
+  tabs: OptionTabView[];
 }
 
 /** One material on a type page — feeds both the hero legend and the configurations list.
