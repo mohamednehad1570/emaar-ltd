@@ -31,6 +31,15 @@ Phosphor Icons. Deployed on Vercel.
 - Old routes 308 in next.config.ts: `/products` → `/`, `/products/upvc/*` → `/upvc`, `/products/aluminum/*` → `/aluminum`, `/products/glass/*` → `/upvc#glass`, `/accessories/*` → `/upvc#accessories`. Internal links must never hit these redirects.
 - Type slugs `upvc`, `aluminum`, `glass` are reserved (they'd be shadowed by the redirects) — enforced by `npx tsx scripts/validate-catalog.ts`; run it after any catalog edit.
 
+## Type page (/products/[slug] → components/catalog/type/*)
+- Section order: TypeHero → TypeIntro (how it opens + best for) → TypeHotspots → TypeSpecs → CTA band (ProductDetailCTA with headline/productName/quoteHref). Placeholder types: Hero (no description) + "Details coming soon" + CTA only.
+- Props are built server-side by `typePageProps()` in lib/catalogPageData.ts — components never import the catalog.
+- Hotspots come from the mechanism (`MECHANISM_HOTSPOTS` in lib/data/catalog/hotspots.ts, via `getHotspots`); a non-empty `ProductType.hotspots` overrides. 'unspecified' = no section. Validator enforces 4 per mechanism, x/y 0–100. Pins are physical % (never mirrored).
+- Hero geometry is FIXED in EN and AR (section dir="ltr"): image physical right 85%, panel straddles its left edge, "Available in" legend always the image's physical bottom-right.
+- Specs come from the catalog only (configurations, profile systems, glass range, uPVC `sizeLimits` — doors use door limits); empty rows are skipped, never filled with "—".
+- Quote buttons link `/contact?product={slug}` — the contact form has no product field yet, so the param is not prefilled.
+- AR numeric ranges inside data strings are wrapped in ⁦…⁩ (LRI/PDI) so RTL never flips them.
+
 ## Code rules
 - Server components by default — use client only for hooks/motion/events
 - TypeScript strict — no any

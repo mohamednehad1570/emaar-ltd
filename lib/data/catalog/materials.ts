@@ -14,6 +14,16 @@ export const MATERIALS: Record<MaterialId, Material> = {
       ar: 'قطاعات ذات هندسة ألمانية توفر الراحة الحرارية والصمت الصوتي والجمال الدائم للمساكن الإماراتية.',
     },
     heroImage: null,
+    // Catalog p.41 — doors use `door`, every other type group uses `window`
+    sizeLimits: {
+      window: { widthMm: [400, 1400], heightMm: [400, 2200] },
+      door: { widthMm: [400, 1000], heightMm: [400, 2200] },
+      note: {
+        en: 'Glass weight 30–50 kg/m² affects max sash area',
+        // \u2066…\u2069 (LRI/PDI) isolate the range so RTL bidi never renders it as "50–30"
+        ar: 'وزن الزجاج \u206630–50\u2069 كغ/م² يؤثر على أقصى مساحة للضلفة',
+      },
+    },
   },
   aluminum: {
     id: 'aluminum',

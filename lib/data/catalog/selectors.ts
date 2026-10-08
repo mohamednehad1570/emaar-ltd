@@ -7,8 +7,8 @@
  */
 
 import type {
-  AccessoryItem, AccessoryKind, Brand, ColourOption, DesignOption, GlassGroup, GlassOption,
-  Localized, Material, MaterialId, ProductType, ProfileSystem, TypeGroup,
+  AccessoryItem, AccessoryKind, Brand, ColourOption, DesignOption, GlassGroup, GlassOption, Hotspot,
+  Localized, Material, MaterialId, MechanismCopy, ProductType, ProfileSystem, TypeGroup,
 } from './types';
 import { MATERIALS } from './materials';
 import { PRODUCT_TYPES } from './productTypes';
@@ -18,6 +18,8 @@ import { ACCESSORIES } from './accessories';
 import { GLASS } from './glass';
 import { COLOURS } from './colours';
 import { DESIGNS } from './designs';
+import { MECHANISM_DIAGRAMS, MECHANISM_HOTSPOTS } from './hotspots';
+import { MECHANISM_COPY } from './mechanisms';
 
 // Dedupe Localized labels by EN text, preserving first-seen order
 function uniqueLabels(labels: Localized[]): Localized[] {
@@ -49,6 +51,15 @@ export const getMaterialsForType = (slug: string): MaterialId[] =>
 // Preserves the caller's id order; unknown ids are dropped (the validator catches them)
 export const getProfileSystems = (ids: string[]): ProfileSystem[] =>
   ids.flatMap((id) => PROFILE_SYSTEMS.find((s) => s.id === id) ?? []);
+
+/** A type's own hotspots win when non-empty; otherwise its mechanism's shared set. */
+export const getHotspots = (type: ProductType): Hotspot[] =>
+  type.hotspots.length > 0 ? type.hotspots : MECHANISM_HOTSPOTS[type.mechanism];
+
+export const getDiagramImage = (type: ProductType): string | null => MECHANISM_DIAGRAMS[type.mechanism];
+
+export const getMechanismCopy = (type: ProductType): MechanismCopy | undefined =>
+  type.mechanism === 'unspecified' ? undefined : MECHANISM_COPY[type.mechanism];
 
 // ── Options ───────────────────────────────────────────────
 export const getAccessories = (material: MaterialId): AccessoryItem[] =>

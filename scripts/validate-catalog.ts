@@ -10,7 +10,7 @@ import { join } from 'node:path';
 import {
   PRODUCT_TYPES, PROFILE_SYSTEMS, BRANDS, ACCESSORIES, GLASS, COLOURS, DESIGNS, MATERIAL_IDS,
   getTypesByMaterial, getAccessories, getAccessoryKinds, getAccessoriesByKind,
-  getColourGroups, getColours, getDesignSubtypes, getDesigns, getGlass,
+  getColourGroups, getColours, MECHANISM_HOTSPOTS, type Mechanism, getDesignSubtypes, getDesigns, getGlass,
 } from '../lib/data/catalog';
 
 const failures: string[] = [];
@@ -39,6 +39,15 @@ for (const t of PRODUCT_TYPES) {
       check(Boolean(sys), `${t.slug}: unknown profile system "${id}"`);
       if (sys) check(sys.material === a.material, `${t.slug}: system ${id} is ${sys.material}, listed under ${a.material}`);
     }
+  }
+}
+
+// ── Hotspots: 4 per mechanism (none for 'unspecified'), positions inside the frame ──
+for (const [mech, points] of Object.entries(MECHANISM_HOTSPOTS) as [Mechanism, typeof MECHANISM_HOTSPOTS[Mechanism]][]) {
+  const expected = mech === 'unspecified' ? 0 : 4;
+  check(points.length === expected, `hotspots ${mech}: expected ${expected}, got ${points.length}`);
+  for (const p of points) {
+    check(p.x >= 0 && p.x <= 100 && p.y >= 0 && p.y <= 100, `hotspots ${mech} #${p.n}: x/y outside 0–100`);
   }
 }
 

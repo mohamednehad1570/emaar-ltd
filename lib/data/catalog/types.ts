@@ -14,11 +14,25 @@ export type Localized = { en: string; ar: string };
 // "aluminum" spelling is canonical everywhere (ids, slugs, labels)
 export type MaterialId = 'upvc' | 'aluminum';
 
+/** Min/max sash dimensions in mm, as printed in the catalog. */
+export interface SashLimits {
+  widthMm: [number, number];
+  heightMm: [number, number];
+}
+
+export interface SizeLimits {
+  window: SashLimits;
+  door: SashLimits;
+  note: Localized;
+}
+
 export interface Material {
   id: MaterialId;
   name: Localized;
   pitch: Localized;
   heroImage: string | null;
+  // Only uPVC prints sash limits (catalog p.41) — aluminum leaves it undefined
+  sizeLimits?: SizeLimits;
 }
 
 export type TypeGroup = 'windows' | 'doors' | 'facades' | 'specialty';
@@ -34,12 +48,19 @@ export interface TypeAvailability {
   glassRangeMm?: [number, number];
 }
 
-/** Numbered callout on a hero image; x/y are % of the image box. */
+/** Numbered callout on a diagram; x/y are % of the image box so they survive a photo swap. */
 export interface Hotspot {
   n: number;
   label: Localized;
+  detail: Localized;
   x: number;
   y: number;
+}
+
+/** "How it opens" copy for every mechanism except 'unspecified'. */
+export interface MechanismCopy {
+  label: Localized;
+  how: Localized;
 }
 
 export interface ProductType {
@@ -52,6 +73,7 @@ export interface ProductType {
   tier?: 'flagship' | 'special';
   subItems?: Localized[];
   heroImage: string | null;
+  // Per-type override — empty = fall back to the mechanism set (getHotspots)
   hotspots: Hotspot[];
   availability: TypeAvailability[];
   placeholder?: true;
@@ -79,59 +101,6 @@ export interface Brand {
   origin: Localized;
 }
 
-export type AccessoryKind =
-  | 'handle' | 'sliding-lock' | 'cylinder' | 'door-lock' | 'hinge'
-  | 'roller' | 'closer-stopper' | 'side-arm' | 'flyscreen';
 
-export interface ColourDot {
-  name: Localized;
-  ral?: string;
-}
-
-export interface AccessoryItem {
-  id: string;
-  kind: AccessoryKind;
-  materials: MaterialId[];
-  brandId?: string;
-  // Used only for unbranded items — branded items take origin from Brand
-  origin?: Localized;
-  name: Localized;
-  code?: string;
-  spec?: string;
-  note?: Localized;
-  colours: ColourDot[];
-  image: string | null;
-}
-
-export type GlassGroup = 'performance' | 'decorative';
-
-export interface GlassOption {
-  id: string;
-  group: GlassGroup;
-  supplier?: string;
-  name: Localized;
-  note: Localized;
-  image: string | null;
-  // Approximate swatch tint — product swatches are the sole exception to the no-blue rule
-  hex?: string;
-}
-
-export interface ColourOption {
-  id: string;
-  material: MaterialId;
-  group: Localized;
-  name: Localized;
-  code: string;
-  hex: string;
-  placeholder?: true;
-}
-
-export interface DesignOption {
-  id: string;
-  material: MaterialId;
-  subtype: Localized;
-  name: Localized;
-  colour: Localized;
-  image: string | null;
-  placeholder?: true;
-}
+// Option types live in their own file (150-line limit) — consumers still import from here
+export type * from './optionTypes';

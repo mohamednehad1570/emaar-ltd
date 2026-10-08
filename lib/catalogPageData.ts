@@ -5,10 +5,13 @@
  */
 
 import {
-  TYPE_GROUPS, getAccessories, getBrand, getDisplayCodes, getGlass, getMaterial,
-  getProfileSystems, getTypesByGroup, type MaterialId, type ProductType,
+  TYPE_GROUPS, getAccessories, getBrand, getDiagramImage, getDisplayCodes, getGlass, getHotspots, getMaterial,
+  getMechanismCopy, getProfileSystems, getTypesByGroup, type MaterialId, type ProductType,
+  type TypeAvailability,
 } from '@/lib/data/catalog';
-import type { AccessoryRow, AvailabilityView, TypeGroupList } from '@/components/catalog/types';
+import type {
+  AccessoryRow, MaterialSpecView, TypeGroupList, TypePageView,
+} from '@/components/catalog/types';
 
 export function materialPageProps(id: MaterialId) {
   const groups: TypeGroupList[] = TYPE_GROUPS
@@ -30,11 +33,38 @@ export function materialPageProps(id: MaterialId) {
   return { material: getMaterial(id), groups, glass: getGlass(), accessories };
 }
 
-export function typeAvailability(type: ProductType): AvailabilityView[] {
-  return type.availability.map((a) => ({
-    material: getMaterial(a.material).name,
+function materialSpec(type: ProductType, a: TypeAvailability): MaterialSpecView {
+  const material = getMaterial(a.material);
+  const limits = material.sizeLimits;
+  return {
+    id: a.material,
+    name: material.name,
     configurations: a.configurations,
-    systems: getProfileSystems(a.profileSystemIds).map((s) => s.name),
+    // Only the fields the card shows — keeps notes/thermal copy out of the client payload
+    systems: getProfileSystems(a.profileSystemIds).map((sys) => ({
+      name: sys.name, frameMm: sys.frameMm, chambers: sys.chambers, ufWm2K: sys.ufWm2K, glassMm: sys.glassMm,
+    })),
     ...(a.glassRangeMm ? { glassRangeMm: a.glassRangeMm } : {}),
-  }));
+    // Catalog p.41: doors take door-sash limits, every other group the window limits
+    ...(limits ? { sashLimits: { ...limits[type.group === 'doors' ? 'door' : 'window'], note: limits.note } } : {}),
+  };
+}
+
+/** Serializable props for components/catalog/type/TypePage — built on the server per slug. */
+export function typePageProps(type: ProductType): TypePageView {
+  const mechanism = getMechanismCopy(type);
+  return {
+    slug: type.slug,
+    name: type.name,
+    description: type.description,
+    ...(type.tier ? { tier: type.tier } : {}),
+    placeholder: type.placeholder === true,
+    heroImage: type.heroImage,
+    groupLabel: TYPE_GROUPS.find((g) => g.id === type.group)?.label ?? { en: '', ar: '' },
+    ...(mechanism ? { mechanism } : {}),
+    bestFor: type.bestFor,
+    hotspots: getHotspots(type),
+    diagramImage: getDiagramImage(type),
+    materials: type.availability.map((a) => materialSpec(type, a)),
+  };
 }

@@ -6,10 +6,17 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import TypePageBare from '@/components/catalog/TypePageBare';
+import TypePage from '@/components/catalog/type/TypePage';
 import { generatePageMetadata } from '@/lib/seo/metadata';
 import { getTypeBySlug, getTypes } from '@/lib/data/catalog';
-import { typeAvailability } from '@/lib/catalogPageData';
+import { typePageProps } from '@/lib/catalogPageData';
+
+// First sentence only, hard-capped at 155 chars (search-snippet length) on a word boundary
+function metaDescription(text: string): string {
+  const first = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
+  if (first.length <= 155) return first;
+  return `${first.slice(0, 154).replace(/\s+\S*$/, '')}…`;
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -28,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return generatePageMetadata({
     title: type.name.en,
     // Placeholder types carry unverified copy — keep it out of search snippets too
-    description: type.placeholder ? `${type.name.en} by Emaar International.` : type.description.en,
+    description: type.placeholder ? `${type.name.en} by Emaar International.` : metaDescription(type.description.en),
     path: `/products/${type.slug}`,
   });
 }
@@ -36,5 +43,5 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function Page({ params }: PageProps) {
   const type = getTypeBySlug((await params).slug);
   if (!type) notFound();
-  return <TypePageBare type={type} availability={typeAvailability(type)} />;
+  return <TypePage view={typePageProps(type)} />;
 }

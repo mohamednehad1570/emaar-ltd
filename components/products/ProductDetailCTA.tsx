@@ -9,10 +9,17 @@ import { cn } from '@/lib/cn';
 import Button from '@/components/ui/Button';
 import Container from '@/components/layout/Container';
 
-export default function ProductDetailCTA() {
+interface ProductDetailCTAProps {
+  // Overrides the generic headline (type pages: "Planning a {type} project?")
+  headline?: string;
+  // Named product → WhatsApp message mentions it; omitted = generic product message
+  productName?: string;
+  quoteHref?: string;
+}
+
+export default function ProductDetailCTA({ headline, productName, quoteHref = '/contact' }: ProductDetailCTAProps = {}) {
   const { language, isRTL } = useLanguage();
-  // Generic product-detail WhatsApp message — no product name in this generic CTA context
-  const wa = getWhatsAppURL({ page: 'product-detail' });
+  const wa = getWhatsAppURL({ page: 'product-detail', productName });
 
   return (
     <section
@@ -30,7 +37,7 @@ export default function ProductDetailCTA() {
 
           {/* H2 headline — 36px desktop / clamps on mobile */}
           <h2 className="font-cairo font-bold text-ink-heading text-3xl md:text-4xl mb-3">
-            {language === 'en' ? 'Have a project in mind?' : 'هل لديك مشروع في الاعتبار؟'}
+            {headline ?? (language === 'en' ? 'Have a project in mind?' : 'هل لديك مشروع في الاعتبار؟')}
           </h2>
 
           {/* Subtitle — no commitment copy reduces friction */}
@@ -46,11 +53,11 @@ export default function ProductDetailCTA() {
             'flex flex-col sm:flex-row items-center justify-center gap-4',
             isRTL && 'sm:flex-row-reverse',
           )}>
-            {/* Primary CTA — links to /contact for quote form */}
+            {/* Primary CTA — quote form on /contact (type pages append ?product=slug) */}
             <Button
               variant="primary"
               size="md"
-              href="/contact"
+              href={quoteHref}
               icon={<ArrowRight className={cn('w-4 h-4', isRTL && 'rotate-180')} />}
             >
               {language === 'en' ? 'Request a Quote' : 'اطلب عرض سعر'}

@@ -86,7 +86,8 @@ export default function HeaderMobileOverlay({ id, nav, waHref, onClose, language
           transition={{ delay: r ? 0 : 0.4, duration: r ? 0 : 0.3 }}
           className="shrink-0 px-5 pt-3 pb-[max(1.5rem,env(safe-area-inset-bottom))] border-t border-border-light bg-off-white"
         >
-          <div className="md:hidden flex justify-center mb-2"><LangToggle /></div>
+          {/* Shown at every overlay width (<1024) — tablets get it too, not just phones */}
+          <div className="flex justify-center mb-2"><LangToggle /></div>
           <div className="flex gap-3">
             {/* px-4 + nowrap: two equal halves must each hold their label on one line at 360px */}
             <Button variant="outline" size="md" href={waHref} target="_blank" rel="noopener noreferrer" className="flex-1 px-4 whitespace-nowrap">
