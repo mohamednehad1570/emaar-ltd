@@ -35,7 +35,7 @@ export default function TypePage({ view }: { view: TypePageView }) {
         <>
           <TypeIntro mechanism={view.mechanism} bestFor={view.bestFor} />
           <TypeHotspots hotspots={view.hotspots} diagramImage={view.diagramImage} typeName={name} />
-          <TypeGallery gallery={view.gallery} name={view.name} />
+          <TypeGallery gallery={view.gallery} name={view.name} slug={view.slug} group={view.group} />
           <TypeConfigurations materials={view.materials} />
         </>
       )}

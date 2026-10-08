@@ -12,6 +12,7 @@
 import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react';
 import ImageSlot from '@/components/ui/ImageSlot';
+import { HOME_PROJECT_TAG } from '@/lib/data/placeholderPhotos';
 import { useTranslation } from '@/contexts/LanguageContext';
 import { HOME_FEATURED_COPY, type FeaturedProject } from '@/lib/data/uiStrings';
 import { cn } from '@/lib/cn';
@@ -52,6 +53,9 @@ export default function FeaturedProjectCard({ project, reduceMotion }: FeaturedP
           ratio="16/9"
           className="rounded-none md:aspect-4/3 lg:aspect-video"
           sizes="(min-width:768px) 50vw, 100vw"
+          // TEMPORARY review photo while the IMAGES slot is null
+          placeholderKey={`home-project-${project.type}`}
+          placeholderTag={HOME_PROJECT_TAG[project.type]}
         />
       </div>
 

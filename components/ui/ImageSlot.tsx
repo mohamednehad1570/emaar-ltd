@@ -9,6 +9,8 @@
 import Image from 'next/image';
 import { Image as ImageIcon } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/cn';
+// TEMPORARY review photos — remove with lib/data/placeholderPhotos.ts before launch
+import { USE_PLACEHOLDER_PHOTOS, placeholderFor, type PlaceholderTag } from '@/lib/data/placeholderPhotos';
 
 type SlotRatio = '4/3' | '16/9' | '1/1' | '4/5' | '21/9';
 
@@ -21,6 +23,9 @@ interface ImageSlotProps {
   sizes?: string;
   // 'contain' letterboxes the whole photo (lightbox); 'cover' crops to fill (everything else)
   fit?: 'cover' | 'contain';
+  // TEMPORARY: stable key (+ optional pool tag) for a review photo while src is null
+  placeholderKey?: string;
+  placeholderTag?: PlaceholderTag;
 }
 
 // Static class map — Tailwind can't detect `aspect-[${ratio}]` built at runtime
@@ -33,7 +38,7 @@ const RATIO_CLASS: Record<SlotRatio, string> = {
 };
 
 export default function ImageSlot({
-  src,
+  src: srcProp,
   alt,
   ratio,
   className,
@@ -41,7 +46,13 @@ export default function ImageSlot({
   // Default fits a 4-col desktop / 2-col mobile grid — the most common card layout
   sizes = '(min-width:1024px) 25vw, 50vw',
   fit = 'cover',
+  placeholderKey,
+  placeholderTag,
 }: ImageSlotProps) {
+  // ── TEMPORARY placeholder photo (remove before launch) ──
+  // A real src always wins; without a key the slot stays the blank cream frame
+  const src = srcProp ?? (USE_PLACEHOLDER_PHOTOS && placeholderKey ? placeholderFor(placeholderKey, placeholderTag) : null);
+
   // Avatars opt into a circle via className; every other slot keeps the 8px card radius
   const isCircle = ratio === '1/1' && (className ?? '').includes('rounded-full');
 

@@ -40,6 +40,7 @@ export function typePageProps(type: ProductType): TypePageView {
     ...(type.tier ? { tier: type.tier } : {}),
     placeholder: type.placeholder === true,
     heroImage: type.heroImage,
+    group: type.group,
     groupLabel: TYPE_GROUPS.find((g) => g.id === type.group)?.label ?? { en: '', ar: '' },
     ...(mechanism ? { mechanism } : {}),
     bestFor: type.bestFor,

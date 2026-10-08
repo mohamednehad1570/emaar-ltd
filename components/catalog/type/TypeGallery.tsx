@@ -15,7 +15,8 @@ import { TYPE_PAGE_COPY as COPY } from '@/lib/data/uiStrings';
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
 import Container from '@/components/layout/Container';
 import Lightbox, { type LightboxItem } from '@/components/ui/Lightbox';
-import type { Localized } from '@/lib/data/catalog';
+import type { Localized, TypeGroup } from '@/lib/data/catalog';
+import { TYPE_GALLERY_TAGS } from '@/lib/data/placeholderPhotos';
 import { galleryRows } from './galleryLayout';
 import GalleryTile from './GalleryTile';
 
@@ -25,9 +26,12 @@ const ROW_COLS = { portrait: 'md:grid-cols-3', wide: 'md:grid-cols-1', landscape
 interface TypeGalleryProps {
   gallery: (string | null)[];
   name: Localized;
+  // slug + group only feed the TEMPORARY placeholder photos (key + tag per tile)
+  slug: string;
+  group: TypeGroup;
 }
 
-export default function TypeGallery({ gallery, name }: TypeGalleryProps) {
+export default function TypeGallery({ gallery, name, slug, group }: TypeGalleryProps) {
   const t = useTranslation();
   const [open, setOpen] = useState<number | null>(null);
   if (gallery.length === 0) return null;
@@ -70,6 +74,8 @@ export default function TypeGallery({ gallery, name }: TypeGalleryProps) {
                     shape={row.shape}
                     openLabel={t(COPY.openImage.en, COPY.openImage.ar)}
                     onOpen={() => setOpen(real.indexOf(i))}
+                    placeholderKey={`${slug}-g${i + 1}`}
+                    placeholderTag={TYPE_GALLERY_TAGS[group][i % 6]}
                   />
                 );
               })}

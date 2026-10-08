@@ -9,6 +9,7 @@
 import { motion } from 'framer-motion';
 import ImageSlot from '@/components/ui/ImageSlot';
 import type { GalleryShape } from './galleryLayout';
+import type { PlaceholderTag } from '@/lib/data/placeholderPhotos';
 
 // Mobile is always 4:3; the shape's ratio applies from md up. Literal strings for Tailwind.
 const SHAPE: Record<GalleryShape, { ratio: '4/5' | '21/9' | '4/3'; cls: string; sizes: string }> = {
@@ -26,11 +27,17 @@ interface GalleryTileProps {
   shape: GalleryShape;
   openLabel: string;
   onOpen: () => void;
+  // TEMPORARY review photo for a null src — the tile still counts as a placeholder (not clickable)
+  placeholderKey?: string;
+  placeholderTag?: PlaceholderTag;
 }
 
-export default function GalleryTile({ src, alt, shape, openLabel, onOpen }: GalleryTileProps) {
+export default function GalleryTile({ src, alt, shape, openLabel, onOpen, placeholderKey, placeholderTag }: GalleryTileProps) {
   const s = SHAPE[shape];
-  const slot = <ImageSlot src={src} alt={alt} ratio={s.ratio} className={`${s.cls} rounded-none`} sizes={s.sizes} />;
+  const slot = (
+    <ImageSlot src={src} alt={alt} ratio={s.ratio} className={`${s.cls} rounded-none`} sizes={s.sizes}
+      placeholderKey={placeholderKey} placeholderTag={placeholderTag} />
+  );
 
   // ── Placeholder — not clickable ─────────────────────────
   if (src === null) {

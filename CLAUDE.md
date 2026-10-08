@@ -101,6 +101,12 @@ Phosphor Icons. Deployed on Vercel.
 - All images go through `components/ui/ImageSlot.tsx`, keyed in `lib/data/images.ts` (catalog images live on the catalog records instead: `heroImage`, `gallery`, `image`). Type galleries: `/images/products/{slug}/gallery-{n}.webp` (n = 1-based position). `null` = blank cream placeholder; real files go in `/public/images/*.webp` and the key's value becomes that path. Never use raw `next/image`/`<img>` or external URLs for content images.
 - A custom CMS will replace these static files after launch.
 
+## Placeholder photos (TEMPORARY — must be removed before launch)
+- 32 Unsplash review photos in `public/images/_placeholder/p01–p32.webp` (credits: CREDITS.md there), wired only through `lib/data/placeholderPhotos.ts`. ImageSlot shows one when `src` is null AND `USE_PLACEHOLDER_PHOTOS` AND the call site passes `placeholderKey` (+ optional `placeholderTag`). Catalog data and IMAGES stay null — never write placeholder paths into them.
+- Keys in use: `home-hero-{n}`, `home-product-{key}`, `home-project-{type}`, type hero `{slug}-g0`, gallery `{slug}-g{n}`; Batch 5 material heroes: `material-upvc` / `material-aluminum`. Numbered keys spread within a tag, so siblings don't repeat.
+- Gallery tiles showing a placeholder photo are still placeholders (not clickable, no lightbox).
+- Remove: quick = `USE_PLACEHOLDER_PHOTOS = false`. Full = delete `public/images/_placeholder/` + `lib/data/placeholderPhotos.ts`, the marked TEMPORARY block in `components/ui/ImageSlot.tsx`, and every `placeholderKey` / `placeholderTag` prop (grep `placeholder` in components/).
+
 ## Known gotchas
 - Tailwind v4 anchor cascade: <Link> inside text-white section inherits
   white text. Fix: style={{ color: 'var(--color-brand-dark)' }} on

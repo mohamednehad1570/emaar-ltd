@@ -26,6 +26,7 @@ import Button from '@/components/ui/Button';
 import { cn } from '@/lib/cn';
 import type { TypePageView } from '../types';
 import TypeLegend from './TypeLegend';
+import { TYPE_HERO_TAG } from '@/lib/data/placeholderPhotos';
 
 // Strong ease-out from lib/motion — entrances feel immediate, then settle
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -58,6 +59,9 @@ export default function TypeHero({ view }: { view: TypePageView }) {
               className="rounded-none aspect-4/3 md:aspect-video"
               priority
               sizes="(min-width:768px) 85vw, 100vw"
+              // TEMPORARY review photo while heroImage is null — slot 0 of the gallery's key spread
+              placeholderKey={`${view.slug}-g0`}
+              placeholderTag={TYPE_HERO_TAG[view.group]}
             />
             {/* ── Scrims (physical, never mirrored) ─────────────── */}
             {/* ≥768: 0.85 held to 30% (under the panel's text column), clear by 55% */}

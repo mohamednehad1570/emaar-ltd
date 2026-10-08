@@ -179,6 +179,9 @@ export default function HeroSection() {
               className="absolute inset-0 h-full w-full aspect-auto rounded-none"
               priority={activeSlide === 0}
               sizes="100vw"
+              // TEMPORARY review photo while IMAGES.home.hero.* is null — numbered key keeps slides distinct
+              placeholderKey={`home-hero-${activeSlide + 1}`}
+              placeholderTag="exterior"
             />
           </motion.div>
         </AnimatePresence>

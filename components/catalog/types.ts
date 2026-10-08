@@ -35,6 +35,7 @@ export interface TypePageView {
   tier?: 'flagship' | 'special';
   placeholder: boolean;
   heroImage: string | null;
+  group: TypeGroup;
   groupLabel: Localized;
   mechanism?: MechanismCopy;
   bestFor: Localized[];

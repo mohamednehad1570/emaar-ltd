@@ -17,6 +17,7 @@
 import Link from 'next/link';
 import { ArrowRight } from '@phosphor-icons/react';
 import ImageSlot from '@/components/ui/ImageSlot';
+import { HOME_PRODUCT_TAG } from '@/lib/data/placeholderPhotos';
 import { useTranslation } from '@/contexts/LanguageContext';
 import type { FeaturedProduct } from '@/lib/data/uiStrings';
 import { cn } from '@/lib/cn';
@@ -62,6 +63,9 @@ export default function FeaturedProductCard({ product, reduceMotion }: FeaturedP
             ratio="4/3"
             className="aspect-square rounded-none md:aspect-4/3"
             sizes="(min-width:1024px) 25vw, 50vw"
+            // TEMPORARY review photo while the IMAGES slot is null
+            placeholderKey={`home-product-${product.key}`}
+            placeholderTag={HOME_PRODUCT_TAG[product.key]}
           />
         </div>
       </div>
