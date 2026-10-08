@@ -48,3 +48,6 @@ screenshots/
 # editor swap files
 *.swp
 *.swo
+
+# competitive audits (local research only)
+audit/
