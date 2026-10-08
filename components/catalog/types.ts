@@ -1,6 +1,6 @@
 /** Serializable view-models the server routes hand to the bare catalog client components. */
 
-import type { Hotspot, Localized, MaterialId, MechanismCopy, SashLimits, TypeGroup } from '@/lib/data/catalog';
+import type { Hotspot, Localized, MaterialId, MechanismCopy, TypeGroup } from '@/lib/data/catalog';
 
 export interface TypeLink {
   slug: string;
@@ -20,24 +20,12 @@ export interface AccessoryRow {
   codes: string[];
 }
 
-/** Profile-system card — every numeric field is optional because the catalog omits many. */
-export interface SystemCardView {
-  name: string;
-  frameMm?: number;
-  chambers?: number;
-  ufWm2K?: number;
-  glassMm?: [number, number];
-}
-
-/** One material column on a type page — legend row + specs column share it. */
-export interface MaterialSpecView {
+/** One material on a type page — feeds both the hero legend and the configurations list.
+ *  Profile systems, glass range and sash limits stay in the catalog for the Technical page. */
+export interface MaterialConfigView {
   id: MaterialId;
   name: Localized;
   configurations: Localized[];
-  systems: SystemCardView[];
-  glassRangeMm?: [number, number];
-  // uPVC only; already resolved to door vs window limits for this type
-  sashLimits?: SashLimits & { note: Localized };
 }
 
 export interface TypePageView {
@@ -52,5 +40,7 @@ export interface TypePageView {
   bestFor: Localized[];
   hotspots: Hotspot[];
   diagramImage: string | null;
-  materials: MaterialSpecView[];
+  // 3–6 entries (null = placeholder); empty for placeholder types
+  gallery: (string | null)[];
+  materials: MaterialConfigView[];
 }

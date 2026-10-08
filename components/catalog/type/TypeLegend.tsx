@@ -2,27 +2,24 @@
 
 /**
  * components/catalog/type/TypeLegend.tsx
- * Static "Available in" plate pinned to the hero image's physical bottom-right corner.
- * Lists only the materials in the type's availability — not interactive.
+ * Static "Available in" list at the hero image's physical bottom-right corner. No plate —
+ * TypeHero puts a radial off-white scrim behind it. Only the type's materials; not interactive.
  */
 
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { CATALOG_PAGE_COPY } from '@/lib/data/uiStrings';
-import type { MaterialSpecView } from '../types';
+import type { MaterialConfigView } from '../types';
 import MaterialSwatch from './MaterialSwatch';
 
-export default function TypeLegend({ materials }: { materials: MaterialSpecView[] }) {
+export default function TypeLegend({ materials }: { materials: MaterialConfigView[] }) {
   const { isRTL } = useLanguage();
   const t = useTranslation();
 
   return (
-    // Plate position is physical (set by the parent); only its text follows the language
-    <div
-      dir={isRTL ? 'rtl' : 'ltr'}
-      data-testid="type-legend"
-      className="bg-white rounded-card shadow-warm-sm px-3 py-2.5 text-start"
-    >
-      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-muted mb-1.5">
+    // Position is physical (set by the parent); only its text follows the language
+    <div dir={isRTL ? 'rtl' : 'ltr'} data-testid="type-legend" className="text-start">
+      {/* ink-body over the scrim — muted grey would drop below 4.5:1 on a photo */}
+      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-body mb-1.5">
         {t(CATALOG_PAGE_COPY.availableIn.en, CATALOG_PAGE_COPY.availableIn.ar)}
       </p>
       <ul className="space-y-1">

@@ -2,7 +2,7 @@
 
 /**
  * components/layout/HeaderDropdown.tsx
- * Compact desktop dropdown (About). Same placement and motion as HeaderMaterialPanel:
+ * Compact desktop dropdown (About — the only header panel):
  * physical-left under the trigger, 2px radius, warm shadow-md, 0.2s fade + 4px.
  */
 

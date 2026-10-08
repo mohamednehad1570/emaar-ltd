@@ -6,7 +6,7 @@
  */
 
 import type { ProductType } from '../types';
-import { UPVC_SLIDING_DOOR_CONFIGS } from './shared';
+import { UPVC_SLIDING_DOOR_CONFIGS, pendingGallery } from './shared';
 
 const BALCONIES = { en: 'Balconies', ar: 'الشرفات' };
 
@@ -19,7 +19,7 @@ export const SLIDING_DOOR_TYPES: ProductType[] = [
       ar: 'تنزلق الأبواب على مسار لتفتح على الشرفات والتراسات دون أن تشغل مساحة من الأرضية.',
     },
     bestFor: [BALCONIES, { en: 'Verandas', ar: 'التراسات' }],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [
       { material: 'upvc', configurations: UPVC_SLIDING_DOOR_CONFIGS, profileSystemIds: [] },
       {
@@ -36,7 +36,7 @@ export const SLIDING_DOOR_TYPES: ProductType[] = [
       ar: 'أبواب منزلقة كبيرة الحجم للفتحات العريضة والبانورامية التي تصل الداخل بالمنظر الخارجي.',
     },
     bestFor: [{ en: 'Wide panoramic openings', ar: 'الفتحات البانورامية العريضة' }],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [
       { material: 'upvc', configurations: UPVC_SLIDING_DOOR_CONFIGS, profileSystemIds: [] },
       { material: 'aluminum', configurations: [], profileSystemIds: ['montana-120'], glassRangeMm: [6, 24] },
@@ -50,7 +50,7 @@ export const SLIDING_DOOR_TYPES: ProductType[] = [
       ar: 'باب منزلق مع لوح ثابت؛ يمكن للضلفة المنزلقة أن تميل للتهوية أو تنزلق للفتح.',
     },
     bestFor: [],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [{ en: '1 sliding + 1 fixed panel', ar: 'لوح منزلق + لوح ثابت' }],
@@ -65,7 +65,7 @@ export const SLIDING_DOOR_TYPES: ProductType[] = [
       ar: 'أبواب قابلة للطي متعددة الألواح تنطوي وتتراص على جانب واحد، لتفتح العرض بالكامل وتربط الداخل بالخارج.',
     },
     bestFor: [{ en: 'Indoor-outdoor living', ar: 'الربط بين الداخل والخارج' }],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [{ en: 'Multi-panel bi-fold', ar: 'طي ثنائي متعدد الألواح' }],
@@ -80,7 +80,7 @@ export const SLIDING_DOOR_TYPES: ProductType[] = [
       ar: 'يتيح نظام الرفع والإزاحة Hebeschiebe لألواح الزجاج الكبيرة الممتدة من الأرض إلى السقف أن تنزلق بسهولة تامة بدوران مقبض واحد. إنه الخيار المفضل لغرف المعيشة والتراسات الفاخرة حيث يجب أن تختفي الحدود بين الداخل والخارج كلياً.',
     },
     bestFor: [{ en: 'Floor-to-ceiling openings', ar: 'الفتحات من الأرض إلى السقف' }],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [

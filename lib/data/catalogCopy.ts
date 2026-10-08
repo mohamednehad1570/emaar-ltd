@@ -29,19 +29,14 @@ export const TYPE_PAGE_COPY = {
   bestFor:       { en: 'Best for', ar: 'مثالي لـ' },
   features:      { en: 'Key features', ar: 'أبرز المزايا' },
   diagramAlt:    { en: 'Feature diagram', ar: 'مخطط المزايا' },
-  specs:         { en: 'Specifications', ar: 'المواصفات' },
-  glassRange:    { en: 'Glass thickness range', ar: 'نطاق سماكة الزجاج' },
-  sashLimits:    { en: 'Sash size limits', ar: 'حدود مقاس الضلفة' },
-  width:         { en: 'Width', ar: 'العرض' },
-  height:        { en: 'Height', ar: 'الارتفاع' },
-  frame:         { en: 'Frame', ar: 'الإطار' },
-  chambers:      { en: 'Chambers', ar: 'الحجرات' },
-  glass:         { en: 'Glass', ar: 'الزجاج' },
-  onRequest:     { en: 'Details on request.', ar: 'التفاصيل عند الطلب.' },
-  footnote: {
-    en: 'Specifications per Emaar catalog. Final sizes confirmed after site measurement.',
-    ar: 'المواصفات وفق كتالوج إعمار. تُؤكَّد المقاسات النهائية بعد القياس في الموقع.',
-  },
+  // {name} is replaced with the type name in the active language
+  galleryTitle:  { en: 'Examples of {name}', ar: 'أمثلة على {name}' },
+  example:       { en: 'example', ar: 'مثال' },
+  openImage:     { en: 'Open image', ar: 'فتح الصورة' },
+  configsTitle:  { en: 'Available configurations', ar: 'التكوينات المتاحة' },
+  customSizes:   { en: 'Custom sizes on request', ar: 'مقاسات حسب الطلب' },
+  // Arrow is an icon (flips in RTL), so the label carries no arrow glyph
+  techLink:      { en: 'Technical specifications', ar: 'المواصفات الفنية' },
   ctaEyebrow:    { en: 'Get Started', ar: 'ابدأ الآن' },
   // {name} is replaced with the type name in the active language
   ctaHeadline:   { en: 'Planning a {name} project?', ar: 'تخطط لمشروع {name}؟' },

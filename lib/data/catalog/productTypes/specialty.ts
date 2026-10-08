@@ -6,6 +6,7 @@
  */
 
 import type { Localized, ProductType, TypeAvailability } from '../types';
+import { pendingGallery } from './shared';
 
 // Catalog lists no configurations or systems for any specialty item
 const ALU_ONLY: TypeAvailability[] = [{ material: 'aluminum', configurations: [], profileSystemIds: [] }];
@@ -14,7 +15,7 @@ function specialty(slug: string, name: Localized, description: Localized, subIte
   return {
     slug, group: 'specialty', mechanism: 'fixed', name, description, bestFor: [],
     ...(subItems ? { subItems } : {}),
-    heroImage: null, hotspots: [], availability: ALU_ONLY,
+    heroImage: null, hotspots: [], gallery: pendingGallery(), availability: ALU_ONLY,
   };
 }
 

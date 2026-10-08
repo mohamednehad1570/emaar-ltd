@@ -4,8 +4,9 @@
  * Single source of truth for site navigation.
  *
  *   NAV           — header items in their FIXED physical order (identical in EN and AR):
- *                   uPVC▾ · Aluminum▾ · Projects · Technical · About▾ · Contact
- *   HeaderNavData — the catalog-derived material menus; built server-side by
+ *                   uPVC · Aluminum · Projects · Technical · About▾ · Contact
+ *                   (materials are plain links to /upvc and /aluminum — no panels)
+ *   HeaderNavData — catalog-derived labels + active-state lookups; built server-side by
  *                   lib/data/headerNav.ts and passed down as props, so the client
  *                   bundle never ships the full catalog.
  *   PRODUCT_LINKS — footer "Products" column.
@@ -32,27 +33,17 @@ export type NavEntry =
   | { kind: 'link'; key: string; label: Localized; href: string }
   | { kind: 'dropdown'; key: string; label: Localized; items: NavLink[] }
 
-export interface NavTypeLink {
-  slug: string
-  name: Localized
-}
-
-export interface NavTypeGroup {
-  id: string
-  label: Localized
-  types: NavTypeLink[]
-}
-
 export interface NavMaterial {
   id: MaterialId
   label: Localized
-  groups: NavTypeGroup[]
 }
 
 export interface HeaderNavData {
   materials: NavMaterial[]
   /** slug → materials offering it; drives the active underline on /products/[slug] */
   typeMaterials: Record<string, MaterialId[]>
+  /** slug → English type name; names the product in WhatsApp messages */
+  typeNames: Record<string, string>
 }
 
 // ─── Primary navigation ────────────────────────────────────────────────────────
@@ -75,15 +66,6 @@ export const NAV: NavEntry[] = [
   { kind: 'link',     key: 'contact',   label: { en: 'Contact',   ar: 'اتصل بنا'  }, href: '/contact'   },
 ]
 
-/** Footer row of a material panel: landing page, glass and accessories sections */
-export function materialOptionLinks(m: NavMaterial): NavLink[] {
-  return [
-    { en: `All ${m.label.en} products`, ar: `كل منتجات ${m.label.ar}`, href: `/${m.id}` },
-    { en: 'Glass options', ar: 'خيارات الزجاج', href: `/${m.id}#glass` },
-    { en: 'Accessories', ar: 'الإكسسوارات', href: `/${m.id}#accessories` },
-  ]
-}
-
 export const PRODUCT_LINKS: NavLink[] = [
   { en: 'uPVC Systems',     ar: 'أنظمة uPVC',      href: '/upvc'             },
   { en: 'Aluminum Systems', ar: 'أنظمة الألمنيوم', href: '/aluminum'         },
@@ -94,11 +76,7 @@ export const PRODUCT_LINKS: NavLink[] = [
 /** English type name for a /products/[slug] path — names the product in WhatsApp messages */
 export function typeNameForPath(nav: HeaderNavData, pathname: string): string | undefined {
   const slug = pathname.startsWith('/products/') ? pathname.slice('/products/'.length) : ''
-  for (const m of nav.materials) for (const g of m.groups) {
-    const t = g.types.find(x => x.slug === slug)
-    if (t) return t.name.en
-  }
-  return undefined
+  return nav.typeNames[slug]
 }
 
 // ─── Active state ─────────────────────────────────────────────────────────────
@@ -123,11 +101,18 @@ export function describeEntry(entry: NavEntry, nav: HeaderNavData, pathname: str
   if (entry.kind === 'material') {
     const material = nav.materials.find(m => m.id === entry.id)
     return {
-      key: entry.id, material,
+      key: entry.id,
+      href: `/${entry.id}`,
       label: material?.label ?? { en: entry.id, ar: entry.id },
       active: isMaterialActive(pathname, entry.id, nav),
     }
   }
   const hrefs = entry.kind === 'link' ? [entry.href] : entry.items.map(i => i.href)
-  return { key: entry.key, label: entry.label, material: undefined, active: isPathActive(pathname, hrefs) }
+  return {
+    key: entry.key,
+    // Dropdowns (About) have no page of their own — only plain entries carry an href
+    href: entry.kind === 'link' ? entry.href : undefined,
+    label: entry.label,
+    active: isPathActive(pathname, hrefs),
+  }
 }

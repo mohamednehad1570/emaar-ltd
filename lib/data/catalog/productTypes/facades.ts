@@ -6,6 +6,7 @@
  */
 
 import type { ProductType } from '../types';
+import { pendingGallery } from './shared';
 
 export const FACADE_TYPES: ProductType[] = [
   {
@@ -16,7 +17,7 @@ export const FACADE_TYPES: ProductType[] = [
       ar: 'واجهة زجاجية غير حاملة للأحمال تُعلَّق على هيكل المبنى، وتكسو الأبراج والمباني التجارية بالزجاج.',
     },
     bestFor: [{ en: 'Towers', ar: 'الأبراج' }, { en: 'Commercial buildings', ar: 'المباني التجارية' }],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [
       { material: 'upvc', configurations: [], profileSystemIds: [] },
       {
@@ -38,7 +39,7 @@ export const FACADE_TYPES: ProductType[] = [
       ar: 'تُعدّ ألواح الألومنيوم المركبة (ACP) مادة الكسوة السائدة على واجهات الأبراج التجارية والسكنية في الإمارات. تورّد إعمار أنظمة كسوة ACP متكاملة وتتولى تركيبها.',
     },
     bestFor: [],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{ material: 'aluminum', configurations: [], profileSystemIds: [] }],
   },
 ];

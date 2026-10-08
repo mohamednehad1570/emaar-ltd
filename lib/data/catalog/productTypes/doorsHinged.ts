@@ -7,7 +7,7 @@
 
 import type { ProductType } from '../types';
 import {
-  UPVC_CASEMENT_SYSTEMS, UPVC_CASEMENT_GLASS, ALU_HINGED_SYSTEMS, ALU_HINGED_GLASS, SOUND_THERMAL,
+  UPVC_CASEMENT_SYSTEMS, UPVC_CASEMENT_GLASS, ALU_HINGED_SYSTEMS, ALU_HINGED_GLASS, SOUND_THERMAL, pendingGallery,
 } from './shared';
 
 export const HINGED_DOOR_TYPES: ProductType[] = [
@@ -19,7 +19,7 @@ export const HINGED_DOOR_TYPES: ProductType[] = [
       ar: 'أبواب مفصلية أحادية الضلفة مبنية على قطاعات uPVC متعددة الحجرات للعزل الصوتي والحراري.',
     },
     bestFor: [SOUND_THERMAL],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [{ en: 'Single sash', ar: 'ضلفة واحدة' }],
@@ -34,7 +34,7 @@ export const HINGED_DOOR_TYPES: ProductType[] = [
       ar: 'أبواب ألمنيوم مفصلية مبنية على أنظمة قطاعات بعازل حراري وقطاعات مفصلية 45 مم.',
     },
     bestFor: [],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'aluminum', configurations: [],
       profileSystemIds: ALU_HINGED_SYSTEMS, glassRangeMm: ALU_HINGED_GLASS,
@@ -48,7 +48,7 @@ export const HINGED_DOOR_TYPES: ProductType[] = [
       ar: 'أبواب ألمنيوم تتأرجح في الاتجاهين، متوفرة بضلفة واحدة أو ضلفتين.',
     },
     bestFor: [],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'aluminum',
       configurations: [{ en: 'Single swing', ar: 'تأرجح مفرد' }, { en: 'Double swing', ar: 'تأرجح مزدوج' }],
@@ -66,7 +66,7 @@ export const HINGED_DOOR_TYPES: ProductType[] = [
       { en: 'Villa entrances', ar: 'مداخل الفلل' },
       { en: 'Traditional and luxury designs', ar: 'التصاميم التقليدية والفاخرة' },
     ],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [{ en: 'Single sash + fixed arch top', ar: 'ضلفة واحدة + قوس علوي ثابت' }],
@@ -82,7 +82,7 @@ export const HINGED_DOOR_TYPES: ProductType[] = [
       ar: 'تخلق أنظمة الأبواب الزجاجية بلا إطار وهم جدار زجاجي يفتح. معلقة على مسارات فولاذية مخفية مع محاور نابض أرضية، يمكن لألواح الزجاج المقسّى أن تتأرجح أو تنزلق أو تطوى عبر فتحات واسعة.',
     },
     bestFor: [],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: [],
     availability: [{ material: 'aluminum', configurations: [], profileSystemIds: [] }],
   },
 ];

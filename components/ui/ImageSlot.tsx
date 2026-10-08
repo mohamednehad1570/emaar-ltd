@@ -10,7 +10,7 @@ import Image from 'next/image';
 import { Image as ImageIcon } from '@phosphor-icons/react/dist/ssr';
 import { cn } from '@/lib/cn';
 
-type SlotRatio = '4/3' | '16/9' | '1/1';
+type SlotRatio = '4/3' | '16/9' | '1/1' | '4/5' | '21/9';
 
 interface ImageSlotProps {
   src: string | null;
@@ -19,6 +19,8 @@ interface ImageSlotProps {
   className?: string;
   priority?: boolean;
   sizes?: string;
+  // 'contain' letterboxes the whole photo (lightbox); 'cover' crops to fill (everything else)
+  fit?: 'cover' | 'contain';
 }
 
 // Static class map — Tailwind can't detect `aspect-[${ratio}]` built at runtime
@@ -26,6 +28,8 @@ const RATIO_CLASS: Record<SlotRatio, string> = {
   '4/3': 'aspect-4/3',
   '16/9': 'aspect-video',
   '1/1': 'aspect-square',
+  '4/5': 'aspect-4/5',   // gallery portraits
+  '21/9': 'aspect-21/9', // gallery wide row
 };
 
 export default function ImageSlot({
@@ -36,6 +40,7 @@ export default function ImageSlot({
   priority = false,
   // Default fits a 4-col desktop / 2-col mobile grid — the most common card layout
   sizes = '(min-width:1024px) 25vw, 50vw',
+  fit = 'cover',
 }: ImageSlotProps) {
   // Avatars opt into a circle via className; every other slot keeps the 8px card radius
   const isCircle = ratio === '1/1' && (className ?? '').includes('rounded-full');
@@ -60,7 +65,7 @@ export default function ImageSlot({
   // ── Real photo ──────────────────────────────────────────
   return (
     <div className={frame}>
-      <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className="object-cover" />
+      <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={fit === 'contain' ? 'object-contain' : 'object-cover'} />
     </div>
   );
 }

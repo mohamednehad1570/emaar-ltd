@@ -2,9 +2,9 @@
 
 /**
  * components/catalog/type/TypePage.tsx
- * Product-type page shell: Hero → Intro → Hotspots → Specs → CTA band.
- * Placeholder types render Hero, a "coming soon" line and the CTA only, so no
- * unverified catalog copy reaches visitors.
+ * Product-type page shell: Hero → Intro → Hotspots → Gallery → Configurations → CTA band.
+ * Placeholder types render Hero, a "coming soon" line and the CTA only (no gallery),
+ * so no unverified catalog copy reaches visitors.
  */
 
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
@@ -15,7 +15,8 @@ import type { TypePageView } from '../types';
 import TypeHero from './TypeHero';
 import TypeIntro from './TypeIntro';
 import TypeHotspots from './TypeHotspots';
-import TypeSpecs from './TypeSpecs';
+import TypeGallery from './TypeGallery';
+import TypeConfigurations from './TypeConfigurations';
 
 export default function TypePage({ view }: { view: TypePageView }) {
   const { language } = useLanguage();
@@ -34,7 +35,8 @@ export default function TypePage({ view }: { view: TypePageView }) {
         <>
           <TypeIntro mechanism={view.mechanism} bestFor={view.bestFor} />
           <TypeHotspots hotspots={view.hotspots} diagramImage={view.diagramImage} typeName={name} />
-          <TypeSpecs materials={view.materials} />
+          <TypeGallery gallery={view.gallery} name={view.name} />
+          <TypeConfigurations materials={view.materials} />
         </>
       )}
 

@@ -28,3 +28,5 @@ export { FEATURED_PRODUCTS, FEATURED_PROJECTS, HOME_FEATURED_COPY } from './home
 export type { FeaturedProduct, FeaturedProject } from './homeFeatured';
 
 export { CATALOG_PAGE_COPY, TYPE_PAGE_COPY } from './catalogCopy';
+
+export { LIGHTBOX_COPY } from './lightboxCopy';

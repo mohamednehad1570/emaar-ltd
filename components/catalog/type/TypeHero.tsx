@@ -4,11 +4,13 @@
  * components/catalog/type/TypeHero.tsx
  *
  * Product-type hero. Physical layout is FIXED in EN and AR (the section is dir=ltr):
- *  • ≥768 — 16:9 image at 85% width on the physical right; frosted text panel straddles
- *    the image's left edge (~25% outside, ~75% over it), vertically centred.
- *  • <768 — full-bleed 4:3 image; panel overlaps its lower edge (~40% on the image).
- *  • Legend plate — always the image's physical bottom-right corner.
- * Only the panel/legend text follows the language (dir + text-start).
+ *  • ≥768 — 16:9 image at 85% width on the physical right; a TRANSPARENT text panel
+ *    straddles the image's left edge (~25% outside, ~75% over it), vertically centred.
+ *    Readability comes from a warm off-white scrim on the image's physical left side.
+ *  • <768 — full-bleed 4:3 image; panel overlaps its lower edge, scrim rises from the bottom.
+ *  • Legend — no plate; sits on a radial corner scrim at the image's physical bottom-right.
+ * Only the panel/legend text follows the language (dir + text-start). Scrims use the
+ * off-white token (245,244,240) — never black — so they read as light, not shadow.
  *
  * Entrance: image fade 0.5s; panel fade + 16px rise 0.5s after 0.1s. MotionConfig
  * (reducedMotion="user") strips the rise so reduced motion gets opacity only.
@@ -57,10 +59,20 @@ export default function TypeHero({ view }: { view: TypePageView }) {
               priority
               sizes="(min-width:768px) 85vw, 100vw"
             />
-            {/* ── Legend ────────────────────────────────────── */}
-            {/* <768 the panel covers the bottom 96px (-mt-24), so the plate lifts to 96+16px
-                to stay in the visible bottom-right corner */}
-            <div className="absolute right-4 bottom-28 md:bottom-4">
+            {/* ── Scrims (physical, never mirrored) ─────────────── */}
+            {/* ≥768: 0.85 held to 30% (under the panel's text column), clear by 55% */}
+            <div aria-hidden="true" className="hidden md:block absolute inset-0 bg-linear-to-r from-off-white/85 from-30% to-transparent to-55%" />
+            {/* <768: same strength rising from the bottom edge the panel overlaps */}
+            <div aria-hidden="true" className="md:hidden absolute inset-0 bg-linear-to-t from-off-white/85 from-30% to-transparent to-65%" />
+
+            {/* ── Legend on a 280×180 radial corner scrim ──────── */}
+            {/* Ellipse radii = box size so it fades to 0 at the box edges (no hard seams);
+                280×180 (brief: ~220×140) because the legend text reaches ~80% of a 220×140
+                ellipse, where the scrim fell to 2.6:1 over a dark photo; 0.8 held to 60% */}
+            {/* <768 the panel text covers the bottom 96px (-mt-24), so the legend lifts 96px (pb-28)
+                but the box still reaches the image bottom and the ellipse is centred 96px up —
+                it fades on downward instead of ending in a seam over the bottom scrim */}
+            <div className="absolute right-0 bottom-0 w-[280px] h-[276px] md:h-[180px] flex items-end justify-end p-4 pb-28 md:pb-4 bg-radial-[280px_180px_at_100%_calc(100%_-_96px)] md:bg-radial-[280px_180px_at_100%_100%] from-off-white/80 from-60% to-transparent to-100%">
               <TypeLegend materials={view.materials} />
             </div>
           </motion.div>
@@ -73,16 +85,19 @@ export default function TypeHero({ view }: { view: TypePageView }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1, ease: EASE }}
               dir={isRTL ? 'rtl' : 'ltr'}
-              className="w-full bg-white/75 backdrop-blur-md border border-border-light shadow-warm-sm rounded-card p-6 lg:p-8 text-start"
+              // No plate (bg/border/shadow/blur) — the image scrim carries readability
+              className="w-full p-6 lg:p-8 text-start"
             >
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-muted mb-3">{eyebrow}</p>
+              {/* ink-body, not muted: the eyebrow sits on a photo now and needs 4.5:1 */}
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-body mb-3">{eyebrow}</p>
 
               {view.tier && (
                 <span
                   className={cn(
                     'inline-block mb-3 px-2 py-0.5 border text-[11px] font-semibold uppercase tracking-[0.22em]',
-                    // Gold is reserved for distinction — flagship only; "special" stays neutral
-                    view.tier === 'flagship' ? 'border-gold text-gold' : 'border-border-medium text-ink-body',
+                    // Gold is reserved for distinction — flagship only; "special" stays neutral.
+                    // Gold FILL + ink text: gold text on a light scrim measured 2.1:1 (fails 4.5:1)
+                    view.tier === 'flagship' ? 'bg-gold border-gold text-ink-heading' : 'border-border-medium text-ink-body',
                   )}
                 >
                   {view.tier === 'flagship' ? t(COPY.flagship.en, COPY.flagship.ar) : t(COPY.special.en, COPY.special.ar)}

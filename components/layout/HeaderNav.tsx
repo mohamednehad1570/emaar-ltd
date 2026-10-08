@@ -6,8 +6,10 @@
  * Desktop nav (≥1024px; below that the burger overlay takes over).
  * Order is FIXED physically — uPVC · Aluminum · Projects · Technical · About · Contact
  * left→right in both languages; only labels translate (see NavLabel).
+ * uPVC / Aluminum are plain links (no chevron, no panel); their underline stays lit on
+ * the material page and on any /products/[slug] that material offers.
  *
- * Panels open on hover (with intent delays, useHoverIntent) and on click — a
+ * Only About has a panel. It opens on hover (with intent delays, useHoverIntent) and on click — a
  * <button> trigger, so Enter/Space work natively. ArrowDown opens and focuses the
  * first link. Close: Esc (focus returns to trigger), outside pointerdown, route change.
  */
@@ -21,7 +23,6 @@ import { NAV, describeEntry, type HeaderNavData } from '@/lib/data/nav';
 import { useHoverIntent } from '@/lib/hooks/useHoverIntent';
 import { cn } from '@/lib/cn';
 import NavLabel from './NavLabel';
-import HeaderMaterialPanel from './HeaderMaterialPanel';
 import HeaderDropdown from './HeaderDropdown';
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
@@ -78,10 +79,10 @@ export default function HeaderNav({ nav, language, onDark }: HeaderNavProps) {
       className="hidden lg:flex items-center justify-center h-full">
       <div className="flex items-center h-full gap-5 xl:gap-8">
         {NAV.map(entry => {
-          const { key, label, material, active } = describeEntry(entry, nav, pathname);
+          const { key, href, label, active } = describeEntry(entry, nav, pathname);
           const panelId = `nav-panel-${key}`;
           const isOpen = openKey === key;
-          const hasPanel = entry.kind !== 'link';
+          const hasPanel = entry.kind === 'dropdown';
           const tone = onDark
             ? 'text-white hover:text-white'
             : active || isOpen ? 'text-ink-heading' : 'text-ink-body hover:text-ink-heading';
@@ -95,9 +96,10 @@ export default function HeaderNav({ nav, language, onDark }: HeaderNavProps) {
               onPointerEnter={() => (hasPanel ? enter(key) : close())}
               onPointerLeave={hasPanel ? leave : undefined}
             >
-              {/* ── Trigger — button for panels, Link for plain items ── */}
-              {entry.kind === 'link' ? (
-                <Link href={entry.href} aria-current={active ? 'page' : undefined} className={cls}>
+              {/* ── Trigger — button for the About panel, Link for everything else ── */}
+              {href ? (
+                // aria-current only on the exact page — a type page is "inside" uPVC, not uPVC itself
+                <Link href={href} aria-current={pathname === href ? 'page' : undefined} className={cls}>
                   <NavLabel label={label} language={language} />
                 </Link>
               ) : (
@@ -124,10 +126,6 @@ export default function HeaderNav({ nav, language, onDark }: HeaderNavProps) {
 
               {/* ── Panels ── */}
               <AnimatePresence>
-                {isOpen && material && (
-                  <HeaderMaterialPanel key={key} id={panelId} material={material} language={language}
-                    onEnter={hold} onLeave={leave} onNavigate={close} />
-                )}
                 {isOpen && entry.kind === 'dropdown' && (
                   <HeaderDropdown key={key} id={panelId} items={entry.items} language={language}
                     onEnter={hold} onLeave={leave} onNavigate={close} />

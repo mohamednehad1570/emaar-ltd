@@ -14,31 +14,32 @@ Phosphor Icons. Deployed on Vercel.
 - PRODUCT.md — brand personality, audience, voice, anti-references
 
 ## Header (components/Header.tsx + components/layout/Header*, LogoPlate, StickyQuoteBar)
-- Physical layout is FIXED in EN and AR — never mirror it: `[LogoPlate] … uPVC▾ · Aluminum▾ · Projects · Technical · About▾ · Contact … EN|ع · WhatsApp · [Request Quote]`. The bar row is dir="ltr"; each label (NavLabel) and dropdown panel sets its own dir. No Home tab, no mega-menu, no wordmark beside the logo.
-- Nav data: `NAV` in lib/data/nav.ts (order + labels). Material dropdowns are catalog-driven: app/layout.tsx calls `buildHeaderNav()` (lib/data/headerNav.ts) on the server and passes plain `HeaderNavData` to Header / StickyQuoteBar — never import lib/data/catalog into client chrome (it would ship the whole catalog).
-- ≥1024: HeaderNav with HeaderMaterialPanel (columns Windows · Doors · Facades · Specialty, only non-empty; footer row all products · #glass · #accessories) and HeaderDropdown (About). Hover-intent + click/Enter/Space; Esc / outside click / route change close. Active underline: material landing page or any /products/[slug] that material offers (both underline for shared types). 1024–1279: WhatsApp is icon-only.
-- <1024: logo · [768–1023: EN|ع + WhatsApp icon] · burger → HeaderMobileOverlay + MobileDrillNav (drillPanels.ts, fed by HeaderNavData).
+- Physical layout is FIXED in EN and AR — never mirror it: `[LogoPlate] … uPVC · Aluminum · Projects · Technical · About▾ · Contact … EN|ع · WhatsApp · [Request Quote]`. The bar row is dir="ltr"; each label (NavLabel) and the About panel set their own dir. No Home tab, no mega-menu, no material dropdowns, no wordmark beside the logo.
+- Nav data: `NAV` in lib/data/nav.ts (order + labels). app/layout.tsx calls `buildHeaderNav()` (lib/data/headerNav.ts) on the server and passes plain `HeaderNavData` (material labels, slug → materials for the active underline, slug → EN name for WhatsApp) to Header / StickyQuoteBar — never import lib/data/catalog into client chrome (it would ship the whole catalog).
+- ≥1024: HeaderNav. uPVC → /upvc and Aluminum → /aluminum are plain links (no chevron, no panel). Only About has a panel (HeaderDropdown): hover-intent + click/Enter/Space; Esc / outside click / route change close. Active underline (red): material landing page or any /products/[slug] that material offers (both underline for shared types). 1024–1279: WhatsApp is icon-only.
+- <1024: logo · [768–1023: EN|ع + WhatsApp icon] · burger → HeaderMobileOverlay + MobileDrillNav (drillPanels.ts). uPVC / Aluminum are plain rows (active by the same material rule); only About drills. The overlay shows EN|ع at every width <1024.
 - Bar: 72px at every breakpoint and scroll state (`--header-h`). Rest = white + 0.5px border-light; homepage = transparent over the hero (white labels, `onDark`); after 48px scroll (back below 16px) = frosted white/80 + silver border.
-- LogoPlate: white circle + border-light + shadow-warm-md, top 8px into the bar. Rest 72 / 88 / 96 / 112px (<768 / md / lg / xl), scrolled 56px (Framer scale, fully inside the bar). `--logo-overhang` (8 / 24 / 32 / 48px) on :root — anything sitting at the top of a page under the header must pad `calc(var(--header-h) + var(--logo-overhang))` (PageHeader and the homepage hero already do).
+- LogoPlate: white circle + border-light + shadow-warm-md, top 8px into the bar. STATIC 72 / 88 / 96 / 112px (<768 / md / lg / xl) at every scroll position — no shrink, no animation (only the bar turns frosted on scroll). `--logo-overhang` (8 / 24 / 32 / 48px) on :root — anything sitting at the top of a page under the header must pad `calc(var(--header-h) + var(--logo-overhang))` (PageHeader and the homepage hero already do).
 - Use `top-(--header-h)` / `pt-(--header-h)` for things under the bar — never hard-code 72. html has scroll-padding-top: calc(var(--header-h) + 16px).
 - StickyQuoteBar (<1024 only, mounted once in layout): appears past 60% of the first viewport, hidden while the overlay is open (`useMobileNavOpen`). Footer reserves `--quote-bar-h` + safe-area at its end.
 - EmaarLogo (mark + name) is footer-only. Name: EN "Emaar International Industry" (≥768) / "Emaar Int. Ind." (<768), AR "إعمار الدولية للصناعة". "L.L.C." / "ذ.م.م" appear ONLY in the footer copyright line.
 - Page titles: `generatePageMetadata` returns the bare title; the brand suffix comes only from app/layout.tsx's `title.template` (the home page sets an absolute title because the template doesn't apply to its own segment).
 
 ## Routing rules
-- Material pages: `/upvc`, `/aluminum`. Product types: 22 shared static pages at `/products/[slug]` (generateStaticParams from `lib/data/catalog`, `dynamicParams = false`). Header/mobile type links are derived from the catalog via `buildHeaderNav()` — never hand-write type hrefs.
+- Material pages: `/upvc`, `/aluminum`. Product types: 22 shared static pages at `/products/[slug]` (generateStaticParams from `lib/data/catalog`, `dynamicParams = false`). Type links (material pages, footer, home) come from the catalog selectors — never hand-write type hrefs.
 - No glass or accessories pages — they are sections (later tabs) on the material pages: `/upvc#glass`, `/upvc#accessories` (same ids on `/aluminum`). Projects stay hash anchors (`/projects#residential|#commercial`).
 - Old routes 308 in next.config.ts: `/products` → `/`, `/products/upvc/*` → `/upvc`, `/products/aluminum/*` → `/aluminum`, `/products/glass/*` → `/upvc#glass`, `/accessories/*` → `/upvc#accessories`. Internal links must never hit these redirects.
 - Type slugs `upvc`, `aluminum`, `glass` are reserved (they'd be shadowed by the redirects) — enforced by `npx tsx scripts/validate-catalog.ts`; run it after any catalog edit.
 
 ## Type page (/products/[slug] → components/catalog/type/*)
-- Section order: TypeHero → TypeIntro (how it opens + best for) → TypeHotspots → TypeSpecs → CTA band (ProductDetailCTA with headline/productName/quoteHref). Placeholder types: Hero (no description) + "Details coming soon" + CTA only.
+- Section order: TypeHero → TypeIntro (how it opens + best for) → TypeHotspots → TypeGallery → TypeConfigurations → CTA band (ProductDetailCTA with headline/productName/quoteHref). Placeholder types: Hero (no description) + "Details coming soon" + CTA only.
 - Props are built server-side by `typePageProps()` in lib/catalogPageData.ts — components never import the catalog.
+- Hero geometry is FIXED in EN and AR (section dir="ltr"): image physical right 85%, transparent text panel (no plate) straddles its left edge, "Available in" legend (no plate) always the image's physical bottom-right. Readability = off-white scrims on the image (left gradient ≥768, bottom gradient <768, radial corner behind the legend) — warm rgba(245,244,240,x) only.
 - Hotspots come from the mechanism (`MECHANISM_HOTSPOTS` in lib/data/catalog/hotspots.ts, via `getHotspots`); a non-empty `ProductType.hotspots` overrides. 'unspecified' = no section. Validator enforces 4 per mechanism, x/y 0–100. Pins are physical % (never mirrored).
-- Hero geometry is FIXED in EN and AR (section dir="ltr"): image physical right 85%, panel straddles its left edge, "Available in" legend always the image's physical bottom-right.
-- Specs come from the catalog only (configurations, profile systems, glass range, uPVC `sizeLimits` — doors use door limits); empty rows are skipped, never filled with "—".
+- Gallery: `ProductType.gallery` (3–6 entries, validator-enforced; placeholder types = []). Row patterns in galleryLayout.ts (3 portrait · 21:9 wide · 4:3 pair); <768 one 4:3 column. Real photos open the shared `components/ui/Lightbox` (generic items `{ src, alt, caption? }` — reuse it, don't fork it); placeholders are inert.
+- Configurations only (chips per material, "Custom sizes on request" when none) + a quiet link to /technical. Profile systems, glass range and `sizeLimits` stay in the catalog for the Technical page — don't put them back on the type page.
 - Quote buttons link `/contact?product={slug}` — the contact form has no product field yet, so the param is not prefilled.
-- AR numeric ranges inside data strings are wrapped in ⁦…⁩ (LRI/PDI) so RTL never flips them.
+- AR numeric ranges inside data strings are wrapped in \u2066…\u2069 (LRI/PDI) so RTL never flips them.
 
 ## Code rules
 - Server components by default — use client only for hooks/motion/events
@@ -97,7 +98,7 @@ Phosphor Icons. Deployed on Vercel.
 
 ## Content
 - All content is static in `lib/data/` — no CMS, no data fetching, no ISR. Pages import data and pass it to client components as props.
-- All images go through `components/ui/ImageSlot.tsx`, keyed in `lib/data/images.ts`. `null` = blank cream placeholder; real files go in `/public/images/*.webp` and the key's value becomes that path. Never use raw `next/image`/`<img>` or external URLs for content images.
+- All images go through `components/ui/ImageSlot.tsx`, keyed in `lib/data/images.ts` (catalog images live on the catalog records instead: `heroImage`, `gallery`, `image`). Type galleries: `/images/products/{slug}/gallery-{n}.webp` (n = 1-based position). `null` = blank cream placeholder; real files go in `/public/images/*.webp` and the key's value becomes that path. Never use raw `next/image`/`<img>` or external URLs for content images.
 - A custom CMS will replace these static files after launch.
 
 ## Known gotchas

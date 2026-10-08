@@ -75,6 +75,9 @@ export interface ProductType {
   heroImage: string | null;
   // Per-type override — empty = fall back to the mechanism set (getHotspots)
   hotspots: Hotspot[];
+  // 3–6 example photos (null = cream placeholder); placeholder types keep it empty.
+  // Real files: /images/products/{slug}/gallery-{n}.webp
+  gallery: (string | null)[];
   availability: TypeAvailability[];
   placeholder?: true;
 }

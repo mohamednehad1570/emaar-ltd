@@ -4,7 +4,7 @@
  * components/layout/MobileDrillNav.tsx
  *
  * Mobile/tablet (<1024px) drill-down nav inside HeaderMobileOverlay, fed by the
- * catalog-derived HeaderNavData (uPVC / Aluminum → groups → types).
+ * catalog-derived HeaderNavData. uPVC / Aluminum are plain rows; only About drills.
  * One panel visible at a time; each sub-panel opens with a "‹ Back" row that names
  * its parent. Drilling deeper slides the new panel in from the end side and going
  * back slides it in from the start side — both mirror in RTL.
@@ -20,7 +20,7 @@ import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 import { usePanelStack } from '@/lib/hooks/usePanelStack'
 import { followSamePageHash } from '@/lib/navigateHash'
 import { cn } from '@/lib/cn'
-import type { HeaderNavData } from '@/lib/data/nav'
+import { isMaterialActive, type HeaderNavData } from '@/lib/data/nav'
 import { getPanel, panelHrefs, type PanelId } from './drillPanels'
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1]
@@ -114,7 +114,8 @@ export default function MobileDrillNav({ nav, language, isRTL, pathname, onClose
                   </li>
                 )
               }
-              const active = linkActive(row.link.href)
+              // Material rows follow the desktop underline rule (landing page or any type it offers)
+              const active = row.material ? isMaterialActive(pathname, row.material, nav) : linkActive(row.link.href)
               return (
                 // Index-prefixed: a branch's "View all" may share an href with one of its items
                 <li key={`${i}:${row.link.href}`}>

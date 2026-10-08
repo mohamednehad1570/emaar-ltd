@@ -33,6 +33,10 @@ for (const s of slugs) check(!RESERVED_SLUGS.includes(s), `slug "${s}" collides 
 const systemById = new Map(PROFILE_SYSTEMS.map((s) => [s.id, s]));
 for (const t of PRODUCT_TYPES) {
   check(t.availability.length >= 1, `${t.slug}: no availability entry`);
+  // Gallery row patterns are defined for 3–6 images only (components/catalog/type/galleryLayout.ts)
+  if (!t.placeholder) {
+    check(t.gallery.length >= 3 && t.gallery.length <= 6, `${t.slug}: gallery has ${t.gallery.length} entries (expected 3–6)`);
+  }
   for (const a of t.availability) {
     for (const id of a.profileSystemIds) {
       const sys = systemById.get(id);

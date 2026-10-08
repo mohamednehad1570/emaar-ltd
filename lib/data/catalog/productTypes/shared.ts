@@ -22,3 +22,7 @@ export const VILLAS: Localized = { en: 'Villas', ar: 'الفلل' };
 export const OFFICES: Localized = { en: 'Offices', ar: 'المكاتب' };
 export const KITCHENS: Localized = { en: 'Kitchens', ar: 'المطابخ' };
 export const BATHROOMS: Localized = { en: 'Bathrooms', ar: 'الحمّامات' };
+
+// Six cream placeholders per non-placeholder type until photos arrive; real entries
+// become /images/products/{slug}/gallery-{n}.webp. Fresh array per call — no shared mutation.
+export const pendingGallery = (): (string | null)[] => Array<string | null>(6).fill(null);

@@ -7,7 +7,7 @@
 import type { ProductType } from '../types';
 import {
   UPVC_CASEMENT_SYSTEMS, UPVC_CASEMENT_GLASS,
-  SOUND_THERMAL, VILLAS, OFFICES, KITCHENS, BATHROOMS,
+  SOUND_THERMAL, VILLAS, OFFICES, KITCHENS, BATHROOMS, pendingGallery,
 } from './shared';
 
 export const WINDOW_TYPES: ProductType[] = [
@@ -19,7 +19,7 @@ export const WINDOW_TYPES: ProductType[] = [
       ar: 'تُفتح النوافذ المنزلقة على مسار دون أن تتأرجح داخل الغرفة، مما يوفر المساحة الداخلية. يتوفر خيار شبك الحشرات.',
     },
     bestFor: [{ en: 'Apartments', ar: 'الشقق' }, VILLAS, OFFICES],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [
       {
         material: 'upvc',
@@ -45,7 +45,7 @@ export const WINDOW_TYPES: ProductType[] = [
       ar: 'ضلفة فتح واحدة متوفرة بتعليق جانبي أو علوي أو بنظام القلاب والدوار، مناسبة للغرف بجميع أحجامها.',
     },
     bestFor: [{ en: 'Bedrooms', ar: 'غرف النوم' }, KITCHENS, BATHROOMS, OFFICES, VILLAS],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [
@@ -64,7 +64,7 @@ export const WINDOW_TYPES: ProductType[] = [
       ar: 'نوافذ ثابتة أو بتعليق جانبي نحو الخارج تُحكم الإغلاق على الإطار لتوفير العزل الصوتي والحراري.',
     },
     bestFor: [SOUND_THERMAL],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [{ en: 'Fixed', ar: 'ثابتة' }, { en: 'Side-hung (outward)', ar: 'تعليق جانبي (نحو الخارج)' }],
@@ -79,7 +79,7 @@ export const WINDOW_TYPES: ProductType[] = [
       ar: 'تُعلَّق الضلفة من الأعلى بمفصلات احتكاك وتُفتح نحو الخارج من الأسفل لتوفير التهوية.',
     },
     bestFor: [BATHROOMS, KITCHENS, { en: 'Ventilation', ar: 'التهوية' }],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [{ en: 'Top-hung (friction hinges)', ar: 'تعليق علوي (مفصلات احتكاك)' }],
@@ -94,7 +94,7 @@ export const WINDOW_TYPES: ProductType[] = [
       ar: 'نافذة بضلفتين إحداهما ثابتة: تميل الضلفة المتحركة للتهوية أو تنزلق لفتح كامل.',
     },
     bestFor: [{ en: 'Wide openings', ar: 'الفتحات العريضة' }, { en: 'Low sills', ar: 'العتبات المنخفضة' }],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [
@@ -112,7 +112,7 @@ export const WINDOW_TYPES: ProductType[] = [
       ar: 'مقبض واحد ووظيفتان: أمِل الضلفة للداخل للتهوية أو أدِرها لفتح كامل للتنظيف وتدفق الهواء.',
     },
     bestFor: [{ en: 'Two functions, one handle', ar: 'وظيفتان بمقبض واحد' }],
-    heroImage: null, hotspots: [],
+    heroImage: null, hotspots: [], gallery: pendingGallery(),
     availability: [{
       material: 'upvc',
       configurations: [{ en: 'Tilt position', ar: 'وضع القلب' }, { en: 'Turn position', ar: 'وضع الدوران' }],
