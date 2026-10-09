@@ -1,5 +1,11 @@
 # Emaar International Website
 
+## Reporting rule (non-negotiable)
+Every check you report to the user must include its raw terminal output (last ~30 lines)
+pasted verbatim. A check with no output attached counts as not run. Never report a pass
+from memory or from an earlier run. Always run the final pipeline from a fresh state
+(`rm -rf .next` → build → start on 3123 → verify:ui → stop server → ss check).
+
 ## Stack
 Next.js 16 (Turbopack) + TypeScript + Tailwind v4 + Framer Motion +
 Phosphor Icons. Deployed on Vercel.
@@ -158,8 +164,16 @@ Phosphor Icons. Deployed on Vercel.
 - `npm run verify:ui` runs the Playwright check suite against `BASE_URL` (default `http://localhost:3123`).
 - Prerequisites: `npm run build && npx next start -p 3123` (production build on port 3123).
 - Optional: `npm run verify:ui -- --screenshots ./screenshots/verify` saves full-page screenshots.
-- Covers: type card counts + links, deep-link tabs, hash/history behaviour, no-mechanism type rendering, no blue outside swatches, no horizontal scroll at 390px AR, tab min-height ≥44px, hotspot pin tab order, no mirroring in AR.
-- Script files: `scripts/verify-ui.ts` (entry), `scripts/verify-ui/runner.ts` (helpers), `scripts/verify-ui/checks-catalog.ts`, `scripts/verify-ui/checks-layout.ts`.
+- Covers (50 checks as of phase D-R2):
+  - catalog: type card counts + links, deep-link tabs (#glass/#accessories), hash/history behaviour, no-mechanism type rendering
+  - layout: no blue outside swatches, no horizontal scroll at 390px AR, tab min-height ≥44px, hotspot pin tab order, no mirroring in AR
+  - hydration: Arabic pre-seeded via addInitScript → no hydration errors, html dir=rtl lang=ar (/, /upvc, /projects, /products/hinged-doors)
+  - language flash: DCL dir vs post-load dir per page (INFORMATIONAL — always passes, logged as detail)
+  - hash filter: /projects#residential → Residential filter active, grid non-empty
+  - footer 390px EN+AR: all links 200/exempt; accordion keyboard Enter→open / Space→close
+  - top-hung pictogram: indicator apex y<20 (hinge at top), free-edge y>40
+- Script files: `scripts/verify-ui.ts` (entry), `scripts/verify-ui/runner.ts` (helpers), `scripts/verify-ui/checks-catalog.ts`, `scripts/verify-ui/checks-layout.ts`, `scripts/verify-ui/checks-hydration.ts`.
+- Pixel diff (before/after): `npx tsx scripts/verify-diff.ts` — requires HEAD on 3123 and baseline on 3124. Output: table of page/vp/lang → diff% + explanation.
 - Exit code 0 = all pass, 1 = any failure. Output is a pass/fail table.
 
 ## Git (after every zero-error build)

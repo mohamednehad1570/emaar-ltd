@@ -43,10 +43,13 @@ export async function checkNoBlue(page: Page, base: string): Promise<CheckResult
     }
     return null;
   })()`);
+  // A string-form evaluate is typed `unknown` — narrow it instead of asserting:
+  // the script returns either the offending element's tag/class string or null.
+  const offender = typeof blueFound === 'string' ? blueFound : null;
   return [{
     name:   'no blue colors outside swatches (/upvc)',
     passed: blueFound === null,
-    detail: blueFound ?? undefined,
+    detail: offender ?? (blueFound === null ? undefined : `unexpected result: ${String(blueFound)}`),
   }];
 }
 

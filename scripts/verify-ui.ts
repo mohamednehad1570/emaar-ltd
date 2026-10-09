@@ -2,7 +2,7 @@
  * scripts/verify-ui.ts
  *
  * Playwright UI verification for the Emaar website.
- * Covers stable checks from Batches 5, 6 and 6R + Phase D additions.
+ * Covers stable checks from Batches 5, 6 and 6R + Phase D and D-R2 additions.
  *
  * Usage:
  *   npm run verify:ui                          # against http://localhost:3123
@@ -33,6 +33,12 @@ import {
   checkHotspotTabOrder,
   checkNoARMirror,
 } from './verify-ui/checks-layout';
+import {
+  checkHydrationAR,
+  checkHashFilter,
+  checkFooter390,
+  checkTopHungPictogram,
+} from './verify-ui/checks-hydration';
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -51,6 +57,8 @@ if (SCREENSHOTS) {
 async function main() {
   console.log(`\nRunning verify:ui against ${BASE_URL} …`);
   const browser = await chromium.launch();
+
+  // Default context — 1440px, no reduced-motion preference, for catalog/layout checks
   const context = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     // Disable reduced-motion so animation-gated checks run normally
@@ -60,6 +68,7 @@ async function main() {
 
   try {
     const results = [
+      // ── Phase D checks (catalog + layout + RTL) ──────────────────────────────
       ...(await checkTypeCards(page, BASE_URL)),
       ...(await checkDeepLinkTabs(page, BASE_URL)),
       ...(await checkTabHashHistory(page, BASE_URL)),
@@ -69,6 +78,14 @@ async function main() {
       ...(await checkHotspotTabOrder(page, BASE_URL)),
       ...(await checkNoARMirror(page, BASE_URL)),
       ...(await checkNoHScroll(page, BASE_URL)),
+
+      // ── Phase D-R2 checks (hydration, flash, hash-filter, footer, pictogram) ─
+      // These checks open their own browser contexts so they don't pollute the
+      // shared page's language state.
+      ...(await checkHydrationAR(browser, BASE_URL)),
+      ...(await checkHashFilter(page, BASE_URL)),
+      ...(await checkFooter390(browser, BASE_URL)),
+      ...(await checkTopHungPictogram(page, BASE_URL)),
     ];
 
     // Optional full-page screenshot of key pages after all checks
