@@ -9,7 +9,7 @@
  * Hash deep links (#residential / #commercial) are handled by useProjectHashFilter.
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -46,12 +46,12 @@ export default function ProjectsGrid({ projects }: Props) {
   const shouldReduce = useReducedMotion();
 
   const [sector, setSector] = useProjectHashFilter(searchParams.get('category'));
-  const [material, setMaterial] = useState<MaterialFilter>('all');
-
-  useEffect(() => {
+  // Lazy initializer seeds from ?material= on first render; after that it's interactive state.
+  // A separate effect is not needed because the param is only used for deep-link entry.
+  const [material, setMaterial] = useState<MaterialFilter>(() => {
     const m = searchParams.get('material');
-    if (m === 'upvc' || m === 'aluminum') setMaterial(m);
-  }, [searchParams]);
+    return m === 'upvc' || m === 'aluminum' ? m : 'all';
+  });
 
   // Flatten the bilingual static projects to the active language
   const displayProjects: DisplayProject[] = projects.map((p) => ({

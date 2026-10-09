@@ -35,7 +35,10 @@ export default function TypeHero({ view }: { view: TypePageView }) {
   const { isRTL } = useLanguage();
   const t = useTranslation();
   const name = t(view.name.en, view.name.ar);
-  const eyebrow = [view.groupLabel, view.mechanism?.label]
+  // Short label trims "نافذة مفصلية" → "مفصلي" in AR; EN typically stays the same.
+  // Falls back to label when shortLabel is not defined for that mechanism/variant.
+  const eyebrowMechLabel = view.mechanism?.shortLabel ?? view.mechanism?.label;
+  const eyebrow = [view.groupLabel, eyebrowMechLabel]
     .flatMap((l) => (l && l.en ? [t(l.en, l.ar)] : []))
     .join(' · ');
 

@@ -39,7 +39,8 @@ export default function CareersJobList({ jobs, filters, applyEmail }: Props) {
       })
 
   const handleApply = (job: DisplayJob) => {
-    window.location.href = `mailto:${applyEmail}?subject=${encodeURIComponent(job.title)}`
+    // assign() is the spec-correct way to navigate; avoids react-hooks/immutability on href
+    window.location.assign(`mailto:${applyEmail}?subject=${encodeURIComponent(job.title)}`)
   }
 
   return (

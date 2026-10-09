@@ -24,11 +24,14 @@ function openingPictogram(t: ProductType): { pictogram?: PictogramView } {
 
 function typeCard(t: ProductType): TypeCardView {
   const mechanism = getMechanismCopy(t);
+  const variant   = getPictogramVariantCopy(t);
+  // Variant label wins on the card so it matches the "How it opens" title on the type page
+  const cardMechanismLabel = (t.pictogramVariant && variant) ? variant.label : mechanism?.label;
   return {
     slug: t.slug,
     name: t.name,
     group: t.group,
-    ...(mechanism ? { mechanism: mechanism.label } : {}),
+    ...(cardMechanismLabel ? { mechanism: cardMechanismLabel } : {}),
     ...openingPictogram(t),
     ...(t.tier ? { tier: t.tier } : {}),
     heroImage: t.heroImage,
@@ -50,6 +53,12 @@ export function materialPageProps(id: MaterialId): { view: MaterialPageView } {
 /** Serializable props for components/catalog/type/TypePage — built on the server per slug. */
 export function typePageProps(type: ProductType): TypePageView {
   const mechanism = getMechanismCopy(type);
+  const variant   = getPictogramVariantCopy(type);
+  // When a pictogram variant exists, its label + how override the mechanism copy so that
+  // "How it opens" shows "Top-hung" / "Tilt & turn" etc. instead of the generic mechanism name.
+  const resolvedMechanism = mechanism && type.pictogramVariant && variant
+    ? { label: variant.label, how: variant.how ?? mechanism.how, shortLabel: variant.shortLabel }
+    : mechanism;
   return {
     slug: type.slug,
     name: type.name,
@@ -59,7 +68,7 @@ export function typePageProps(type: ProductType): TypePageView {
     heroImage: type.heroImage,
     group: type.group,
     groupLabel: TYPE_GROUPS.find((g) => g.id === type.group)?.label ?? { en: '', ar: '' },
-    ...(mechanism ? { mechanism } : {}),
+    ...(resolvedMechanism ? { mechanism: resolvedMechanism } : {}),
     ...openingPictogram(type),
     bestFor: type.bestFor,
     hotspots: getHotspots(type),

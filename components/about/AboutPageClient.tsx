@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Medal as Award } from '@phosphor-icons/react';
-import Link from 'next/link';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { aboutData } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';

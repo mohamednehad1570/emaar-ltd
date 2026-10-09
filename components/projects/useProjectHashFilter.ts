@@ -11,13 +11,11 @@ const isProjectType = (v: string): v is ProjectType =>
   (PROJECT_TYPES as readonly string[]).includes(v);
 
 export function useProjectHashFilter(categoryParam: string | null) {
-  const [sector, setSector] = useState<SectorFilter>('all');
+  // Lazy initializer seeds from ?category= on first render; after that hash effects drive it.
+  const [sector, setSector] = useState<SectorFilter>(() =>
+    categoryParam && isProjectType(categoryParam) ? categoryParam : 'all',
+  );
   const pendingScroll = useRef<ProjectType | null>(null);
-
-  // ?category=residential deep links (legacy query form) still preselect a tab
-  useEffect(() => {
-    if (categoryParam && isProjectType(categoryParam)) setSector(categoryParam);
-  }, [categoryParam]);
 
   // Also follows later hash changes, which same-page menu links dispatch via
   // followSamePageHash. The extra frame matters on client navigation: this effect

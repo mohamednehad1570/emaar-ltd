@@ -8,6 +8,12 @@ Phosphor Icons. Deployed on Vercel.
 - Static UI copy: components import from `lib/data/uiStrings.ts` only, never from the individual copy files (whyChooseUs/services/careers/tech/contact/about/faq). Exception: `lib/data/nav.ts` is imported directly. Catalog data comes from `lib/data/catalog` (barrel `index.ts`; use the selectors) — never from its individual files.
 - `scripts/rename-products.mjs` / `rename-projects.mjs` are dry-run by default; `--apply` writes; logs go to `scripts/rename-log.txt` / `scripts/rename-projects-log.txt`.
 - Breadcrumbs were removed site-wide — never add them back.
+- All content is static (no Sanity, no CMS) — a custom CMS will replace `lib/data/` after launch.
+
+## Footer (components/layout/footer/)
+- Split into focused sub-files: `FooterBrand` (logo+tagline+social), `FooterLinkColumn` (desktop column header+links, server), `FooterContact` (email/phone/WhatsApp/CTA, client), `FooterAccordion` (mobile accordion, client), `FooterBottomBar` (copyright bar, server), `footerLinks.ts` (COLUMNS+SOCIAL data), `Footer.tsx` (thin compositor, client).
+- Products column links from `PRODUCT_LINKS` in `lib/data/nav.ts` (same source as the header) — never duplicate.
+- "L.L.C." / "ذ.م.م" appear ONLY in `FooterBottomBar`'s copyright line.
 
 ## Reference docs (read only the section you need, never the full file)
 - DESIGN.md — design system, tokens, component specs, do/don't rules
@@ -43,7 +49,8 @@ Phosphor Icons. Deployed on Vercel.
 ## Pictograms + hotspot diagrams (components/catalog/pictograms, components/catalog/hotspotDiagrams)
 - One diagram per catalog mechanism (sliding · casement · hinged-door · folding · fixed); one pictogram per mechanism PLUS pictogram variants. 'unspecified' gets nothing: no fallback icon, no guessed mechanism. Diagram map is `Record<DrawnMechanism, …>`, pictogram map `Record<PictogramId, …>` (= DrawnMechanism | PictogramVariant, components/catalog/types.ts), so a new mechanism/variant fails tsc until it is drawn.
 - No-mechanism rule: non-glazed types (pergola, handrails, cladding, security-systems) are `mechanism: 'unspecified'`, the same as frameless-doors. They get no pictogram, no "How it opens", and no hotspot section. With bestFor empty, TypeIntro is skipped entirely, so the page runs Hero → Gallery → Configurations → CTA. Curtain-wall and skylights stay 'fixed'. Never give a non-glazed type a mechanism just to get a drawing.
-- Pictogram variants: optional `ProductType.pictogramVariant` (top-hung · tilt-turn · lift-slide · tilt-slide) refines the mechanism's pictogram only — the diagram stays the mechanism's. `PICTOGRAM_VARIANTS` (lib/data/catalog/mechanisms.ts) holds each variant's host mechanism (casement or sliding; validator-enforced) and opening name (the 56px aria-label; visible "How it opens" title stays the mechanism). Mapped: top-hung-windows → top-hung, tilt-and-turn-windows → tilt-turn, hebeschiebe → lift-slide, tilt-and-slide-windows/-doors → tilt-slide. View props carry `pictogram: { id, name }` (variant wins), built in lib/catalogPageData.ts.
+- Pictogram variants: optional `ProductType.pictogramVariant` (top-hung · tilt-turn · lift-slide · tilt-slide) refines the mechanism's pictogram only — the diagram stays the mechanism's. `PICTOGRAM_VARIANTS` (lib/data/catalog/mechanisms.ts) holds each variant's host mechanism (casement or sliding; validator-enforced), `label` (opening name), optional `how` (variant-specific "how it opens" text — falls back to mechanism's `how`), and optional `shortLabel` (used in the type-hero eyebrow instead of the full label). Mapped: top-hung-windows → top-hung, tilt-and-turn-windows → tilt-turn, hebeschiebe → lift-slide, tilt-and-slide-windows/-doors → tilt-slide. View props carry `pictogram: { id, name }` (variant wins); `mechanism` in TypePageView carries the variant's label+how (overriding the mechanism's copy), built in lib/catalogPageData.ts.
+- `MechanismCopy` also has optional `shortLabel?: Localized`. The type-hero eyebrow uses `shortLabel` when defined, else `label`. This trims verbose AR labels (e.g. "نافذة مفصلية" → "مفصلي" in the eyebrow).
 - Mechanism + variant labels must be unique per language (validator). AR casement = "نافذة مفصلية", hinged-door = "باب مفصلي" (interim, machine-translated).
 - `getPictogram(id, props)` / `getDiagram(id, props)` return ELEMENTS, not components. Picking a component during render trips `react-hooks/static-components`.
 - Pictograms: viewBox 64, stroke currentColor 1.5, glass `fill-off-white`, opening indicator `stroke-brand-red` (European drafting: dashed lines meet at the hinge side for casement/hinged — top edge for top-hung, side + bottom triangles overlaid for tilt-turn; arrow for sliding, + up-arrow for lift-slide, + bottom-apex tilt triangle on the moving sash for tilt-slide; zig-zag for folding; fixed has no indicator). Variants reuse `CasementSash` / `SlidingSashes`. 40px on TypeCard (inline-end corner, aria-hidden, muted → heading on card hover), 56px in TypeIntro (role=img, label `openingSymbol`).
@@ -144,6 +151,14 @@ Phosphor Icons. Deployed on Vercel.
 ## Dev server / build guard
 - Before `rm -rf .next` or `npm run build`, check `ss -ltnp | grep 3000` (or `lsof -i :3000`). If port 3000 is in use, STOP and ask: never delete .next under a running dev server.
 - Temporary servers for checks run on another port (`npx next start -p 3123`, dev on 3124) and are stopped when done. The LCP `loading="eager"` warning only appears in dev.
+
+## UI verification (npm run verify:ui)
+- `npm run verify:ui` runs the Playwright check suite against `BASE_URL` (default `http://localhost:3123`).
+- Prerequisites: `npm run build && npx next start -p 3123` (production build on port 3123).
+- Optional: `npm run verify:ui -- --screenshots ./screenshots/verify` saves full-page screenshots.
+- Covers: type card counts + links, deep-link tabs, hash/history behaviour, no-mechanism type rendering, no blue outside swatches, no horizontal scroll at 390px AR, tab min-height ≥44px, hotspot pin tab order, no mirroring in AR.
+- Script files: `scripts/verify-ui.ts` (entry), `scripts/verify-ui/runner.ts` (helpers), `scripts/verify-ui/checks-catalog.ts`, `scripts/verify-ui/checks-layout.ts`.
+- Exit code 0 = all pass, 1 = any failure. Output is a pass/fail table.
 
 ## Git (after every zero-error build)
 git add -A && git commit -m "scope(area): what changed" && git push origin dev

@@ -33,15 +33,15 @@ const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage]               = useState<Language>('en');
+  // Lazy initializer reads localStorage once on mount; avoids a setState call in an effect.
+  // SSR guard: localStorage is undefined in Node, so we default to 'en' there.
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window === 'undefined') return 'en';
+    const saved = localStorage.getItem('language') as Language;
+    return saved === 'en' || saved === 'ar' ? saved : 'en';
+  });
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [pendingLanguage, setPendingLanguage] = useState<Language | null>(null);
-
-  // Load persisted language on mount only.
-  useEffect(() => {
-    const saved = localStorage.getItem('language') as Language;
-    if (saved === 'en' || saved === 'ar') setLanguage(saved);
-  }, []);
 
   // Sync document direction and lang attribute whenever language changes.
   // This is the single source of truth for DOM-level RTL/LTR state.

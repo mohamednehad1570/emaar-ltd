@@ -4,7 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import MotionProvider from "@/components/MotionProvider";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Footer from "@/components/layout/footer/Footer";
 import LanguageTransition from "@/components/layout/LanguageTransition";
 import { SITE_SETTINGS } from "@/lib/data/siteSettings";
 import { buildHeaderNav } from "@/lib/data/headerNav";

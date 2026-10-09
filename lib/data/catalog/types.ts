@@ -67,12 +67,18 @@ export interface Hotspot {
 export interface MechanismCopy {
   label: Localized;
   how: Localized;
+  /** Short label used in the type-hero eyebrow ("group · shortLabel"). Falls back to label. */
+  shortLabel?: Localized;
 }
 
 /** A variant's host mechanism + its opening name (the pictogram's aria-label on the type page). */
 export interface PictogramVariantCopy {
   mechanism: 'casement' | 'sliding';
   label: Localized;
+  /** Variant-specific "how it opens" text. Falls back to the host mechanism's how when absent. */
+  how?: Localized;
+  /** Short label used in the type-hero eyebrow ("group · shortLabel"). Falls back to label. */
+  shortLabel?: Localized;
 }
 
 export interface ProductType {

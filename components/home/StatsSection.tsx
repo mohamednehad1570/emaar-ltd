@@ -60,17 +60,16 @@ function StatCounter({ raw, inView, shouldReduce }: StatCounterProps) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    /* Reduced-motion: jump to final value immediately */
-    if (shouldReduce === true) { setCount(value); return; }
     if (!inView) return;
 
     let animId: number;
     let startTime: number | null = null;
-    const duration = 1600; /* ms — long enough to feel satisfying */
+    /* Reduced-motion: zero duration collapses the RAF loop to a single frame */
+    const duration = shouldReduce === true ? 0 : 1600;
 
     const step = (ts: number) => {
       if (startTime === null) startTime = ts;
-      const t = Math.min((ts - startTime) / duration, 1);
+      const t = duration === 0 ? 1 : Math.min((ts - startTime) / duration, 1);
       /* Cubic ease-out: decelerates into the final value */
       const eased = 1 - Math.pow(1 - t, 3);
       setCount(Math.floor(eased * value));
