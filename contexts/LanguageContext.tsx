@@ -9,9 +9,16 @@
  * pendingLanguage lets the LangToggle reflect the incoming language
  * immediately — before the actual language state settles — so the
  * toggle feels instant even though the content fades.
+ *
+ * Hydration safety: 'language' is driven by useSyncExternalStore so that
+ * the server snapshot ('en') and client snapshot (localStorage) are kept
+ * separate. React uses getServerSnapshot for SSR and the initial hydration
+ * reconciliation pass, so the server HTML (English) and the first client
+ * render agree — no hydration mismatch warning, even when the user had
+ * previously selected Arabic.
  */
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useSyncExternalStore } from 'react';
 
 type Language = 'en' | 'ar';
 
@@ -32,14 +39,40 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// ── External language store ────────────────────────────────────────────────────
+// Module-level listener set for same-tab notifications; the 'storage' event
+// covers cross-tab sync automatically. Both paths share the same callback shape.
+const langListeners = new Set<() => void>();
+
+function langSubscribe(callback: () => void): () => void {
+  langListeners.add(callback);
+  // Cross-tab sync: another tab wrote to localStorage.language
+  window.addEventListener('storage', callback);
+  return () => {
+    langListeners.delete(callback);
+    window.removeEventListener('storage', callback);
+  };
+}
+
+function langGetSnapshot(): Language {
+  const saved = localStorage.getItem('language') as Language;
+  return saved === 'en' || saved === 'ar' ? saved : 'en';
+}
+
+// Server snapshot is always 'en': the server never has localStorage.
+// React uses getServerSnapshot for both SSR rendering AND the initial
+// hydration reconciliation pass, so the server HTML ('en') and the first
+// client render agree — no hydration mismatch warning.
+function langGetServerSnapshot(): Language {
+  return 'en';
+}
+// ──────────────────────────────────────────────────────────────────────────────
+
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // Lazy initializer reads localStorage once on mount; avoids a setState call in an effect.
-  // SSR guard: localStorage is undefined in Node, so we default to 'en' there.
-  const [language, setLanguage] = useState<Language>(() => {
-    if (typeof window === 'undefined') return 'en';
-    const saved = localStorage.getItem('language') as Language;
-    return saved === 'en' || saved === 'ar' ? saved : 'en';
-  });
+  // useSyncExternalStore: server snapshot 'en'; after hydration, client reads
+  // localStorage. If the stored value is 'ar', React re-renders synchronously
+  // (before paint) — no flash, no warning.
+  const language = useSyncExternalStore(langSubscribe, langGetSnapshot, langGetServerSnapshot);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [pendingLanguage, setPendingLanguage] = useState<Language | null>(null);
 
@@ -51,9 +84,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }, [language]);
 
   const handleSetLanguage = (lang: Language) => {
-    setLanguage(lang);
     localStorage.setItem('language', lang);
-    // DOM updates (dir, lang) are handled exclusively by the effect above.
+    // Notify same-tab subscribers — the 'storage' event only fires in other tabs.
+    langListeners.forEach(fn => fn());
   };
 
   const toggleLanguage = () => {

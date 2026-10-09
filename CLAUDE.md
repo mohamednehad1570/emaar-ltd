@@ -78,6 +78,8 @@ Phosphor Icons. Deployed on Vercel.
 - Bilingual: every string needs { en: '...', ar: '...' }; in client components use `useTranslation()` from LanguageContext instead of inlining `(en, ar) => language === 'en' ? en : ar`
 - RTL: useLanguage() → isRTL, use rtl: Tailwind prefix for directional overrides
 - Page-width wrapper: use `<Container>` from `@/components/layout/Container` — never repeat max-w-7xl + padding inline
+- **Browser-only state (localStorage, location.hash)**: use `useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)`. `getServerSnapshot` must return the SSR default (e.g. `'en'`, `'all'`) — React uses it for BOTH SSR and hydration reconciliation, so the server HTML and first client render agree. `subscribe` is called only in the browser; `getSnapshot` reads the real source. To write: update the real source (localStorage / window.location.hash) and call each listener in the Set. See `contexts/LanguageContext.tsx` and `components/projects/useProjectHashFilter.ts` for the full pattern.
+- **FORBIDDEN**: `useState(() => { if (typeof window === 'undefined') return default; return localStorage.getItem(...); })` — this lazy-initializer SSR guard looks safe but is hydration-unsafe: the server returns the default, the client returns the stored value, React sees a mismatch. Use `useSyncExternalStore` instead.
 
 ## Colors (hard rules — no lookup needed)
 - Page bg: bg-off-white (#F5F4F0)

@@ -60,11 +60,11 @@ export const PICTOGRAM_VARIANTS: Record<PictogramVariant, PictogramVariantCopy> 
     mechanism: 'casement',
     label: { en: 'Top-hung', ar: 'علوي التعليق' },
     shortLabel: { en: 'Top-hung', ar: 'علوي' },
-    // Replaces casement's "side or top" how — top-hung uses top-edge hinges only.
-    // Previous casement text was false here: no side hinges on a top-hung sash.
+    // Replaces casement's generic text — top-hung hinges along the TOP rail,
+    // so the bottom swings OUTWARD (confirmed by TopHungPictogram indicator).
     how: {
-      en: 'The sash pivots open at the top, tilting inward at the bottom for ventilation.',
-      ar: 'تنفتح الضلفة محوريًّا من أعلاها، مائلةً للداخل من الأسفل لتهوية المكان.',
+      en: 'Hinged along the top, the sash swings outward from the bottom, so it can stay open for ventilation even in light rain.',
+      ar: 'مفصلة من الأعلى، تتأرجح الضلفة للخارج من الأسفل، فتظل مفتوحة للتهوية حتى في المطر الخفيف.',
     },
   },
   'tilt-turn': {
@@ -89,10 +89,10 @@ export const PICTOGRAM_VARIANTS: Record<PictogramVariant, PictogramVariantCopy> 
   'tilt-slide': {
     mechanism: 'sliding',
     label: { en: 'Tilt & slide', ar: 'قلاب منزلق' },
-    // Extends sliding text — describes both the tilt-for-ventilation and the slide-open modes.
+    // Extends sliding text — tilt for ventilation OR move out parallel and slide aside.
     how: {
-      en: 'The sash tilts inward at the bottom for ventilation, or lifts clear of its threshold to slide fully open.',
-      ar: 'تميل الضلفة للداخل من الأسفل للتهوية، أو تُرفع عن العتبة لتنزلق وتفتح بالكامل.',
+      en: 'The sash tilts inward at the bottom for ventilation, or moves out parallel to the frame and slides aside to open.',
+      ar: 'تميل الضلفة للداخل من الأسفل للتهوية، أو تتحرك موازيةً للإطار وتنزلق جانباً لتنفتح.',
     },
   },
 };
