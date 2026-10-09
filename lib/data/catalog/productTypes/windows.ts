@@ -72,7 +72,7 @@ export const WINDOW_TYPES: ProductType[] = [
     }],
   },
   {
-    slug: 'top-hung-windows', group: 'windows', mechanism: 'casement',
+    slug: 'top-hung-windows', group: 'windows', mechanism: 'casement', pictogramVariant: 'top-hung',
     name: { en: 'Top-Hung Windows', ar: 'نوافذ علوية التعليق' },
     description: {
       en: 'Hinged at the top on friction hinges, the sash opens outward from the bottom for ventilation.',
@@ -87,7 +87,7 @@ export const WINDOW_TYPES: ProductType[] = [
     }],
   },
   {
-    slug: 'tilt-and-slide-windows', group: 'windows', mechanism: 'sliding',
+    slug: 'tilt-and-slide-windows', group: 'windows', mechanism: 'sliding', pictogramVariant: 'tilt-slide',
     name: { en: 'Tilt & Slide Windows', ar: 'نوافذ قلابة منزلقة' },
     description: {
       en: 'A two-sash window with one fixed sash: the moving sash tilts for ventilation or slides open fully.',
@@ -105,7 +105,7 @@ export const WINDOW_TYPES: ProductType[] = [
     }],
   },
   {
-    slug: 'tilt-and-turn-windows', group: 'windows', mechanism: 'casement',
+    slug: 'tilt-and-turn-windows', group: 'windows', mechanism: 'casement', pictogramVariant: 'tilt-turn',
     name: { en: 'Tilt & Turn Windows', ar: 'نوافذ قلابة ودوارة' },
     description: {
       en: 'One handle, two functions: tilt the sash inward for ventilation or turn it fully open for cleaning and airflow.',

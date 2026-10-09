@@ -32,7 +32,8 @@ export const FACADE_TYPES: ProductType[] = [
     ],
   },
   {
-    slug: 'cladding', group: 'facades', mechanism: 'fixed',
+    // Opaque panels, nothing glazed or opening — no mechanism, same as frameless-doors
+    slug: 'cladding', group: 'facades', mechanism: 'unspecified',
     name: { en: 'Aluminum Cladding (ACP)', ar: 'كسوة ألمنيوم (ACP)' },
     description: {
       en: 'Aluminum composite panels (ACP) are the dominant façade cladding material across UAE commercial and residential towers. Emaar supplies and installs complete ACP cladding systems.',

@@ -5,17 +5,22 @@
  */
 
 import {
-  TYPE_GROUPS, getDiagramImage, getHotspots, getMaterial, getMechanismCopy, getTypesByGroup,
-  type MaterialId, type ProductType,
+  TYPE_GROUPS, getDiagramImage, getHotspots, getMaterial, getMechanismCopy, getPictogramVariantCopy,
+  getTypesByGroup, type MaterialId, type ProductType,
 } from '@/lib/data/catalog';
 import type {
-  DrawnMechanism, MaterialPageView, TypeCardView, TypeGroupView, TypePageView,
+  MaterialPageView, PictogramView, TypeCardView, TypeGroupView, TypePageView,
 } from '@/components/catalog/types';
 import { buildOptionTabs } from './materialOptionsData';
 
+// Variant (validated to sit on its host mechanism) wins over the mechanism's own symbol.
 // 'unspecified' has no drawing — callers spread the result so the key is simply absent
-const drawnMechanism = (t: ProductType): { mechanismId?: DrawnMechanism } =>
-  t.mechanism === 'unspecified' ? {} : { mechanismId: t.mechanism };
+function openingPictogram(t: ProductType): { pictogram?: PictogramView } {
+  const variant = getPictogramVariantCopy(t);
+  if (t.pictogramVariant && variant) return { pictogram: { id: t.pictogramVariant, name: variant.label } };
+  const mechanism = getMechanismCopy(t);
+  return t.mechanism === 'unspecified' || !mechanism ? {} : { pictogram: { id: t.mechanism, name: mechanism.label } };
+}
 
 function typeCard(t: ProductType): TypeCardView {
   const mechanism = getMechanismCopy(t);
@@ -24,7 +29,7 @@ function typeCard(t: ProductType): TypeCardView {
     name: t.name,
     group: t.group,
     ...(mechanism ? { mechanism: mechanism.label } : {}),
-    ...drawnMechanism(t),
+    ...openingPictogram(t),
     ...(t.tier ? { tier: t.tier } : {}),
     heroImage: t.heroImage,
     materials: t.availability.map((a) => ({ id: a.material, name: getMaterial(a.material).name })),
@@ -55,7 +60,7 @@ export function typePageProps(type: ProductType): TypePageView {
     group: type.group,
     groupLabel: TYPE_GROUPS.find((g) => g.id === type.group)?.label ?? { en: '', ar: '' },
     ...(mechanism ? { mechanism } : {}),
-    ...drawnMechanism(type),
+    ...openingPictogram(type),
     bestFor: type.bestFor,
     hotspots: getHotspots(type),
     diagramImage: getDiagramImage(type),

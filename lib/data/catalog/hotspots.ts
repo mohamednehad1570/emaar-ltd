@@ -44,15 +44,18 @@ export const MECHANISM_HOTSPOTS: Record<Mechanism, Hotspot[]> = {
     [{ en: 'Steel reinforcement', ar: 'تقوية فولاذية' },
       { en: 'Galvanised steel 1.5–2.0 mm inside the profile keeps it rigid.', ar: 'فولاذ مجلفن \u20661.5–2.0\u2069 مم داخل القطاع يحافظ على صلابته.' }, 30, 80],
   ]),
+  // Leaf drawn 120×240 units (1:2) centred in the 400×300 box (x 140–260, y 30–270): lock at
+  // mid-height on the latch edge, top hinge at 25% of the leaf on the hinge edge, closer on
+  // the top rail, threshold under the foot. Our own layout, not from the printed catalog.
   'hinged-door': set([
     [{ en: 'Multi-point lock', ar: 'قفل متعدد النقاط' },
-      { en: 'Schüring locking engages the frame at several points.', ar: 'قفل Schüring يُحكم الإغلاق على الإطار في عدة نقاط.' }, 72, 52],
+      { en: 'Schüring locking engages the frame at several points.', ar: 'قفل Schüring يُحكم الإغلاق على الإطار في عدة نقاط.' }, 62, 50],
     [{ en: 'Door hinges', ar: 'مفصلات الباب' },
-      { en: 'Schüring MTEC III or STAC hinges carry heavy leaves.', ar: 'مفصلات Schüring MTEC III أو STAC تحمل الأجنحة الثقيلة.' }, 22, 30],
+      { en: 'Schüring MTEC III or STAC hinges carry heavy leaves.', ar: 'مفصلات Schüring MTEC III أو STAC تحمل الأجنحة الثقيلة.' }, 35, 30],
     [{ en: 'Aluminum threshold', ar: 'عتبة ألمنيوم' },
       { en: 'A low threshold seals the base of the door.', ar: 'عتبة منخفضة تُحكم إغلاق أسفل الباب.' }, 50, 92],
     [{ en: 'Door closer option', ar: 'خيار مغلق الباب' },
-      { en: 'Dormakaba TS 77/3 closer returns the door gently.', ar: 'مغلق Dormakaba TS 77/3 يعيد الباب بهدوء.' }, 60, 10],
+      { en: 'Dormakaba TS 77/3 closer returns the door gently.', ar: 'مغلق Dormakaba TS 77/3 يعيد الباب بهدوء.' }, 52, 11],
   ]),
   folding: set([
     [{ en: 'Multi-panel fold', ar: 'طي متعدد الألواح' },

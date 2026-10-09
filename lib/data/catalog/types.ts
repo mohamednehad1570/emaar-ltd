@@ -37,7 +37,13 @@ export interface Material {
 
 export type TypeGroup = 'windows' | 'doors' | 'facades' | 'specialty';
 
+// 'unspecified' = no opening to draw: non-glazed types (pergola, handrails, cladding,
+// security systems) and types whose catalog entry names no mechanism (frameless doors)
 export type Mechanism = 'sliding' | 'casement' | 'hinged-door' | 'folding' | 'fixed' | 'unspecified';
+
+/** Type-specific opening symbol that refines its mechanism's pictogram (pictograms only —
+ *  the hotspot diagram stays one per mechanism). Allowed mechanism per variant: PICTOGRAM_VARIANTS. */
+export type PictogramVariant = 'top-hung' | 'tilt-turn' | 'lift-slide' | 'tilt-slide';
 
 /** One material's take on a product type — configurations + the profile systems that build it. */
 export interface TypeAvailability {
@@ -63,10 +69,18 @@ export interface MechanismCopy {
   how: Localized;
 }
 
+/** A variant's host mechanism + its opening name (the pictogram's aria-label on the type page). */
+export interface PictogramVariantCopy {
+  mechanism: 'casement' | 'sliding';
+  label: Localized;
+}
+
 export interface ProductType {
   slug: string;
   group: TypeGroup;
   mechanism: Mechanism;
+  // Omitted = the mechanism's own pictogram; validator checks it matches the mechanism
+  pictogramVariant?: PictogramVariant;
   name: Localized;
   description: Localized;
   bestFor: Localized[];

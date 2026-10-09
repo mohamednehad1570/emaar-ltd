@@ -43,7 +43,7 @@ export const SLIDING_DOOR_TYPES: ProductType[] = [
     ],
   },
   {
-    slug: 'tilt-and-slide-doors', group: 'doors', mechanism: 'sliding',
+    slug: 'tilt-and-slide-doors', group: 'doors', mechanism: 'sliding', pictogramVariant: 'tilt-slide',
     name: { en: 'Tilt & Slide Doors', ar: 'أبواب قلابة منزلقة' },
     description: {
       en: 'A sliding door paired with a fixed panel; the sliding sash can tilt for ventilation or slide open.',
@@ -73,7 +73,7 @@ export const SLIDING_DOOR_TYPES: ProductType[] = [
     }],
   },
   {
-    slug: 'hebeschiebe', group: 'doors', mechanism: 'sliding', tier: 'flagship',
+    slug: 'hebeschiebe', group: 'doors', mechanism: 'sliding', pictogramVariant: 'lift-slide', tier: 'flagship',
     name: { en: 'Hebeschiebe Lift & Slide', ar: 'هيبشيبه للرفع والإزاحة' },
     description: {
       en: 'The Hebeschiebe lift-and-slide system allows large floor-to-ceiling glass panels to glide effortlessly with a single handle turn. It is the preferred choice for luxury living rooms and terraces where the boundary between inside and outside must disappear entirely.',

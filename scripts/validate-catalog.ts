@@ -11,6 +11,7 @@ import {
   PRODUCT_TYPES, PROFILE_SYSTEMS, BRANDS, ACCESSORIES, GLASS, COLOURS, DESIGNS, MATERIAL_IDS,
   getTypesByMaterial, getAccessories, getAccessoryKinds, getAccessoriesByKind,
   getColourGroups, getColours, MECHANISM_HOTSPOTS, type Mechanism, getDesignSubtypes, getDesigns, getGlass,
+  MECHANISM_COPY, PICTOGRAM_VARIANTS,
 } from '../lib/data/catalog';
 
 const failures: string[] = [];
@@ -53,6 +54,21 @@ for (const [mech, points] of Object.entries(MECHANISM_HOTSPOTS) as [Mechanism, t
   for (const p of points) {
     check(p.x >= 0 && p.x <= 100 && p.y >= 0 && p.y <= 100, `hotspots ${mech} #${p.n}: x/y outside 0–100`);
   }
+}
+
+// ── Opening names + pictogram variants ────────────────────
+// A variant refines one mechanism's pictogram (casement → top-hung / tilt-turn, sliding →
+// lift-slide / tilt-slide); on any other mechanism it would draw an opening the type doesn't have
+for (const t of PRODUCT_TYPES) {
+  if (!t.pictogramVariant) continue;
+  const host = PICTOGRAM_VARIANTS[t.pictogramVariant].mechanism;
+  check(t.mechanism === host, `${t.slug}: variant "${t.pictogramVariant}" needs mechanism "${host}", got "${t.mechanism}"`);
+}
+// Mechanism + variant labels must be unique per language (AR once printed مفصلي for two mechanisms)
+const openingLabels = [...Object.values(MECHANISM_COPY), ...Object.values(PICTOGRAM_VARIANTS)].map((c) => c.label);
+for (const lang of ['en', 'ar'] as const) {
+  const seen = openingLabels.map((l) => l[lang]);
+  for (const v of new Set(seen)) check(seen.filter((x) => x === v).length === 1, `opening label "${v}" (${lang}) is duplicated`);
 }
 
 // ── Accessories ───────────────────────────────────────────

@@ -11,5 +11,5 @@ export { GLASS } from './glass';
 export { COLOURS } from './colours';
 export { DESIGNS } from './designs';
 export { MECHANISM_HOTSPOTS, MECHANISM_DIAGRAMS } from './hotspots';
-export { MECHANISM_COPY } from './mechanisms';
+export { MECHANISM_COPY, PICTOGRAM_VARIANTS } from './mechanisms';
 export * from './selectors';

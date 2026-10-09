@@ -23,7 +23,7 @@ export default function TypeCard({ type, reduceMotion }: { type: TypeCardView; r
   const t = useTranslation();
   const name = t(type.name.en, type.name.ar);
   // Decorative (no label) — the mechanism name is the text beside it. Muted → heading on card hover
-  const pictogram = getPictogram(type.mechanismId, {
+  const pictogram = type.pictogram && getPictogram(type.pictogram.id, {
     size: 40,
     className: 'text-ink-muted transition-colors duration-300 group-hover:text-ink-heading',
   });

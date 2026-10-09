@@ -8,7 +8,7 @@
 
 import type {
   AccessoryItem, AccessoryKind, Brand, ColourOption, DesignOption, GlassGroup, GlassOption, Hotspot,
-  Localized, Material, MaterialId, MechanismCopy, ProductType, ProfileSystem, TypeGroup,
+  Localized, Material, MaterialId, MechanismCopy, PictogramVariantCopy, ProductType, ProfileSystem, TypeGroup,
 } from './types';
 import { MATERIALS } from './materials';
 import { PRODUCT_TYPES } from './productTypes';
@@ -19,7 +19,7 @@ import { GLASS } from './glass';
 import { COLOURS } from './colours';
 import { DESIGNS } from './designs';
 import { MECHANISM_DIAGRAMS, MECHANISM_HOTSPOTS } from './hotspots';
-import { MECHANISM_COPY } from './mechanisms';
+import { MECHANISM_COPY, PICTOGRAM_VARIANTS } from './mechanisms';
 
 // Dedupe Localized labels by EN text, preserving first-seen order
 function uniqueLabels(labels: Localized[]): Localized[] {
@@ -60,6 +60,9 @@ export const getDiagramImage = (type: ProductType): string | null => MECHANISM_D
 
 export const getMechanismCopy = (type: ProductType): MechanismCopy | undefined =>
   type.mechanism === 'unspecified' ? undefined : MECHANISM_COPY[type.mechanism];
+
+export const getPictogramVariantCopy = (type: ProductType): PictogramVariantCopy | undefined =>
+  type.pictogramVariant ? PICTOGRAM_VARIANTS[type.pictogramVariant] : undefined;
 
 // ── Options ───────────────────────────────────────────────
 export const getAccessories = (material: MaterialId): AccessoryItem[] =>

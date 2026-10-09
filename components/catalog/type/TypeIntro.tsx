@@ -3,7 +3,9 @@
 /**
  * components/catalog/type/TypeIntro.tsx
  * "How it opens" + "Best for" side by side (stacked <768). Each block renders only
- * when it has data — 'unspecified' mechanisms and empty bestFor lists drop out.
+ * when it has data — 'unspecified' mechanisms and empty bestFor lists drop out, and with
+ * both gone (pergola, handrails, cladding, security systems) the whole section is skipped.
+ * The visible title stays the mechanism; the symbol's label names the variant when there is one.
  */
 
 import { Check } from '@phosphor-icons/react';
@@ -11,24 +13,25 @@ import { useTranslation } from '@/contexts/LanguageContext';
 import { TYPE_PAGE_COPY as COPY } from '@/lib/data/uiStrings';
 import Container from '@/components/layout/Container';
 import type { Localized, MechanismCopy } from '@/lib/data/catalog';
-import type { DrawnMechanism } from '../types';
+import type { PictogramView } from '../types';
 import { getPictogram } from '../pictograms';
 
 interface TypeIntroProps {
   mechanism?: MechanismCopy;
-  mechanismId?: DrawnMechanism;
+  pictogram?: PictogramView;
   bestFor: Localized[];
 }
 
 const LABEL = 'text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-muted mb-3';
 
-export default function TypeIntro({ mechanism, mechanismId, bestFor }: TypeIntroProps) {
+export default function TypeIntro({ mechanism, pictogram: symbol, bestFor }: TypeIntroProps) {
   const t = useTranslation();
   if (!mechanism && bestFor.length === 0) return null;
   // role=img + label here (unlike the cards): the symbol is content in its own right
-  const pictogram = mechanism && getPictogram(mechanismId, {
+  // Type-specific opening name ("Top-hung", not "Casement") so AT hears what the drawing shows
+  const pictogram = symbol && getPictogram(symbol.id, {
     size: 56,
-    label: t(COPY.openingSymbol.en, COPY.openingSymbol.ar).replace('{name}', t(mechanism.label.en, mechanism.label.ar)),
+    label: t(COPY.openingSymbol.en, COPY.openingSymbol.ar).replace('{name}', t(symbol.name.en, symbol.name.ar)),
     className: 'text-ink-muted',
   });
 
