@@ -9,7 +9,7 @@
  * (hover-capable devices only); entrance motion lives on the parent motion.li.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { ArrowRight } from '@phosphor-icons/react';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { HOME_PROJECT_TAG } from '@/lib/data/placeholderPhotos';
@@ -29,7 +29,7 @@ export default function FeaturedProjectCard({ project, reduceMotion }: FeaturedP
   const { explore } = HOME_FEATURED_COPY.projects;
 
   return (
-    <Link
+    <LocaleLink
       href={project.href}
       aria-label={`${label} — ${t(project.line.en, project.line.ar)}`}
       className={cn(
@@ -89,6 +89,6 @@ export default function FeaturedProjectCard({ project, reduceMotion }: FeaturedP
           <ArrowRight size={16} aria-hidden="true" className="text-white rtl:-scale-x-100" />
         </span>
       </div>
-    </Link>
+    </LocaleLink>
   );
 }

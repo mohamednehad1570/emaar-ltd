@@ -11,17 +11,14 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { useSearchParams } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Container from '@/components/layout/Container';
-import { fadeUp, viewportOnce } from '@/lib/motion';
+import { revealOnce } from '@/lib/motion';
 import ProjectCard from './ProjectCard';
 import ProjectFilterBar from './ProjectFilterBar';
-import { useProjectHashFilter, type SectorFilter } from './useProjectHashFilter';
+import { useProjectHashFilter, useMaterialParam, type MaterialFilter, type SectorFilter } from './useProjectHashFilter';
 import { PROJECT_TYPES, PROJECT_TYPE_LABELS, type ProjectListItem } from '@/lib/data/projectContent';
 import type { DisplayProject } from '@/lib/types';
-
-type MaterialFilter = 'all' | 'upvc' | 'aluminum';
 
 const SECTORS: readonly { id: SectorFilter; label: { en: string; ar: string } }[] = [
   { id: 'all', label: { en: 'All', ar: 'الكل' } },
@@ -42,16 +39,15 @@ interface Props {
 
 export default function ProjectsGrid({ projects }: Props) {
   const { language, isRTL } = useLanguage();
-  const searchParams = useSearchParams();
   const shouldReduce = useReducedMotion();
 
-  const [sector, setSector] = useProjectHashFilter(searchParams.get('category'));
-  // Lazy initializer seeds from ?material= on first render; after that it's interactive state.
-  // A separate effect is not needed because the param is only used for deep-link entry.
-  const [material, setMaterial] = useState<MaterialFilter>(() => {
-    const m = searchParams.get('material');
-    return m === 'upvc' || m === 'aluminum' ? m : 'all';
-  });
+  // No useSearchParams: it bailed the whole grid out of SSR (empty HTML before JS).
+  // ?category= / ?material= are read in the browser only (useProjectHashFilter.ts).
+  const [sector, setSector] = useProjectHashFilter();
+  // ?material= seeds the filter until the visitor picks one; then their pick wins
+  const materialParam = useMaterialParam();
+  const [picked, setMaterial] = useState<MaterialFilter | null>(null);
+  const material = picked ?? materialParam ?? 'all';
 
   // Flatten the bilingual static projects to the active language
   const displayProjects: DisplayProject[] = projects.map((p) => ({
@@ -69,12 +65,8 @@ export default function ProjectsGrid({ projects }: Props) {
   const filtered = displayProjects.filter((p) =>
     (sector === 'all' || p.type === sector) && (material === 'all' || p.material === material));
 
-  const reveal = {
-    variants: fadeUp,
-    initial: shouldReduce ? {} : 'hidden',
-    whileInView: shouldReduce ? undefined : 'visible',
-    viewport: shouldReduce ? undefined : viewportOnce,
-  };
+  // SSR-safe: the grid is server-rendered now, so the reduce branch must not change `initial`
+  const reveal = revealOnce(shouldReduce);
 
   const grid = (items: DisplayProject[]) => (
     <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

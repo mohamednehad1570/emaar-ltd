@@ -2,22 +2,21 @@ import FAQPageClient from '@/components/faq/FAQPageClient';
 import PageHeader from '@/components/ui/PageHeader';
 import { faqData } from '@/lib/data/uiStrings';
 import type { Metadata } from 'next';
-import { generatePageMetadata } from '@/lib/seo/metadata';
+import { pageMetadata } from '@/lib/seo/metadata';
+import { routeLocale, type LocaleParams } from '@/lib/i18n/routeLocale';
 import { faqPageSchema } from '@/lib/seo/jsonld';
 import JsonLd from '@/components/seo/JsonLd';
 
-export function generateMetadata(): Metadata {
-  return generatePageMetadata({
-    title:       'Frequently Asked Questions',
-    description: 'Answers to common questions about uPVC vs aluminium windows, installation timelines, maintenance, warranties, and ordering from Emaar International.',
-    path:        '/faq',
-  });
+export async function generateMetadata({ params }: { params: LocaleParams }): Promise<Metadata> {
+  return pageMetadata('faq', await routeLocale(params), '/faq');
 }
 
-export default function FAQPage() {
-  // FAQPage JSON-LD is built from the English static FAQs — Google indexes one language per URL
+export default async function FAQPage({ params }: { params: LocaleParams }) {
+  const locale = await routeLocale(params);
+  // FAQPage JSON-LD in this URL's language — each locale is its own indexed URL
   const schema = faqPageSchema(
-    faqData.en.faqs.map((f) => ({ question: f.question, answer: f.answer })),
+    faqData[locale].faqs.map((f) => ({ question: f.question, answer: f.answer })),
+    locale,
   );
   return (
     <>

@@ -6,14 +6,11 @@ import WarrantySection from '@/components/why-choose-us/WarrantySection';
 import AwardsSection from '@/components/why-choose-us/AwardsSection';
 import CTASection from '@/components/why-choose-us/CTASection';
 import type { Metadata } from 'next';
-import { generatePageMetadata } from '@/lib/seo/metadata';
+import { pageMetadata } from '@/lib/seo/metadata';
+import { routeLocale, type LocaleParams } from '@/lib/i18n/routeLocale';
 
-export function generateMetadata(): Metadata {
-  return generatePageMetadata({
-    title:       'Why Choose Emaar — Quality You Can Trust',
-    description: 'Discover why UAE contractors, architects, and homeowners choose Emaar International: European-grade profiles, certified quality, and end-to-end project support.',
-    path:        '/why-choose-us',
-  });
+export async function generateMetadata({ params }: { params: LocaleParams }): Promise<Metadata> {
+  return pageMetadata('whyChooseUs', await routeLocale(params), '/why-choose-us');
 }
 
 export default function WhyChooseUsPage() {

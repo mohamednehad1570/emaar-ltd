@@ -7,7 +7,7 @@
  */
 
 import React, { useRef } from 'react';
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { motion } from 'framer-motion';
 import type { NavLink } from '@/lib/data/nav';
 import { usePanelClamp } from './usePanelClamp';
@@ -44,13 +44,13 @@ export default function HeaderDropdown({ id, items, language, onEnter, onLeave, 
       {items.map(item => (
         <React.Fragment key={item.href}>
           {item.dividerBefore && <div className="my-1 mx-3 border-t border-border-light" aria-hidden="true" />}
-          <Link
+          <LocaleLink
             href={item.href}
             onClick={onNavigate}
             className="flex items-center h-11 px-5 text-sm text-ink-body hover:bg-surface-cream hover:text-ink-heading focus-visible:outline-none focus-visible:bg-surface-cream"
           >
             {item[language]}
-          </Link>
+          </LocaleLink>
         </React.Fragment>
       ))}
     </motion.div>

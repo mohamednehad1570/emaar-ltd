@@ -4,7 +4,7 @@
  * Receives language + isRTL as plain props from the client Footer compositor.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { cn } from '@/lib/cn';
 import type { NavLink } from '@/lib/data/nav';
 
@@ -30,7 +30,7 @@ export default function FooterLinkColumn({ header, links, language, isRTL }: Foo
       <ul className="space-y-3">
         {links.map((link) => (
           <li key={link.href + link.en}>
-            <Link
+            <LocaleLink
               href={link.href}
               className={cn(
                 // text-muted ensures no active-state leakage — footer links are never red
@@ -39,7 +39,7 @@ export default function FooterLinkColumn({ header, links, language, isRTL }: Foo
               )}
             >
               {link[language]}
-            </Link>
+            </LocaleLink>
           </li>
         ))}
       </ul>

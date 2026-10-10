@@ -8,7 +8,7 @@
  * FeaturedProductCard. No autoplay; cards cascade in once on scroll.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from '@phosphor-icons/react';
 import Container from '@/components/layout/Container';
@@ -48,7 +48,7 @@ export default function ProductsSection() {
         {/* ── View all ────────────────────────────────────────── */}
         <div className="mt-8 flex justify-end">
           {/* min-h-11 = 44px touch target; explicit red so the a:hover base rule can't recolour it */}
-          <Link
+          <LocaleLink
             href="/upvc"
             className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand-red hover:text-brand-red-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-silver-material"
           >
@@ -58,7 +58,7 @@ export default function ProductsSection() {
               aria-hidden="true"
               className="transition-[translate] duration-300 rtl:-scale-x-100 ltr:group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
             />
-          </Link>
+          </LocaleLink>
         </div>
       </Container>
     </section>

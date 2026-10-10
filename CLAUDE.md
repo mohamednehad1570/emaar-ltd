@@ -16,6 +16,21 @@ Phosphor Icons. Deployed on Vercel.
 - Breadcrumbs were removed site-wide — never add them back.
 - All content is static (no Sanity, no CMS) — a custom CMS will replace `lib/data/` after launch.
 
+## Locale architecture (Batch L — the URL is the language)
+- English at unprefixed URLs (`/upvc`), Arabic at `/ar/…` (`/ar/upvc`). Every page lives under `app/[locale]/` (`generateStaticParams` → en + ar, `dynamicParams = false`); nested routes (e.g. `/products/[slug]`) prerender both locales × all slugs. All pages must stay ○/● in the build — never read headers()/cookies() in a page or layout.
+- `proxy.ts` (Next 16's middleware): `/ar…` passes through; `/en…` 308s to the unprefixed path (one English URL); every other page path is REWRITTEN to `/en/…` (address bar unchanged). It skips `api/`, `_next/`, `images/` and any path with a file extension. No Accept-Language detection, no cookie, no auto-redirect. It also stamps the `x-site-locale` request header — read ONLY by the 404.
+- Document: `components/layout/SiteShell.tsx` renders `<html lang dir>` + providers + header/footer for a locale. `app/[locale]/layout.tsx` uses it for pages; `app/global-not-found.tsx` (experimental `globalNotFound`) uses it for every 404 (unknown path, unknown slug, file-like miss) with the locale from `x-site-locale` — server-rendered, 404 status, localized. Don't add `not-found.tsx` files: a nested one is only client-rendered (`__next_error__` shell), and a root one reading headers() makes every page dynamic.
+- Language state: `LanguageProvider locale={…}` from the route — no localStorage, no toggle state. `useLanguage()` / `useTranslation()` (t(en, ar)) are unchanged for components. Server components read the locale from params via `routeLocale(params)` (lib/i18n/routeLocale.ts).
+- Pathname in client chrome: `useLocalePathname()` (lib/i18n) — never `usePathname()` directly: English pages are prerendered at `/en/x` but served at `/x`, so the raw value differs between server and browser (hydration mismatch). The hook strips the prefix on both sides.
+- Links: **raw internal links are FORBIDDEN** — no `next/link` import outside `components/ui/LocaleLink.tsx`, no `<a href="/…">`. Use `<LocaleLink href="/upvc#glass">` (prefixes for the current language, keeps query + hash; `locale` prop targets the other language). `Button` localizes its own internal `href`. Data files (nav.ts, footerLinks.ts, homeFeatured.ts) keep unprefixed paths; `localizePath(path, locale)` (lib/i18n/localizePath.ts) is the one prefixing function. Programmatic navigation must go through `localizePath` too.
+- Language toggle (`LangToggle`): the current language is a label; the other is a crawlable `<a hreflang>` to the same page in that language, carrying query + hash (`/upvc#glass` ↔ `/ar/upvc#glass`). Its click is a full document load (fresh server lang/dir; browser lands on the hash or the top).
+- Metadata: every page's `generateMetadata` takes the locale and goes through `pageMetadata(key, locale, path)` / `generatePageMetadata({ locale, … })` (lib/seo/metadata.ts): localized title/description (`PAGE_META` in lib/data/pageMeta.ts), canonical = self, `alternates.languages` en / ar / x-default (= English URL), OG locale en_AE / ar_AE. Brand suffix per locale from the layout's title.template. `app/sitemap.ts` lists every page in both languages with alternates; `app/robots.ts` points to it. JSON-LD (lib/seo/jsonld.ts) takes the locale (localized name/description + `inLanguage`). Absolute URLs only via `SITE_URL` / `absoluteUrl()` in lib/seo/site.ts (`NEXT_PUBLIC_SITE_URL`, default https://emaarupvc.ae).
+- New page checklist: add `app/[locale]/<route>/page.tsx` with `generateMetadata` (locale-aware), a `PAGE_META` entry, and a sitemap row.
+
+## RTL mirroring spec (to implement in the NEXT batch — NOT yet in effect)
+Arabic is a full mirror of English: header (logo right, nav right-to-left, actions left), nav/dropdowns/overlay (slides from left), heroes (image/text/scrim/legend swap sides), tabs, cards, grids, gallery order, footer columns, lightbox panel + arrows, icons/chevrons, breadcrumbs, forms, StickyQuoteBar, pictograms and hotspot diagrams (pins mirror x → 100−x). Only these keep their orientation: bidi text rules (numbers, phone numbers, codes, Latin words read LTR inside Arabic) and unflippable artwork (logo artwork, product photos).
+(Until that batch lands, the "never mirror" rules in the Header, Pictograms and Type page sections below still apply.)
+
 ## Footer (components/layout/footer/)
 - Split into focused sub-files: `FooterBrand` (logo+tagline+social), `FooterLinkColumn` (desktop column header+links, server), `FooterContact` (email/phone/WhatsApp/CTA, client), `FooterAccordion` (mobile accordion, client), `FooterBottomBar` (copyright bar, server), `footerLinks.ts` (COLUMNS+SOCIAL data), `Footer.tsx` (thin compositor, client).
 - Products column links from `PRODUCT_LINKS` in `lib/data/nav.ts` (same source as the header) — never duplicate.
@@ -27,7 +42,7 @@ Phosphor Icons. Deployed on Vercel.
 
 ## Header (components/Header.tsx + components/layout/Header*, LogoPlate, StickyQuoteBar)
 - Physical layout is FIXED in EN and AR — never mirror it: `[LogoPlate] … uPVC · Aluminum · Projects · Technical · About▾ · Contact … EN|ع · WhatsApp · [Request Quote]`. The bar row is dir="ltr"; each label (NavLabel) and the About panel set their own dir. No Home tab, no mega-menu, no material dropdowns, no wordmark beside the logo.
-- Nav data: `NAV` in lib/data/nav.ts (order + labels). app/layout.tsx calls `buildHeaderNav()` (lib/data/headerNav.ts) on the server and passes plain `HeaderNavData` (material labels, slug → materials for the active underline, slug → EN name for WhatsApp) to Header / StickyQuoteBar — never import lib/data/catalog into client chrome (it would ship the whole catalog).
+- Nav data: `NAV` in lib/data/nav.ts (order + labels). components/layout/SiteShell.tsx calls `buildHeaderNav()` (lib/data/headerNav.ts) on the server and passes plain `HeaderNavData` (material labels, slug → materials for the active underline, slug → EN name for WhatsApp) to Header / StickyQuoteBar — never import lib/data/catalog into client chrome (it would ship the whole catalog).
 - ≥1024: HeaderNav. uPVC → /upvc and Aluminum → /aluminum are plain links (no chevron, no panel). Only About has a panel (HeaderDropdown): hover-intent + click/Enter/Space; Esc / outside click / route change close. Active underline (red): material landing page or any /products/[slug] that material offers (both underline for shared types). 1024–1279: WhatsApp is icon-only.
 - <1024: logo · [768–1023: EN|ع + WhatsApp icon] · burger → HeaderMobileOverlay + MobileDrillNav (drillPanels.ts). uPVC / Aluminum are plain rows (active by the same material rule); only About drills. The overlay shows EN|ع at every width <1024.
 - Bar: 72px at every breakpoint and scroll state (`--header-h`). Rest = white + 0.5px border-light; homepage = transparent over the hero (white labels, `onDark`); after 48px scroll (back below 16px) = frosted white/80 + silver border.
@@ -36,12 +51,13 @@ Phosphor Icons. Deployed on Vercel.
 - Use `top-(--header-h)` / `pt-(--header-h)` for things under the bar — never hard-code 72. html has scroll-padding-top: calc(var(--header-h) + 16px).
 - StickyQuoteBar (<1024 only, mounted once in layout): appears past 60% of the first viewport, hidden while the overlay is open (`useMobileNavOpen`). Footer reserves `--quote-bar-h` + safe-area at its end.
 - EmaarLogo (mark + name) is footer-only. Name: EN "Emaar International Industry" (≥768) / "Emaar Int. Ind." (<768), AR "إعمار الدولية للصناعة". "L.L.C." / "ذ.م.م" appear ONLY in the footer copyright line.
-- Page titles: `generatePageMetadata` returns the bare title; the brand suffix comes only from app/layout.tsx's `title.template` (the home page sets an absolute title because the template doesn't apply to its own segment).
+- Page titles: `generatePageMetadata` returns the bare title; the brand suffix comes only from app/[locale]/layout.tsx's per-locale `title.template` (" — Emaar International" / " — إعمار الدولية") (the home page sets an absolute title because the template doesn't apply to its own segment).
 
 ## Routing rules
-- Material pages: `/upvc`, `/aluminum`. Product types: 22 shared static pages at `/products/[slug]` (generateStaticParams from `lib/data/catalog`, `dynamicParams = false`). Type links (material pages, footer, home) come from the catalog selectors — never hand-write type hrefs.
+- Every route below also exists at `/ar/…` (see Locale architecture); paths here are written locale-neutral.
+- Material pages: `/upvc`, `/aluminum`. Product types: 22 shared static pages at `/products/[slug]` (generateStaticParams from `lib/data/catalog`, `dynamicParams = false`; ×2 locales). Type links (material pages, footer, home) come from the catalog selectors — never hand-write type hrefs.
 - No glass or accessories pages — they are Options tabs on the material pages: `/upvc#glass`, `/upvc#accessories` (same hashes on `/aluminum`). Projects stay hash anchors (`/projects#residential|#commercial`).
-- Old routes 308 in next.config.ts: `/products` → `/`, `/products/upvc/*` → `/upvc`, `/products/aluminum/*` → `/aluminum`, `/products/glass/*` → `/upvc#glass`, `/accessories/*` → `/upvc#accessories`. Internal links must never hit these redirects.
+- Old routes 308 in next.config.ts: `/products` → `/`, `/products/upvc/*` → `/upvc`, `/products/aluminum/*` → `/aluminum`, `/products/glass/*` → `/upvc#glass`, `/accessories/*` → `/upvc#accessories` — each with an `/ar` twin (`/ar/products/glass` → `/ar/upvc#glass`, `/ar/products` → `/ar`). Redirects run before proxy.ts. Internal links must never hit these redirects.
 - Type slugs `upvc`, `aluminum`, `glass` are reserved (they'd be shadowed by the redirects) — enforced by `npx tsx scripts/validate-catalog.ts`; run it after any catalog edit.
 
 ## Material page (/upvc, /aluminum → components/catalog/material/*)
@@ -84,7 +100,7 @@ Phosphor Icons. Deployed on Vercel.
 - Bilingual: every string needs { en: '...', ar: '...' }; in client components use `useTranslation()` from LanguageContext instead of inlining `(en, ar) => language === 'en' ? en : ar`
 - RTL: useLanguage() → isRTL, use rtl: Tailwind prefix for directional overrides
 - Page-width wrapper: use `<Container>` from `@/components/layout/Container` — never repeat max-w-7xl + padding inline
-- **Browser-only state (localStorage, location.hash)**: use `useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)`. `getServerSnapshot` must return the SSR default (e.g. `'en'`, `'all'`) — React uses it for BOTH SSR and hydration reconciliation, so the server HTML and first client render agree. `subscribe` is called only in the browser; `getSnapshot` reads the real source. To write: update the real source (localStorage / window.location.hash) and call each listener in the Set. See `contexts/LanguageContext.tsx` and `components/projects/useProjectHashFilter.ts` for the full pattern.
+- **Browser-only state (localStorage, location.hash)**: use `useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)`. `getServerSnapshot` must return the SSR default (e.g. `'en'`, `'all'`) — React uses it for BOTH SSR and hydration reconciliation, so the server HTML and first client render agree. `subscribe` is called only in the browser; `getSnapshot` reads the real source. To write: update the real source (localStorage / window.location.hash) and call each listener in the Set. See `components/layout/LangToggle.tsx` (URL suffix store) and `components/projects/useProjectHashFilter.ts` for the full pattern. Never use `useSearchParams()` in a statically rendered tree: it bails the component out of SSR (empty HTML before JS) — read the query in the browser through this pattern instead.
 - **FORBIDDEN**: `useState(() => { if (typeof window === 'undefined') return default; return localStorage.getItem(...); })` — this lazy-initializer SSR guard looks safe but is hydration-unsafe: the server returns the default, the client returns the stored value, React sees a mismatch. Use `useSyncExternalStore` instead.
 
 ## Colors (hard rules — no lookup needed)
@@ -128,7 +144,7 @@ Phosphor Icons. Deployed on Vercel.
 
 ## WhatsApp CTAs
 - All page "Request Quote" buttons → getWhatsAppURL({ page: '...' })
-- Header "Request Quote" → href="/contact" only
+- Header "Request Quote" → href="/contact" only (Button prefixes it to /ar/contact on Arabic pages)
 - WhatsApp links: target="_blank" rel="noopener noreferrer"
 - WHATSAPP_NUMBER constant in lib/whatsapp.ts — placeholder until client confirms
 
@@ -149,7 +165,7 @@ Phosphor Icons. Deployed on Vercel.
   light-bg buttons inside dark sections
 - Numerals in RTL: force dir="ltr" on number elements so digits stay left-to-right
 - Framer Motion owns all animations — no CSS transitions on animated elements
-- prefers-reduced-motion: MotionProvider handles this globally via reducedMotion="user" — no per-component useReducedMotion() needed. Exception: LanguageTransition.tsx calls useReducedMotion() explicitly because the crossfade is triggered by user action (not scroll/mount) and must be skippable independently of MotionConfig
+- prefers-reduced-motion: MotionProvider handles this globally via reducedMotion="user" — no per-component useReducedMotion() needed. (LanguageTransition.tsx and its crossfade were removed in Batch L — switching language is a page navigation now)
 - contact API (app/api/contact/route.ts) uses Resend; RESEND_API_KEY must be set in Vercel env vars
 - Project categories: residential | commercial (anchors #residential / #commercial).
 - Ghost buttons on dark/image overlays: use `hover:bg-brand-red hover:border-brand-red hover:text-white` — NOT `hover:bg-white hover:text-brand-dark`. White fill on a dark overlay is invisible and wastes the hover state; brand-red is the correct CTA fill everywhere
@@ -164,16 +180,17 @@ Phosphor Icons. Deployed on Vercel.
 - `npm run verify:ui` runs the Playwright check suite against `BASE_URL` (default `http://localhost:3123`).
 - Prerequisites: `npm run build && npx next start -p 3123` (production build on port 3123).
 - Optional: `npm run verify:ui -- --screenshots ./screenshots/verify` saves full-page screenshots.
-- Covers (50 checks as of phase D-R2):
-  - catalog: type card counts + links, deep-link tabs (#glass/#accessories), hash/history behaviour, no-mechanism type rendering
-  - layout: no blue outside swatches, no horizontal scroll at 390px AR, tab min-height ≥44px, hotspot pin tab order, no mirroring in AR
-  - hydration: Arabic pre-seeded via addInitScript → no hydration errors, html dir=rtl lang=ar (/, /upvc, /projects, /products/hinged-doors)
-  - language flash: DCL dir vs post-load dir per page (INFORMATIONAL — always passes, logged as detail)
-  - hash filter: /projects#residential → Residential filter active, grid non-empty
-  - footer 390px EN+AR: all links 200/exempt; accordion keyboard Enter→open / Space→close
+- EN checks run on `/…`, AR checks on `/ar/…` loaded directly (no toggle clicks, no localStorage).
+- Covers (85 checks as of Batch L):
+  - catalog: type card links (EN /products/…, AR /ar/products/…), deep-link tabs EN+AR (#glass/#accessories, by `data-tab`), tab hash keeps the locale prefix + no history push, no-mechanism type rendering
+  - layout: no blue outside swatches (/upvc, /ar/upvc), no horizontal scroll at 390px (/ar/upvc), tab min-height ≥44px, hotspot pin tab order, no mirroring on /ar/products/single-sash-windows
+  - hydration: zero hydration errors + html dir/lang on /ar, /ar/upvc, /ar/projects, /ar/products/hinged-doors and their EN twins
+  - hash filter: /projects#residential and /ar/projects#residential
+  - footer 390px EN (/) + AR (/ar): all links 200/exempt, AR links /ar-prefixed; accordion keyboard Enter→open / Space→close
   - top-hung pictogram: indicator apex y<20 (hinge at top), free-edge y>40
-- Script files: `scripts/verify-ui.ts` (entry), `scripts/verify-ui/runner.ts` (helpers), `scripts/verify-ui/checks-catalog.ts`, `scripts/verify-ui/checks-layout.ts`, `scripts/verify-ui/checks-hydration.ts`.
-- Pixel diff (before/after): `npx tsx scripts/verify-diff.ts` — requires HEAD on 3123 and baseline on 3124. Output: table of page/vp/lang → diff% + explanation.
+  - locale (no JS — raw HTTP HTML): /ar, /ar/upvc, /ar/products/hinged-doors, /ar/projects + EN twins → lang/dir, H1 script, hreflang en/ar/x-default, canonical = self; redirects (/en/upvc → /upvc, legacy + /ar twins); toggle href keeps the hash (/upvc#glass ↔ /ar/upvc#glass) and its click lands on the Glass tab in RTL; sitemap lists both locales 1:1 with alternates; 404s are localized with status 404
+- Script files: `scripts/verify-ui.ts` (entry), `scripts/verify-ui/runner.ts` (helpers), `checks-catalog.ts`, `checks-layout.ts`, `checks-hydration.ts`, `checks-footer.ts`, `checks-pictogram.ts`, `checks-locale.ts` (all in `scripts/verify-ui/`).
+- Pixel diff (before/after): `npx tsx scripts/verify-diff.ts` — HEAD on 3123, baseline worktree on 3124. Baseline AR = click ع; HEAD AR = /ar/… direct. Same settle routine both sides (reduced motion, fonts, scroll-through). Output: screenshots/batchL/diff/{baseline,head,delta} + table of capture → diff%, raw px, max channel delta, height, y-range.
 - Exit code 0 = all pass, 1 = any failure. Output is a pass/fail table.
 
 ## Git (after every zero-error build)

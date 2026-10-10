@@ -3,22 +3,20 @@ import { contactData } from '@/lib/data/uiStrings';
 import ContactPageClient from '@/components/contact/ContactPageClient';
 import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
-import { generatePageMetadata } from '@/lib/seo/metadata';
+import { pageMetadata } from '@/lib/seo/metadata';
+import { routeLocale, type LocaleParams } from '@/lib/i18n/routeLocale';
 import { localBusinessSchema } from '@/lib/seo/jsonld';
 import JsonLd from '@/components/seo/JsonLd';
 
-export function generateMetadata(): Metadata {
-  return generatePageMetadata({
-    title:       'Contact Us — Get a Quote',
-    description: 'Contact Emaar International for custom quotes on uPVC windows, aluminium doors, glass systems, and facades. Reach us by phone, WhatsApp, or our online form.',
-    path:        '/contact',
-  });
+export async function generateMetadata({ params }: { params: LocaleParams }): Promise<Metadata> {
+  return pageMetadata('contact', await routeLocale(params), '/contact');
 }
 
-export default function ContactPage() {
+export default async function ContactPage({ params }: { params: LocaleParams }) {
+  const locale = await routeLocale(params);
   return (
     <>
-      <JsonLd data={localBusinessSchema()} />
+      <JsonLd data={localBusinessSchema(locale)} />
       <PageHeader
         eyebrow="Get in Touch"
         title="Contact Us"

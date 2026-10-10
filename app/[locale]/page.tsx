@@ -1,5 +1,5 @@
 /**
- * app/page.tsx — Homepage (server component)
+ * app/[locale]/page.tsx — Homepage (server component)
  *
  * Fully static — section copy lives in each client section; certificate
  * trust chips come from lib/data/certificates.ts.
@@ -10,7 +10,9 @@
 
 import type { Metadata } from 'next';
 import { CERTIFICATES } from '@/lib/data/certificates';
-import { generatePageMetadata } from '@/lib/seo/metadata';
+import { pageMetadata } from '@/lib/seo/metadata';
+import { routeLocale, type LocaleParams } from '@/lib/i18n/routeLocale';
+import { BRAND, PAGE_META } from '@/lib/data/pageMeta';
 import { organizationSchema } from '@/lib/seo/jsonld';
 import JsonLd from '@/components/seo/JsonLd';
 import HeroSection           from '@/components/home/HeroSection';
@@ -21,21 +23,19 @@ import WhyChooseUsSection    from '@/components/home/WhyChooseUsSection';
 import CTASection            from '@/components/home/CTASection';
 import SectionDivider        from '@/components/home/SectionDivider';
 
-export function generateMetadata(): Metadata {
-  const meta = generatePageMetadata({
-    title:       'Premium uPVC & Aluminum Windows and Doors',
-    description: 'Emaar International manufactures premium uPVC and aluminum windows, doors, facades, and glass systems in the UAE. Trusted by contractors, architects, and developers across the Gulf.',
-    path:        '/',
-  });
-  // The root layout's title.template only applies to child segments, never to this
+export async function generateMetadata({ params }: { params: LocaleParams }): Promise<Metadata> {
+  const locale = await routeLocale(params);
+  const meta = pageMetadata('home', locale, '/');
+  // The layout's title.template only applies to child segments, never to this
   // page (same segment) — so the brand suffix is added here, once, as an absolute title
-  return { ...meta, title: { absolute: 'Premium uPVC & Aluminum Windows and Doors — Emaar International' } };
+  return { ...meta, title: { absolute: `${PAGE_META.home.title[locale]} — ${BRAND[locale]}` } };
 }
 
-export default function HomePage() {
+export default async function HomePage({ params }: { params: LocaleParams }) {
+  const locale = await routeLocale(params);
   return (
     <>
-    <JsonLd data={organizationSchema()} />
+    <JsonLd data={organizationSchema(locale)} />
     <div className="min-h-screen">
 
       <HeroSection />

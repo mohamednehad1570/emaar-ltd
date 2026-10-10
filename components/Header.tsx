@@ -15,7 +15,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+import { useLocalePathname } from '@/lib/i18n/useLocalePathname';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL, whatsAppContextFor } from '@/lib/whatsapp';
 import { setMobileNavOpen } from '@/lib/hooks/useMobileNavOpen';
@@ -39,7 +39,8 @@ interface HeaderProps {
 
 export default function Header({ nav, whatsappNumber }: HeaderProps) {
   const { language, isRTL } = useLanguage();
-  const pathname = usePathname();
+  // Locale-neutral ('/upvc' on /upvc and /ar/upvc) — matches the unprefixed nav hrefs
+  const pathname = useLocalePathname();
   const reduce = useReducedMotion();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);

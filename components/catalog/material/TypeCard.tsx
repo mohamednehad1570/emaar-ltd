@@ -3,13 +3,13 @@
 /**
  * components/catalog/material/TypeCard.tsx
  *
- * One product type in the material page grid — the whole card is a single <Link> to
+ * One product type in the material page grid — the whole card is a single <LocaleLink> to
  * /products/[slug]. Hover lift / border / shadow / image zoom are Tailwind `hover:` utilities
  * (same split as FeaturedProductCard) so they never fight Framer's entrance transform and only
  * fire on hover-capable pointers; MaterialTypes passes `reduceMotion` to drop the movement.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { useTranslation } from '@/contexts/LanguageContext';
 import { CATALOG_PAGE_COPY, TYPE_PAGE_COPY } from '@/lib/data/uiStrings';
 import { TYPE_HERO_TAG } from '@/lib/data/placeholderPhotos';
@@ -29,7 +29,7 @@ export default function TypeCard({ type, reduceMotion }: { type: TypeCardView; r
   });
 
   return (
-    <Link
+    <LocaleLink
       href={`/products/${type.slug}`}
       data-testid="type-card"
       className={cn(
@@ -96,6 +96,6 @@ export default function TypeCard({ type, reduceMotion }: { type: TypeCardView; r
           ))}
         </div>
       </div>
-    </Link>
+    </LocaleLink>
   );
 }

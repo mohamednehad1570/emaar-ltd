@@ -8,7 +8,7 @@
  * The header row is always dir="ltr", hence the physical left anchor.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import Image from 'next/image';
 import { cn } from '@/lib/cn';
 
@@ -25,7 +25,7 @@ interface LogoPlateProps {
 
 export default function LogoPlate({ language, onNavigate }: LogoPlateProps) {
   return (
-    <Link
+    <LocaleLink
       href="/"
       onClick={onNavigate}
       aria-label={LABEL[language]}
@@ -47,6 +47,6 @@ export default function LogoPlate({ language, onNavigate }: LogoPlateProps) {
           <Image src="/emaar-logo.png" alt="" fill sizes="112px" loading="eager" fetchPriority="high" className="object-contain" />
         </div>
       </div>
-    </Link>
+    </LocaleLink>
   );
 }

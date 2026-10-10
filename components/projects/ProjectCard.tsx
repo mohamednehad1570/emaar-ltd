@@ -4,7 +4,7 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { MapPin } from '@phosphor-icons/react';
 import ImageSlot from '@/components/ui/ImageSlot';
-import { fadeUp, viewportOnce } from '@/lib/motion';
+import { fadeUp, revealOnce } from '@/lib/motion';
 import type { DisplayProject } from '@/lib/types';
 
 interface ProjectCardProps {
@@ -19,10 +19,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     return (
         <motion.article
             layout
-            variants={fadeUp}
-            initial={shouldReduce ? {} : 'hidden'}
-            whileInView={shouldReduce ? undefined : 'visible'}
-            viewport={shouldReduce ? undefined : viewportOnce}
+            // SSR-safe reveal (server-rendered grid): initial is always 'hidden'
+            {...revealOnce(shouldReduce)}
             exit={shouldReduce ? {} : { opacity: 0, scale: 0.9, transition: { duration: 0.25 } }}
             className="group relative"
         >

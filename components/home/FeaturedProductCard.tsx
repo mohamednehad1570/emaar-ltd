@@ -4,7 +4,7 @@
  * components/home/FeaturedProductCard.tsx
  *
  * One tile in the homepage 4-up featured products grid. The whole card is a
- * single <Link> so the hit area is the full tile (well over 44px).
+ * single <LocaleLink> so the hit area is the full tile (well over 44px).
  *
  * Motion split:
  *   • Entrance (opacity / y) lives on the parent motion.li — Framer Motion.
@@ -14,7 +14,7 @@
  *     @media (hover: hover)).
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { ArrowRight } from '@phosphor-icons/react';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { HOME_PRODUCT_TAG } from '@/lib/data/placeholderPhotos';
@@ -33,7 +33,7 @@ export default function FeaturedProductCard({ product, reduceMotion }: FeaturedP
   const name = t(product.name.en, product.name.ar);
 
   return (
-    <Link
+    <LocaleLink
       href={product.href}
       aria-label={name}
       className={cn(
@@ -101,6 +101,6 @@ export default function FeaturedProductCard({ product, reduceMotion }: FeaturedP
           />
         </span>
       </div>
-    </Link>
+    </LocaleLink>
   );
 }

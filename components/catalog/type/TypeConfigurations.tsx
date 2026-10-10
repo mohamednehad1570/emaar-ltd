@@ -8,7 +8,7 @@
  * quiet link at the end; the data itself stays in lib/data/catalog.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { ArrowRight } from '@phosphor-icons/react';
 import { useTranslation } from '@/contexts/LanguageContext';
 import { TYPE_PAGE_COPY as COPY } from '@/lib/data/uiStrings';
@@ -50,14 +50,14 @@ export default function TypeConfigurations({ materials }: { materials: MaterialC
 
         {/* ── Quiet link to the full technical data ─────────── */}
         {/* min-h-11 keeps the 44px touch target without making the link look like a button */}
-        <Link
+        <LocaleLink
           href="/technical"
           className="mt-10 inline-flex items-center gap-2 min-h-11 text-sm font-semibold text-ink-body underline-offset-4 hover:text-ink-heading hover:underline"
         >
           {t(COPY.techLink.en, COPY.techLink.ar)}
           {/* Arrow flips in RTL so it points along the reading direction (← in Arabic) */}
           <ArrowRight size={16} aria-hidden="true" className="rtl:rotate-180" />
-        </Link>
+        </LocaleLink>
       </Container>
     </section>
   );

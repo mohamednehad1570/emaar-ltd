@@ -6,7 +6,7 @@
  * mobile brand header. Desktop uses framer-motion hover lift; mobile uses plain <a>.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { motion } from 'framer-motion';
 import EmaarLogo from '@/components/ui/EmaarLogo';
 import { useTranslation } from '@/contexts/LanguageContext';
@@ -26,12 +26,14 @@ export default function FooterBrand({ mobile = false }: FooterBrandProps) {
   );
 
   return (
-    <div className="space-y-6">
+    // Mobile keeps the pre-split 20px rhythm (old gap-5); desktop column keeps 24px.
+    // A shared space-y-6 pushed the mobile tagline/social row down 4/8px (D-R2 diff).
+    <div className={mobile ? 'space-y-5' : 'space-y-6'}>
       {/* ── Logo ────────────────────────────────────────────── */}
       {/* size=40 is quieter than the 52px header mark — fitting the footer's lower visual weight */}
-      <Link href="/" className="inline-flex" aria-label="Emaar International Industry — home">
+      <LocaleLink href="/" className="inline-flex" aria-label={l('Emaar International Industry — home', 'إعمار الدولية للصناعة — الصفحة الرئيسية')}>
         <EmaarLogo textSize="sm" />
-      </Link>
+      </LocaleLink>
 
       {/* ── Tagline ─────────────────────────────────────────── */}
       {/* Desktop column is narrower (220px); mobile has more room (max-w-sm) */}

@@ -2,24 +2,27 @@
  * scripts/verify-ui/checks-catalog.ts
  * Checks specific to the product catalog: type cards, deep-link tabs,
  * hash/history behaviour, and no-mechanism type rendering.
+ * EN runs on the unprefixed URLs, AR on /ar/… loaded directly (Batch L locale URLs).
  */
 
 import type { Page } from 'playwright';
 import type { CheckResult } from './runner';
 import { goto } from './runner';
 
-/** Type cards on material pages link to /products/[slug] and appear in known quantities. */
+/** Type cards on material pages link to /products/[slug] (/ar/products/[slug] in Arabic). */
 export async function checkTypeCards(page: Page, base: string): Promise<CheckResult[]> {
   const results: CheckResult[] = [];
-  for (const material of ['upvc', 'aluminum'] as const) {
+  for (const material of ['upvc', 'aluminum', 'ar/upvc'] as const) {
     await goto(page, `${base}/${material}`);
+    // Card links must stay in the page's language
+    const prefix = material.startsWith('ar/') ? '/ar/products/' : '/products/';
     const links = await page.$$eval(
-      'a[href^="/products/"]',
+      `a[data-testid="type-card"][href^="${prefix}"]`,
       (els) => els.map((el) => (el as HTMLAnchorElement).href),
     );
     const unique = [...new Set(links)];
     results.push({
-      name:   `${material}: type cards link to /products/[slug]`,
+      name:   `${material}: type cards link to ${prefix}[slug]`,
       passed: unique.length >= 4,
       detail: unique.length < 4 ? `only ${unique.length} unique product links found` : undefined,
     });
@@ -37,27 +40,29 @@ export async function checkTypeCards(page: Page, base: string): Promise<CheckRes
 }
 
 /**
- * Deep-link tabs: /upvc#glass activates the Glass tab; /upvc#accessories the Accessories tab.
- * The check reads aria-selected on the tab button whose value matches the hash.
+ * Deep-link tabs: /upvc#glass activates the Glass tab; /upvc#accessories the Accessories tab;
+ * same on /ar/…. Reads data-tab (the tab id) so EN and AR share one assertion.
  */
 export async function checkDeepLinkTabs(page: Page, base: string): Promise<CheckResult[]> {
   const cases = [
-    { url: `${base}/upvc#glass`,        label: 'Glass' },
-    { url: `${base}/upvc#accessories`,  label: 'Accessories' },
-    { url: `${base}/aluminum#glass`,    label: 'Glass' },
+    { url: `${base}/upvc#glass`,           tab: 'glass' },
+    { url: `${base}/upvc#accessories`,     tab: 'accessories' },
+    { url: `${base}/aluminum#glass`,       tab: 'glass' },
+    { url: `${base}/ar/upvc#glass`,        tab: 'glass' },
+    { url: `${base}/ar/aluminum#accessories`, tab: 'accessories' },
   ];
   const results: CheckResult[] = [];
-  for (const { url, label } of cases) {
+  for (const { url, tab } of cases) {
     await goto(page, url);
     // Wait for JS to activate the tab (LineTabs fires on mount via useOptionsHash)
     await page.waitForTimeout(400);
     const selected = await page.$eval(
       `[role="tab"][aria-selected="true"]`,
-      (el) => el.textContent?.trim() ?? '',
+      (el) => `${el.getAttribute('data-tab')}|${el.textContent?.trim() ?? ''}`,
     ).catch(() => '');
     results.push({
-      name:   `deep-link ${url.replace(base, '')}: tab "${label}" active`,
-      passed: selected.toLowerCase().includes(label.toLowerCase()),
+      name:   `deep-link ${url.replace(base, '')}: tab "${tab}" active`,
+      passed: selected.split('|')[0] === tab,
       detail: selected ? `active tab is "${selected}"` : 'no active tab found',
     });
   }
@@ -69,24 +74,29 @@ export async function checkDeepLinkTabs(page: Page, base: string): Promise<Check
  * Navigate to /upvc, click the Designs tab, check history.length unchanged.
  */
 export async function checkTabHashHistory(page: Page, base: string): Promise<CheckResult[]> {
-  await goto(page, `${base}/upvc`);
-  const lengthBefore = await page.evaluate(() => history.length);
-  await page.click('[role="tab"]:has-text("Designs")');
-  await page.waitForTimeout(200);
-  const lengthAfter  = await page.evaluate(() => history.length);
-  const hash         = await page.evaluate(() => location.hash);
-  return [
-    {
-      name:   'tab click: hash set to #designs',
-      passed: hash === '#designs',
-      detail: `hash is "${hash}"`,
-    },
-    {
-      name:   'tab click: no history push (replaceState)',
-      passed: lengthAfter === lengthBefore,
-      detail: `history.length ${lengthBefore} → ${lengthAfter}`,
-    },
-  ];
+  const results: CheckResult[] = [];
+  for (const path of ['/upvc', '/ar/upvc']) {
+    await goto(page, `${base}${path}`);
+    const lengthBefore = await page.evaluate(() => history.length);
+    await page.click('[role="tab"][data-tab="designs"]');
+    await page.waitForTimeout(200);
+    const lengthAfter  = await page.evaluate(() => history.length);
+    const { pathname, hash } = await page.evaluate(() => ({ pathname: location.pathname, hash: location.hash }));
+    results.push(
+      {
+        // The hash rewrite must keep the locale prefix (/ar/upvc#designs, never /upvc#designs)
+        name:   `tab click ${path}: URL ${path}#designs`,
+        passed: hash === '#designs' && pathname === path,
+        detail: `URL is "${pathname}${hash}"`,
+      },
+      {
+        name:   `tab click ${path}: no history push (replaceState)`,
+        passed: lengthAfter === lengthBefore,
+        detail: `history.length ${lengthBefore} → ${lengthAfter}`,
+      },
+    );
+  }
+  return results;
 }
 
 /**

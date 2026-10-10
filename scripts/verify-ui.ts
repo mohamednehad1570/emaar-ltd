@@ -2,7 +2,8 @@
  * scripts/verify-ui.ts
  *
  * Playwright UI verification for the Emaar website.
- * Covers stable checks from Batches 5, 6 and 6R + Phase D and D-R2 additions.
+ * Covers stable checks from Batches 5, 6 and 6R + Phase D, D-R2 and Batch L (locale URLs:
+ * English at /…, Arabic at /ar/… — AR checks load the /ar URL directly).
  *
  * Usage:
  *   npm run verify:ui                          # against http://localhost:3123
@@ -33,12 +34,16 @@ import {
   checkHotspotTabOrder,
   checkNoARMirror,
 } from './verify-ui/checks-layout';
+import { checkHydration, checkHashFilter } from './verify-ui/checks-hydration';
+import { checkFooter390 } from './verify-ui/checks-footer';
+import { checkTopHungPictogram } from './verify-ui/checks-pictogram';
 import {
-  checkHydrationAR,
-  checkHashFilter,
-  checkFooter390,
-  checkTopHungPictogram,
-} from './verify-ui/checks-hydration';
+  checkNoJsHtml,
+  checkLocaleRedirects,
+  checkToggleHref,
+  checkSitemap,
+  checkNotFound,
+} from './verify-ui/checks-locale';
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -79,13 +84,20 @@ async function main() {
       ...(await checkNoARMirror(page, BASE_URL)),
       ...(await checkNoHScroll(page, BASE_URL)),
 
-      // ── Phase D-R2 checks (hydration, flash, hash-filter, footer, pictogram) ─
-      // These checks open their own browser contexts so they don't pollute the
-      // shared page's language state.
-      ...(await checkHydrationAR(browser, BASE_URL)),
+      // ── Phase D-R2 checks (hydration, hash-filter, footer, pictogram) ────────
+      // Hydration + footer open their own browser contexts per page.
+      ...(await checkHydration(browser, BASE_URL)),
       ...(await checkHashFilter(page, BASE_URL)),
       ...(await checkFooter390(browser, BASE_URL)),
       ...(await checkTopHungPictogram(page, BASE_URL)),
+
+      // ── Batch L checks (locale URLs) ─────────────────────────────────────────
+      // page.request = plain HTTP: raw server HTML, no JavaScript executed
+      ...(await checkNoJsHtml(page.request, BASE_URL)),
+      ...(await checkLocaleRedirects(page.request, BASE_URL)),
+      ...(await checkToggleHref(page, BASE_URL)),
+      ...(await checkSitemap(page.request, BASE_URL)),
+      ...(await checkNotFound(page.request, BASE_URL)),
     ];
 
     // Optional full-page screenshot of key pages after all checks
@@ -93,6 +105,7 @@ async function main() {
       for (const [url, name] of [
         [`${BASE_URL}/`, 'home'],
         [`${BASE_URL}/upvc`, 'upvc'],
+        [`${BASE_URL}/ar/upvc`, 'upvc-ar'],
         [`${BASE_URL}/products/casement-windows`, 'casement-windows'],
       ]) {
         await page.setViewportSize({ width: 1440, height: 900 });

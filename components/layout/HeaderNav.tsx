@@ -15,10 +15,10 @@
  */
 
 import React, { useEffect, useRef } from 'react';
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CaretDown } from '@phosphor-icons/react';
-import { usePathname } from 'next/navigation';
+import { useLocalePathname } from '@/lib/i18n/useLocalePathname';
 import { NAV, describeEntry, type HeaderNavData } from '@/lib/data/nav';
 import { useHoverIntent } from '@/lib/hooks/useHoverIntent';
 import { cn } from '@/lib/cn';
@@ -42,7 +42,8 @@ interface HeaderNavProps {
 }
 
 export default function HeaderNav({ nav, language, onDark }: HeaderNavProps) {
-  const pathname = usePathname();
+  // Locale-neutral ('/upvc' on /upvc and /ar/upvc) — matches the unprefixed nav hrefs
+  const pathname = useLocalePathname();
   const { openKey, enter, leave, hold, toggle, close, open } = useHoverIntent<string>();
   const root = useRef<HTMLElement>(null);
   const triggers = useRef(new Map<string, HTMLButtonElement>());
@@ -99,9 +100,9 @@ export default function HeaderNav({ nav, language, onDark }: HeaderNavProps) {
               {/* ── Trigger — button for the About panel, Link for everything else ── */}
               {href ? (
                 // aria-current only on the exact page — a type page is "inside" uPVC, not uPVC itself
-                <Link href={href} aria-current={pathname === href ? 'page' : undefined} className={cls}>
+                <LocaleLink href={href} aria-current={pathname === href ? 'page' : undefined} className={cls}>
                   <NavLabel label={label} language={language} />
-                </Link>
+                </LocaleLink>
               ) : (
                 <button
                   type="button"

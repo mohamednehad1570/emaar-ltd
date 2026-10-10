@@ -14,11 +14,12 @@
  */
 
 import React, { useState } from 'react'
-import Link from 'next/link'
+import LocaleLink from '@/components/ui/LocaleLink'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 import { usePanelStack } from '@/lib/hooks/usePanelStack'
 import { followSamePageHash } from '@/lib/navigateHash'
+import { localizePath } from '@/lib/i18n/localizePath'
 import { cn } from '@/lib/cn'
 import { isMaterialActive, type HeaderNavData } from '@/lib/data/nav'
 import { getPanel, panelHrefs, type PanelId } from './drillPanels'
@@ -61,8 +62,9 @@ export default function MobileDrillNav({ nav, language, isRTL, pathname, onClose
   const branchActive = (to: PanelId) =>
     panelHrefs(to, nav).some(h => { const b = h.split('#')[0]; return b !== '/' && pathname.startsWith(b) })
 
+  // followSamePageHash compares against the real address bar, so it needs the prefixed href
   function follow(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
-    if (followSamePageHash(href)) e.preventDefault()
+    if (followSamePageHash(localizePath(href, language))) e.preventDefault()
     onClose()
   }
 
@@ -119,14 +121,14 @@ export default function MobileDrillNav({ nav, language, isRTL, pathname, onClose
               return (
                 // Index-prefixed: a branch's "View all" may share an href with one of its items
                 <li key={`${i}:${row.link.href}`}>
-                  <Link
+                  <LocaleLink
                     href={row.link.href}
                     onClick={(e) => follow(e, row.link.href)}
                     aria-current={active ? 'page' : undefined}
                     className={cn(ROW, tone(active))}
                   >
                     {row.link[language]}
-                  </Link>
+                  </LocaleLink>
                 </li>
               )
             })}

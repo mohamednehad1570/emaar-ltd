@@ -14,55 +14,56 @@ import { goto, minHeightAtLeast } from './runner';
  * that is not inside a [data-swatch] or [data-color-option] container.
  */
 export async function checkNoBlue(page: Page, base: string): Promise<CheckResult[]> {
-  await goto(page, `${base}/upvc`);
-  // page.evaluate stringifies the callback — avoid named inner functions so that
-  // esbuild's __name() helper is never inserted (it is undefined in the browser).
-  const blueFound = await page.evaluate(`(function() {
-    var els = Array.from(document.querySelectorAll('*')).slice(0, 400);
-    for (var i = 0; i < els.length; i++) {
-      var el = els[i];
-      if (el.closest('[data-swatch],[data-color-option]')) continue;
-      var st = getComputedStyle(el);
-      var props = ['color', 'backgroundColor', 'borderColor'];
-      for (var j = 0; j < props.length; j++) {
-        var val = st.getPropertyValue(props[j]);
-        var m = val.match(/rgb\\((\\d+),\\s*(\\d+),\\s*(\\d+)\\)/);
-        if (!m) continue;
-        var r = +m[1]/255, g = +m[2]/255, b = +m[3]/255;
-        var max = Math.max(r,g,b), min = Math.min(r,g,b);
-        if (max === min) continue;
-        var d = max - min;
-        var hh = max===r ? (g-b)/d+(g<b?6:0) : max===g ? (b-r)/d+2 : (r-g)/d+4;
-        var hDeg = (hh/6)*360;
-        if (hDeg >= 200 && hDeg <= 260) {
-          var nums = val.match(/\\d+/g).map(Number);
-          if (nums.length >= 3 && Math.max.apply(null,nums) - Math.min.apply(null,nums) > 40)
-            return el.tagName + '.' + String(el.className).slice(0, 60);
+  const results: CheckResult[] = [];
+  for (const path of ['/upvc', '/ar/upvc']) {
+    await goto(page, `${base}${path}`);
+    // page.evaluate stringifies the callback — avoid named inner functions so that
+    // esbuild's __name() helper is never inserted (it is undefined in the browser).
+    const blueFound = await page.evaluate(`(function() {
+      var els = Array.from(document.querySelectorAll('*')).slice(0, 400);
+      for (var i = 0; i < els.length; i++) {
+        var el = els[i];
+        if (el.closest('[data-swatch],[data-color-option]')) continue;
+        var st = getComputedStyle(el);
+        var props = ['color', 'backgroundColor', 'borderColor'];
+        for (var j = 0; j < props.length; j++) {
+          var val = st.getPropertyValue(props[j]);
+          var m = val.match(/rgb\\((\\d+),\\s*(\\d+),\\s*(\\d+)\\)/);
+          if (!m) continue;
+          var r = +m[1]/255, g = +m[2]/255, b = +m[3]/255;
+          var max = Math.max(r,g,b), min = Math.min(r,g,b);
+          if (max === min) continue;
+          var d = max - min;
+          var hh = max===r ? (g-b)/d+(g<b?6:0) : max===g ? (b-r)/d+2 : (r-g)/d+4;
+          var hDeg = (hh/6)*360;
+          if (hDeg >= 200 && hDeg <= 260) {
+            var nums = val.match(/\\d+/g).map(Number);
+            if (nums.length >= 3 && Math.max.apply(null,nums) - Math.min.apply(null,nums) > 40)
+              return el.tagName + '.' + String(el.className).slice(0, 60);
+          }
         }
       }
-    }
-    return null;
-  })()`);
-  // A string-form evaluate is typed `unknown` — narrow it instead of asserting:
-  // the script returns either the offending element's tag/class string or null.
-  const offender = typeof blueFound === 'string' ? blueFound : null;
-  return [{
-    name:   'no blue colors outside swatches (/upvc)',
-    passed: blueFound === null,
-    detail: offender ?? (blueFound === null ? undefined : `unexpected result: ${String(blueFound)}`),
-  }];
+      return null;
+    })()`);
+    // A string-form evaluate is typed `unknown` — narrow it instead of asserting:
+    // the script returns either the offending element's tag/class string or null.
+    const offender = typeof blueFound === 'string' ? blueFound : null;
+    results.push({
+      name:   `no blue colors outside swatches (${path})`,
+      passed: blueFound === null,
+      detail: offender ?? (blueFound === null ? undefined : `unexpected result: ${String(blueFound)}`),
+    });
+  }
+  return results;
 }
 
 /**
- * No horizontal scroll at 390px viewport in Arabic mode.
+ * No horizontal scroll at 390px viewport in Arabic (/ar/upvc loaded directly).
  * Checks that document.documentElement.scrollWidth ≤ clientWidth.
  */
 export async function checkNoHScroll(page: Page, base: string): Promise<CheckResult[]> {
   await page.setViewportSize({ width: 390, height: 844 });
-  await goto(page, `${base}/upvc`);
-  // Switch to Arabic via the lang toggle
-  await page.click('[aria-label*="Arabic"],[data-lang="ar"],[data-testid="lang-toggle"]').catch(() => {});
-  await page.waitForTimeout(400);
+  await goto(page, `${base}/ar/upvc`);
   const overflow = await page.evaluate(() => ({
     scroll: document.documentElement.scrollWidth,
     client: document.documentElement.clientWidth,
@@ -70,7 +71,7 @@ export async function checkNoHScroll(page: Page, base: string): Promise<CheckRes
   // Reset viewport
   await page.setViewportSize({ width: 1440, height: 900 });
   return [{
-    name:   'no horizontal scroll at 390px AR (/upvc)',
+    name:   'no horizontal scroll at 390px AR (/ar/upvc)',
     passed: overflow.scroll <= overflow.client + 1,
     detail: `scrollWidth ${overflow.scroll} > clientWidth ${overflow.client}`,
   }];
@@ -118,10 +119,8 @@ export async function checkHotspotTabOrder(page: Page, base: string): Promise<Ch
  * single-sash-windows: valid casement slug with a real CasementDiagram SVG.
  */
 export async function checkNoARMirror(page: Page, base: string): Promise<CheckResult[]> {
-  await goto(page, `${base}/products/single-sash-windows`);
-  // Toggle to AR — the button's exact aria-label is "Switch to Arabic"
-  await page.click('[aria-label="Switch to Arabic"]').catch(() => {});
-  await page.waitForTimeout(600);
+  // Arabic URL loaded directly — the server already renders dir=rtl on <html>
+  await goto(page, `${base}/ar/products/single-sash-windows`);
 
   const heroDir = await page.$eval(
     'section[dir="ltr"]',

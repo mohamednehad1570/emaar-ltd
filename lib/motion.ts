@@ -135,3 +135,15 @@ export function featuredItem(reduce: boolean): Variants {
 
 /** Featured grids fire once, when 30% of the grid is on screen */
 export const featuredViewport = { once: true, amount: 0.3 } as const;
+
+/**
+ * Server-rendered scroll reveal. initial is ALWAYS 'hidden' — the server can't know the
+ * motion preference, so a reduce-only initial={} would hydrate over SSR'd opacity:0 and
+ * never clear it. Reduced motion reveals on mount instead of on scroll; the label (not a
+ * target object) still propagates to child variants, and MotionProvider drops the rise.
+ */
+export function revealOnce(reduce: boolean | null) {
+  return reduce
+    ? { variants: fadeUp, initial: 'hidden' as const, animate: 'visible' as const }
+    : { variants: fadeUp, initial: 'hidden' as const, whileInView: 'visible' as const, viewport: viewportOnce };
+}

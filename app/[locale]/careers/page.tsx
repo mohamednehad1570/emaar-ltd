@@ -3,13 +3,13 @@ import { SITE_SETTINGS } from '@/lib/data/siteSettings'
 import CareersPageClient from '@/components/careers/CareersPageClient'
 import PageHeader from '@/components/ui/PageHeader'
 import { careersData } from '@/lib/data/uiStrings'
-import { generatePageMetadata } from '@/lib/seo/metadata'
+import type { Metadata } from 'next'
+import { pageMetadata } from '@/lib/seo/metadata'
+import { routeLocale, type LocaleParams } from '@/lib/i18n/routeLocale'
 
-export const metadata = generatePageMetadata({
-  title:       'Careers',
-  description: 'Join Emaar International\'s growing team. Explore open positions in fenestration manufacturing, installation, and sales across the UAE.',
-  path:        '/careers',
-})
+export async function generateMetadata({ params }: { params: LocaleParams }): Promise<Metadata> {
+  return pageMetadata('careers', await routeLocale(params), '/careers')
+}
 
 export default function CareersPage() {
   return (

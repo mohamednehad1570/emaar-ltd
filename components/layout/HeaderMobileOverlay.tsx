@@ -7,7 +7,7 @@
  * EN|ع on mobile (tablet keeps it in the bar), then WhatsApp + Request Quote.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { X, ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
@@ -61,10 +61,10 @@ export default function HeaderMobileOverlay({ id, nav, waHref, onClose, language
       >
         {/* ── Top bar: logo + close — same 72px as the header bar ── */}
         <div className="flex items-center justify-between px-5 border-b border-border-light shrink-0 h-(--header-h)">
-          <Link href="/" onClick={onClose} aria-label={t('Emaar International — Home', 'إعمار الدولية — الصفحة الرئيسية')}
+          <LocaleLink href="/" onClick={onClose} aria-label={t('Emaar International — Home', 'إعمار الدولية — الصفحة الرئيسية')}
             className="relative block size-12 rounded-full bg-white border border-border-light">
             <Image src="/emaar-logo.png" alt="" fill sizes="48px" className="object-contain p-1" />
-          </Link>
+          </LocaleLink>
           <button
             type="button"
             onClick={onClose}

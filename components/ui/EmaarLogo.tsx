@@ -38,7 +38,7 @@ export default function EmaarLogo({ showText = true, textSize = 'sm', className 
         <Image
           src="/emaar-logo.png"
           // Decorative beside the visible name; carries the name when shown alone
-          alt={showText ? '' : BRAND_NAME.en}
+          alt={showText ? '' : BRAND_NAME[language]}
           fill
           sizes="72px"
           className="object-contain"

@@ -1,11 +1,16 @@
 'use client';
 
-/** Syncs the /projects type filter with #residential / #commercial and re-scrolls after the grid reflows. */
+/**
+ * Syncs the /projects type filter with #residential / #commercial and re-scrolls after the
+ * grid reflows. Also reads the ?category= / ?material= deep-link params — in the browser
+ * only, so ProjectsGrid needs no useSearchParams (which would bail it out of SSR).
+ */
 
 import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
 import { PROJECT_TYPES, type ProjectType } from '@/lib/data/projectContent';
 
 export type SectorFilter = 'all' | ProjectType;
+export type MaterialFilter = 'all' | 'upvc' | 'aluminum';
 
 const isProjectType = (v: string): v is ProjectType =>
   (PROJECT_TYPES as readonly string[]).includes(v);
@@ -30,7 +35,21 @@ function hashGetServerSnapshot(): SectorFilter {
 }
 // ──────────────────────────────────────────────────────────────────────────────
 
-export function useProjectHashFilter(categoryParam: string | null) {
+// ── ?material= deep link ──────────────────────────────────────────────────────
+// The query never changes without a navigation, so there is nothing to subscribe to.
+// Server snapshot null → SSR and hydration render 'all'; the client then applies the param.
+const noSubscribe = () => () => {};
+function materialParamSnapshot(): MaterialFilter | null {
+  const m = new URLSearchParams(window.location.search).get('material');
+  return m === 'upvc' || m === 'aluminum' ? m : null;
+}
+const materialParamServerSnapshot = (): MaterialFilter | null => null;
+
+export function useMaterialParam(): MaterialFilter | null {
+  return useSyncExternalStore(noSubscribe, materialParamSnapshot, materialParamServerSnapshot);
+}
+
+export function useProjectHashFilter() {
   const sector = useSyncExternalStore(hashSubscribe, hashGetSnapshot, hashGetServerSnapshot);
   const pendingScroll = useRef<ProjectType | null>(null);
   // Guard so the ?category= init effect runs only once across re-renders.
@@ -40,13 +59,14 @@ export function useProjectHashFilter(categoryParam: string | null) {
   // to a hash so the external store picks it up without a hydration conflict.
   useEffect(() => {
     if (hasSetInitialHash.current) return;
+    const categoryParam = new URLSearchParams(window.location.search).get('category');
     if (!categoryParam || !isProjectType(categoryParam)) return;
     if (window.location.hash.replace('#', '')) return; // hash already present
     hasSetInitialHash.current = true;
     history.replaceState(null, '', `#${categoryParam}`);
     // replaceState does not fire 'hashchange' — notify the store manually.
     window.dispatchEvent(new Event('hashchange'));
-  }, [categoryParam]);
+  }, []);
 
   // Changing the filter re-renders the grid and moves the anchor, so the
   // browser's own jump lands in the wrong place — scroll again after layout.

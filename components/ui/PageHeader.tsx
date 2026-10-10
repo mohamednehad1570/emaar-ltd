@@ -13,6 +13,7 @@
 
 import { cn } from '@/lib/cn';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { localizePath } from '@/lib/i18n/localizePath';
 
 interface AnchorLink {
   label: string;
@@ -103,7 +104,8 @@ export default function PageHeader({
             {anchors.map((anchor, i) => (
               <a
                 key={anchor.href}
-                href={anchor.href}
+                // Same-page '#hash' passes through; a '/path#hash' gets the language prefix
+                href={localizePath(anchor.href, language)}
                 className={cn(
                   'text-sm text-ink-muted hover:text-ink-heading transition-colors shrink-0',
                   'min-h-[44px] inline-flex items-center',

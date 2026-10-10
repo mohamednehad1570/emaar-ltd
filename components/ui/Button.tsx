@@ -6,9 +6,13 @@
 // size:    sm (header compact) | md (default) | lg (hero / full-section CTAs)
 // icon:    rendered after children; caller adds rotate-180 for RTL arrows as needed —
 //          parent dir="rtl" from section wrapper reverses flex automatically.
+// href:    site paths ('/contact') are prefixed for the current language here, so every
+//          CTA stays in its locale (/ar/contact); wa.me / mailto / '#' pass through untouched.
 
 import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { localizePath } from '@/lib/i18n/localizePath';
 import { cn } from '@/lib/cn';
 
 export interface ButtonProps {
@@ -73,6 +77,7 @@ export default function Button({
   children, className, icon, disabled, type = 'button',
 }: ButtonProps) {
   const shouldReduce = useReducedMotion();
+  const { language } = useLanguage();
 
   const classes = cn(BASE, SIZES[size], VARIANTS[variant], disabled && DISABLED, className);
 
@@ -92,7 +97,7 @@ export default function Button({
   if (href) {
     return (
       <motion.a
-        href={href}
+        href={localizePath(href, language)}
         target={target}
         rel={rel}
         onClick={onClick}

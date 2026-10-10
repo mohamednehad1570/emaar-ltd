@@ -6,7 +6,7 @@
  * and the red "Request Quote" CTA. Used in both the desktop column and mobile accordion.
  */
 
-import Link from 'next/link';
+import LocaleLink from '@/components/ui/LocaleLink';
 import { ArrowRight, Envelope, MapPin, Phone, WhatsappLogo } from '@phosphor-icons/react';
 import { useTranslation } from '@/contexts/LanguageContext';
 
@@ -82,11 +82,11 @@ export default function FooterContact({ language, isRTL, phone, email, whatsappN
 
       {/* Request Quote — the red CTA link */}
       <li className="pt-1.5">
-        <Link href="/contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-brand-red hover:text-brand-red-dark transition-colors duration-200">
+        <LocaleLink href="/contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-brand-red hover:text-brand-red-dark transition-colors duration-200">
           {l('Request a Quote', 'اطلب عرضاً')}
           {/* Arrow points left (←) in RTL — achieved with rotate-180 */}
           <ArrowRight size={14} weight="bold" className={`shrink-0 ${isRTL ? 'rotate-180' : ''}`} />
-        </Link>
+        </LocaleLink>
       </li>
     </ul>
   );

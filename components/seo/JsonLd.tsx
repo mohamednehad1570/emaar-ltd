@@ -1,6 +1,6 @@
 interface JsonLdProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: Record<string, any>;
+  // Any JSON-serializable schema.org object — built by lib/seo/jsonld.ts
+  data: Record<string, unknown>;
 }
 
 export default function JsonLd({ data }: JsonLdProps) {

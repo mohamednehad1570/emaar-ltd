@@ -13,7 +13,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from 'framer-motion';
-import { usePathname } from 'next/navigation';
+import { useLocalePathname } from '@/lib/i18n/useLocalePathname';
 import { ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { getWhatsAppURL, whatsAppContextFor } from '@/lib/whatsapp';
@@ -32,7 +32,8 @@ interface Props {
 export default function StickyQuoteBar({ whatsappNumber, nav }: Props) {
   const { isRTL } = useLanguage();
   const t = useTranslation();
-  const pathname = usePathname();
+  // Locale-neutral ('/upvc' on /upvc and /ar/upvc) — matches the unprefixed nav hrefs
+  const pathname = useLocalePathname();
   const reduce = useReducedMotion();
   const navOpen = useMobileNavOpen();
   const { scrollY } = useScroll();
