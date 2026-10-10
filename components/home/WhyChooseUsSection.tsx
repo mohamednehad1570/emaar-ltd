@@ -143,7 +143,7 @@ export default function WhyChooseUsSection() {
                 className={`
                   flex-1 px-8 py-10 md:py-0
                   flex flex-col
-                  ${isRTL ? 'items-end text-right' : 'items-start text-left'}
+                  items-start text-start
                   ${idx < t.items.length - 1 ? 'border-b border-white/[0.08] pb-10 mb-0 md:border-b-0 md:pb-0' : ''}
                 `}
               >

@@ -8,6 +8,7 @@ import type { Metadata } from 'next';
 import AboutPageClient from '@/components/about/AboutPageClient';
 import { AWARDS } from '@/lib/data/awards';
 import PageHeader from '@/components/ui/PageHeader';
+import { PAGE_HEADERS } from '@/lib/data/uiStrings';
 import { pageMetadata } from '@/lib/seo/metadata';
 import { routeLocale, type LocaleParams } from '@/lib/i18n/routeLocale';
 
@@ -18,13 +19,7 @@ export async function generateMetadata({ params }: { params: LocaleParams }): Pr
 export default function AboutPage() {
   return (
     <>
-      <PageHeader
-        eyebrow="Company"
-        title="About Emaar"
-        titleAr="عن إعمار"
-        description="26 years manufacturing uPVC, Aluminum, and Glass systems in the UAE."
-        chips={['Est. 2000', 'SAIF Zone Sharjah', '50,000 sqft factory']}
-      />
+      <PageHeader copy={PAGE_HEADERS.about} />
       <AboutPageClient awards={AWARDS} />
     </>
   );

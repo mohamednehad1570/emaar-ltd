@@ -28,7 +28,7 @@ export default function Footer({ phone, email, whatsappNumber }: FooterProps) {
   const { language, isRTL } = useLanguage();
   const l = useTranslation();
 
-  const contactProps = { language, isRTL, phone, email, whatsappNumber };
+  const contactProps = { language, phone, email, whatsappNumber };
 
   return (
     <footer className="bg-white" dir={isRTL ? 'rtl' : 'ltr'}>

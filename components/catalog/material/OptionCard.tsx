@@ -13,6 +13,7 @@ import { useTranslation } from '@/contexts/LanguageContext';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { cn } from '@/lib/cn';
 import type { OptionCardView } from '../types';
+import LtrText from '@/components/ui/LtrText';
 
 interface OptionCardProps {
   card: OptionCardView;
@@ -48,7 +49,7 @@ export default function OptionCard({ card, reduceMotion, onOpen }: OptionCardPro
       {card.meta && <span className="block text-xs text-ink-body">{t(card.meta.en, card.meta.ar)}</span>}
       {/* Inner dir=ltr keeps printed codes (K7610L · 7640M) in catalog order inside Arabic,
           while the outer block still aligns to the reading-start edge */}
-      {card.code && <span className="block text-xs text-ink-muted tabular-nums"><span dir="ltr">{card.code}</span></span>}
+      {card.code && <span className="block text-xs text-ink-muted tabular-nums"><LtrText>{card.code}</LtrText></span>}
 
       {card.dots && (
         <span className="mt-1.5 flex flex-wrap gap-1.5">

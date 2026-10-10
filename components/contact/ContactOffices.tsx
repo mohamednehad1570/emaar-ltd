@@ -11,7 +11,7 @@ interface Props {
 
 /** Office location cards from the static contact copy. */
 export default function ContactOffices({ staticData }: Props) {
-  const { language, isRTL } = useLanguage();
+  const { language } = useLanguage();
   const l = useTranslation();
   const t = staticData[language];
 
@@ -36,12 +36,12 @@ export default function ContactOffices({ staticData }: Props) {
               <h3 className="font-bold text-ink-heading mb-4 text-base">{office.name}</h3>
               <ul className="space-y-3 text-sm text-ink-body">
 
-                <li className={`flex items-start gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <li className={`flex items-start gap-2`}>
                   <MapPin size={15} className="text-brand-silver shrink-0 mt-0.5" aria-hidden="true" />
                   <span>{office.address}</span>
                 </li>
 
-                <li className={`flex items-start gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <li className={`flex items-start gap-2`}>
                   <Phone size={15} className="text-brand-silver shrink-0 mt-0.5" aria-hidden="true" />
                   {/* dir=ltr keeps digits LTR in Arabic mode */}
                   <a href={`tel:${office.phone}`} dir="ltr" className="tabular-nums hover:text-brand-red transition-colors">
@@ -49,7 +49,7 @@ export default function ContactOffices({ staticData }: Props) {
                   </a>
                 </li>
 
-                <li className={`flex items-start gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <li className={`flex items-start gap-2`}>
                   <Clock size={15} className="text-brand-silver shrink-0 mt-0.5" aria-hidden="true" />
                   <span>{office.hours}</span>
                 </li>

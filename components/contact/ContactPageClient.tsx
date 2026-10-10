@@ -29,7 +29,7 @@ export default function ContactPageClient({ settings, staticData }: Props) {
   const shouldReduce = useReducedMotion();
   const t = staticData[language];
 
-  const whatsappHref = getWhatsAppURL({ page: 'contact' }, settings.whatsappNumber);
+  const whatsappHref = getWhatsAppURL({ page: 'contact', locale: language }, settings.whatsappNumber);
   // SiteSettings has no hours field — the static contact copy owns them
   const workingHours = t.contact.phone.hours;
 

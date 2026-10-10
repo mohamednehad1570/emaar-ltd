@@ -3,13 +3,14 @@
 /**
  * components/catalog/type/TypeHero.tsx
  *
- * Product-type hero. Physical layout is FIXED in EN and AR (the section is dir=ltr):
- *  • ≥768 — 16:9 image at 85% width on the physical right; a TRANSPARENT text panel
- *    straddles the image's left edge (~25% outside, ~75% over it), vertically centred.
- *    Readability comes from a warm off-white scrim on the image's physical left side.
+ * Product-type hero. Layout is logical — Arabic is the exact mirror of English:
+ *  • ≥768 — 16:9 image at 85% width on the inline-end side (right in EN, left in AR); a
+ *    TRANSPARENT text panel straddles the image's inline-start edge (~25% outside, ~75% over
+ *    it), vertically centred. Readability comes from a warm off-white scrim on that side.
  *  • <768 — full-bleed 4:3 image; panel overlaps its lower edge, scrim rises from the bottom.
- *  • Legend — no plate; sits on a radial corner scrim at the image's physical bottom-right.
- * Only the panel/legend text follows the language (dir + text-start). Scrims use the
+ *  • Legend — no plate; sits on a radial corner scrim at the image's bottom inline-end corner
+ *    (bottom-right in EN, bottom-left in AR).
+ * Panel/legend text aligns with text-start. Scrims use the
  * off-white token (245,244,240) — never black — so they read as light, not shadow.
  *
  * Entrance: image fade 0.5s; panel fade + 16px rise 0.5s after 0.1s. MotionConfig
@@ -17,7 +18,7 @@
  */
 
 import { motion } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { TYPE_PAGE_COPY as COPY } from '@/lib/data/uiStrings';
 import Container from '@/components/layout/Container';
@@ -43,8 +44,8 @@ export default function TypeHero({ view }: { view: TypePageView }) {
     .join(' · ');
 
   return (
-    // dir=ltr pins the image/panel/legend geometry; never mirrored in Arabic
-    <section dir="ltr" className="bg-off-white pt-[calc(var(--header-h)+var(--logo-overhang)+32px)] pb-12 md:pb-16">
+    // Geometry is logical (ms-auto / start-[5%] / end-0) — Arabic is the exact mirror
+    <section className="bg-off-white pt-[calc(var(--header-h)+var(--logo-overhang)+32px)] pb-12 md:pb-16">
       <Container>
         <div className="relative">
           {/* ── Image ───────────────────────────────────────── */}
@@ -53,7 +54,8 @@ export default function TypeHero({ view }: { view: TypePageView }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="relative -mx-4 sm:-mx-6 md:mx-0 md:w-[85%] md:ml-auto overflow-hidden md:rounded-card"
+            data-hero-image
+            className="relative -mx-4 sm:-mx-6 md:mx-0 md:w-[85%] md:ms-auto overflow-hidden md:rounded-card"
           >
             <ImageSlot
               src={view.heroImage}
@@ -66,9 +68,10 @@ export default function TypeHero({ view }: { view: TypePageView }) {
               placeholderKey={`${view.slug}-g0`}
               placeholderTag={TYPE_HERO_TAG[view.group]}
             />
-            {/* ── Scrims (physical, never mirrored) ─────────────── */}
-            {/* ≥768: 0.85 held to 30% (under the panel's text column), clear by 55% */}
-            <div aria-hidden="true" className="hidden md:block absolute inset-0 bg-linear-to-r from-off-white/85 from-30% to-transparent to-55%" />
+            {/* ── Scrims (mirror with the panel side) ──────────── */}
+            {/* ≥768: 0.85 held to 30% (under the panel's text column), clear by 55%; runs from the
+                panel side — left→right in EN, right→left in AR */}
+            <div aria-hidden="true" className="hidden md:block absolute inset-0 bg-linear-to-r rtl:bg-linear-to-l from-off-white/85 from-30% to-transparent to-55%" />
             {/* <768: same strength rising from the bottom edge the panel overlaps */}
             <div aria-hidden="true" className="md:hidden absolute inset-0 bg-linear-to-t from-off-white/85 from-30% to-transparent to-65%" />
 
@@ -79,14 +82,17 @@ export default function TypeHero({ view }: { view: TypePageView }) {
             {/* <768 the panel text covers the bottom 96px (-mt-24), so the legend lifts 96px (pb-28)
                 but the box still reaches the image bottom and the ellipse is centred 96px up —
                 it fades on downward instead of ending in a seam over the bottom scrim */}
-            <div className="absolute right-0 bottom-0 w-[280px] h-[276px] md:h-[180px] flex items-end justify-end p-4 pb-28 md:pb-4 bg-radial-[280px_180px_at_100%_calc(100%_-_96px)] md:bg-radial-[280px_180px_at_100%_100%] from-off-white/80 from-60% to-transparent to-100%">
+            {/* Corner = the image's inline-end bottom corner (right in EN, left in AR): end-0 moves
+                the box and --legend-x moves the ellipse centre with it (one radial class, no
+                rtl:/md: ordering contest) */}
+            <div data-hero-legend className="absolute end-0 bottom-0 w-[280px] h-[276px] md:h-[180px] flex items-end justify-end p-4 pb-28 md:pb-4 [--legend-x:100%] rtl:[--legend-x:0%] bg-radial-[280px_180px_at_var(--legend-x)_calc(100%_-_96px)] md:bg-radial-[280px_180px_at_var(--legend-x)_100%] from-off-white/80 from-60% to-transparent to-100%">
               <TypeLegend materials={view.materials} />
             </div>
           </motion.div>
 
           {/* ── Text panel ──────────────────────────────────── */}
-          {/* Desktop: 40%-wide column at left 5% → image edge (15%) cuts it at ~25% / 75% */}
-          <div className="relative -mt-24 md:mt-0 md:absolute md:inset-y-0 md:left-[5%] md:w-[40%] md:flex md:items-center">
+          {/* Desktop: 40%-wide column at inline-start 5% → image edge (15%) cuts it at ~25% / 75% */}
+          <div data-hero-panel className="relative -mt-24 md:mt-0 md:absolute md:inset-y-0 md:start-[5%] md:w-[40%] md:flex md:items-center">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -127,7 +133,7 @@ export default function TypeHero({ view }: { view: TypePageView }) {
                 size="md"
                 href={`/contact?product=${view.slug}`}
                 className="mt-6"
-                icon={<ArrowRight className={cn('w-4 h-4', isRTL && 'rotate-180')} aria-hidden="true" />}
+                icon={<ArrowForward className="w-4 h-4" aria-hidden="true" />}
               >
                 {t(COPY.requestQuote.en, COPY.requestQuote.ar)}
               </Button>

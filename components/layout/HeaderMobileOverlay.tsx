@@ -10,7 +10,8 @@
 import LocaleLink from '@/components/ui/LocaleLink';
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
-import { X, ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
+import { X, WhatsappLogo } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import type { HeaderNavData } from '@/lib/data/nav';
 import { useTranslation } from '@/contexts/LanguageContext';
 import MobileDrillNav from './MobileDrillNav';
@@ -96,7 +97,7 @@ export default function HeaderMobileOverlay({ id, nav, waHref, onClose, language
             </Button>
             <Button
               variant="primary" size="md" href="/contact" onClick={onClose} className="flex-1 px-4 whitespace-nowrap"
-              icon={<ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />}
+              icon={<ArrowForward size={16} weight="bold" />}
             >
               {t('Request Quote', 'اطلب عرضاً')}
             </Button>

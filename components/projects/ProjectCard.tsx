@@ -6,6 +6,7 @@ import { MapPin } from '@phosphor-icons/react';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { fadeUp, revealOnce } from '@/lib/motion';
 import type { DisplayProject } from '@/lib/types';
+import LtrText from '@/components/ui/LtrText';
 
 interface ProjectCardProps {
     project: DisplayProject;
@@ -58,7 +59,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                                 <>
                                     <span className="mx-2 text-text-muted">•</span>
                                     {/* dir=ltr keeps the year's digit order inside RTL text */}
-                                    <span dir="ltr">{project.year}</span>
+                                    <LtrText>{project.year}</LtrText>
                                 </>
                             )}
                         </div>

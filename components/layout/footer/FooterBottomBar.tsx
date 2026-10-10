@@ -16,7 +16,10 @@ export default function FooterBottomBar({ language }: FooterBottomBarProps) {
     ? `© ${year} إعمار الدولية للصناعة ذ.م.م. جميع الحقوق محفوظة.`
     : `© ${year} Emaar International Industry L.L.C. All rights reserved.`;
 
+  // AR badges machine-translated — needs native review
   const isoLabel = language === 'ar' ? 'معتمد ISO' : 'ISO Certified';
+  const uaeLabel = language === 'ar' ? 'الإمارات' : 'UAE';
+  const estLabel = language === 'ar' ? 'تأسست' : 'Est.';
 
   return (
     <div className="pt-6 border-t border-border-light flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -24,9 +27,9 @@ export default function FooterBottomBar({ language }: FooterBottomBarProps) {
 
       {/* Badge strip — purely decorative, no links */}
       <div className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-silver-dark select-none">
-        <span>UAE</span>
+        <span>{uaeLabel}</span>
         <span className="w-px h-3 bg-border-medium" aria-hidden="true" />
-        <span>Est. {year}</span>
+        <span>{estLabel} {year}</span>
         <span className="w-px h-3 bg-border-medium" aria-hidden="true" />
         <span>{isoLabel}</span>
       </div>

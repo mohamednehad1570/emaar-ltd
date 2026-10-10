@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage } from '@/contexts/LanguageContext';
 import Button from '@/components/ui/Button';
 import { whyChooseUsData } from '@/lib/data/uiStrings';
@@ -29,9 +29,9 @@ export default function CTASection() {
             {/* ghost on red-gradient section bg */}
             <Button
               variant="ghost" size="lg"
-              href={getWhatsAppURL({ page: 'why-choose-us' })}
+              href={getWhatsAppURL({ page: 'why-choose-us', locale: language })}
               target="_blank" rel="noopener noreferrer"
-              icon={<ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />}
+              icon={<ArrowForward className="w-5 h-5" />}
             >
               {t.cta.button}
             </Button>

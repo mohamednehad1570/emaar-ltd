@@ -17,7 +17,7 @@
 
 import React from 'react';
 import { motion , useReducedMotion } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL, WhatsAppContext } from '@/lib/whatsapp';
 import Button from '@/components/ui/Button';
@@ -29,7 +29,7 @@ interface CTASectionProps {
 export default function CTASection({ whatsappContext }: CTASectionProps) {
   const { language, isRTL } = useLanguage();
   const shouldReduce = useReducedMotion();
-  const whatsappHref = getWhatsAppURL(whatsappContext ?? { page: 'home' });
+  const whatsappHref = getWhatsAppURL({ ...(whatsappContext ?? { page: 'home' }), locale: language });
 
   const content = {
     en: {
@@ -94,7 +94,7 @@ export default function CTASection({ whatsappContext }: CTASectionProps) {
             variant="primary" size="lg"
             href={whatsappHref}
             target="_blank" rel="noopener noreferrer"
-            icon={<ArrowRight size={20} weight="bold" className={isRTL ? 'rotate-180' : ''} />}
+            icon={<ArrowForward size={20} weight="bold" />}
           >
             {t.button}
           </Button>

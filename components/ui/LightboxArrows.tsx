@@ -6,7 +6,7 @@
  * swap sides in Arabic together with their carets). 48px squares — above the 44px minimum.
  */
 
-import { CaretLeft, CaretRight } from '@phosphor-icons/react';
+import { CaretBack, CaretForward } from '@/components/ui/DirectionalIcon';
 import { useTranslation } from '@/contexts/LanguageContext';
 import { LIGHTBOX_COPY as COPY } from '@/lib/data/uiStrings';
 
@@ -18,10 +18,10 @@ export default function LightboxArrows({ onStep }: { onStep: (step: 1 | -1) => v
   return (
     <>
       <button type="button" onClick={() => onStep(-1)} aria-label={t(COPY.previous.en, COPY.previous.ar)} className={`${BTN} start-2 md:start-6`}>
-        <CaretLeft size={22} aria-hidden="true" className="rtl:rotate-180" />
+        <CaretBack size={22} aria-hidden="true" />
       </button>
       <button type="button" onClick={() => onStep(1)} aria-label={t(COPY.next.en, COPY.next.ar)} className={`${BTN} end-2 md:end-6`}>
-        <CaretRight size={22} aria-hidden="true" className="rtl:rotate-180" />
+        <CaretForward size={22} aria-hidden="true" />
       </button>
     </>
   );

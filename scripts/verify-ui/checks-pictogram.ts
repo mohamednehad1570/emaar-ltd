@@ -26,7 +26,8 @@ export async function checkTopHungPictogram(page: Page, base: string): Promise<C
   // (PictogramSvg renders it inside the 64px SVG on TypeIntro's 56px pictogram slot)
   const pathD = await page.$eval(
     // data-testid is not used — select by class; there is only one indicator per page
-    'svg[direction="ltr"] path[stroke-dasharray]',
+    // data-rtl-mirror marks every pictogram/diagram SVG; on this EN page it is unflipped
+    'svg[data-rtl-mirror] path[stroke-dasharray]',
     (el) => el.getAttribute('d') ?? '',
   ).catch(() => '');
 
@@ -34,7 +35,7 @@ export async function checkTopHungPictogram(page: Page, base: string): Promise<C
     return [{
       name:   'top-hung pictogram: indicator path found',
       passed: false,
-      detail: 'no stroke-dasharray path found inside direction=ltr SVG — pictogram may not be rendered',
+      detail: 'no stroke-dasharray path found inside a pictogram SVG — pictogram may not be rendered',
     }];
   }
 

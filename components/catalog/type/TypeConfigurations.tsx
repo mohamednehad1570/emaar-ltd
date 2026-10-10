@@ -9,7 +9,7 @@
  */
 
 import LocaleLink from '@/components/ui/LocaleLink';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useTranslation } from '@/contexts/LanguageContext';
 import { TYPE_PAGE_COPY as COPY } from '@/lib/data/uiStrings';
 import Container from '@/components/layout/Container';
@@ -56,7 +56,7 @@ export default function TypeConfigurations({ materials }: { materials: MaterialC
         >
           {t(COPY.techLink.en, COPY.techLink.ar)}
           {/* Arrow flips in RTL so it points along the reading direction (← in Arabic) */}
-          <ArrowRight size={16} aria-hidden="true" className="rtl:rotate-180" />
+          <ArrowForward size={16} aria-hidden="true" />
         </LocaleLink>
       </Container>
     </section>

@@ -54,8 +54,8 @@ export default function LangToggle({ onDark = false }: { onDark?: boolean }) {
   }
 
   return (
-    // dir=ltr keeps "EN | ع" in the same order in both languages
-    <div className="flex items-center" dir="ltr">
+    // Mirrors with the page: EN sits at the inline-start, so "EN | ع" in English and "ع | EN" in Arabic
+    <div className="flex items-center">
       {LANGS.map(({ lang, label, aria }, i) => (
         <React.Fragment key={lang}>
           {i > 0 && <span className={cn('text-xs select-none', onDark ? 'text-white/60' : 'text-dim')} aria-hidden="true">|</span>}

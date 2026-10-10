@@ -1,5 +1,6 @@
 import { AWARDS } from '@/lib/data/awards';
 import PageHeader from '@/components/ui/PageHeader';
+import { PAGE_HEADERS } from '@/lib/data/uiStrings';
 import AdvantagesSection from '@/components/why-choose-us/AdvantagesSection';
 import ProcessSection from '@/components/why-choose-us/ProcessSection';
 import WarrantySection from '@/components/why-choose-us/WarrantySection';
@@ -16,13 +17,7 @@ export async function generateMetadata({ params }: { params: LocaleParams }): Pr
 export default function WhyChooseUsPage() {
   return (
     <>
-      <PageHeader
-        eyebrow="Why Choose Us"
-        title="Built Different."
-        titleAr="نحن مختلفون"
-        description="German engineering standards. European hardware. 26 years in the UAE."
-        chips={['ISO 14001', 'DIN certified', 'UAE Municipality approved']}
-      />
+      <PageHeader copy={PAGE_HEADERS.whyChooseUs} />
       <div className="min-h-screen bg-off-white">
         <AdvantagesSection />
         <ProcessSection />

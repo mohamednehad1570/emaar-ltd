@@ -28,7 +28,7 @@ export default function FooterBrand({ mobile = false }: FooterBrandProps) {
   return (
     // Mobile keeps the pre-split 20px rhythm (old gap-5); desktop column keeps 24px.
     // A shared space-y-6 pushed the mobile tagline/social row down 4/8px (D-R2 diff).
-    <div className={mobile ? 'space-y-5' : 'space-y-6'}>
+    <div data-footer-brand className={mobile ? 'space-y-5' : 'space-y-6'}>
       {/* ── Logo ────────────────────────────────────────────── */}
       {/* size=40 is quieter than the 52px header mark — fitting the footer's lower visual weight */}
       <LocaleLink href="/" className="inline-flex" aria-label={l('Emaar International Industry — home', 'إعمار الدولية للصناعة — الصفحة الرئيسية')}>

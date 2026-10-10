@@ -74,7 +74,7 @@ export default function TypeCard({ type, reduceMotion }: { type: TypeCardView; r
 
       {/* ── Body ────────────────────────────────────────────── */}
       <div className="flex flex-1 flex-col p-3 md:p-4">
-        {/* Pictogram sits at the inline-end corner (left in AR); only its position flips, never the drawing */}
+        {/* Pictogram sits at the inline-end corner (left in AR); in Arabic the drawing mirrors too */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <h4 className="text-base md:text-lg font-bold leading-snug text-ink-heading">{name}</h4>

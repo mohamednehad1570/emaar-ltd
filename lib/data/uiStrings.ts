@@ -30,3 +30,5 @@ export type { FeaturedProduct, FeaturedProject } from './homeFeatured';
 export { CATALOG_PAGE_COPY, MATERIAL_PAGE_COPY, TYPE_PAGE_COPY } from './catalogCopy';
 
 export { LIGHTBOX_COPY } from './lightboxCopy';
+export { PAGE_HEADERS } from './pageHeaders';
+export type { PageHeaderCopy, PageHeaderChip } from './pageHeaders';

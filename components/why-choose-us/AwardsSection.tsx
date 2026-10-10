@@ -53,7 +53,7 @@ export default function AwardsSection({ awards }: AwardsSectionProps) {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className={`flex items-center gap-6 py-6 ${
                 i < awards.length - 1 ? 'border-b border-border-light' : ''
-              } ${isRTL ? 'flex-row-reverse' : ''}`}
+              }`}
             >
               {/* Year — gold text, awards only */}
               <span

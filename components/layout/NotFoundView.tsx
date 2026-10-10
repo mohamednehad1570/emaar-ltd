@@ -10,10 +10,12 @@
  * Design rules (CLAUDE.md): bg-off-white page, brand-red 404 numeral, 0px buttons.
  */
 
-import { House, ArrowRight } from '@phosphor-icons/react';
+import { House } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { PAGE_META } from '@/lib/data/pageMeta';
 import LocaleLink from '@/components/ui/LocaleLink';
+import LtrText from '@/components/ui/LtrText';
 
 export default function NotFoundView() {
   const { language, isRTL } = useLanguage();
@@ -23,9 +25,10 @@ export default function NotFoundView() {
     <div dir={isRTL ? 'rtl' : 'ltr'} className="min-h-screen bg-off-white flex items-center justify-center px-6 py-24">
       <div className="max-w-lg w-full text-center">
 
-        {/* 404 display number — brand-red, extrabold Cairo; digits stay LTR in Arabic */}
-        <p dir="ltr" className="text-[9rem] md:text-[11rem] font-extrabold font-cairo leading-none text-brand-red select-none mb-2">
-          404
+        {/* 404 display number — brand-red, extrabold Cairo; digits stay LTR in Arabic (LtrText) while
+            the block aligns to inline-start like every other block (left in EN, right in AR) */}
+        <p className="text-start text-[9rem] md:text-[11rem] font-extrabold font-cairo leading-none text-brand-red select-none mb-2">
+          <LtrText>404</LtrText>
         </p>
 
         {/* Red accent line — same pattern as section headings */}
@@ -61,7 +64,7 @@ export default function NotFoundView() {
           >
             {t('Contact Us', 'تواصل معنا')}
             {/* Arrow points along the reading direction (← in Arabic) */}
-            <ArrowRight size={18} weight="bold" className={isRTL ? 'rotate-180' : ''} />
+            <ArrowForward size={18} weight="bold" />
           </LocaleLink>
 
         </div>

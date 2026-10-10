@@ -2,10 +2,10 @@
 // Centered quote CTA section — off-white bg, primary "Request a Quote" + ghost WhatsApp
 
 import React from 'react';
-import { ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
+import { WhatsappLogo } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
-import { cn } from '@/lib/cn';
 import Button from '@/components/ui/Button';
 import Container from '@/components/layout/Container';
 
@@ -13,13 +13,13 @@ interface ProductDetailCTAProps {
   // Overrides the generic headline (type pages: "Planning a {type} project?")
   headline?: string;
   // Named product → WhatsApp message mentions it; omitted = generic product message
-  productName?: string;
+  productName?: { en: string; ar: string };
   quoteHref?: string;
 }
 
 export default function ProductDetailCTA({ headline, productName, quoteHref = '/contact' }: ProductDetailCTAProps = {}) {
   const { language, isRTL } = useLanguage();
-  const wa = getWhatsAppURL({ page: 'product-detail', productName });
+  const wa = getWhatsAppURL({ page: 'product-detail', locale: language, productName });
 
   return (
     <section
@@ -48,17 +48,14 @@ export default function ProductDetailCTA({ headline, productName, quoteHref = '/
           </p>
 
           {/* Button row — stacks vertically on mobile, horizontal on sm+ */}
-          {/* flex-row-reverse in RTL keeps reading-order correct for directional icons */}
-          <div className={cn(
-            'flex flex-col sm:flex-row items-center justify-center gap-4',
-            isRTL && 'sm:flex-row-reverse',
-          )}>
+          {/* dir=rtl from <html> mirrors the row on its own — no flex-row-reverse (that would undo it) */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             {/* Primary CTA — quote form on /contact (type pages append ?product=slug) */}
             <Button
               variant="primary"
               size="md"
               href={quoteHref}
-              icon={<ArrowRight className={cn('w-4 h-4', isRTL && 'rotate-180')} />}
+              icon={<ArrowForward className="w-4 h-4" />}
             >
               {language === 'en' ? 'Request a Quote' : 'اطلب عرض سعر'}
             </Button>

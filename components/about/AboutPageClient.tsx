@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Medal as Award } from '@phosphor-icons/react';
+import { Medal as Award } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { aboutData } from '@/lib/data/uiStrings';
 import { resolveIcon } from '@/lib/iconMap';
@@ -12,6 +13,7 @@ import ImageSlot from '@/components/ui/ImageSlot';
 import { IMAGES } from '@/lib/data/images';
 import Button from '@/components/ui/Button';
 import type { Award as AwardEntry } from '@/lib/types';
+import LtrText from '@/components/ui/LtrText';
 
 interface AboutPageClientProps {
   // lib/data/awards.ts — single source for awards site-wide (about.ts keeps only the heading)
@@ -34,13 +36,6 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
   const valuesInView   = useInView(valuesRef,   { once: true, amount: 0.2 });
 
   const t = aboutData[language];
-
-  // Scroll the timeline to the end in RTL so the most-recent event is first
-  useEffect(() => {
-    if (isRTL && scrollTrackRef.current) {
-      scrollTrackRef.current.scrollLeft = scrollTrackRef.current.scrollWidth;
-    }
-  }, [isRTL]);
 
   return (
     <div className="min-h-screen bg-off-white" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -65,8 +60,10 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
                   className="bg-white border border-border-light p-6 text-center"
                 >
                   <Icon className="w-8 h-8 mx-auto mb-3 text-brand-silver" aria-hidden="true" />
-                  <div className="text-4xl md:text-5xl font-bold text-brand-dark tabular-nums mb-1" dir="ltr">
-                    {stat.number}
+                  {/* text-start (not dir=ltr on the block): globals pin [dir=ltr] blocks to the left, which
+                      would hold the number on the left in Arabic; LtrText keeps "15+" in order */}
+                  <div className="text-4xl md:text-5xl font-bold text-brand-dark tabular-nums mb-1 text-start">
+                    <LtrText>{stat.number}</LtrText>
                   </div>
                   <div className="text-xs font-bold uppercase tracking-[0.12em] text-text-muted">
                     {stat.label}
@@ -102,7 +99,7 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
               <Button
                 variant="primary" size="lg"
                 href="/why-choose-us"
-                icon={<ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />}
+                icon={<ArrowForward className="w-5 h-5" aria-hidden="true" />}
               >
                 {t.story.cta}
               </Button>
@@ -132,7 +129,7 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
           <motion.div
             ref={scrollTrackRef}
             style={{ scrollSnapType: 'x mandatory' }}
-            className={`flex overflow-x-auto scrollbar-hide px-24 ${isRTL ? 'flex-row-reverse' : ''}`}
+            className={`flex overflow-x-auto scrollbar-hide px-24`}
             variants={staggerContainer}
             initial={shouldReduce ? {} : 'hidden'}
             whileInView={shouldReduce ? undefined : 'visible'}
@@ -146,7 +143,7 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
                 className="w-64 flex-shrink-0 relative z-10 pt-12 pb-10 flex flex-col items-center"
               >
                 <div className="w-3 h-3 rotate-45 bg-brand-red shrink-0" aria-hidden="true" />
-                <span className="text-4xl font-bold tabular-nums text-gold mt-4" dir="ltr">{event.year}</span>
+                <LtrText className="text-4xl font-bold tabular-nums text-gold mt-4">{event.year}</LtrText>
                 <h3 className="text-base font-bold text-brand-dark mt-2 text-center px-4 leading-snug">{event.title}</h3>
                 <p className="text-sm text-text-muted mt-1 text-center px-6 line-clamp-2 leading-relaxed">{event.description}</p>
               </motion.div>
@@ -169,7 +166,7 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
                 variants={fadeUp}
                 className={isRTL ? 'border-r border-brand-red/30 pr-5 text-right' : 'border-l border-brand-red/30 pl-5'}
               >
-                <span className="text-2xl font-bold tabular-nums text-gold" dir="ltr">{event.year}</span>
+                <LtrText className="text-2xl font-bold tabular-nums text-gold">{event.year}</LtrText>
                 <h3 className="text-base font-bold text-brand-dark mt-1">{event.title}</h3>
                 <p className="text-sm text-text-muted mt-1 leading-relaxed">{event.description}</p>
               </motion.div>
@@ -205,7 +202,7 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
                   transition={{ delay: idx * 0.12 }}
                   className="bg-white p-8 border border-border-light hover:border-brand-silver transition-colors duration-200"
                 >
-                  <div className={`flex items-center gap-3 mb-5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-3 mb-5`}>
                     <div className="w-8 h-8 bg-brand-red flex items-center justify-center shrink-0">
                       <Icon className="w-4 h-4 text-white" aria-hidden="true" />
                     </div>
@@ -351,7 +348,7 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
                 <motion.div
                   key={idx}
                   variants={fadeUp}
-                  className={`flex gap-4 items-start ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+                  className={`flex gap-4 items-start ${isRTL ? 'text-right' : ''}`}
                 >
                   <Icon className="w-5 h-5 text-brand-red shrink-0 mt-0.5" aria-hidden="true" />
                   <div>
@@ -391,7 +388,8 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
               >
                 <Award className="w-10 h-10 mx-auto mb-3 text-gold" aria-hidden="true" />
                 <h3 className="font-bold text-brand-dark text-sm mb-1">{awardItem.name[language]}</h3>
-                <p className="text-xs text-text-muted" dir="ltr">{awardItem.year}</p>
+                {/* text-start mirrors the old dir=ltr block alignment; LtrText keeps the digits in order */}
+                <p className="text-xs text-text-muted text-start"><LtrText>{awardItem.year}</LtrText></p>
               </motion.div>
             ))}
           </div>
@@ -422,12 +420,12 @@ export default function AboutPageClient({ awards }: AboutPageClientProps) {
               {t.cta.title}
             </h2>
             <p className="text-lg text-white/85 mb-8 max-w-2xl mx-auto">{t.cta.description}</p>
-            <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+            <div className={`flex flex-col sm:flex-row gap-4 justify-center`}>
               {/* On red background: ghost gives glass/white text, closest spec-valid variant */}
               <Button
                 variant="ghost" size="lg"
                 href="/why-choose-us"
-                icon={<ArrowRight className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} aria-hidden="true" />}
+                icon={<ArrowForward className="w-5 h-5" aria-hidden="true" />}
               >
                 {t.cta.button}
               </Button>

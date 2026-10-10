@@ -8,17 +8,18 @@
 import type { Icon } from '@phosphor-icons/react';
 import {
   Medal, Briefcase, Users, Factory, Target, Eye, Heart,
-  TrendUp, Shield, Sparkle, ArrowRight,
+  Shield, Sparkle,
   CheckCircle, Calendar, MapPin, Globe, Trophy,
   Phone, ClipboardText, Ruler, PenNib,
   FileText, Wrench, Clock, WarningCircle,
   Gear, Package, Lightning, ChatCircle,
   Thermometer, SpeakerSlash, Sun, ShieldCheck,
   Star, Quotes, SealCheck, Microscope,
-  ThumbsUp, CaretRight,
+  ThumbsUp,
   Buildings, HardHat, Stack, Cpu,
   ChartBar, Leaf, Wind, Drop,
 } from '@phosphor-icons/react';
+import { ArrowForward, CaretForward, TrendForward } from '@/components/ui/DirectionalIcon';
 
 // String keys match legacy Lucide names used in data files
 export const iconMap: Record<string, Icon> = {
@@ -29,10 +30,11 @@ export const iconMap: Record<string, Icon> = {
   Target,
   Eye,
   Heart,
-  TrendingUp:     TrendUp,
+  // Directional entries resolve to self-mirroring icons (components/ui/DirectionalIcon)
+  TrendingUp:     TrendForward,
   Shield,
   Sparkles:       Sparkle,
-  ArrowRight,
+  ArrowRight:     ArrowForward,
   CheckCircle2:   CheckCircle,
   CheckCircle,
   Calendar,
@@ -61,7 +63,7 @@ export const iconMap: Record<string, Icon> = {
   Microscope,
   FileCheck:     FileText, // Phosphor has no FileCheck; FileText is the closest document icon
   ThumbsUp,
-  ChevronRight:   CaretRight,
+  ChevronRight:   CaretForward,
   Building2:      Buildings,
   HardHat,
   Layers:         Stack,

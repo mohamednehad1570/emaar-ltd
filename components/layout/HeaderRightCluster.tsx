@@ -3,7 +3,7 @@
 /**
  * components/layout/HeaderRightCluster.tsx
  *
- * Physical-right controls (never mirrored):
+ * Inline-end controls (right in EN, left in AR — order mirrors with the bar):
  *   ≥1280      EN|ع · WhatsApp icon + label · Request Quote
  *   1024–1279  EN|ع · WhatsApp icon         · Request Quote
  *   768–1023   EN|ع · WhatsApp icon  (burger is rendered by Header)
@@ -12,7 +12,8 @@
  */
 
 import { motion } from 'framer-motion';
-import { ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
+import { WhatsappLogo } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { cn } from '@/lib/cn';
 import Button from '@/components/ui/Button';
 import LangToggle from './LangToggle';
@@ -48,7 +49,7 @@ export default function HeaderRightCluster({ language, waHref, onDark }: Props) 
 
       <div className="hidden lg:block">
         {/* sm keeps the 1024px bar compact; min-h-11 restores the 44px touch target */}
-        <Button variant="primary" size="sm" href="/contact" className="min-h-11" icon={<ArrowRight size={13} weight="bold" />}>
+        <Button variant="primary" size="sm" href="/contact" className="min-h-11" icon={<ArrowForward size={13} weight="bold" />}>
           <NavLabel label={QUOTE} language={language} />
         </Button>
       </div>

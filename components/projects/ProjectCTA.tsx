@@ -56,7 +56,7 @@ export default function ProjectCTA() {
           <Button variant="primary" size="lg" href="/contact">{t.primary}</Button>
           <Button
             variant="outline" size="lg"
-            href={getWhatsAppURL({ page: 'projects' })}
+            href={getWhatsAppURL({ page: 'projects', locale: language })}
             target="_blank" rel="noopener noreferrer"
             icon={<WhatsappLogo size={20} weight="fill" />}
           >

@@ -5,7 +5,7 @@
  * STATIC: 72 / 88 / 96 / 112px (<768 / md / lg / xl) at every scroll position, top
  * edge 8px into the 72px bar so it overhangs the bar by var(--logo-overhang).
  * Pure CSS sizing, so SSR paints the final box and nothing animates on scroll.
- * The header row is always dir="ltr", hence the physical left anchor.
+ * Anchored to the inline-start edge (start-0): physical left in EN, right in AR.
  */
 
 import LocaleLink from '@/components/ui/LocaleLink';
@@ -35,7 +35,7 @@ export default function LogoPlate({ language, onNavigate }: LogoPlateProps) {
       <div
         data-logo-plate
         className={cn(
-          'absolute top-2 left-0 rounded-full bg-white',
+          'absolute top-2 start-0 rounded-full bg-white',
           'border border-border-light shadow-warm-md',
           PLATE_SIZE,
         )}

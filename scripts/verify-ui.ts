@@ -2,8 +2,9 @@
  * scripts/verify-ui.ts
  *
  * Playwright UI verification for the Emaar website.
- * Covers stable checks from Batches 5, 6 and 6R + Phase D, D-R2 and Batch L (locale URLs:
- * English at /…, Arabic at /ar/… — AR checks load the /ar URL directly).
+ * Covers stable checks from Batches 5, 6 and 6R + Phase D, D-R2, Batch L (locale URLs:
+ * English at /…, Arabic at /ar/… — AR checks load the /ar URL directly) and Batch R
+ * (Arabic is the mirror of English: geometry, drawings, overlay, lightbox, no English on /ar).
  *
  * Usage:
  *   npm run verify:ui                          # against http://localhost:3123
@@ -29,10 +30,9 @@ import {
 } from './verify-ui/checks-catalog';
 import {
   checkNoBlue,
-  checkNoHScroll,
   checkTabMinHeight,
   checkHotspotTabOrder,
-  checkNoARMirror,
+  checkARMirrored,
 } from './verify-ui/checks-layout';
 import { checkHydration, checkHashFilter } from './verify-ui/checks-hydration';
 import { checkFooter390 } from './verify-ui/checks-footer';
@@ -44,6 +44,9 @@ import {
   checkSitemap,
   checkNotFound,
 } from './verify-ui/checks-locale';
+import { checkMirrorGeometry, checkDrawingsMirrored } from './verify-ui/checks-mirror';
+import { checkOverlayEntry, checkLightboxKeys, checkNoHScroll390 } from './verify-ui/checks-mirror-interact';
+import { checkArabicText } from './verify-ui/checks-arabic-text';
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -81,8 +84,7 @@ async function main() {
       ...(await checkNoBlue(page, BASE_URL)),
       ...(await checkTabMinHeight(page, BASE_URL)),
       ...(await checkHotspotTabOrder(page, BASE_URL)),
-      ...(await checkNoARMirror(page, BASE_URL)),
-      ...(await checkNoHScroll(page, BASE_URL)),
+      ...(await checkARMirrored(page, BASE_URL)),
 
       // ── Phase D-R2 checks (hydration, hash-filter, footer, pictogram) ────────
       // Hydration + footer open their own browser contexts per page.
@@ -98,6 +100,14 @@ async function main() {
       ...(await checkToggleHref(page, BASE_URL)),
       ...(await checkSitemap(page.request, BASE_URL)),
       ...(await checkNotFound(page.request, BASE_URL)),
+
+      // ── Batch R checks (full RTL mirror + Arabic copy) ───────────────────────
+      ...(await checkMirrorGeometry(browser, BASE_URL)),
+      ...(await checkDrawingsMirrored(page, BASE_URL)),
+      ...(await checkOverlayEntry(browser, BASE_URL)),
+      ...(await checkLightboxKeys(browser, BASE_URL)),
+      ...(await checkNoHScroll390(browser, BASE_URL)),
+      ...(await checkArabicText(browser, BASE_URL)),
     ];
 
     // Optional full-page screenshot of key pages after all checks

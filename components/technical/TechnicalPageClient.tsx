@@ -62,7 +62,7 @@ export default function TechnicalPageClient({ documents, categories, staticData 
             {/* ghost on dark section bg */}
             <Button
               variant="ghost" size="lg"
-              href={getWhatsAppURL({ page: 'technical' })}
+              href={getWhatsAppURL({ page: 'technical', locale: language })}
               target="_blank" rel="noopener noreferrer"
             >
               {sd.cta.button}

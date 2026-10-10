@@ -32,7 +32,7 @@ export default function WarrantySection() {
             const Icon = resolveIcon(item.icon);
             return (
               <motion.div key={idx} variants={fadeUp} className="bg-off-white border border-border-light hover:border-brand-silver transition-colors p-8">
-                <div className={`flex items-start gap-4 mb-5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex items-start gap-4 mb-5`}>
                   <div className="w-9 h-9 bg-brand-red flex items-center justify-center shrink-0">
                     <Icon className="w-5 h-5 text-white" aria-hidden="true" />
                   </div>
@@ -43,7 +43,7 @@ export default function WarrantySection() {
                 </div>
                 <ul className={`space-y-2 ${isRTL ? 'text-right' : ''}`}>
                   {item.details.map((detail, i) => (
-                    <li key={i} className={`flex items-start gap-2 text-sm text-text-body ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <li key={i} className={`flex items-start gap-2 text-sm text-text-body`}>
                       <CheckCircle2 className="w-4 h-4 text-brand-red shrink-0 mt-0.5" aria-hidden="true" />
                       <span>{detail}</span>
                     </li>
@@ -59,7 +59,7 @@ export default function WarrantySection() {
             <h3 className={`text-xl font-bold text-brand-dark mb-5 ${isRTL ? 'text-right' : ''}`}>{t.warranty.exclusions.title}</h3>
             <ul className={`space-y-3 ${isRTL ? 'text-right' : ''}`}>
               {t.warranty.exclusions.items.map((item, idx) => (
-                <li key={idx} className={`flex items-start gap-2 text-text-body ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <li key={idx} className={`flex items-start gap-2 text-text-body`}>
                   <AlertCircle className="w-4 h-4 text-brand-red shrink-0 mt-0.5" aria-hidden="true" />
                   <span className="text-sm">{item}</span>
                 </li>
@@ -71,7 +71,7 @@ export default function WarrantySection() {
             <h3 className={`text-xl font-bold text-brand-dark mb-5 ${isRTL ? 'text-right' : ''}`}>{t.warranty.claim.title}</h3>
             <ol className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
               {t.warranty.claim.steps.map((step, idx) => (
-                <li key={idx} className={`flex items-start gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <li key={idx} className={`flex items-start gap-3`}>
                   <div className="w-7 h-7 bg-brand-red flex items-center justify-center shrink-0 text-white font-bold text-sm">{idx + 1}</div>
                   <span className="text-text-body pt-0.5 text-sm">{step}</span>
                 </li>

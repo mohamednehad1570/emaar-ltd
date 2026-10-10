@@ -4,8 +4,9 @@
  * components/catalog/type/HotspotFigure.tsx
  * The 4:3 diagram box + its pins. Drawing precedence: a real diagram file
  * (MECHANISM_DIAGRAMS) → the mechanism's SVG elevation → cream ImageSlot placeholder.
- * Pins render after the drawing in the same dir=ltr box, so their DOM / tab order,
- * events and focus styles are exactly what TypeHotspots had before the drawings landed.
+ * Pins render after the drawing in the same box, so their DOM / tab order (1→4 in both
+ * languages), events and focus styles are exactly what TypeHotspots had before the drawings
+ * landed. In Arabic the drawing mirrors (DiagramSvg) and each pin mirrors to 100 − x (HotspotPin).
  */
 
 import { useTranslation } from '@/contexts/LanguageContext';
@@ -15,6 +16,8 @@ import type { Hotspot } from '@/lib/data/catalog';
 import type { DrawnMechanism } from '../types';
 import { getDiagram } from '../hotspotDiagrams';
 import HotspotPin from './HotspotPin';
+import { RTL_FLIP } from '@/lib/i18n/rtlFlip';
+import { cn } from '@/lib/cn';
 
 interface HotspotFigureProps {
   hotspots: Hotspot[];
@@ -36,8 +39,7 @@ export default function HotspotFigure({
   });
 
   return (
-    // dir=ltr: pin x/y and the drawing are physical and must not mirror in Arabic
-    <div dir="ltr" className="relative">
+    <div className="relative">
       {diagram ? (
         // outline (not border) keeps the SVG box identical to the pin box — no 1px offset
         <div className="relative aspect-4/3 rounded-card bg-surface-white outline outline-border-light -outline-offset-1">
@@ -48,7 +50,8 @@ export default function HotspotFigure({
           src={diagramImage}
           alt={`${typeName} — ${t(COPY.diagramAlt.en, COPY.diagramAlt.ar)}`}
           ratio="4/3"
-          className="rounded-card"
+          // A diagram file is a drawing paired with the pins, so it mirrors with them in Arabic
+          className={cn('rounded-card', RTL_FLIP)}
           sizes="(min-width:768px) 60vw, 100vw"
         />
       )}

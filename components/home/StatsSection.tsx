@@ -15,7 +15,7 @@
  * Design rules:
  *   • tabular-nums keeps digit columns aligned as numbers animate in
  *   • uppercase + tracking-wide on labels: editorial, not technical
- *   • dir="ltr" on numerals preserves digit order in Arabic mode
+ *   • LtrText (bdi dir=ltr) on numerals keeps "500+" from reordering in Arabic mode
  */
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -23,6 +23,7 @@ import { motion, useReducedMotion, useInView } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
 import type { Certificate } from '@/lib/types';
+import LtrText from '@/components/ui/LtrText';
 
 /* ── Data ──────────────────────────────────────────────────────────────── */
 
@@ -82,7 +83,7 @@ function StatCounter({ raw, inView, shouldReduce }: StatCounterProps) {
   }, [inView, shouldReduce, value]);
 
   /* dir=ltr keeps digit order correct when rendered inside an RTL container */
-  return <span dir="ltr">{count}{suffix}</span>;
+  return <LtrText>{count}{suffix}</LtrText>;
 }
 
 interface StatsSectionProps {

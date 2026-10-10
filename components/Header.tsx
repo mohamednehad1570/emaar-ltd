@@ -3,9 +3,10 @@
 /**
  * components/Header.tsx
  *
- * Fixed 72px site header. Physical layout is identical in EN and AR:
- *   [LogoPlate] …… HeaderNav (≥1024) …… HeaderRightCluster · burger (<1024)
- * The bar row is dir="ltr"; every text label / panel sets its own dir.
+ * Fixed 72px site header. Logical layout — Arabic is the mirror of English:
+ *   EN  [LogoPlate] …… HeaderNav (≥1024) …… HeaderRightCluster · burger (<1024)
+ *   AR  burger · HeaderRightCluster …… HeaderNav …… [LogoPlate]
+ * The bar inherits <html dir>, so the grid columns, nav order and cluster all flip with it.
  *
  * Bar states, with hysteresis (scrolled past 48px, back below 16px) so it can't
  * flicker around one threshold:
@@ -62,12 +63,11 @@ export default function Header({ nav, whatsappNumber }: HeaderProps) {
 
   // Homepage hero runs under the bar: transparent until the first scroll
   const onDark = pathname === '/' && !scrolled && !open;
-  const wa = getWhatsAppURL(whatsAppContextFor(pathname, typeNameForPath(nav, pathname)), whatsappNumber);
+  const wa = getWhatsAppURL(whatsAppContextFor(pathname, language, typeNameForPath(nav, pathname)), whatsappNumber);
 
   return (
     <>
       <motion.header
-        dir="ltr"
         initial={false}
         animate={{
           backgroundColor:   onDark ? 'rgba(255,255,255,0)' : scrolled ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,1)',

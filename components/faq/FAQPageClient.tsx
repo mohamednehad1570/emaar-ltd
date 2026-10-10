@@ -2,7 +2,8 @@
 
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { CaretDown as ChevronDown, MagnifyingGlass as Search, Question as HelpCircle, ChatCircle as MessageCircle, WhatsappLogo } from '@phosphor-icons/react';
+import { CaretDown as ChevronDown, MagnifyingGlass as Search, ChatCircle as MessageCircle, WhatsappLogo } from '@phosphor-icons/react';
+import { QuestionMirrored as HelpCircle } from '@/components/ui/DirectionalIcon';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { faqData, faqCategoryIcons } from '@/lib/data/uiStrings';
@@ -64,7 +65,7 @@ export default function FAQPageClient() {
       {/* ── Category Filter ───────────────────────────────── */}
       <section className="py-6 px-6 bg-surface-white sticky top-(--header-h) z-40 border-b border-border-light">
         <div className="max-w-6xl mx-auto">
-          <div className={`flex flex-wrap justify-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex flex-wrap justify-center gap-3`}>
             {Object.entries(t.categories).map(([key, label]) => {
               const Icon = key === 'all' ? HelpCircle : getCategoryIcon(key);
               return (

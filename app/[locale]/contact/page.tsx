@@ -1,5 +1,5 @@
 import { SITE_SETTINGS } from '@/lib/data/siteSettings';
-import { contactData } from '@/lib/data/uiStrings';
+import { contactData, PAGE_HEADERS } from '@/lib/data/uiStrings';
 import ContactPageClient from '@/components/contact/ContactPageClient';
 import PageHeader from '@/components/ui/PageHeader';
 import type { Metadata } from 'next';
@@ -17,13 +17,7 @@ export default async function ContactPage({ params }: { params: LocaleParams }) 
   return (
     <>
       <JsonLd data={localBusinessSchema(locale)} />
-      <PageHeader
-        eyebrow="Get in Touch"
-        title="Contact Us"
-        titleAr="تواصل معنا"
-        description="We Care. We Listen. We Deliver."
-        chips={['800 2226', 'Sun–Thu 8am–6pm']}
-      />
+      <PageHeader copy={PAGE_HEADERS.contact} />
       <ContactPageClient settings={SITE_SETTINGS} staticData={contactData} />
     </>
   );

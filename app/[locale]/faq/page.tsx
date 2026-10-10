@@ -1,6 +1,6 @@
 import FAQPageClient from '@/components/faq/FAQPageClient';
 import PageHeader from '@/components/ui/PageHeader';
-import { faqData } from '@/lib/data/uiStrings';
+import { faqData, PAGE_HEADERS } from '@/lib/data/uiStrings';
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo/metadata';
 import { routeLocale, type LocaleParams } from '@/lib/i18n/routeLocale';
@@ -21,12 +21,7 @@ export default async function FAQPage({ params }: { params: LocaleParams }) {
   return (
     <>
       <JsonLd data={schema} />
-      <PageHeader
-        eyebrow="Support"
-        title="Frequently Asked Questions"
-        titleAr="الأسئلة الشائعة"
-        description="Everything you need to know about our products, installation, and warranties."
-      />
+      <PageHeader copy={PAGE_HEADERS.faq} />
       <FAQPageClient />
     </>
   );

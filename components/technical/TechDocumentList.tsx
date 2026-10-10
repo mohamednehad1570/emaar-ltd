@@ -10,7 +10,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FileText, ArrowRight } from '@phosphor-icons/react';
+import { FileText } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { getWhatsAppURL } from '@/lib/whatsapp';
 import { staggerContainer, fadeUp, viewportOnce } from '@/lib/motion';
@@ -25,7 +26,7 @@ interface TechDocumentListProps {
 type Filter = TechDocumentCategory | 'all';
 
 export default function TechDocumentList({ documents, categories }: TechDocumentListProps) {
-  const { language, isRTL } = useLanguage();
+  const { language } = useLanguage();
   const l = useTranslation();
   const [active, setActive] = useState<Filter>('all');
 
@@ -35,7 +36,7 @@ export default function TechDocumentList({ documents, categories }: TechDocument
   ];
   const visible = active === 'all' ? documents : documents.filter((d) => d.category === active);
   // One shared URL — the 'technical' message already says the visitor is reviewing specs
-  const requestHref = getWhatsAppURL({ page: 'technical' });
+  const requestHref = getWhatsAppURL({ page: 'technical', locale: language });
 
   return (
     <section className="py-16 px-6">
@@ -96,7 +97,7 @@ export default function TechDocumentList({ documents, categories }: TechDocument
               >
                 {l('Request via WhatsApp', 'اطلب عبر واتساب')}
                 {/* Arrow rotates 180° in RTL — points toward the reading-end edge */}
-                <ArrowRight size={16} className={isRTL ? 'rotate-180' : ''} aria-hidden="true" />
+                <ArrowForward size={16} aria-hidden="true" />
               </a>
             </motion.li>
           ))}

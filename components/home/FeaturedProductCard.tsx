@@ -15,7 +15,7 @@
  */
 
 import LocaleLink from '@/components/ui/LocaleLink';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { HOME_PRODUCT_TAG } from '@/lib/data/placeholderPhotos';
 import { useTranslation } from '@/contexts/LanguageContext';
@@ -88,13 +88,11 @@ export default function FeaturedProductCard({ product, reduceMotion }: FeaturedP
 
         {/* mt-auto pins the arrow to the card foot so rows align despite tagline length */}
         <span className="mt-auto flex justify-end pt-2">
-          <ArrowRight
+          <ArrowForward
             size={16}
             aria-hidden="true"
             className={cn(
               'text-ink-muted transition-[translate,color] duration-300 group-hover:text-ink-heading',
-              // Arrow points toward the reading direction: mirrored in RTL
-              'rtl:-scale-x-100',
               // Nudge follows reading direction — right in LTR, left in RTL
               !reduceMotion && 'ltr:group-hover:translate-x-1 rtl:group-hover:-translate-x-1',
             )}

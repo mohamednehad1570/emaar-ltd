@@ -2,7 +2,8 @@
 
 /**
  * components/catalog/type/TypeLegend.tsx
- * Static "Available in" list at the hero image's physical bottom-right corner. No plate —
+ * Static "Available in" list at the hero image's bottom inline-end corner (bottom-right in EN,
+ * bottom-left in AR). No plate —
  * TypeHero puts a radial off-white scrim behind it. Only the type's materials; not interactive.
  */
 
@@ -16,7 +17,7 @@ export default function TypeLegend({ materials }: { materials: MaterialConfigVie
   const t = useTranslation();
 
   return (
-    // Position is physical (set by the parent); only its text follows the language
+    // Position is set by the parent (end-0); the list itself reads from inline-start
     <div dir={isRTL ? 'rtl' : 'ltr'} data-testid="type-legend" className="text-start">
       {/* ink-body over the scrim — muted grey would drop below 4.5:1 on a photo */}
       <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-body mb-1.5">

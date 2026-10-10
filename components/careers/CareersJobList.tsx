@@ -61,7 +61,7 @@ export default function CareersJobList({ jobs, filters, applyEmail }: Props) {
         </motion.div>
 
         {/* Filter buttons */}
-        <div className={`flex flex-wrap justify-center gap-3 mb-12 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex flex-wrap justify-center gap-3 mb-12`}>
           {Object.entries(filters).map(([key, label]) => (
             <motion.button
               key={key}

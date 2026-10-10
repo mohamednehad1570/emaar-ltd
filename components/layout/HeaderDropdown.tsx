@@ -3,7 +3,7 @@
 /**
  * components/layout/HeaderDropdown.tsx
  * Compact desktop dropdown (About — the only header panel):
- * physical-left under the trigger, 2px radius, warm shadow-md, 0.2s fade + 4px.
+ * aligned to the trigger from its inline-start edge (left in EN, right in AR), 2px radius, warm shadow-md, 0.2s fade + 4px.
  */
 
 import React, { useRef } from 'react';
@@ -32,7 +32,6 @@ export default function HeaderDropdown({ id, items, language, onEnter, onLeave, 
       ref={ref}
       id={id}
       data-nav-panel
-      dir={language === 'ar' ? 'rtl' : 'ltr'}
       initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 4, transition: { duration: 0.12 } }}

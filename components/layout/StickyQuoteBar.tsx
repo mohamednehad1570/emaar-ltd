@@ -14,7 +14,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent, useReducedMotion } from 'framer-motion';
 import { useLocalePathname } from '@/lib/i18n/useLocalePathname';
-import { ArrowRight, WhatsappLogo } from '@phosphor-icons/react';
+import { WhatsappLogo } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { getWhatsAppURL, whatsAppContextFor } from '@/lib/whatsapp';
 import { useMobileNavOpen } from '@/lib/hooks/useMobileNavOpen';
@@ -30,7 +31,7 @@ interface Props {
 }
 
 export default function StickyQuoteBar({ whatsappNumber, nav }: Props) {
-  const { isRTL } = useLanguage();
+  const { language, isRTL } = useLanguage();
   const t = useTranslation();
   // Locale-neutral ('/upvc' on /upvc and /ar/upvc) — matches the unprefixed nav hrefs
   const pathname = useLocalePathname();
@@ -41,7 +42,7 @@ export default function StickyQuoteBar({ whatsappNumber, nav }: Props) {
 
   useMotionValueEvent(scrollY, 'change', v => setPast(v > window.innerHeight * SHOW_AT));
 
-  const wa = getWhatsAppURL(whatsAppContextFor(pathname, typeNameForPath(nav, pathname)), whatsappNumber);
+  const wa = getWhatsAppURL(whatsAppContextFor(pathname, language, typeNameForPath(nav, pathname)), whatsappNumber);
 
   return (
     <AnimatePresence>
@@ -61,7 +62,7 @@ export default function StickyQuoteBar({ whatsappNumber, nav }: Props) {
             {/* h-12 = 48px buttons; Button's size scale tops out below that on md */}
             <Button
               variant="primary" size="md" href="/contact" className="flex-1 h-12"
-              icon={<ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />}
+              icon={<ArrowForward size={16} weight="bold" />}
             >
               {t('Request a Quote', 'اطلب عرض سعر')}
             </Button>

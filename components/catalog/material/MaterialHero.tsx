@@ -4,24 +4,23 @@
  * components/catalog/material/MaterialHero.tsx
  *
  * Material landing hero — same visual language as TypeHero, without the legend.
- * Physical layout is FIXED in EN and AR (the section is dir=ltr):
- *  • ≥768 — 16:9 image at 85% width on the physical right; a TRANSPARENT text panel
- *    straddles the image's left edge, readable over a warm off-white left scrim.
+ * Layout is logical — Arabic is the exact mirror of English:
+ *  • ≥768 — 16:9 image at 85% width on the inline-end side (right in EN, left in AR); a
+ *    TRANSPARENT text panel straddles its inline-start edge over a warm off-white scrim.
  *  • <768 — full-bleed 4:3 image; panel overlaps its lower edge over a bottom scrim.
- * Only the panel text follows the language (dir + text-start).
+ * Panel text aligns with text-start.
  *
  * Entrance: image fade 0.5s; panel fade + 16px rise 0.5s after 0.1s. MotionConfig
  * (reducedMotion="user") strips the rise so reduced motion gets opacity only.
  */
 
 import { motion } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { CATALOG_PAGE_COPY, TYPE_PAGE_COPY } from '@/lib/data/uiStrings';
 import Container from '@/components/layout/Container';
 import ImageSlot from '@/components/ui/ImageSlot';
 import Button from '@/components/ui/Button';
-import { cn } from '@/lib/cn';
 import type { MaterialPageView } from '../types';
 
 // Strong ease-out from lib/motion — entrances feel immediate, then settle
@@ -33,8 +32,8 @@ export default function MaterialHero({ view }: { view: MaterialPageView }) {
   const name = t(view.name.en, view.name.ar);
 
   return (
-    // dir=ltr pins the image/panel geometry; never mirrored in Arabic
-    <section dir="ltr" className="bg-off-white pt-[calc(var(--header-h)+var(--logo-overhang)+32px)] pb-12 md:pb-16">
+    // Geometry is logical (ms-auto / start-[5%]) — Arabic is the exact mirror
+    <section className="bg-off-white pt-[calc(var(--header-h)+var(--logo-overhang)+32px)] pb-12 md:pb-16">
       <Container>
         <div className="relative">
           {/* ── Image ───────────────────────────────────────── */}
@@ -43,7 +42,8 @@ export default function MaterialHero({ view }: { view: MaterialPageView }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="relative -mx-4 sm:-mx-6 md:mx-0 md:w-[85%] md:ml-auto overflow-hidden md:rounded-card"
+            data-hero-image
+            className="relative -mx-4 sm:-mx-6 md:mx-0 md:w-[85%] md:ms-auto overflow-hidden md:rounded-card"
           >
             <ImageSlot
               src={view.heroImage}
@@ -56,16 +56,17 @@ export default function MaterialHero({ view }: { view: MaterialPageView }) {
               placeholderKey={`material-${view.id}`}
               placeholderTag="exterior"
             />
-            {/* ── Scrims (physical, never mirrored) ─────────────── */}
-            {/* ≥768: 0.85 held to 30% (under the panel's text column), clear by 55% */}
-            <div aria-hidden="true" className="hidden md:block absolute inset-0 bg-linear-to-r from-off-white/85 from-30% to-transparent to-55%" />
+            {/* ── Scrims (mirror with the panel side) ──────────── */}
+            {/* ≥768: 0.85 held to 30% (under the panel's text column), clear by 55%; runs from the
+                panel side — left→right in EN, right→left in AR */}
+            <div aria-hidden="true" className="hidden md:block absolute inset-0 bg-linear-to-r rtl:bg-linear-to-l from-off-white/85 from-30% to-transparent to-55%" />
             {/* <768: same strength rising from the bottom edge the panel overlaps */}
             <div aria-hidden="true" className="md:hidden absolute inset-0 bg-linear-to-t from-off-white/85 from-30% to-transparent to-65%" />
           </motion.div>
 
           {/* ── Text panel ──────────────────────────────────── */}
-          {/* Desktop: 40%-wide column at left 5% → image edge (15%) cuts it at ~25% / 75% */}
-          <div className="relative -mt-24 md:mt-0 md:absolute md:inset-y-0 md:left-[5%] md:w-[40%] md:flex md:items-center">
+          {/* Desktop: 40%-wide column at inline-start 5% → image edge (15%) cuts it at ~25% / 75% */}
+          <div data-hero-panel className="relative -mt-24 md:mt-0 md:absolute md:inset-y-0 md:start-[5%] md:w-[40%] md:flex md:items-center">
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -90,7 +91,7 @@ export default function MaterialHero({ view }: { view: MaterialPageView }) {
                 size="md"
                 href="/contact"
                 className="mt-6"
-                icon={<ArrowRight className={cn('w-4 h-4', isRTL && 'rotate-180')} aria-hidden="true" />}
+                icon={<ArrowForward className="w-4 h-4" aria-hidden="true" />}
               >
                 {t(TYPE_PAGE_COPY.requestQuote.en, TYPE_PAGE_COPY.requestQuote.ar)}
               </Button>

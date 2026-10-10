@@ -1,15 +1,16 @@
 /**
  * scripts/verify-diff.ts
  *
- * Batch L before/after pixel diff — locale URLs must change NOTHING visually.
- *   baseline (f87f69d worktree, BASE_URL :3124) — EN: load /path · AR: load /path, click ع
- *   head     (this build,       HEAD_URL :3123) — EN: load /path · AR: load /ar/path directly
- * Pages × 1440/900/390 × EN/AR. Every capture runs the same settle routine (fonts ready,
- * scroll through so whileInView fires, back to top) under reduced motion, so entrance
- * animations can't leave a frame mid-flight.
+ * Batch R before/after pixel diff — the RTL mirror must change NOTHING in English.
+ *   baseline (f3ba54c worktree, BASE_URL :3124)  vs  head (this build, HEAD_URL :3123)
+ * Both sides load the same URL (/path for EN, /ar/path for AR — f3ba54c already serves /ar).
+ * Pages × 1440/900/390 × DIFF_LANGS (default "en": Arabic is EXPECTED to change in Batch R —
+ * it is reviewed side by side via scripts/verify-sbs.ts instead). Every capture runs the
+ * same settle routine (fonts ready, scroll through so whileInView fires, back to top) under
+ * reduced motion, so entrance animations can't leave a frame mid-flight.
  *
  * Usage: npx tsx scripts/verify-diff.ts   (both servers running; DIFF_PAGES=/a,/b for a subset)
- * Output: screenshots/batchL/diff/{baseline,head,delta}/{page}-{vp}-{lang}.png
+ * Output: screenshots/batchR/diff/{baseline,head,delta}/{page}-{vp}-{lang}.png
  * Table: diff% (pixelmatch, threshold 0.12) · raw changed px · max channel delta · y-range.
  */
 
@@ -21,11 +22,13 @@ import pixelmatch from 'pixelmatch';
 
 const HEAD_URL = process.env.HEAD_URL ?? 'http://localhost:3123';
 const BASE_URL = process.env.BASE_URL ?? 'http://localhost:3124';
-const OUT = path.resolve('screenshots/batchL/diff');
+const OUT = path.resolve('screenshots/batchR/diff');
 
 const ALL_PAGES = ['/', '/upvc', '/aluminum', '/products/tilt-and-turn-windows', '/products/hinged-doors', '/projects', '/contact'];
 // DIFF_PAGES=/projects,/contact re-runs a subset (e.g. after a fix scoped to one page)
 const PAGES = process.env.DIFF_PAGES ? process.env.DIFF_PAGES.split(',') : ALL_PAGES;
+// DIFF_LANGS=en,ar adds the Arabic captures (expected non-zero in Batch R)
+const LANGS = (process.env.DIFF_LANGS ?? 'en').split(',') as Lang[];
 const VIEWPORTS = [{ w: 1440, h: 900 }, { w: 900, h: 900 }, { w: 390, h: 844 }];
 type Side = 'baseline' | 'head';
 type Lang = 'en' | 'ar';
@@ -49,19 +52,9 @@ async function capture(browser: Browser, side: Side, route: string, lang: Lang, 
   const ctx = await browser.newContext({ viewport: { width: vp.w, height: vp.h }, reducedMotion: 'reduce' });
   const page = await ctx.newPage();
   const base = side === 'head' ? HEAD_URL : BASE_URL;
-  // Head serves Arabic at /ar/… ; the baseline only has the client-side toggle
-  const url = side === 'head' && lang === 'ar' ? `${base}/ar${route === '/' ? '' : route}` : `${base}${route}`;
+  // Same URL on both sides — the baseline (f3ba54c) already serves Arabic at /ar/…
+  const url = lang === 'ar' ? `${base}/ar${route === '/' ? '' : route}` : `${base}${route}`;
   await page.goto(url, { waitUntil: 'networkidle' });
-  if (side === 'baseline' && lang === 'ar') {
-    // <1024 keeps EN|ع in the burger overlay — open it, click ع, close it
-    const visible = await page.locator('[aria-label="Switch to Arabic"]:visible').count();
-    if (!visible) await page.click('button[aria-controls="mobile-nav"]');
-    await page.locator('[aria-label="Switch to Arabic"]:visible').first().click();
-    await page.waitForFunction(() => document.documentElement.dir === 'rtl');
-    // The open overlay covers the burger — close it with its own first button (✕)
-    if (!visible) await page.locator('#mobile-nav button').first().click();
-    await page.waitForTimeout(600); // 150ms crossfade + overlay exit + hydration settle
-  }
   await settle(page);
   const file = path.join(OUT, side, `${slug(route)}-${vp.w}-${lang}.png`);
   await page.screenshot({ path: file, fullPage: true, animations: 'disabled' });
@@ -102,7 +95,7 @@ async function main() {
   for (const d of ['baseline', 'head', 'delta']) fs.mkdirSync(path.join(OUT, d), { recursive: true });
   const browser = await chromium.launch();
   const names: string[] = [];
-  for (const route of PAGES) for (const vp of VIEWPORTS) for (const lang of ['en', 'ar'] as const) {
+  for (const route of PAGES) for (const vp of VIEWPORTS) for (const lang of LANGS) {
     for (const side of ['baseline', 'head'] as const) await capture(browser, side, route, lang, vp);
     names.push(`${slug(route)}-${vp.w}-${lang}.png`);
   }
@@ -110,7 +103,7 @@ async function main() {
 
   const rows = names.map(diff);
   console.log('\n' + '─'.repeat(96));
-  console.log(' VERIFY-DIFF  baseline f87f69d (AR = click ع)  vs  HEAD (AR = /ar/… direct)');
+  console.log(` VERIFY-DIFF  baseline f3ba54c  vs  HEAD (Batch R) · langs: ${LANGS.join(', ')}`);
   console.log('─'.repeat(96));
   console.log(`${'capture'.padEnd(40)}${'diff%'.padEnd(9)}${'raw px'.padEnd(9)}${'maxΔ'.padEnd(6)}${'height'.padEnd(13)}y-range`);
   for (const r of rows) {

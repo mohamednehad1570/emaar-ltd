@@ -3,7 +3,7 @@
  *
  * Single source of truth for site navigation.
  *
- *   NAV           — header items in their FIXED physical order (identical in EN and AR):
+ *   NAV           — header items in reading order (left→right in EN, right→left in AR):
  *                   uPVC · Aluminum · Projects · Technical · About▾ · Contact
  *                   (materials are plain links to /upvc and /aluminum — no panels)
  *   HeaderNavData — catalog-derived labels + active-state lookups; built server-side by
@@ -42,8 +42,8 @@ export interface HeaderNavData {
   materials: NavMaterial[]
   /** slug → materials offering it; drives the active underline on /products/[slug] */
   typeMaterials: Record<string, MaterialId[]>
-  /** slug → English type name; names the product in WhatsApp messages */
-  typeNames: Record<string, string>
+  /** slug → type name in both languages; names the product in WhatsApp messages */
+  typeNames: Record<string, Localized>
 }
 
 // ─── Primary navigation ────────────────────────────────────────────────────────
@@ -74,7 +74,7 @@ export const PRODUCT_LINKS: NavLink[] = [
 ]
 
 /** English type name for a /products/[slug] path — names the product in WhatsApp messages */
-export function typeNameForPath(nav: HeaderNavData, pathname: string): string | undefined {
+export function typeNameForPath(nav: HeaderNavData, pathname: string): Localized | undefined {
   const slug = pathname.startsWith('/products/') ? pathname.slice('/products/'.length) : ''
   return nav.typeNames[slug]
 }

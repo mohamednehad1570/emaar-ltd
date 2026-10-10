@@ -7,13 +7,16 @@
  * Sits directly below the fixed site header (height = var(--header-h)).
  * Replaces every full-viewport hero on inner pages.
  *
- * Uses useLanguage() for real-time EN/AR switching.
- * The optional locale prop overrides context (e.g. for preview renders).
+ * Copy comes from PAGE_HEADERS (lib/data/pageHeaders.ts): every string is bilingual, so
+ * /ar pages carry no English eyebrows, descriptions or chips. Data chips (phone numbers)
+ * are isolated in LtrText so their digit groups never swap in RTL.
  */
 
 import { cn } from '@/lib/cn';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { localizePath } from '@/lib/i18n/localizePath';
+import type { PageHeaderCopy } from '@/lib/data/uiStrings';
+import LtrText from './LtrText';
 
 interface AnchorLink {
   label: string;
@@ -22,32 +25,18 @@ interface AnchorLink {
 }
 
 interface PageHeaderProps {
-  eyebrow?: string;
-  title: string;
-  titleAr?: string;
-  description?: string;
-  descriptionAr?: string;
-  /** Small trust chips rendered below the description */
-  chips?: string[];
+  /** Eyebrow, H1, description and trust chips — both languages */
+  copy: PageHeaderCopy;
   /** Hash-anchor quick links to sections further down the page */
   anchors?: AnchorLink[];
   /** When true the anchor row scrolls horizontally instead of wrapping */
   scrollable?: boolean;
-  /** Override the language from context (useful for static renders) */
-  locale?: 'en' | 'ar';
   className?: string;
 }
 
-export default function PageHeader({
-  eyebrow, title, titleAr, description, descriptionAr,
-  chips, anchors, scrollable, locale, className,
-}: PageHeaderProps) {
-  const { language, isRTL } = useLanguage();
-  // locale prop takes precedence over context so callers can lock the language
-  const lang = locale ?? language;
-
-  const displayTitle = lang === 'ar' && titleAr ? titleAr : title;
-  const displayDesc  = lang === 'ar' && descriptionAr ? descriptionAr : description;
+export default function PageHeader({ copy, anchors, scrollable, className }: PageHeaderProps) {
+  const { language: lang, isRTL } = useLanguage();
+  const { eyebrow, title, description, chips } = copy;
 
   return (
     <div
@@ -63,18 +52,18 @@ export default function PageHeader({
         {/* Eyebrow label */}
         {eyebrow && (
           <p className="text-[11px] font-bold uppercase tracking-widest text-ink-muted mb-2">
-            {eyebrow}
+            {eyebrow[lang]}
           </p>
         )}
 
         {/* H1 — page title */}
         <h1 className="text-4xl font-bold font-cairo text-ink-heading leading-tight">
-          {displayTitle}
+          {title[lang]}
         </h1>
 
         {/* Subtitle / description */}
-        {displayDesc && (
-          <p className="text-ink-body text-base mt-2">{displayDesc}</p>
+        {description && (
+          <p className="text-ink-body text-base mt-2">{description[lang]}</p>
         )}
 
         {/* Trust chips */}
@@ -82,10 +71,10 @@ export default function PageHeader({
           <div className="flex flex-wrap gap-2 mt-4">
             {chips.map((chip) => (
               <span
-                key={chip}
+                key={chip.en}
                 className="bg-surface-cream text-ink-muted text-xs px-3 py-1 rounded-sm border border-border-light"
               >
-                {chip}
+                {chip.ltr ? <LtrText>{chip[lang]}</LtrText> : chip[lang]}
               </span>
             ))}
           </div>
@@ -105,7 +94,7 @@ export default function PageHeader({
               <a
                 key={anchor.href}
                 // Same-page '#hash' passes through; a '/path#hash' gets the language prefix
-                href={localizePath(anchor.href, language)}
+                href={localizePath(anchor.href, lang)}
                 className={cn(
                   'text-sm text-ink-muted hover:text-ink-heading transition-colors shrink-0',
                   'min-h-[44px] inline-flex items-center',

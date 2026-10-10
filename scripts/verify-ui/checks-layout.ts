@@ -1,7 +1,8 @@
 /**
  * scripts/verify-ui/checks-layout.ts
- * Layout and accessibility checks: no blue outside swatches, no horizontal scroll
- * at 390px AR, tab min-height ≥44px, hotspot tab order, no mirroring in AR.
+ * Layout and accessibility checks: no blue outside swatches, tab min-height ≥44px,
+ * hotspot tab order, and the inverted Batch 6 check (AR is no longer forced LTR).
+ * 390px horizontal scroll lives in checks-mirror-interact.ts (all pages, EN + AR).
  */
 
 import type { Page } from 'playwright';
@@ -58,26 +59,6 @@ export async function checkNoBlue(page: Page, base: string): Promise<CheckResult
 }
 
 /**
- * No horizontal scroll at 390px viewport in Arabic (/ar/upvc loaded directly).
- * Checks that document.documentElement.scrollWidth ≤ clientWidth.
- */
-export async function checkNoHScroll(page: Page, base: string): Promise<CheckResult[]> {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await goto(page, `${base}/ar/upvc`);
-  const overflow = await page.evaluate(() => ({
-    scroll: document.documentElement.scrollWidth,
-    client: document.documentElement.clientWidth,
-  }));
-  // Reset viewport
-  await page.setViewportSize({ width: 1440, height: 900 });
-  return [{
-    name:   'no horizontal scroll at 390px AR (/ar/upvc)',
-    passed: overflow.scroll <= overflow.client + 1,
-    detail: `scrollWidth ${overflow.scroll} > clientWidth ${overflow.client}`,
-  }];
-}
-
-/**
  * LineTabs and the tab-role elements on options tabs and hotspot lists
  * must have a minimum touch target of 44px.
  */
@@ -114,34 +95,25 @@ export async function checkHotspotTabOrder(page: Page, base: string): Promise<Ch
 }
 
 /**
- * In AR mode, the type hero section must have dir="ltr" (never mirrored),
- * and the hotspot diagram SVG must preserve physical geometry.
- * single-sash-windows: valid casement slug with a real CasementDiagram SVG.
+ * Batch R inverted the Batch 6 "never mirror" rule: on the Arabic type page nothing may
+ * force LTR geometry any more — no section[dir=ltr] around the hero, no direction=ltr on
+ * the drawings. (Positions are asserted in checks-mirror.ts.)
+ * single-sash-windows: casement type with the hero, pictogram and hotspot diagram.
  */
-export async function checkNoARMirror(page: Page, base: string): Promise<CheckResult[]> {
-  // Arabic URL loaded directly — the server already renders dir=rtl on <html>
+export async function checkARMirrored(page: Page, base: string): Promise<CheckResult[]> {
   await goto(page, `${base}/ar/products/single-sash-windows`);
-
-  const heroDir = await page.$eval(
-    'section[dir="ltr"]',
-    (el) => el.getAttribute('dir'),
-  ).catch(() => null);
-
-  const svgDir = await page.$eval(
-    'svg[direction="ltr"],svg[dir="ltr"]',
-    (el) => el.getAttribute('direction') ?? el.getAttribute('dir'),
-  ).catch(() => null);
-
+  const forced = await page.$$eval(
+    'section[dir="ltr"], svg[direction="ltr"], [data-hotspot-pin]',
+    (els) => ({
+      sections: els.filter((e) => e.matches('section[dir="ltr"]')).length,
+      svgs: els.filter((e) => e.matches('svg[direction="ltr"]')).length,
+      // a pin box forced to LTR would show up as a dir=ltr ancestor of the pins
+      pinBoxes: els.filter((e) => e.matches('[data-hotspot-pin]') && e.closest('[dir="ltr"]')).length,
+    }),
+  );
   return [
-    {
-      name:   'AR type hero section has dir=ltr (not mirrored)',
-      passed: heroDir === 'ltr',
-      detail: heroDir === null ? 'no dir=ltr section found on page' : undefined,
-    },
-    {
-      name:   'AR hotspot diagram SVG has direction=ltr',
-      passed: svgDir === 'ltr',
-      detail: svgDir === null ? 'no direction=ltr SVG found' : undefined,
-    },
+    { name: 'AR type hero not forced LTR (no section[dir=ltr])', passed: forced.sections === 0, detail: `${forced.sections} found` },
+    { name: 'AR drawings not forced LTR (no svg[direction=ltr])', passed: forced.svgs === 0, detail: `${forced.svgs} found` },
+    { name: 'AR hotspot pins not inside a dir=ltr box', passed: forced.pinBoxes === 0, detail: `${forced.pinBoxes} found` },
   ];
 }

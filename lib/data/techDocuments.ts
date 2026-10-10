@@ -15,20 +15,26 @@ export const TECH_DOCUMENT_CATEGORIES: Record<TechDocumentCategory, Localized<st
 };
 
 // Shared suffix keeps the 10 profile entries uniform in both languages
-const sheet = (model: string): Localized<string> => ({
-  en: `${model} — Technical Data Sheet`,
-  ar: `${model} — النشرة الفنية`,
+const sheet = (model: Localized<string>): Localized<string> => ({
+  en: `${model.en} — Technical Data Sheet`,
+  ar: `${model.ar} — النشرة الفنية`,
 });
 
-// Model names stay Latin in Arabic — they are manufacturer system codes
-const PROFILE_MODELS = [
-  'W 632', 'W 640', 'W 750', 'W 880 Hebeschiebe', 'Klasline Plus',
-  'CW-50', 'TB-600', '45mm Hinged', 'Sliding 105mm', 'Montana 120mm',
-] as const;
+// Model names stay Latin in Arabic — they are manufacturer system codes (W 632, Klasline Plus,
+// Montana). The two names built from a generic English word get an Arabic form; the width
+// stays a Latin code. AR machine-translated — needs native review.
+const PROFILE_MODELS: Localized<string>[] = [
+  ...['W 632', 'W 640', 'W 750', 'W 880 Hebeschiebe', 'Klasline Plus', 'CW-50', 'TB-600']
+    .map((code) => ({ en: code, ar: code })),
+  { en: '45mm Hinged', ar: 'مفصلي 45mm' },
+  { en: 'Sliding 105mm', ar: 'منزلق 105mm' },
+  { en: 'Montana 120mm', ar: 'Montana 120mm' },
+];
 
 export const TECH_DOCUMENTS: TechDocument[] = [
   ...PROFILE_MODELS.map((model): TechDocument => ({
-    id: model.toLowerCase().replace(/\s+/g, '-'),
+    // id from the EN name — unchanged from before the AR forms existed
+    id: model.en.toLowerCase().replace(/\s+/g, '-'),
     title: sheet(model),
     category: 'profile-systems',
   })),

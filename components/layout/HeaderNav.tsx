@@ -4,8 +4,8 @@
  * components/layout/HeaderNav.tsx
  *
  * Desktop nav (≥1024px; below that the burger overlay takes over).
- * Order is FIXED physically — uPVC · Aluminum · Projects · Technical · About · Contact
- * left→right in both languages; only labels translate (see NavLabel).
+ * Order uPVC · Aluminum · Projects · Technical · About · Contact runs in reading order:
+ * left→right in EN, right→left in AR (the nav inherits <html dir>).
  * uPVC / Aluminum are plain links (no chevron, no panel); their underline stays lit on
  * the material page and on any /products/[slug] that material offers.
  *
@@ -75,8 +75,7 @@ export default function HeaderNav({ nav, language, onDark }: HeaderNavProps) {
   }
 
   return (
-    // dir=ltr: physical order is fixed in both languages
-    <nav ref={root} dir="ltr" aria-label={language === 'ar' ? 'التنقل الرئيسي' : 'Primary navigation'}
+    <nav ref={root} aria-label={language === 'ar' ? 'التنقل الرئيسي' : 'Primary navigation'}
       className="hidden lg:flex items-center justify-center h-full">
       <div className="flex items-center h-full gap-5 xl:gap-8">
         {NAV.map(entry => {
@@ -123,7 +122,8 @@ export default function HeaderNav({ nav, language, onDark }: HeaderNavProps) {
 
               {/* ── Red underline on the bar's bottom edge ── */}
               <motion.span variants={underline} aria-hidden="true"
-                className="absolute bottom-0 inset-x-0 h-[2px] bg-brand-red origin-left" />
+                // Grows from the inline-start edge — left in EN, right in AR
+                className="absolute bottom-0 inset-x-0 h-[2px] bg-brand-red origin-left rtl:origin-right" />
 
               {/* ── Panels ── */}
               <AnimatePresence>

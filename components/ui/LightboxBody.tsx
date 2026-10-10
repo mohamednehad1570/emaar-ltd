@@ -12,6 +12,7 @@ import { motion, type PanInfo } from 'framer-motion';
 import { useTranslation } from '@/contexts/LanguageContext';
 import ImageSlot from './ImageSlot';
 import type { LightboxItem } from './lightboxTypes';
+import LtrText from '@/components/ui/LtrText';
 
 interface LightboxBodyProps {
   item: LightboxItem;
@@ -55,22 +56,22 @@ export default function LightboxBody({ item, index, count, onDragEnd }: Lightbox
         <figcaption className="mt-3 flex items-baseline justify-between gap-4 text-sm text-white/85">
           {/* With a details panel the caption becomes the panel title instead */}
           <span>{hasDetails ? '' : caption}</span>
-          {/* dir=ltr keeps "2 / 6" in order in Arabic */}
-          {count > 1 && <span dir="ltr" className="tabular-nums shrink-0">{index + 1} / {count}</span>}
+          {/* LtrText keeps "2 / 6" in order in Arabic */}
+          {count > 1 && <span data-lightbox-counter className="shrink-0"><LtrText className="tabular-nums">{index + 1} / {count}</LtrText></span>}
         </figcaption>
       </figure>
 
       {/* ── Details panel ───────────────────────────────── */}
       {hasDetails && (
-        <div className="w-[min(92vw,64vh)] md:w-72 shrink-0 text-start text-white">
+        <div data-lightbox-details className="w-[min(92vw,64vh)] md:w-72 shrink-0 text-start text-white">
           {caption && <h2 className="text-xl font-bold leading-snug mb-4">{caption}</h2>}
           <dl className="space-y-3 border-t border-white/20 pt-4">
             {details.map((d) => (
               <div key={d.label.en}>
                 <dt className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">{t(d.label.en, d.label.ar)}</dt>
-                {/* Plain strings are printed data (codes, RAL, brand) — dir=ltr keeps their order in Arabic */}
+                {/* Plain strings are printed data (codes, RAL, brand) — LtrText keeps their order in Arabic */}
                 <dd className="mt-0.5 text-sm leading-relaxed text-white/90">
-                  {typeof d.value === 'string' ? <span dir="ltr">{d.value}</span> : t(d.value.en, d.value.ar)}
+                  {typeof d.value === 'string' ? <LtrText>{d.value}</LtrText> : t(d.value.en, d.value.ar)}
                 </dd>
               </div>
             ))}

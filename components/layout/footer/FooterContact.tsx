@@ -7,18 +7,19 @@
  */
 
 import LocaleLink from '@/components/ui/LocaleLink';
-import { ArrowRight, Envelope, MapPin, Phone, WhatsappLogo } from '@phosphor-icons/react';
+import { Envelope, MapPin, Phone, WhatsappLogo } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useTranslation } from '@/contexts/LanguageContext';
+import LtrText from '@/components/ui/LtrText';
 
 interface FooterContactProps {
   language:       'en' | 'ar';
-  isRTL:          boolean;
   phone?:         string;
   email?:         string;
   whatsappNumber?: string;
 }
 
-export default function FooterContact({ language, isRTL, phone, email, whatsappNumber }: FooterContactProps) {
+export default function FooterContact({ language, phone, email, whatsappNumber }: FooterContactProps) {
   const l = useTranslation();
 
   // CMS values override hardcoded fallbacks when configured
@@ -37,13 +38,12 @@ export default function FooterContact({ language, isRTL, phone, email, whatsappN
         </a>
       </li>
 
-      {/* Phone — dir=ltr keeps the number left-to-right in Arabic mode */}
+      {/* Phone — the row mirrors (icon at inline-start); LtrText keeps the number left-to-right */}
       <li>
         <a href={`tel:${displayPhone}`}
-          className="flex items-start gap-2.5 text-sm text-text-body hover:text-brand-red transition-colors duration-200 group"
-          dir="ltr">
+          className="flex items-start gap-2.5 text-sm text-text-body hover:text-brand-red transition-colors duration-200 group">
           <Phone size={15} className="text-brand-silver-dark shrink-0 mt-0.5 group-hover:text-brand-red transition-colors duration-200" />
-          <span className="tabular-nums">{displayPhone}</span>
+          <LtrText className="tabular-nums">{displayPhone}</LtrText>
         </a>
       </li>
 
@@ -84,8 +84,8 @@ export default function FooterContact({ language, isRTL, phone, email, whatsappN
       <li className="pt-1.5">
         <LocaleLink href="/contact" className="inline-flex items-center gap-1.5 text-sm font-bold text-brand-red hover:text-brand-red-dark transition-colors duration-200">
           {l('Request a Quote', 'اطلب عرضاً')}
-          {/* Arrow points left (←) in RTL — achieved with rotate-180 */}
-          <ArrowRight size={14} weight="bold" className={`shrink-0 ${isRTL ? 'rotate-180' : ''}`} />
+          {/* ArrowForward mirrors itself in RTL (points ←) */}
+          <ArrowForward size={14} weight="bold" className="shrink-0" />
         </LocaleLink>
       </li>
     </ul>

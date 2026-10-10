@@ -10,7 +10,7 @@
 
 import LocaleLink from '@/components/ui/LocaleLink';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import Container from '@/components/layout/Container';
 import FeaturedHeading from '@/components/home/FeaturedHeading';
 import FeaturedProductCard from '@/components/home/FeaturedProductCard';
@@ -53,10 +53,10 @@ export default function ProductsSection() {
             className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand-red hover:text-brand-red-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-silver-material"
           >
             {t(copy.viewAll.en, copy.viewAll.ar)}
-            <ArrowRight
+            <ArrowForward
               size={16}
               aria-hidden="true"
-              className="transition-[translate] duration-300 rtl:-scale-x-100 ltr:group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
+              className="transition-[translate] duration-300 ltr:group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
             />
           </LocaleLink>
         </div>

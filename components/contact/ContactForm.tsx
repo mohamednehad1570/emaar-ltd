@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 import { Phone } from '@phosphor-icons/react';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import { fadeUp } from '@/lib/motion';
+import LtrText from '@/components/ui/LtrText';
 
 const PROJECT_TYPES_EN = ['Villa', 'Apartment', 'Commercial', 'Other'] as const;
 const PROJECT_TYPES_AR = ['فيلا', 'شقة', 'تجاري', 'أخرى'] as const;
@@ -72,7 +73,7 @@ export default function ContactForm({ whatsappHref, phone }: Props) {
         href={whatsappHref} target="_blank" rel="noopener noreferrer"
         variants={fadeUp} initial="hidden" animate="visible"
         whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-        className={`flex items-center justify-center gap-3 w-full py-4 text-white font-bold text-lg mb-3 transition-opacity hover:opacity-90 ${isRTL ? 'flex-row-reverse' : ''}`}
+        className={`flex items-center justify-center gap-3 w-full py-4 text-white font-bold text-lg mb-3 transition-opacity hover:opacity-90`}
         style={{ backgroundColor: '#25D366' }}
       >
         <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current shrink-0" aria-hidden="true">
@@ -84,15 +85,15 @@ export default function ContactForm({ whatsappHref, phone }: Props) {
       {/* ── Phone tap-to-call ──────────────────────────────────── */}
       <a
         href={`tel:${phone}`}
-        className={`flex items-center gap-3 px-5 py-4 bg-white border border-border-light hover:border-silver-material transition-colors mb-10 ${isRTL ? 'flex-row-reverse' : ''}`}
+        className={`flex items-center gap-3 px-5 py-4 bg-white border border-border-light hover:border-silver-material transition-colors mb-10`}
       >
         <Phone size={18} className="text-brand-red shrink-0" aria-hidden="true" />
         {/* dir=ltr preserves digit order when parent direction is RTL */}
-        <span className="font-semibold text-ink-heading" dir="ltr">{phone}</span>
+        <LtrText className="font-semibold text-ink-heading">{phone}</LtrText>
       </a>
 
       {/* ── Divider ───────────────────────────────────────────── */}
-      <div className={`flex items-center gap-4 mb-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
+      <div className={`flex items-center gap-4 mb-10`}>
         <div className="h-px flex-1 bg-border-light" aria-hidden="true" />
         <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-muted select-none">
           {l('Or Send a Brief', 'أو أرسل ملخصاً')}
@@ -118,7 +119,7 @@ export default function ContactForm({ whatsappHref, phone }: Props) {
 
         <div>
           <label className={`block text-sm font-semibold text-ink-body mb-3 ${isRTL ? 'text-right' : ''}`}>{l('Project Type', 'نوع المشروع')}</label>
-          <div className={`flex flex-wrap gap-2 ${isRTL ? 'flex-row-reverse' : ''}`} role="radiogroup">
+          <div className={`flex flex-wrap gap-2`} role="radiogroup">
             {types.map((label, idx) => {
               const value = PROJECT_TYPES_EN[idx];
               const sel = projectType === value;

@@ -10,7 +10,7 @@
  */
 
 import LocaleLink from '@/components/ui/LocaleLink';
-import { ArrowRight } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import ImageSlot from '@/components/ui/ImageSlot';
 import { HOME_PROJECT_TAG } from '@/lib/data/placeholderPhotos';
 import { useTranslation } from '@/contexts/LanguageContext';
@@ -86,7 +86,7 @@ export default function FeaturedProjectCard({ project, reduceMotion }: FeaturedP
             {t(explore.en, explore.ar)}
           </span>
           {/* Mirrored in RTL so it points along the reading direction */}
-          <ArrowRight size={16} aria-hidden="true" className="text-white rtl:-scale-x-100" />
+          <ArrowForward size={16} aria-hidden="true" className="text-white" />
         </span>
       </div>
     </LocaleLink>

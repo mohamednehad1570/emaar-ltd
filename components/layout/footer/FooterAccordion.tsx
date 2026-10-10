@@ -31,7 +31,7 @@ export default function FooterAccordion({ title, children }: FooterAccordionProp
       {/* Accordion trigger */}
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between py-4 min-h-[52px] text-left"
+        className="w-full flex items-center justify-between py-4 min-h-[52px] text-start"
         aria-expanded={open}
       >
         <ColHeader>{title}</ColHeader>

@@ -1,7 +1,6 @@
 'use client';
 
 import { Phone, Envelope, MapPin, Clock } from '@phosphor-icons/react';
-import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Props {
   phone: string;
@@ -12,9 +11,7 @@ interface Props {
 
 /** Contact detail strip rendered below the form — address, email, phone, hours. */
 export default function ContactInfo({ phone, email, address, workingHours }: Props) {
-  const { isRTL } = useLanguage();
-
-  const row = `flex items-center gap-2 text-sm text-ink-muted ${isRTL ? 'flex-row-reverse' : ''}`;
+  const row = 'flex items-center gap-2 text-sm text-ink-muted';
   const iconClass = 'text-brand-silver shrink-0';
 
   return (

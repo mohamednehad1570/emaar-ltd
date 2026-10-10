@@ -1,6 +1,6 @@
 import TechnicalPageClient from '@/components/technical/TechnicalPageClient';
 import PageHeader from '@/components/ui/PageHeader';
-import { techData } from '@/lib/data/uiStrings';
+import { techData, PAGE_HEADERS } from '@/lib/data/uiStrings';
 import { TECH_DOCUMENTS, TECH_DOCUMENT_CATEGORIES } from '@/lib/data/techDocuments';
 import type { Metadata } from 'next';
 import { pageMetadata } from '@/lib/seo/metadata';
@@ -13,13 +13,7 @@ export async function generateMetadata({ params }: { params: LocaleParams }): Pr
 export default function TechnicalPage() {
   return (
     <>
-      <PageHeader
-        eyebrow="Resources"
-        title="Technical Documentation"
-        titleAr="الوثائق التقنية"
-        description="Specifications, CAD files, brochures, and certificates for all product systems."
-        chips={['Specs PDFs', 'CAD files', 'Certificates']}
-      />
+      <PageHeader copy={PAGE_HEADERS.technical} />
       <TechnicalPageClient
         documents={TECH_DOCUMENTS}
         categories={TECH_DOCUMENT_CATEGORIES}

@@ -48,7 +48,7 @@ export default function TypePage({ view }: { view: TypePageView }) {
       {/* WhatsApp message stays English (business inbox language); headline follows the UI */}
       <ProductDetailCTA
         headline={COPY.ctaHeadline[language].replace('{name}', name)}
-        productName={view.name.en}
+        productName={view.name}
         quoteHref={`/contact?product=${view.slug}`}
       />
     </>

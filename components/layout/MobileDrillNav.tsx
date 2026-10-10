@@ -16,7 +16,7 @@
 import React, { useState } from 'react'
 import LocaleLink from '@/components/ui/LocaleLink'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CaretLeft, CaretRight } from '@phosphor-icons/react'
+import { CaretBack, CaretForward } from '@/components/ui/DirectionalIcon';
 import { usePanelStack } from '@/lib/hooks/usePanelStack'
 import { followSamePageHash } from '@/lib/navigateHash'
 import { localizePath } from '@/lib/i18n/localizePath'
@@ -87,7 +87,7 @@ export default function MobileDrillNav({ nav, language, isRTL, pathname, onClose
                 type="button" onClick={pop}
                 className="flex items-center gap-1.5 min-h-[48px] text-sm font-semibold text-ink-muted hover:text-ink-heading"
               >
-                <CaretLeft size={16} weight="bold" aria-hidden="true" className="rtl:rotate-180" />
+                <CaretBack size={16} weight="bold" aria-hidden="true" />
                 {getPanel(parent, nav).title[language]}
               </button>
               <p className="ps-4 pt-1 text-[0.6875rem] font-semibold uppercase tracking-[0.22em] text-brand-red">
@@ -111,7 +111,7 @@ export default function MobileDrillNav({ nav, language, isRTL, pathname, onClose
                   <li key={row.to}>
                     <button type="button" onClick={() => push(row.to)} className={cn(ROW, tone(branchActive(row.to)))}>
                       <span>{row.label[language]}</span>
-                      <CaretRight size={16} weight="bold" aria-hidden="true" className="shrink-0 text-dim rtl:rotate-180" />
+                      <CaretForward size={16} weight="bold" aria-hidden="true" className="shrink-0 text-dim" />
                     </button>
                   </li>
                 )

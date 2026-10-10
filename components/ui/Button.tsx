@@ -4,8 +4,8 @@
 // Renders as <motion.a> when href is provided, <motion.button> otherwise.
 // variant: primary (red, any bg) | ghost (glass, dark/red bg only) | outline (bordered, light bg)
 // size:    sm (header compact) | md (default) | lg (hero / full-section CTAs)
-// icon:    rendered after children; caller adds rotate-180 for RTL arrows as needed —
-//          parent dir="rtl" from section wrapper reverses flex automatically.
+// icon:    rendered after children; pass a DirectionalIcon (ArrowForward) for arrows — it
+//          mirrors itself in RTL, and <html dir="rtl"> reverses the flex row automatically.
 // href:    site paths ('/contact') are prefixed for the current language here, so every
 //          CTA stays in its locale (/ar/contact); wa.me / mailto / '#' pass through untouched.
 
@@ -24,7 +24,7 @@ export interface ButtonProps {
   onClick?:   () => void;
   children:   React.ReactNode;
   className?: string;
-  icon?:      React.ReactNode;      // follows children; caller owns RTL rotation
+  icon?:      React.ReactNode;      // follows children; directional icons mirror themselves (DirectionalIcon)
   disabled?:  boolean;
   type?:      'button' | 'submit' | 'reset';
 }

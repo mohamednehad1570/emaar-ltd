@@ -28,7 +28,7 @@ export default function MaterialPage({ view }: { view: MaterialPageView }) {
       {/* WhatsApp message stays English (business inbox language); headline follows the UI */}
       <ProductDetailCTA
         headline={COPY.ctaHeadline[language].replace('{material}', t(view.name.en, view.name.ar))}
-        productName={`${view.name.en} range`}
+        productName={{ en: `${view.name.en} range`, ar: `مجموعة ${view.name.ar}` }}
       />
     </>
   );

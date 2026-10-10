@@ -33,7 +33,7 @@ export default function ProcessSection() {
             return (
               <motion.div key={idx} variants={fadeUp} className="relative">
                 <div className="bg-off-white border border-border-light hover:border-brand-silver transition-colors duration-200 p-6 md:p-8">
-                  <div className={`flex flex-col md:flex-row gap-6 items-start ${isRTL ? 'md:flex-row-reverse' : ''}`}>
+                  <div className={`flex flex-col md:flex-row gap-6 items-start`}>
                     <div className="flex-shrink-0">
                       <div className="relative">
                         <div className="w-12 h-12 bg-brand-red flex items-center justify-center">
@@ -47,12 +47,12 @@ export default function ProcessSection() {
                     <div className={`flex-1 ${isRTL ? 'text-right' : ''}`}>
                       <h3 className="text-xl font-bold text-brand-dark mb-2">{step.title}</h3>
                       <p className="text-text-body leading-relaxed mb-4">{step.description}</p>
-                      <div className={`flex flex-wrap gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                        <div className={`flex items-center gap-2 px-4 py-2 bg-cream ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex flex-wrap gap-3`}>
+                        <div className={`flex items-center gap-2 px-4 py-2 bg-cream`}>
                           <Clock className="w-4 h-4 text-brand-red shrink-0" aria-hidden="true" />
                           <span className="text-sm font-semibold text-brand-dark">{step.duration}</span>
                         </div>
-                        <div className={`flex items-center gap-2 px-4 py-2 bg-cream ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div className={`flex items-center gap-2 px-4 py-2 bg-cream`}>
                           <CheckCircle2 className="w-4 h-4 text-brand-red shrink-0" aria-hidden="true" />
                           <span className="text-sm font-semibold text-brand-dark">{step.deliverable}</span>
                         </div>

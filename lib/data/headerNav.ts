@@ -13,6 +13,6 @@ export function buildHeaderNav(): HeaderNavData {
   return {
     materials: MATERIAL_IDS.map(id => ({ id, label: getMaterial(id).name })),
     typeMaterials: Object.fromEntries(types.map(t => [t.slug, getMaterialsForType(t.slug)])),
-    typeNames: Object.fromEntries(types.map(t => [t.slug, t.name.en])),
+    typeNames: Object.fromEntries(types.map(t => [t.slug, { en: t.name.en, ar: t.name.ar }])),
   }
 }

@@ -38,7 +38,8 @@ import {
   useTransform,
   useReducedMotion,
 } from 'framer-motion';
-import { ArrowRight, ArrowDown } from '@phosphor-icons/react';
+import { ArrowDown } from '@phosphor-icons/react';
+import { ArrowForward } from '@/components/ui/DirectionalIcon';
 import { useLanguage, useTranslation } from '@/contexts/LanguageContext';
 import Container from '@/components/layout/Container';
 import { getWhatsAppURL } from '@/lib/whatsapp';
@@ -316,9 +317,9 @@ export default function HeroSection() {
                 {/* Primary — solid red */}
                 <Button
                   variant="primary" size="lg"
-                  href={getWhatsAppURL({ page: 'home' })}
+                  href={getWhatsAppURL({ page: 'home', locale: language })}
                   target="_blank" rel="noopener noreferrer"
-                  icon={<ArrowRight size={16} weight="bold" className={isRTL ? 'rotate-180' : ''} />}
+                  icon={<ArrowForward size={16} weight="bold" />}
                 >
                   {l('Request a Quote', 'اطلب عرض سعر')}
                 </Button>
@@ -390,7 +391,8 @@ export default function HeroSection() {
             {i === activeSlide && (
               <motion.span
                 key={`fill-${activeSlide}`} /* key change restarts the animation */
-                className="absolute inset-0 rounded-full bg-brand-red origin-left"
+                // Fills from the inline-start edge — left in EN, right in AR
+                className="absolute inset-0 rounded-full bg-brand-red origin-left rtl:origin-right"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: SLIDE_MS / 1000, ease: 'linear' }}
@@ -406,7 +408,8 @@ export default function HeroSection() {
           never competes with the CTAs but is discoverable on first view.
       ══════════════════════════════════════════════════════════════════════ */}
       <motion.div
-        className="absolute bottom-7 right-6 sm:bottom-8 sm:right-8 z-20 flex flex-col items-center gap-1.5"
+        // Inline-end corner: bottom-right in EN, bottom-left in AR
+        className="absolute bottom-7 end-6 sm:bottom-8 sm:end-8 z-20 flex flex-col items-center gap-1.5"
         aria-hidden="true"
         animate={shouldReduce ? {} : { y: [0, 8, 0] }}
         transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
